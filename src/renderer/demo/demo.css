@@ -49,7 +49,8 @@
   .demo-notice {
     position: fixed;
     left: 50%;
-    bottom: var(--s-6);
+    /* Under the banner, clear of the app's own toasts at the bottom. */
+    top: 44px;
     transform: translateX(-50%);
     z-index: var(--z-console);
     display: flex;
