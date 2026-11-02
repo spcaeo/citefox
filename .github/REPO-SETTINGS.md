@@ -4,10 +4,10 @@ Everything here is ready to paste. Nothing in this repository changes GitHub set
 the owner runs the commands below once, signed in with `gh auth login` as an admin of
 `spcaeo/citefox`.
 
-## Description (277 of 350 characters)
+## Description (309 of 350 characters)
 
 ```text
-Free AI visibility tracker for Mac, Windows and Linux. See if Google AI Overviews, AI Mode, ChatGPT, Perplexity, Gemini and Copilot cite your website, who gets cited instead and what to fix. GEO, AEO and LLM SEO with fix tracking and client-ready reports. Source-available.
+Free, local alternative to Profound, Peec AI and Otterly.AI. Track whether Google AI Overviews, AI Mode, ChatGPT, Perplexity, Gemini and Copilot cite your site, who wins instead and what to fix. Six client-ready reports. Bring your own API keys; data stays on your computer. MCP coming soon. Source-available.
 ```
 
 ## Website
@@ -53,7 +53,7 @@ desktop-app
 ```bash
 # Description, website, topics and features
 gh repo edit spcaeo/citefox \
-  --description "Free AI visibility tracker for Mac, Windows and Linux. See if Google AI Overviews, AI Mode, ChatGPT, Perplexity, Gemini and Copilot cite your website, who gets cited instead and what to fix. GEO, AEO and LLM SEO with fix tracking and client-ready reports. Source-available." \
+  --description "Free, local alternative to Profound, Peec AI and Otterly.AI. Track whether Google AI Overviews, AI Mode, ChatGPT, Perplexity, Gemini and Copilot cite your site, who wins instead and what to fix. Six client-ready reports. Bring your own API keys; data stays on your computer. MCP coming soon. Source-available." \
   --homepage "https://spcaeo.github.io/citefox/" \
   --add-topic geo,aeo,llm-seo,ai-seo,ai-overviews,google-ai-overviews,chatgpt,perplexity,gemini,ai-search \
   --add-topic ai-visibility,citation-tracking,generative-engine-optimization,answer-engine-optimization,seo,seo-tools,rank-tracker,brand-monitoring,electron,desktop-app \
@@ -78,7 +78,9 @@ gh repo view spcaeo/citefox --json description,homepageUrl,repositoryTopics,hasD
 
 GitHub has no API or `gh` command for this one. In **Settings › General › Social preview**, click
 **Edit › Upload an image** and pick `.github/social-preview.png` (1280 × 640). Its source is
-`.github/social-preview.svg`; `npm run site:og` redraws both share images.
+`.github/social-preview.svg`; `npm run site:og` redraws both share images. The image says "Free AI visibility
+tracker", the six engines and "your data stays on your computer", which matches the description above;
+re-upload it after any `npm run site:og`.
 
 ## Release names
 
@@ -118,7 +120,11 @@ Open this issue once and pin it (the issue's ⋯ menu › Pin issue):
 ```markdown
 CiteFox is a free, source-available AI visibility tracker. This issue collects what people want next.
 
-**Planned** (no dates): signed and notarized builds for macOS and Windows, updates inside the app,
+**Coming soon** (no dates): a self-hosted server edition for teams and agencies, a subscription for
+done-for-you optimization, and an MCP server so AI assistants can query your CiteFox data. Email
+getcitifox@gmail.com for early access.
+
+**Also planned:** signed and notarized builds for macOS and Windows, updates inside the app,
 more report sections, and a smoother first run.
 
 **Tell us:**

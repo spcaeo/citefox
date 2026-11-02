@@ -1,6 +1,7 @@
 // The shared page shell for site/: <head> with search and share tags, the top
 // bar, breadcrumbs and the footer. Pages are plain HTML, no framework.
 import {
+  AFFILIATE_DISCLOSURE,
   CONTACT_EMAIL,
   LICENSE_URL,
   OG_IMAGE,
@@ -138,6 +139,7 @@ ${body}
         </span>
         ${footerRelease ? '<span id="footer-release" class="muted"></span>' : ''}
       </div>
+      <p class="wrap small muted disclosure">${e(AFFILIATE_DISCLOSURE)}</p>
     </footer>
   </body>
 </html>

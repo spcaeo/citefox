@@ -1,16 +1,24 @@
 // The pages of site/. Each returns `{ path, file, html }`.
 import {
   CONTACT_EMAIL,
+  DEMO_URL,
   LICENSE_URL,
   PUBLISHER,
   RELEASES_URL,
   REPO_URL,
+  SAMPLES_URL,
   SITE_URL,
   TAGLINE
 } from './config.mjs'
 import {
   AUDIENCES,
+  CONTROL,
   DIFFERENT,
+  EDITIONS,
+  KEYS,
+  KEYS_NOTES,
+  PRIVATE,
+  REPORT_EXTRAS,
   DOC_GROUPS,
   DOC_TITLES,
   ENGINES,
@@ -68,9 +76,15 @@ export function home({ media, version }) {
         <h1>Free AI visibility tracker for Google AI Overviews, ChatGPT and Perplexity</h1>
         <p class="lead">
           CiteFox shows whether AI answers cite your website for the questions your buyers ask,
-          which page they cite, who they cite instead, and what to fix. Your keys and data stay on
-          your computer.
+          which page they cite, who they cite instead, and what to fix. A free, local alternative to
+          Profound, Peec AI, Otterly.AI and Semrush’s AI toolkit.
         </p>
+        <ul class="pills" aria-label="In short">
+          <li>Bring your own API keys</li>
+          <li>Data stays on your computer</li>
+          <li>Six client-ready reports</li>
+          <li>Server edition coming soon</li>
+        </ul>
         <div id="primary" class="primary" aria-live="polite">
           <p class="muted">Finding the latest version…</p>
         </div>
@@ -79,7 +93,41 @@ export function home({ media, version }) {
           CiteFox is a desktop app. Open this page on your Mac or PC to download it.
         </p>
         <p id="other-platforms" class="small"></p>
+        <p class="small"><a href="${DEMO_URL}" target="_blank" rel="noopener">Try the live demo</a> · <a href="${SAMPLES_URL}" target="_blank" rel="noopener">See sample reports</a> · <a href="${REPO_URL}" target="_blank" rel="noopener">Star CiteFox on GitHub</a></p>
         ${figure(media, 'hero.png', 'CiteFox showing which buyer questions AI answers cite your site for, by engine', root, { eager: true })}
+      </section>
+
+      <section class="wrap" id="keys" aria-labelledby="keys-title">
+        <h2 id="keys-title">Bring your own API keys. Keep your data.</h2>
+        <p class="section-lead">CiteFox is free. It captures data through third-party services on your own pay-as-you-go accounts, so you pay them directly and nobody marks it up.</p>
+        <div class="split">
+          <div class="mini">
+            <h3>What you connect</h3>
+            <dl class="pairs">
+${KEYS.map((k) => `              <dt>${e(k.title)}</dt><dd>${e(k.text)}</dd>`).join('\n')}
+            </dl>
+            <ul class="ticks">
+${KEYS_NOTES.map((t) => `              <li>${e(t)}</li>`).join('\n')}
+            </ul>
+          </div>
+          <div class="mini">
+            <h3>Local and private</h3>
+            <ul class="ticks">
+${PRIVATE.map((t) => `              <li>${e(t)}</li>`).join('\n')}
+            </ul>
+            <p class="small muted">CiteFox itself receives only the details you give when you join and an anonymous daily version ping. <a href="${REPO_URL}/blob/main/Docs/PRIVACY.md" target="_blank" rel="noopener">Privacy details</a></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="band" id="why" aria-labelledby="why-title">
+        <div class="wrap">
+          <h2 id="why-title">Why teams pick CiteFox</h2>
+          <ul class="cards three">
+${DIFFERENT.map((x) => `            <li class="mini"><h3>${e(x.title)}</h3><p>${e(x.text)}</p></li>`).join('\n')}
+          </ul>
+          <p class="small"><a href="compare/">See the sourced comparison with Profound, Peec AI, Otterly.AI and six more</a></p>
+        </div>
       </section>
 
       <section class="band" id="features" aria-labelledby="features-title">
@@ -124,12 +172,27 @@ ${ENGINES.map((x) => `              <tr><th scope="row">${e(x.name)}</th><td>${e
         <p class="small muted">For every answer: whether your page is cited, which page, your brand named without a link, or not there at all, plus every other site cited.</p>
       </section>
 
+      <section class="wrap" id="real-answers" aria-labelledby="real-title">
+        <h2 id="real-title">Real answers, not guessed “prompt volume”</h2>
+        <p><strong>Nobody has real prompt volume data.</strong> ChatGPT, Perplexity and Gemini don’t publish how often a question is asked, so every “prompt volume” figure is a modelled estimate (<a href="https://ahrefs.com/blog/how-ahrefs-estimates-ai-search-demand/" target="_blank" rel="noopener">Ahrefs</a> notes only Microsoft Copilot shares query data).</p>
+        <p><strong>Chat assistants answer each person differently.</strong> ChatGPT can use your saved memories and past chats to tailor replies (<a href="https://help.openai.com/en/articles/8590148" target="_blank" rel="noopener">OpenAI help</a>), and other assistants now remember earlier conversations too.</p>
+        <p><strong>Google’s AI Overviews are the steadier signal.</strong> No personal chat memory, and Google aims to keep results mostly the same for everyone. The wording stays close from day to day while the cited sources rotate (<a href="https://ahrefs.com/blog/ai-overview-change/" target="_blank" rel="noopener">Ahrefs</a>), so CiteFox anchors on AI Overviews, checks the other engines beside it, and re-checks on a schedule.</p>
+        <ol class="how">
+          <li><h3>Your real buyer questions</h3><p>Asked the three ways people ask: a short search, a question and a longer situation. Never with your brand name, so you see whether AI finds you on its own.</p></li>
+          <li><h3>Real answers, again and again</h3><p>Every check keeps the full answer and every source, so you follow trends, not one lucky or unlucky answer.</p></li>
+          <li><h3>The right page for each question</h3><p>A Primary page plus Also OK pages, so “cited” means the page you want, and every fix is measured before and after.</p></li>
+        </ol>
+      </section>
+
       <section class="band" id="reports" aria-labelledby="reports-title">
         <div class="wrap">
           <h2 id="reports-title">Client-ready AI visibility reports</h2>
-          <p class="section-lead">Rebuilt after every check. Read them in the app, download offline HTML, PDF or CSV, or email them on a schedule, with your agency’s name and logo.</p>
+          <p class="section-lead">Six reports, rebuilt after every check, each answering one question a client or a boss asks. <a href="${SAMPLES_URL}" target="_blank" rel="noopener">See the sample reports</a>.</p>
           <ul class="cards">
-${REPORTS.map((x) => `            <li class="mini"><h3><a href="docs/${x.doc}/">${e(x.name)}</a></h3><p>${e(x.text)}</p></li>`).join('\n')}
+${REPORTS.map((x) => `            <li class="mini"><h3><a href="docs/${x.doc}/">${e(x.name)}</a></h3><p>${e(x.text)}</p><p class="small muted">For: ${e(x.who)}</p></li>`).join('\n')}
+          </ul>
+          <ul class="ticks">
+${REPORT_EXTRAS.map((t) => `            <li>${e(t)}</li>`).join('\n')}
           </ul>
           ${figure(media, 'report-visibility.png', 'The CiteFox Visibility report with share of voice and the questions that cite you', root)}
         </div>
@@ -148,12 +211,20 @@ ${GEO_VS_SEO.map((t) => `        <p>${e(t)}</p>`).join('\n')}
         <p><a href="glossary/">Read the GEO and AEO glossary</a></p>
       </section>
 
-      <section class="wrap" aria-labelledby="diff-title">
-        <h2 id="diff-title">What makes CiteFox different</h2>
-        <ul class="ticks">
-${DIFFERENT.map((t) => `          <li>${e(t)}</li>`).join('\n')}
+      <section class="wrap" aria-labelledby="control-title">
+        <h2 id="control-title">Why full control matters</h2>
+        <ul class="ticks two">
+${CONTROL.map((t) => `          <li>${e(t)}</li>`).join('\n')}
         </ul>
-        <p class="small muted">Your projects stay on your computer. CiteFox sends its maker only the details you give when you join and an anonymous daily version ping. <a href="${REPO_URL}/blob/main/Docs/PRIVACY.md" target="_blank" rel="noopener">Privacy details</a></p>
+        <p class="card"><strong>Pairs with Skald for AI crawlers and traffic.</strong> <a href="https://github.com/spcaeo/skald" target="_blank" rel="noopener">Skald</a> is our free analytics that runs on your own server and reads its access log: every AI crawler and assistant visit by name, checked to be real, split by why it came, plus the people and leads AI answers sent you. CiteFox shows what AI says about you; Skald shows what AI does on your site.</p>
+      </section>
+
+      <section class="wrap" id="editions" aria-labelledby="editions-title">
+        <h2 id="editions-title">Editions and roadmap</h2>
+        <ul class="cards editions">
+${EDITIONS.map((x) => `          <li class="mini"><p class="status${x.status.startsWith('Free') ? ' now' : ''}">${e(x.status)}</p><h3>${e(x.name)}</h3><p>${e(x.text)}</p></li>`).join('\n')}
+        </ul>
+        <p>Want early access to Server, the managed service or the MCP server? Email <a href="mailto:${CONTACT_EMAIL}?subject=CiteFox%20early%20access" data-copy="${CONTACT_EMAIL}" data-what="email">${CONTACT_EMAIL}</a>.</p>
       </section>
 
       <section class="band" id="faq" aria-labelledby="faq-title">
@@ -248,9 +319,9 @@ ${FAQ.map((x) => `            <div class="qa"><h3>${e(x.q)}</h3><p>${e(x.a)}</p>
     html: page({
       path: '',
       root,
-      title: 'CiteFox: Free AI Visibility Tracker for AI Overviews & ChatGPT',
+      title: 'CiteFox: Free AI Visibility Tracker, Local Alternative to Profound',
       description:
-        'Free desktop app that tracks whether Google AI Overviews, ChatGPT, Perplexity, Gemini and Copilot cite your site. GEO and AEO reports for agencies. Mac, Windows, Linux.',
+        'Free AI visibility tracker: see if AI Overviews, ChatGPT, Perplexity, Gemini and Copilot cite your site. Your own API keys, data on your computer, 6 client reports.',
       body,
       data: [software, faqData(faq)],
       script: 'app.js',

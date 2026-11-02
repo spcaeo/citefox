@@ -6,7 +6,7 @@ import { dirname, join, normalize } from 'node:path'
 import { Window } from 'happy-dom'
 import { describe, expect, it } from 'vitest'
 import { buildSite, MEDIA, REPO_ROOT } from './build-site.mjs'
-import { SITE_URL } from './config.mjs'
+import { AFFILIATE_DISCLOSURE, SITE_URL } from './config.mjs'
 import { FAQ } from './content.mjs'
 
 const SITE = join(REPO_ROOT, 'site')
@@ -17,7 +17,8 @@ const parse = (html) => new window.DOMParser().parseFromString(html, 'text/html'
 const docs = Object.fromEntries(pages.map((p) => [p.file, parse(p.content)]))
 
 /** Names of the services CiteFox uses behind the scenes; never in marketing copy. */
-const PROVIDERS = /\b(cloro|serp ?api|jina|anthropic|claude)\b/i
+// Claude Code and Codex may be named (owner, 2026-11-02: users run CiteFox's AI on those plans).
+const PROVIDERS = /\b(cloro|serp ?api|jina|anthropic|claude(?! code))\b/i
 /** "open source" is only allowed as "not open source" and in the FAQ question "Is CiteFox open source?". */
 const openSource = (text) =>
   /open[- ]source/i.test(text.replace(/not open source|Is CiteFox open source\?/gi, ''))
@@ -130,6 +131,10 @@ describe.each(Object.keys(docs))('%s', (file) => {
     }
   })
 
+  it('shows the affiliate disclosure in the footer', () => {
+    expect(doc.querySelector('footer .disclosure')?.textContent).toBe(AFFILIATE_DISCLOSURE)
+  })
+
   it('names no behind-the-scenes provider and never says open source', () => {
     const text = doc.body.textContent + doc.head.innerHTML
     expect(text).not.toMatch(PROVIDERS)
@@ -140,6 +145,12 @@ describe.each(Object.keys(docs))('%s', (file) => {
 describe('README.md', () => {
   const readme = readFileSync(join(REPO_ROOT, 'README.md'), 'utf8')
   const top = readme.split(/^## Build from source/m)[0]
+
+  it('ends with the same affiliate disclosure as the site footer', () => {
+    expect(readme.slice(readme.lastIndexOf('\n## '))).toContain(
+      `<sub>${AFFILIATE_DISCLOSURE}</sub>`
+    )
+  })
 
   it('asks the same FAQ questions as the site', () => {
     for (const { q } of FAQ) expect(readme).toContain(`### ${q}`)

@@ -2,77 +2,213 @@
 
 <div align="center">
 
-**See whether AI answers cite your website, which page they cite, who they cite instead, and what to fix. A free desktop app for Mac, Windows and Linux.**
+**See whether AI answers cite your website, which page they cite, who they cite instead, and what to fix.**<br>
+**A free desktop app for Mac, Windows and Linux. Your keys, your data, your computer.**
 
 [![Latest release][badge-version]][latest]
 [![Total downloads][badge-downloads]][releases]
 [![License: source-available][badge-license]](LICENSE)
-[![Platforms: macOS, Windows, Linux][badge-platforms]](#download--install)
+[![Platforms: macOS, Windows, Linux][badge-platforms]](#download-and-install)
+[![GitHub stars][badge-stars]][stargazers]
 
 [![Download for macOS][button-mac]][site]
 [![Download for Windows][button-win]][site]
 [![Download for Linux][button-linux]][site]
 
-<img src="media/hero.png" alt="CiteFox showing which buyer questions Google AI Overviews, ChatGPT and Perplexity cite your website for" width="900">
+<img src="media/demo.gif" alt="CiteFox demo: adding a website, getting buyer questions and seeing which AI answers cite your pages" width="900">
 
-[Website][site] · [Docs][docs] · [GEO glossary][glossary] · [Compare](#how-citefox-compares) · [FAQ](#faq) · [Releases][releases]
+[Website][site] · [Live demo][demo] · [Sample reports][samples] · [Docs][docs] · [Compare](#how-citefox-compares) · [FAQ](#faq) · [Releases][releases]
+
+⭐ Star this repo to get new releases in your GitHub feed.
 
 </div>
 
-## What is CiteFox?
+> **A free, local alternative to Profound, Peec AI, Otterly.AI and Semrush's AI toolkit.**
+>
+> **In short.** CiteFox is free. You connect your own pay-as-you-go accounts, so you pay the data
+> services directly, a few cents per question, and CiteFox shows the cost first.
+> Everything it collects stays on your computer. A self-hosted server edition, a managed
+> service and an MCP server are coming soon.
 
-CiteFox is a free **AI visibility tracker**: a desktop app that tracks whether **Google AI Overviews, Google AI Mode, ChatGPT, Perplexity, Gemini and Copilot** cite your website for the questions your buyers ask.
+## Contents
 
-When someone asks an AI engine a question, the answer often lists a few sources. CiteFox tells you if your pages are among them, which page was cited (and whether it is the page you want cited), which sites are cited instead, and what to change so you are cited more. Then it re-checks on a schedule and shows whether your changes worked.
+- [Bring your own API keys](#bring-your-own-api-keys)
+- [Local and private: your data stays on your computer](#local-and-private-your-data-stays-on-your-computer)
+- [Editions: Desktop today, Server and managed service coming soon](#editions-desktop-today-server-and-managed-service-coming-soon)
+- [Why full control matters](#why-full-control-matters)
+- [Why teams pick CiteFox](#why-teams-pick-citefox)
+- [AI visibility tracking features](#ai-visibility-tracking-features)
+- [Client-ready AI visibility reports](#client-ready-ai-visibility-reports)
+- [How it works](#how-it-works) · [Supported AI engines](#supported-ai-engines) · [Who it's for](#who-its-for)
+- [Real answers, not guessed prompt volume](#real-answers-not-guessed-prompt-volume)
+- [How CiteFox compares](#how-citefox-compares) with Profound, Peec AI, Otterly.AI and others
+- [Download and install](#download-and-install) · [FAQ](#faq) · [Community and contributing](#community-and-contributing)
+- [Build from source](#build-from-source) · [Sponsors](#sponsors) · [License](#license) · [Contact](#contact)
 
-It is a tool for **GEO (generative engine optimization)**, **AEO (answer engine optimization)** and **LLM SEO**: AI search visibility and AI citation tracking in one place, with client-ready reports.
+## Bring your own API keys
 
-## Features
+CiteFox is free. To capture data it uses third-party services through **your own accounts**, so you
+pay them directly, only for what you use, and nobody marks it up.
 
-### AI visibility tracking across six engines
+**Already pay for Claude Code or Codex?** CiteFox uses that plan for all its AI work (reading your
+site, writing questions, fix briefs), so there is no extra AI cost. The only pay-as-you-go part is
+the search data service that captures the AI answers: a few cents per question.
 
-See how often AI answers cite your website, by engine, country and language. A trend line marks every fix you made, and every number opens the exact questions it counts. Re-checks run on a schedule, even while the app is closed, within a monthly budget you set.
+| What you connect                              | What CiteFox uses it for                                                                                 | How you pay                                                                                                                                                                                 |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **A search data API**                         | Asks each AI engine your buyer questions and saves every answer and source                               | Pay-as-you-go credits. Free tiers are enough to try it.                                                                                                                                     |
+| **Claude Code or Codex** (or an AI model API) | Reads your site, writes buyer questions, finds competitors, writes fix briefs and answers your questions | Runs on the Claude Code or Codex plan you already pay for, so **no extra AI cost**. Or use a pay-as-you-go AI model API key. During setup you can even paste prompts into your own ChatGPT. |
+
+- **You see the cost first.** Before every check CiteFox shows how many credits it will use and how
+  many are left. Setup and Settings show the price in US dollars per check and per month, history
+  shows what each check cost, and checks stop at a monthly budget you set.
+- **What a check costs.** At the list price of the default search plan, one question on one engine
+  costs well under one US cent. Ten buyer questions on all six engines come to about 30 cents. Your
+  price depends on your plan, and the app always shows the real number.
+- **Setup walks you through it.** It links to each sign-up page and tests every key before saving it.
+  Keys are stored in your operating system's keychain.
+
+The exact services and their terms are listed under [Build from source](#services-you-connect).
+
+## Local and private: your data stays on your computer
+
+- **Everything is stored on your computer**, in a local database (SQLite) in the CiteFox data folder.
+- **There is no CiteFox cloud.** Your projects, SEO data, buyer questions, AI answers, reports and
+  keys never go to a CiteFox server.
+- **Keys live in the OS keychain**: the macOS Keychain, Windows Credential Manager, or the Secret
+  Service on Linux. Logs redact keys, passwords and prompt text.
+- **What leaves your computer:** calls to the services you connect, the pages and sitemaps you ask
+  CiteFox to read, and a check for new versions on GitHub. CiteFox itself receives only the details you
+  type in the optional **Join CiteFox** step and an anonymous daily version ping.
+
+<details>
+<summary>Where the data folder is, and the full privacy details</summary>
+
+- macOS: `~/Library/Application Support/CiteFox`
+- Windows: `%APPDATA%\CiteFox`
+- Linux: `~/.config/CiteFox`
+
+Settings and databases keep only a reference to each keychain item, never the key itself. Every
+message CiteFox sends, and how to have it deleted, is in [Docs/PRIVACY.md](Docs/PRIVACY.md).
+
+</details>
+
+## Editions: Desktop today, Server and managed service coming soon
+
+| Edition                    | Status                  | For                                                                                                                        |
+| -------------------------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **Desktop**                | **Free, available now** | Anyone. Runs on your Mac, Windows or Linux computer. Everything stays on that computer.                                    |
+| **Server** (self-hosted)   | Coming soon             | Teams and agencies who want to run CiteFox on their own server and share it, with the data still on hardware they control. |
+| **Subscription** (managed) | Coming soon             | Teams who want it done for them: we run the checks and do the optimization work as a service.                              |
+| **MCP server**             | Coming soon             | AI assistants and agents that query your CiteFox data, with the data still on your side.                                   |
+
+**Want early access to Server, the managed service or the MCP server?** Email
+[getcitifox@gmail.com](mailto:getcitifox@gmail.com?subject=CiteFox%20early%20access) and say which one.
+
+<details>
+<summary>Also planned for the desktop app (plans, not promises)</summary>
+
+- Signed and notarized builds for macOS and Windows, so the first-start warning goes away
+- Automatic updates inside the app
+- More report sections and downloads, matched to what agencies send their clients
+- Better first-run setup: reading a sitemap during setup, and clearer help on every screen
+
+Follow [Releases][releases] and the [changelog](CHANGELOG.md) for what has shipped. Ideas are welcome
+in [Discussions][discussions].
+
+</details>
+
+**Let an AI agent run it for you.** CiteFox runs on Linux, so you can try installing it on an AI
+agent's own Linux computer, such as Grok Bot, Meta Muse or OpenAI dots, and have the agent run your
+checks and reports on a schedule. The MCP server (coming soon) will make this smoother.
+
+## Why full control matters
+
+- **Your data.** Results stay on your computer. Nothing to migrate out of, nothing held hostage.
+- **Your keys, your costs.** You pay the data services directly, at their prices, with a budget cap.
+- **No per-seat SaaS fees.** The app is free, however many projects or clients you track.
+- **No vendor lock-in.** Export everything as offline HTML, PDF or CSV.
+- **Source-available.** Read the code and see exactly what each number means and where it comes from.
+- **Works offline after checks.** Results and reports open without the internet; only new checks and
+  AI help need it.
+- **Client data stays out of other clouds.** For agencies, client sites, questions and results never sit
+  in a third-party dashboard.
+
+## Why teams pick CiteFox
+
+|                                         |                                                                                                                                                                   |
+| --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Free and local**                      | A free desktop app. Your data on your computer, your own keys, the cost shown before every check.                                                                 |
+| **The right page, not just the domain** | Set the page that should be cited for each question. CiteFox tells you if that page, another page of yours, your brand without a link, or someone else was cited. |
+| **Fixes with a verdict**                | Log a change and CiteFox re-checks for 14 days, then says whether it **worked**, made **no change** or **got worse**.                                             |
+| **Six client-ready reports**            | Visibility, What changed, Impact review, Pitch / audit, Content plan and Head-to-head, rebuilt after every check.                                                 |
+| **Branded for agencies**                | Your agency's name and logo with "Prepared for" each client, or your company's, or none.                                                                          |
+| **Every number drills down**            | Click any number, in the app or a report, to see the exact questions and answers behind it.                                                                       |
+
+## AI visibility tracking features
+
+### Track AI citations across six engines
+
+See how often AI answers cite your website, by engine, country and language. A trend line marks every
+fix you made, and every number opens the exact questions it counts. Re-checks run on a schedule, even
+while the app is closed, within a monthly budget you set.
 
 ![CiteFox Summary screen with the AI visibility score, trend and next fixes](media/summary.png)
 
-### Every AI answer and every cited source
+### Read every AI answer and every cited source
 
-Open any buyer question to read the full answer, the sources it links and how it changed between checks. For every answer, CiteFox records whether the **right page** was cited, **another page of yours**, your brand **named without a link**, or **someone else**. Buyer questions are written for you from your site, in the wording of each market.
+Open any buyer question to read the full answer, the sources it links and how it changed between checks.
+Buyer questions are written for you from your site, in the wording of each market.
 
 ![A question in CiteFox showing the full AI answer and the sources it cites](media/question.png)
 
-### Competitor citation tracking
+### See which competitors AI answers cite instead of you
 
-Find out who AI answers cite instead of you, on which questions and engines, and where a competitor wins and you do not. See every cited domain: competitors, review sites, forums and videos.
+Find out who AI answers cite instead of you, on which questions and engines, and where a competitor wins
+and you do not. See every cited domain: competitors, review sites, Reddit, YouTube and other communities.
 
 ![CiteFox Competitors screen listing the sites AI answers cite instead of you](media/competitors.png)
 
 ### Fix briefs and before-and-after tracking
 
-Get a short brief for each page to improve or write. Log the change, and CiteFox measures the questions it should help for 14 days, then says whether it **worked**, made **no change** or **got worse**.
+Get a short brief for each page to improve or write. Log the change, and CiteFox measures the questions it
+should help for 14 days, then gives its verdict.
 
 ![CiteFox Fixes screen with page fixes, logged changes and verdicts](media/fixes.png)
 
-### Client-ready AI visibility reports
+<details>
+<summary>Also included</summary>
 
-Six reports, rebuilt after every check. Read them in the app, download offline HTML, PDF or CSV, put your agency name and logo on them, or email them to clients on a schedule.
-
-![CiteFox Reports screen with six ready reports](media/reports-home.png)
-
-### Also included
-
-- Topics and target pages: say which page should win each question
+- Topics and target pages: say which page should win each question (a Primary page and Also OK pages)
 - Alerts on the desktop, by email or in Slack when a target page loses its citation or a competitor is cited instead
 - **Ask CiteFox**: plain-English answers about your stored results, with links to the rows they count
 - Import questions, pages and competitors from a sitemap, CSV or Excel file
 - Many projects, each with its own markets and settings
 - Light and dark themes
 
-## Who it's for
+</details>
 
-- **SEO and GEO agencies**: track AI citations for every client, pitch new clients with an audit, and send branded reports on a schedule.
-- **In-house marketers**: show whether AI answers recommend you or a competitor, and prove which page changes moved the numbers.
-- **SaaS and ecommerce teams**: see which product, category and comparison pages AI engines cite for the questions buyers ask before they buy.
+## Client-ready AI visibility reports
+
+Six reports, rebuilt after every check. Open the Reports home **By goal** ("Where do we stand?", "Did our
+fixes work?") or **By report**. See them for yourself in the [sample reports][samples].
+
+| Report                                      | What it answers                                                                                                   | Who it's for                          |
+| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| [Visibility report][doc-reports-visibility] | Where you stand: the opportunity, competitors and share of voice, sources, reputation and sentiment, answer shape | Monthly client or leadership updates  |
+| [What changed][doc-reports-changed]         | Any two checks compared, verdict first: citations and brand named, then what moved up, down, in and out           | Check-ins after each re-check         |
+| [Impact review][doc-reports-impact]         | Did our fixes work? Published pages before and after, a page-by-page story, and what the client needs to do       | Proving the value of the work         |
+| [Pitch / audit][doc-reports-pitch]          | A one-page audit from a single check: the gap, who wins instead, and what we'd fix first                          | Winning a new client, briefing a boss |
+| [Content plan][doc-reports-content]         | The pages to write or fix, by topic, each with a brief you can copy to a writer                                   | Writers and content leads             |
+| [Head-to-head][doc-reports-rival]           | You against one competitor: where they are cited and you are not                                                  | Answering "why them and not us?"      |
+
+- **Downloads:** offline HTML, PDF and CSV, with the same numbers as the app.
+- **Scheduled emails:** send any report to clients on a schedule.
+- **[Branding][doc-reports-branding]:** an agency (your name and logo, "Prepared for" each client), in-house
+  (your company), or plain.
+- **Every number drills down** to the questions behind it, across all six engines or one at a time.
+
+![The CiteFox Visibility report with share of voice and the questions that cite you](media/report-visibility.png)
 
 ## How it works
 
@@ -80,24 +216,9 @@ Six reports, rebuilt after every check. Read them in the app, download offline H
 2. **Get your buyer questions.** It writes the questions your buyers really ask, grouped into topics, for each country and language you sell in.
 3. **Check, fix, re-check.** It asks every AI engine, saves each answer and source, shows who is cited instead, writes fix briefs and re-checks on a schedule.
 
-![CiteFox demo: from adding a website to the first AI visibility check](media/demo.gif)
+![CiteFox Reports home with the six ready reports](media/reports-home.png)
 
-[Watch the demo video](media/demo.mp4) · [Getting started guide][doc-getting-started]
-
-## Reports
-
-| Report                                      | What it answers                                                  |
-| ------------------------------------------- | ---------------------------------------------------------------- |
-| [Visibility report][doc-reports-visibility] | Where you stand at one check, and who wins instead               |
-| [What changed][doc-reports-changed]         | Any two checks compared, verdict first                           |
-| [Impact review][doc-reports-impact]         | What your published pages and fixes did, before and after        |
-| [Pitch / audit][doc-reports-pitch]          | A short audit from one check, to win a client or brief your boss |
-| [Content plan][doc-reports-content]         | The pages to write or fix first, ready for a writer              |
-| [Head-to-head][doc-reports-rival]           | You against one competitor: where they get cited and you do not  |
-
-Every number in a report opens the list behind it, and the downloaded file shows the same numbers as the app. [Report branding][doc-reports-branding] puts your agency's or company's name and logo on every report.
-
-![The CiteFox Visibility report](media/report-visibility.png)
+[Try the live demo][demo] · [Watch the demo video](media/demo.mp4) · [Getting started guide][doc-getting-started]
 
 ## Supported AI engines
 
@@ -110,9 +231,17 @@ Every number in a report opens the list behind it, and the downloaded file shows
 | Gemini              | Gemini answers and the pages they cite                                            |
 | Copilot             | Microsoft Copilot answers and the pages they cite                                 |
 
-Each question is asked in every market you choose (a country and language pair, such as United States · English), because AI answers differ by place and language.
+Each question is asked in every market you choose (a country and language pair, such as United States ·
+English), because AI answers differ by place and language.
 
-## GEO vs SEO: why AI citations matter
+## Who it's for
+
+- **SEO and GEO agencies**: track AI citations for every client, pitch new clients with an audit, and send branded reports on a schedule.
+- **In-house marketers**: show whether AI answers recommend you or a competitor, and prove which page changes moved the numbers.
+- **SaaS and ecommerce teams**: see which product, category and comparison pages AI engines cite for the questions buyers ask before they buy.
+
+<details>
+<summary>GEO vs SEO: why AI citations matter</summary>
 
 - **SEO** works to rank a page in the list of search results. **GEO** (generative engine optimization) and **AEO** (answer engine optimization) work to get a page cited as a source, or a brand named, inside an AI-written answer.
 - AI answers appear above the links or replace them. A page can rank well and still not be cited, and AI engines also cite pages that do not rank at the top.
@@ -121,13 +250,95 @@ Each question is asked in every market you choose (a country and language pair, 
 
 More terms in the [GEO and AEO glossary][glossary].
 
-## Privacy
+</details>
 
-- **Your data stays on your computer.** Projects, questions, AI answers and reports are kept in the CiteFox data folder (on a Mac, `~/Library/Application Support/CiteFox`; on Windows, `%APPDATA%\CiteFox`; on Linux, `~/.config/CiteFox`).
-- **Your keys stay in your system keychain**: the macOS Keychain, Windows Credential Manager, or the Secret Service on Linux. Settings and databases keep only a reference to the keychain item. Logs redact keys, passwords and prompt text.
-- **What leaves your computer:** CiteFox talks to the services you connect, the pages and sitemaps you ask it to read, and GitHub Releases to tell you about a new version. It sends its maker, Space-O Technologies, just two things: the details you give in the **Join CiteFox** step, and an anonymous daily version ping. Details in [Docs/PRIVACY.md](Docs/PRIVACY.md).
+## Real answers, not guessed "prompt volume"
 
-## Download & install
+**Nobody has real prompt volume data.** ChatGPT, Perplexity and Gemini don't publish how often a question is asked, so every "prompt volume" figure on the market is a modelled estimate built from panels and clickstream data ([Ahrefs](https://ahrefs.com/blog/how-ahrefs-estimates-ai-search-demand/) notes that, apart from Microsoft Copilot, no major AI platform shares its query data).
+
+**Chat assistants answer each person differently.** ChatGPT can use your saved memories and past chats to tailor its replies ([OpenAI help](https://help.openai.com/en/articles/8590148)), and other assistants now remember earlier conversations too. So one person's answer can differ from the next person's.
+
+**Google's AI Overviews are the steadier signal.** They have no personal chat memory, and Google aims to keep results mostly the same for everyone. Their wording stays close from day to day, while the cited sources do rotate ([Ahrefs](https://ahrefs.com/blog/ai-overview-change/) measured about 0.95 meaning similarity between checks, but only ~55% of cited links in common). That is why CiteFox treats Google AI Overviews as the anchor, checks the other engines beside it, and re-checks on a schedule instead of trusting one snapshot.
+
+**So CiteFox is built on three foundations:**
+
+1. **Your real buyer questions, in the three ways people ask:** a **short search** as typed into Google, a natural **question**, and a longer **situation** ("We're a 20-person clinic and our SMS reminders stopped…"). Never with your brand name in them, so they show whether AI finds you on its own.
+2. **Real answers, checked again and again:** every check stores the full AI answer and every source, so you see trends, not one lucky or unlucky answer.
+3. **The right page for each question:** a Primary page (plus Also OK pages), so "cited" means the page you want, and fixes can be measured before and after.
+
+## How CiteFox compares
+
+Facts about other tools come from each vendor's own website, pricing page and docs, checked on 2026-11-02. The full matrix, with a source for every cell and three more tools (Rankscale, Goodie AI and Similarweb), is in **[Docs/COMPARISON.md](Docs/COMPARISON.md)**.
+
+✓ yes · ◐ partly, as an add-on or on some plans · ✗ no, or not found in its docs · ? not confirmed on the vendor's pages
+
+|                                          |      **CiteFox**      |  Profound   | Peec AI | Otterly.AI |   Scrunch   | AthenaHQ  |  Searchable  | Promptwatch | Semrush AI ¹ | Ahrefs Brand Radar |
+| ---------------------------------------- | :-------------------: | :---------: | :-----: | :--------: | :---------: | :-------: | :----------: | :---------: | :----------: | :----------------: |
+| **Pricing & control**                    |                       |             |         |            |             |           |              |             |              |                    |
+| How it runs                              |      Desktop app      |    SaaS     |  SaaS   |    SaaS    |    SaaS     |   SaaS    |     SaaS     |    SaaS     |     SaaS     |        SaaS        |
+| Your data stays on your computer         |           ✓           |      ✗      |    ✗    |     ✗      |      ✗      |     ✗     |      ✗       |      ✗      |      ✗       |         ✗          |
+| Hosted web dashboard                     |     Not needed ⁴      |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ✓       |         ✓          |
+| Free plan or trial                       |       Free app        | 7-day trial |    ?    |   Trial    | 7-day trial | Free plan | 14-day trial |    Trial    |      ✗       |     ◐ checker      |
+| Price to start                           |  Free; your own keys  |   Custom    |   $95   |    $29     |    $300     |   $295    |     $125     |     $95     |     $99      |   $199 add-on ²    |
+| Licence                                  |   Source-available    |   Closed    | Closed  |   Closed   |   Closed    |  Closed   |    Closed    |   Closed    |    Closed    |       Closed       |
+| **Engines**                              |                       |             |         |            |             |           |              |             |              |                    |
+| Google AI Overviews                      |           ✓           |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ✓       |         ✓          |
+| Google AI Mode                           |           ✓           |      ◐      |    ✓    |     ◐      |      ✓      |     ◐     |      ◐       |      ✓      |      ✓       |         ✓          |
+| ChatGPT                                  |           ✓           |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ✓       |         ✓          |
+| Perplexity                               |           ✓           |      ◐      |    ◐    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ◐       |         ✓          |
+| Gemini                                   |           ✓           |      ✓      |    ✓    |     ◐      |      ✓      |     ✓     |      ◐       |      ✓      |      ◐       |         ✓          |
+| Copilot                                  |           ✓           |      ◐      |    ✓    |     ✓      |      ✗      |     ✓     |      ◐       |      ✓      |      ✗       |         ✓          |
+| More engines than these six              | The six that matter ⁵ |      ◐      |    ◐    |     ◐      |      ✓      |     ◐     |      ◐       |      ✓      |      ✗       |         ◐          |
+| **Analysis**                             |                       |             |         |            |             |           |              |             |              |                    |
+| Your own prompts / buyer questions       |           ✓           |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ✓       |         ✓          |
+| Topics or clusters                       |           ✓           |      ✓      |    ✓    |     ✓      |      ✓      |     ◐     |      ✓       |      ✓      |      ✓       |         ✓          |
+| Right page cited check (target pages)    |           ✓           |      ◐      |    ◐    |     ?      |      ?      |     ?     |      ?       |      ?      |      ?       |         ?          |
+| Countries and languages                  |           ✓           |      ◐      |    ✓    |     ✓      |      ?      |     ◐     |      ✓       |      ✓      |      ✓       |         ✓          |
+| Prompt volume data                       | Your real questions ⁶ |      ✓      |    ✓    |     ?      |      ?      |     ◐     |      ?       |      ✓      |      ✓       |         ✓          |
+| Competitor share of voice                |           ✓           |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ✓       |         ✓          |
+| Source analysis (Reddit, YouTube)        |           ✓           |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ◐       |         ✓          |
+| Sentiment                                |           ✓           |      ✓      |    ✓    |     ✓      |      ✓      |     ◐     |      ✓       |      ✓      |      ✓       |         ✓          |
+| AI crawler / traffic analytics           |  With Skald, free ⁷   |      ✓      |    ✓    |     ◐      |      ✓      |     ?     |      ✓       |      ◐      |      ◐       |         ✓          |
+| **Fixes**                                |                       |             |         |            |             |           |              |             |              |                    |
+| Fix recommendations                      |           ✓           |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ◐      |      ✓       |         ?          |
+| Fix tracking with a before/after verdict |           ✓           |      ◐      |    ◐    |     ?      |      ?      |     ?     |      ?       |      ?      |      ?       |         ?          |
+| **Reports**                              |                       |             |         |            |             |           |              |             |              |                    |
+| Client reports / white-label             |           ✓           |      ◐      |    ◐    |     ✓      |      ◐      |     ?     |      ◐       |      ✓      |      ◐       |         ◐          |
+| Pitch audit for a prospect               |           ✓           |      ◐      |    ?    |     ◐      |      ?      |     ?     |      ?       |      ?      |      ?       |         ?          |
+| Scheduled email reports                  |           ✓           |      ◐      |    ?    |     ?      |      ?      |     ?     |      ✓       |      ?      |      ?       |         ◐          |
+| Export (CSV, PDF, HTML)                  |    HTML, PDF, CSV     |      ◐      |   CSV   |  CSV, PDF  | CSV, Excel  |   ◐ CSV   |   PDF, CSV   |      ◐      |     CSV      |         ◐          |
+| **Integrations**                         |                       |             |         |            |             |           |              |             |              |                    |
+| API                                      |  Your own database ⁸  |      ◐      |    ◐    |     ◐      |      ◐      |     ◐     |      ✓       |      ✓      |      ?       |         ?          |
+| MCP server                               |     Coming soon ³     |      ✓      |    ✓    |     ◐      |      ◐      |     ✓     |      ✓       |      ✓      |      ?       |         ?          |
+
+¹ Semrush's AI Visibility Toolkit. ² Ahrefs Brand Radar is an add-on to a paid Ahrefs plan; custom prompts alone start at $50 a month. Pitch audit: Profound's Agency Mode and Otterly.AI's agency plans have pitch workspaces; CiteFox has a ready Pitch / audit report. ³ A CiteFox MCP server is planned, not shipped. Prices are monthly list prices in USD on 2026-11-02 and change often.
+⁴ CiteFox runs on your computer, so there are no logins to share and no per-seat fees; share results as reports and scheduled emails. A self-hosted server edition for teams is coming soon.
+⁵ Google AI Overviews, AI Mode, ChatGPT, Perplexity, Gemini and Copilot: where buyers ask today.
+⁶ No AI platform except Copilot publishes query volumes, so every "prompt volume" is an estimate. CiteFox checks real AI answers to your buyer questions instead ([why](https://github.com/spcaeo/citefox#real-answers-not-guessed-prompt-volume)).
+⁷ For AI crawlers and AI traffic, pair CiteFox with [Skald](https://github.com/spcaeo/skald): our free analytics that runs on your own server and reads its access log. It names GPTBot, PerplexityBot, ChatGPT-User and the rest, checks each crawler is real, splits AI visits by why they came (training, answering someone live, or a person clicking a citation), and shows the leads AI sent.
+⁸ Every result is in a local database file you own and can query or back up; an MCP server for AI agents is coming soon.
+
+### Where others go further, and why CiteFox is built differently
+
+- **Hosted dashboards.** The others run in a browser with shared logins. CiteFox keeps everything on your computer instead: no seat fees, no client data in someone else's cloud, and branded reports to share. A self-hosted server edition is coming soon for teams that want one shared place.
+- **More engines.** Some enterprise plans add Grok, DeepSeek, Meta AI or Mistral. CiteFox focuses on the six engines where buyers ask today, and checks each one in depth: the answer, every source, your position and the right page.
+- **Prompt volumes.** Ahrefs, Profound, Peec AI, Promptwatch and Semrush estimate how often people ask a prompt. Those are models: no AI platform except Copilot shares real query data, and chat assistants answer each person differently because of memory. CiteFox measures real answers to the buyer questions you choose, anchored on Google AI Overviews ([why](https://github.com/spcaeo/citefox#real-answers-not-guessed-prompt-volume)).
+- **AI crawler and traffic analytics.** Several tools read server or CDN logs inside their cloud. CiteFox stays focused on AI answers, and pairs with [Skald](https://github.com/spcaeo/skald), our free analytics that runs **on your own server**: every AI crawler and AI assistant visit by name, verified, split by why it came, plus the people and leads AI answers sent you. Both keep your data with you.
+- **APIs and enterprise extras.** Others offer APIs, SSO and dedicated support. With CiteFox your data is already yours, in a local database you can query, export or back up; an MCP server for AI agents is coming soon.
+- **Content writing agents.** Some tools write pages for you. CiteFox gives you a precise brief for the right page, so your writers stay in control of your voice and facts.
+
+### Who should use what
+
+- **Page-level answers, fix verdicts and branded client reports, with no subscription and the data on your own computer:** CiteFox.
+- **Many engines, prompt volumes, crawler logs, SSO and a dedicated team, for a large brand:** Profound, or an Enterprise plan of Peec AI or Scrunch.
+- **A hosted, self-serve tracker with daily runs and a low entry price:** Otterly.AI or Peec AI.
+- **An agent that also writes and publishes content:** Promptwatch or Searchable.
+- **AI visibility beside your keyword and backlink data:** the Semrush or Ahrefs add-on you already pay for.
+- **Both:** CiteFox sits beside any of these. A hosted tool can watch the whole category daily while CiteFox checks which of your pages is cited and whether each fix worked.
+
+> **A note on the names above.** Profound, Peec AI, Otterly.AI, Scrunch, AthenaHQ, Searchable, Promptwatch, Semrush, Ahrefs and the AI engines named on this page are trademarks of their respective owners. We mention them only for reference and comparison. CiteFox is not associated with, affiliated with or endorsed by any of them. We genuinely admire these tools: each one moves AI search forward, and we happily recommend them where they fit your needs better. Spot something out of date? [Open an issue](https://github.com/spcaeo/citefox/issues) and we'll fix it.
+
+## Download and install
 
 Get CiteFox from the **[download page][site]**, which picks the right file for your computer, or from [GitHub Releases][releases].
 
@@ -139,15 +350,20 @@ Get CiteFox from the **[download page][site]**, which picks the right file for y
 | Windows            | `CiteFox-<version>-win-x64.exe` installer (or `-arm64.exe`), or `-win-x64-portable.exe` |
 | Linux              | `CiteFox-<version>-linux-x86_64.AppImage`, or `CiteFox-<version>-linux-amd64.deb`       |
 
-**Builds are not code-signed yet**, so your computer asks once the first time you open CiteFox:
+**Builds are not code-signed yet**, so your computer asks once the first time you open CiteFox.
+
+<details>
+<summary>How to open CiteFox the first time on macOS, Windows and Linux</summary>
 
 - **macOS:** open the `.dmg` and drag CiteFox to Applications. Open it; when macOS says it cannot check the app, click **Done**. Then open **System Settings › Privacy & Security**, scroll down and click **Open Anyway**. On macOS 14 or older you can instead Control-click the app and choose **Open**.
 - **Windows:** run the installer. If you see "Windows protected your PC", click **More info**, then **Run anyway**. It installs for you only (no admin needed).
 - **Linux:** make the AppImage executable (`chmod +x CiteFox-*.AppImage`) and open it, or install the deb with `sudo apt install ./CiteFox-*.deb`. Storing keys needs a Secret Service (GNOME Keyring or KWallet; the deb pulls in `libsecret-1-0`).
 
+</details>
+
 Every release has a `SHA256SUMS.txt` to check your download. CiteFox tells you when a new version is out; install it over the old one and your data is kept.
 
-**What you need for the first check:** a key for a search data service (setup links to sign-up pages with free plans and tests the key before saving it), and an AI assistant for CiteFox AI: one you already use on your computer under your own plan, or a paste-in mode with your own ChatGPT. Setup walks you through both, and CiteFox shows what each check will use before it runs. See the [getting started guide][doc-getting-started].
+**What you need for the first check:** a search data API key and an AI model (see [Bring your own API keys](#bring-your-own-api-keys)). Setup walks you through both. See the [getting started guide][doc-getting-started].
 
 ## FAQ
 
@@ -157,7 +373,11 @@ CiteFox is a free desktop app for Mac, Windows and Linux that tracks whether Goo
 
 ### Is CiteFox free?
 
-Yes. The app is free to download and use. Checks use search credits from your own account with a search data service; free plans are enough to try it. CiteFox shows what a check will use before it runs and stops at a monthly budget you set.
+Yes. The app is free to download and use. You bring your own API keys: checks use pay-as-you-go credits from your own account with a search data service, and free tiers are enough to try it. CiteFox shows what a check will cost before it runs and stops at a monthly budget you set.
+
+### What API keys do I need?
+
+A search data API, which asks the AI engines your questions (pay-as-you-go, a few cents per question), and for the AI work either **Claude Code or Codex on the plan you already pay for (no extra cost)** or a pay-as-you-go AI model API key. Setup links to each sign-up page and tests every key.
 
 ### How do I check if Google AI Overviews cite my website?
 
@@ -173,7 +393,15 @@ SEO aims to rank pages in search results. GEO (generative engine optimization) a
 
 ### Does CiteFox send my data to a server?
 
-Your projects, questions, AI answers and reports stay on your computer, and your keys stay in your system keychain. CiteFox talks only to the services you connect and the pages you ask it to read. It sends its maker, Space-O Technologies, just two things: the details you give in the Join step, and an anonymous daily version ping.
+No. There is no CiteFox cloud. Your projects, questions, AI answers and reports stay in a local database on your computer, and your keys stay in your system keychain. CiteFox talks only to the services you connect and the pages you ask it to read. Its maker, Space-O Technologies, receives just two things: the details you give in the Join step, and an anonymous daily version ping.
+
+### Is CiteFox a free alternative to Profound or Peec AI?
+
+For many agencies and marketers, yes. CiteFox is a free desktop app that tracks six AI engines (Google AI Overviews, AI Mode, ChatGPT, Perplexity, Gemini and Copilot), checks whether the right page is cited, gives each fix a 14-day verdict and builds branded client reports, with your data on your own computer. Profound and Peec AI are hosted services that lead on team dashboards, more engines, prompt volumes, AI crawler analytics and APIs. Many teams use CiteFox beside one of them. CiteFox is not affiliated with any of these companies.
+
+### Is there a server or team version?
+
+Not yet. A self-hosted server edition, so a team or agency can run CiteFox on its own server and share it, is coming soon, and so are a subscription for done-for-you optimization and an MCP server so AI assistants can query your CiteFox data. Email getcitifox@gmail.com for early access.
 
 ### Is CiteFox open source?
 
@@ -185,7 +413,7 @@ Yes. The license allows use for your company's clients. CiteFox has six ready re
 
 ### What do I need to run CiteFox?
 
-A Mac, Windows or Linux computer, a key for a search data service (CiteFox links to sign-up pages with free plans and tests the key), and an AI assistant for CiteFox AI: one you already use on your computer under your own plan, or a paste-in mode with your own ChatGPT.
+A Mac, Windows or Linux computer, a key for a search data API (CiteFox links to sign-up pages with free tiers and tests the key), and an AI model: your own AI model API key, or an AI assistant you already use on your computer under your own plan.
 
 ### How does CiteFox compare with Profound, Peec AI and Otterly.AI?
 
@@ -199,86 +427,14 @@ CiteFox builds are not code-signed with a paid certificate yet, so macOS and Win
 
 You pick the markets: a country and language pair, such as United States · English or Germany · German. CiteFox writes the buyer questions in each market's wording and checks each market separately, because AI answers differ by place and language.
 
-## What makes CiteFox different
+## Community and contributing
 
-- **A desktop app.** Your projects, answers and reports stay on your computer, not in someone else's cloud.
-- **Free.** Checks run on your own keys, and CiteFox shows the cost before every check.
-- **Source-available.** Anyone can read the code and see exactly what it does.
-- **Page-level answers.** Which of your pages is cited, and whether it is the page you want cited.
-- **A full loop.** Buyer questions, checks, fix briefs, 14-day verdicts and client reports in one tool.
+- **Questions, ideas and show-and-tell:** [GitHub Discussions][discussions]
+- **Bugs and feature requests:** [GitHub Issues][issues] (please use the forms)
+- **Code:** issues, ideas and pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) for the code layout, tests and the pull request checklist, and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+- **Security problems** go to [SECURITY.md](SECURITY.md), not to Issues. For help using CiteFox, see [SUPPORT.md](SUPPORT.md).
 
-## How CiteFox compares
-
-Facts about other tools come from each vendor's own website, pricing page and docs, checked on 2026-11-02. The full matrix, with a source for every cell and three more tools (Rankscale, Goodie AI and Similarweb), is in **[Docs/COMPARISON.md](Docs/COMPARISON.md)**.
-
-✓ yes · ◐ partly, as an add-on or on some plans · ✗ no, or not found in its docs · ? not confirmed on the vendor's pages · – does not apply · nc = not checked
-
-|                                          |     **CiteFox**     |  Profound   | Peec AI | Otterly.AI |   Scrunch   | AthenaHQ  |  Searchable  | Promptwatch | Semrush AI ¹ | Ahrefs Brand Radar |
-| ---------------------------------------- | :-----------------: | :---------: | :-----: | :--------: | :---------: | :-------: | :----------: | :---------: | :----------: | :----------------: |
-| How it runs                              |     Desktop app     |    SaaS     |  SaaS   |    SaaS    |    SaaS     |   SaaS    |     SaaS     |    SaaS     |     SaaS     |        SaaS        |
-| Your data stays on your computer         |          ✓          |      ✗      |    ✗    |     ✗      |      ✗      |     ✗     |      ✗       |      ✗      |      ✗       |         ✗          |
-| Hosted web dashboard                     |          ✗          |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ✓       |         ✓          |
-| Free plan or trial                       |      Free app       | 7-day trial |    ?    |   Trial    | 7-day trial | Free plan | 14-day trial |    Trial    |      ✗       |     ◐ checker      |
-| Price to start                           | Free; your own keys |   Custom    |   $95   |    $29     |    $300     |   $295    |     $125     |     $95     |     $99      |   $199 add-on ²    |
-| Licence                                  |  Source-available   |   Closed    | Closed  |   Closed   |   Closed    |  Closed   |    Closed    |   Closed    |    Closed    |       Closed       |
-| Google AI Overviews                      |          ✓          |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ✓       |         ✓          |
-| Google AI Mode                           |          ✓          |      ◐      |    ✓    |     ◐      |      ✓      |     ◐     |      ◐       |      ✓      |      ✓       |         ✓          |
-| ChatGPT                                  |          ✓          |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ✓       |         ✓          |
-| Perplexity                               |          ✓          |      ◐      |    ◐    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ◐       |         ✓          |
-| Gemini                                   |          ✓          |      ✓      |    ✓    |     ◐      |      ✓      |     ✓     |      ◐       |      ✓      |      ◐       |         ✓          |
-| Copilot                                  |          ✓          |      ◐      |    ✓    |     ✓      |      ✗      |     ✓     |      ◐       |      ✓      |      ✗       |         ✓          |
-| More engines than these six              |          ✗          |      ◐      |    ◐    |     ◐      |      ✓      |     ◐     |      ◐       |      ✓      |      ✗       |         ◐          |
-| Your own prompts / buyer questions       |          ✓          |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ✓       |         ✓          |
-| Topics or clusters                       |          ✓          |      ✓      |    ✓    |     ✓      |      ✓      |     ◐     |      ✓       |      ✓      |      ✓       |         ✓          |
-| Right page cited check (target pages)    |          ✓          |      ◐      |    ◐    |     ?      |      ?      |     ?     |      ?       |      ?      |      ?       |         ?          |
-| Countries and languages                  |          ✓          |      ◐      |    ✓    |     ✓      |      ?      |     ◐     |      ✓       |      ✓      |      ✓       |         ✓          |
-| Prompt volume data                       |          ✗          |      ✓      |    ✓    |     ?      |      ?      |     ◐     |      ?       |      ✓      |      ✓       |         ✓          |
-| Competitor share of voice                |          ✓          |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ✓       |         ✓          |
-| Source analysis (Reddit, YouTube)        |          ✓          |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ◐       |         ✓          |
-| Sentiment                                |          ✓          |      ✓      |    ✓    |     ✓      |      ✓      |     ◐     |      ✓       |      ✓      |      ✓       |         ✓          |
-| AI crawler / traffic analytics           |          ✗          |      ✓      |    ✓    |     ◐      |      ✓      |     ?     |      ✓       |      ◐      |      ◐       |         ✓          |
-| Fix recommendations                      |          ✓          |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ◐      |      ✓       |         ?          |
-| Fix tracking with a before/after verdict |          ✓          |      ◐      |    ◐    |     ?      |      ?      |     ?     |      ?       |      ?      |      ?       |         ?          |
-| Client reports / white-label             |          ✓          |      ◐      |    ◐    |     ✓      |      ◐      |     ?     |      ◐       |      ✓      |      ◐       |         ◐          |
-| Scheduled email reports                  |          ✓          |      ◐      |    ?    |     ?      |      ?      |     ?     |      ✓       |      ?      |      ?       |         ◐          |
-| Export (CSV, PDF, HTML)                  |   HTML, PDF, CSV    |      ◐      |   CSV   |  CSV, PDF  | CSV, Excel  |   ◐ CSV   |   PDF, CSV   |      ◐      |     CSV      |         ◐          |
-| API                                      |          ✗          |      ◐      |    ◐    |     ◐      |      ◐      |     ◐     |      ✓       |      ✓      |      ?       |         ?          |
-| MCP server                               |          ✗          |      ✓      |    ✓    |     ◐      |      ◐      |     ✓     |      ✓       |      ✓      |      ?       |         ?          |
-
-¹ Semrush's AI Visibility Toolkit. ² Ahrefs Brand Radar is an add-on to a paid Ahrefs plan; custom prompts alone start at $50 a month. Prices are monthly list prices in USD on 2026-11-02 and change often.
-
-### Where others lead (honestly)
-
-- **A hosted dashboard for a team.** The others run in a browser, with shared logins, client guest access and live dashboards. CiteFox runs on one computer and shares results as files and emails.
-- **More engines.** Promptwatch, Scrunch, AthenaHQ and the Enterprise plans of Profound and Peec AI track more engines than CiteFox's six, such as Grok, DeepSeek, Meta AI or Mistral.
-- **Prompt volume and large datasets.** Ahrefs Brand Radar researches any brand across 525 million+ prompts; Profound, Peec AI, Promptwatch and Semrush estimate how often people ask a prompt. CiteFox measures only the questions you track.
-- **AI crawler and AI traffic analytics.** Most others read server or CDN logs and AI referrals. CiteFox does not read traffic.
-- **API, MCP and enterprise features.** Most others offer an API, an MCP server, SSO and dedicated support. CiteFox has none of these.
-- **Content writing.** Promptwatch, Searchable and AthenaHQ have agents that write or refresh pages. CiteFox writes the brief; a person writes the page.
-
-### Who should use what
-
-- **Page-level answers, fix verdicts and branded client reports, with no subscription and the data on your own computer:** CiteFox.
-- **Many engines, prompt volumes, crawler logs, SSO and a dedicated team, for a large brand:** Profound, or an Enterprise plan of Peec AI or Scrunch.
-- **A hosted, self-serve tracker with daily runs and a low entry price:** Otterly.AI or Peec AI.
-- **An agent that also writes and publishes content:** Promptwatch or Searchable.
-- **AI visibility beside your keyword and backlink data:** the Semrush or Ahrefs add-on you already pay for.
-- **Both:** CiteFox sits beside any of these. A hosted tool can watch the whole category daily while CiteFox checks which of your pages is cited and whether each fix worked.
-
-## Roadmap
-
-Planned next, in no fixed order (plans, not promises). Follow [Releases][releases] and the [changelog](CHANGELOG.md) for what has shipped.
-
-- Signed and notarized builds for macOS and Windows, so the first-start warning goes away
-- Automatic updates inside the app
-- More report sections and downloads, matched to what agencies send their clients
-- Better first-run setup: reading a sitemap during setup, and clearer help on every screen
-
-Ideas are welcome in [Issues][issues].
-
-## Contributing
-
-Issues, ideas and pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) for the code layout, tests and the pull request checklist, and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Security problems go to [SECURITY.md](SECURITY.md), not to Issues. For help using CiteFox, see [SUPPORT.md](SUPPORT.md).
+If CiteFox helps you, a ⭐ on GitHub helps other marketers find it.
 
 ## Build from source
 
@@ -289,9 +445,19 @@ npm ci
 sh scripts/try.sh     # opens CiteFox with live reload, on its own "CiteFox Dev" data folder
 ```
 
-`npm run dev` does the same with the default data folder. `npm run build` compiles the app, `npm run dist` builds installers for your computer, and `npm run test:unit` runs the tests (they are offline and need no keys). Setup in a source build is the same as in an installed one; [Docs/AI-PROVIDERS.md](Docs/AI-PROVIDERS.md) explains how the AI connections are used and locked down.
+`npm run dev` does the same with the default data folder. `npm run build` compiles the app, `npm run dist` builds installers for your computer, and `npm run test:unit` runs the tests (they are offline and need no keys). Setup in a source build is the same as in an installed one.
 
 [CONTRIBUTING.md](CONTRIBUTING.md) has every script, the e2e suite in Docker, running a second copy, testing installed builds, packaging and the code layout. Releases are described in [Docs/RELEASING.md](Docs/RELEASING.md). The public site in `site/` is built by `npm run site:build` from `Docs/help/` (see [Docs/PUBLISHING.md](Docs/PUBLISHING.md)).
+
+### Services you connect
+
+All of these use your own account and key. [Docs/AI-PROVIDERS.md](Docs/AI-PROVIDERS.md) explains how each AI connection is used and locked down.
+
+| Kind                     | Services                                                                                                                     |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| Search data API (checks) | [cloro](https://cloro.dev) for all six engines (the default), or [SerpApi](https://serpapi.com) for Google AI Overviews only |
+| AI model (CiteFox AI)    | An Anthropic API key, or the Claude Code or OpenAI Codex program already signed in on your computer under your own plan      |
+| Page reading (optional)  | [Jina AI Reader](https://jina.ai), an optional key CiteFox can use to read your pages                                        |
 
 ### Terms of the services you connect
 
@@ -314,12 +480,16 @@ Bundled fonts (Noto, Inter, Inter Tight, JetBrains Mono) are under the SIL Open 
 
 ## Contact
 
-Questions, ideas or sponsorship: **getcitifox@gmail.com**. Bugs and feature requests: [GitHub Issues][issues]. Questions and show-and-tell: [GitHub Discussions][discussions]. CiteFox is made by [Space-O Technologies](https://www.spaceo.ca).
+Questions, early access to the Server edition or the managed service, or sponsorship: **getcitifox@gmail.com**. Bugs and feature requests: [GitHub Issues][issues]. Questions and show-and-tell: [GitHub Discussions][discussions]. CiteFox is made by [Space-O Technologies](https://www.spaceo.ca).
+
+<sub>Affiliate disclosure: some links in CiteFox and on this site are affiliate or partner links. If you sign up through them we may earn a commission, at no extra cost to you. It helps keep CiteFox free.</sub>
 
 <!-- Links. The public repository (spcaeo/citefox) and the site address live only here;
      change them in this block (and in scripts/site/config.mjs) if either moves. -->
 
 [site]: https://spcaeo.github.io/citefox/
+[demo]: https://spcaeo.github.io/citefox/demo/
+[samples]: https://spcaeo.github.io/citefox/samples/
 [docs]: https://spcaeo.github.io/citefox/docs/
 [glossary]: https://spcaeo.github.io/citefox/glossary/
 [doc-getting-started]: https://spcaeo.github.io/citefox/docs/getting-started/
@@ -334,10 +504,12 @@ Questions, ideas or sponsorship: **getcitifox@gmail.com**. Bugs and feature requ
 [releases]: https://github.com/spcaeo/citefox/releases
 [issues]: https://github.com/spcaeo/citefox/issues
 [discussions]: https://github.com/spcaeo/citefox/discussions
+[stargazers]: https://github.com/spcaeo/citefox/stargazers
 [badge-version]: https://img.shields.io/github/v/release/spcaeo/citefox?label=version&color=b23c0a
 [badge-downloads]: https://img.shields.io/github/downloads/spcaeo/citefox/total?color=2a221b
 [badge-license]: https://img.shields.io/badge/license-source--available-6f2a10
 [badge-platforms]: https://img.shields.io/badge/platforms-macOS%20%7C%20Windows%20%7C%20Linux-4f3f31
+[badge-stars]: https://img.shields.io/github/stars/spcaeo/citefox?style=flat&color=b23c0a
 [button-mac]: https://img.shields.io/badge/Download-macOS-111111?style=for-the-badge&logo=apple
 [button-win]: https://img.shields.io/badge/Download-Windows-0b5cad?style=for-the-badge
 [button-linux]: https://img.shields.io/badge/Download-Linux-b23c0a?style=for-the-badge&logo=linux&logoColor=white

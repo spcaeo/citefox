@@ -89,29 +89,105 @@ export const REPORTS = [
   {
     name: 'Visibility report',
     doc: 'reports-visibility',
-    text: 'Where you stand at one check, and who wins instead.'
+    text: 'Where you stand: the opportunity, competitors and share of voice, sources, reputation and sentiment, answer shape.',
+    who: 'Monthly client or leadership updates'
   },
-  { name: 'What changed', doc: 'reports-changed', text: 'Any two checks compared, verdict first.' },
+  {
+    name: 'What changed',
+    doc: 'reports-changed',
+    text: 'Any two checks compared, verdict first: citations and brand named, then what moved up, down, in and out.',
+    who: 'Check-ins after each re-check'
+  },
   {
     name: 'Impact review',
     doc: 'reports-impact',
-    text: 'What your published pages and fixes did, before and after.'
+    text: 'Did our fixes work? Published pages before and after, a page-by-page story, and what the client needs to do.',
+    who: 'Proving the value of the work'
   },
   {
     name: 'Pitch / audit',
     doc: 'reports-pitch',
-    text: 'A short audit from one check, to win a client or brief your boss.'
+    text: 'A one-page audit from a single check: the gap, who wins instead, and what we’d fix first.',
+    who: 'Winning a new client, briefing a boss'
   },
   {
     name: 'Content plan',
     doc: 'reports-content',
-    text: 'The pages to write or fix first, ready for a writer.'
+    text: 'The pages to write or fix, by topic, each with a brief you can copy to a writer.',
+    who: 'Writers and content leads'
   },
   {
     name: 'Head-to-head',
     doc: 'reports-rival',
-    text: 'You against one competitor: where they get cited and you do not.'
+    text: 'You against one competitor: where they are cited and you are not.',
+    who: 'Answering “why them and not us?”'
   }
+]
+
+/** What every report has, under the report cards. */
+export const REPORT_EXTRAS = [
+  'Offline HTML, PDF and CSV downloads, with the same numbers as the app',
+  'Scheduled emails to clients',
+  'Branding for an agency (“Prepared for” each client), in-house, or plain',
+  'Every number drills down to the questions behind it, across all six engines or one at a time',
+  'Open the Reports home by goal (“Did our fixes work?”) or by report'
+]
+
+/** "Bring your own API keys": the two kinds of service, never named here. */
+export const KEYS = [
+  {
+    title: 'A search data API',
+    text: 'Asks each AI engine your buyer questions and saves every answer and source. Pay-as-you-go credits; free tiers are enough to try it.'
+  },
+  {
+    title: 'Claude Code or Codex, on the plan you already have',
+    text: 'Reads your site, writes buyer questions, finds competitors and writes fix briefs. It runs on your existing Claude Code or Codex plan, so there is no extra AI cost. A pay-as-you-go AI model API key works too.'
+  }
+]
+
+export const KEYS_NOTES = [
+  'Before every check CiteFox shows the credits it will use; setup and Settings show the price in US dollars per check and per month, and checks stop at a monthly budget you set.',
+  'At the list price of the default search plan, ten buyer questions on all six engines come to about 30 US cents. Your plan sets your price; the app shows the real number.',
+  'Setup links to each sign-up page and tests every key. Keys are stored in your operating system’s keychain.'
+]
+
+export const PRIVATE = [
+  'Everything is stored on your computer, in a local database (SQLite).',
+  'There is no CiteFox cloud: your SEO data, prompts, results and keys stay with you.',
+  'Keys live in the OS keychain: macOS Keychain, Windows Credential Manager or the Linux Secret Service.',
+  'Results and reports open offline; only new checks and AI help need the internet.'
+]
+
+export const EDITIONS = [
+  {
+    name: 'Desktop',
+    status: 'Free, available now',
+    text: 'Runs on your Mac, Windows or Linux computer. Everything stays on that computer.'
+  },
+  {
+    name: 'Server (self-hosted)',
+    status: 'Coming soon',
+    text: 'Run CiteFox on your own server and share it with your team or agency, with the data on hardware you control.'
+  },
+  {
+    name: 'Subscription (managed)',
+    status: 'Coming soon',
+    text: 'Done-for-you optimization: we run the checks and do the work as a service.'
+  },
+  {
+    name: 'MCP server',
+    status: 'Coming soon',
+    text: 'Let AI assistants and agents query your CiteFox data, with the data still on your side.'
+  }
+]
+
+export const CONTROL = [
+  'Your data: results stay on your computer, nothing held hostage',
+  'Your keys and costs: pay the data services directly, with a budget cap',
+  'No per-seat SaaS fees, however many projects or clients you track',
+  'No vendor lock-in: export everything as HTML, PDF or CSV',
+  'Source-available: see exactly what each number means',
+  'Client data never sits in someone else’s cloud'
 ]
 
 export const AUDIENCES = [
@@ -129,12 +205,32 @@ export const AUDIENCES = [
   }
 ]
 
+/** "Why teams pick CiteFox": short, true differentiators. */
 export const DIFFERENT = [
-  'A desktop app: your projects, answers and reports stay on your computer, not in someone else’s cloud.',
-  'Free to download and use; checks run on your own keys, and CiteFox shows the cost before every check.',
-  'Source-available: anyone can read the code and see exactly what it does.',
-  'Page-level answers: which of your pages is cited, and whether it is the page you want cited.',
-  'A full loop: buyer questions, checks, fix briefs, 14-day verdicts and client reports in one tool.'
+  {
+    title: 'Free and local',
+    text: 'A free desktop app. Your data on your computer, your own keys, the cost shown before every check.'
+  },
+  {
+    title: 'The right page, not just the domain',
+    text: 'Set the page that should be cited for each question; CiteFox tells you if that page, another of yours, your brand without a link, or someone else was cited.'
+  },
+  {
+    title: 'Fixes with a verdict',
+    text: 'Log a change and CiteFox re-checks for 14 days, then says whether it worked, made no change or got worse.'
+  },
+  {
+    title: 'Six client-ready reports',
+    text: 'Visibility, What changed, Impact review, Pitch / audit, Content plan and Head-to-head, rebuilt after every check.'
+  },
+  {
+    title: 'Branded for agencies',
+    text: 'Your agency’s name and logo with “Prepared for” each client, or your company’s, or none.'
+  },
+  {
+    title: 'Every number drills down',
+    text: 'Click any number, in the app or a report, to see the exact questions and answers behind it.'
+  }
 ]
 
 export const GEO_VS_SEO = [
@@ -151,7 +247,11 @@ export const FAQ = [
   },
   {
     q: 'Is CiteFox free?',
-    a: 'Yes. The app is free to download and use. Checks use search credits from your own account with a search data service; free plans are enough to try it. CiteFox shows what a check will use before it runs and stops at a monthly budget you set.'
+    a: 'Yes. The app is free to download and use. You bring your own API keys: checks use pay-as-you-go credits from your own account with a search data service, and free tiers are enough to try it. CiteFox shows what a check will cost before it runs and stops at a monthly budget you set.'
+  },
+  {
+    q: 'What API keys do I need?',
+    a: 'A search data API, which asks the AI engines your questions (pay-as-you-go, a few cents per question), and for the AI work either Claude Code or Codex on the plan you already pay for (no extra cost) or a pay-as-you-go AI model API key. Setup links to each sign-up page and tests every key.'
   },
   {
     q: 'How do I check if Google AI Overviews cite my website?',
@@ -167,7 +267,15 @@ export const FAQ = [
   },
   {
     q: 'Does CiteFox send my data to a server?',
-    a: 'Your projects, questions, AI answers and reports stay on your computer, and your keys stay in your system keychain. CiteFox talks only to the services you connect and the pages you ask it to read. It sends its maker, Space-O Technologies, just two things: the details you give in the Join step, and an anonymous daily version ping.'
+    a: 'No. There is no CiteFox cloud. Your projects, questions, AI answers and reports stay in a local database on your computer, and your keys stay in your system keychain. CiteFox talks only to the services you connect and the pages you ask it to read. Its maker, Space-O Technologies, receives just two things: the details you give in the Join step, and an anonymous daily version ping.'
+  },
+  {
+    q: 'Is CiteFox a free alternative to Profound or Peec AI?',
+    a: 'For many agencies and marketers, yes. CiteFox is a free desktop app that tracks six AI engines (Google AI Overviews, AI Mode, ChatGPT, Perplexity, Gemini and Copilot), checks whether the right page is cited, gives each fix a 14-day verdict and builds branded client reports, with your data on your own computer. Profound and Peec AI are hosted services that lead on team dashboards, more engines, prompt volumes, AI crawler analytics and APIs. Many teams use CiteFox beside one of them. CiteFox is not affiliated with any of these companies.'
+  },
+  {
+    q: 'Is there a server or team version?',
+    a: 'Not yet. A self-hosted server edition, so a team or agency can run CiteFox on its own server and share it, is coming soon, and so are a subscription for done-for-you optimization and an MCP server so AI assistants can query your CiteFox data. Email getcitifox@gmail.com for early access.'
   },
   {
     q: 'Is CiteFox open source?',
@@ -179,7 +287,7 @@ export const FAQ = [
   },
   {
     q: 'What do I need to run CiteFox?',
-    a: 'A Mac, Windows or Linux computer, a key for a search data service (CiteFox links to sign-up pages with free plans and tests the key), and an AI assistant for CiteFox AI: one you already use on your computer under your own plan, or a paste-in mode with your own ChatGPT.'
+    a: 'A Mac, Windows or Linux computer, a key for a search data API (CiteFox links to sign-up pages with free tiers and tests the key), and an AI model: your own AI model API key, or an AI assistant you already use on your computer under your own plan.'
   },
   {
     q: 'How does CiteFox compare with Profound, Peec AI and Otterly.AI?',

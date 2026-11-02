@@ -2,19 +2,28 @@
 
 ## Unreleased
 
-### Added
+The first public release of CiteFox: a free, local AI visibility tracker. Bring your own API keys; your data stays on your computer.
 
-- **A public website with docs:** the download page now explains what CiteFox does (features, supported AI engines, reports, FAQ), and every help topic has its own page under Docs, plus a GEO and AEO glossary. Built by `npm run site:build`, with search and share tags on every page.
-- **Join CiteFox, the daily version ping and the update banner (owner, 2026-11-02):** a short Join step comes before setup (name, work email, company, who the reports are for, and two separate unticked boxes: Product updates, Occasional news and offers). Offline still lets you in; the details are kept in `account.json` in the data folder and sent later. Settings › Data & about gets "Your CiteFox account" to edit them. An anonymous ping (install id, version, build, OS, arch) goes at most once a day. Both go to the owner's free Google Apps Script + Sheet (`server/apps-script/Code.gs`, setup in `server/README.md`), which validates, rate-limits, and sends the update emails with an unsubscribe link; no mail credentials are in the app. A build without `CITEFOX_REGISTER_URL` sends nothing and shows no Join step. A packaged app reads GitHub Releases about twice a day; a newer version shows "CiteFox vX is out · What's new · Download" (the installer for this OS and arch), a dot on the footer release line, and a result under ⚙ › Check for updates. Download only, Windows included (Docs/RELEASING.md "Updates"). What is sent: `Docs/PRIVACY.md`. New channels `account:get`, `account:save`, `updates:get`, `updates:check`, `updates:dismiss`.
-- **Downloads for every computer:** one Mac app for every Mac (plus smaller Apple chip and Intel versions), a Windows installer that needs no admin and adds Start menu and desktop shortcuts, a portable Windows version, and Linux AppImage and deb packages. Each release lists a SHA-256 checksum for every file, and the download page picks the right file for your computer.
+### New
 
-### Changed
+- **Six client-ready reports:** Visibility, What changed, Impact review, Pitch / audit, Content plan and Head-to-head. Open them by goal or by report; download as offline HTML, PDF or CSV; email them on a schedule. Every number opens the questions behind it.
+- **Report branding** for agencies, in-house teams or solo use: your logo and name on every download.
+- **Right page cited:** pick a Primary page (plus Also OK pages) for each question and see whether AI answers cite the page you want.
+- **Fix tracking:** log a fix and CiteFox shows what it did, with before and after.
+- **Reputation and sources:** what AI answers say about your brand, wrong claims to correct, and the Reddit, YouTube and LinkedIn pages they lean on.
+- **Help everywhere:** a short guide on every screen, 21 help pages, Ctrl+K to find anything, and Ask CiteFox for how-to questions.
+- **Updates:** CiteFox tells you when a new version is out.
+- **Downloads for every computer:** one Mac app for every Mac, a Windows installer (no admin needed) and a portable Windows app, and Linux AppImage and deb.
 
-- **Checks run several questions at once (owner, 2026-10-29):** a 12-question check took over ten minutes because every question waited for the one before, and inside a question ChatGPT (through cloro, 22 to 108 s) waited for the Google AI Overview. Now three questions of a market run side by side (`CHECK_QUESTIONS_AT_ONCE`), and each question's Google search and answer engines run together. Every call to a provider, from every running job, shares one limit of four in flight (`PROVIDER_CALLS_AT_ONCE`; neither provider publishes a limit we rely on), and a job's first call to each provider goes alone so an empty, rate-limited or switched-off key is found once. The AI Overview is stored and pushed to the screens (live row, citation celebration) the moment it lands, without waiting for ChatGPT; a citation celebrates once. Stop and the project cap start nothing new and keep every answer that landed; key room counts calls in flight and spread evenly moves its cursor when a key is picked. The check window says "6 of 12 done · searching 3" while several run. A replay of the owner's check (Google 20 s, ChatGPT 40 s per question) takes 220 s instead of 720 s; Google alone 100 s instead of 240 s. New code is in `engine/checks/market-questions.ts` and `check-pace.ts`.
+### Improved
 
-- **Setup step 3 shows what the read finds as it arrives (owner, 2026-10-29):** the pages read, what you sell (each product listed), one line per product for its competitor search (waiting its turn, searching with its time, how many found, or "didn't finish" with Try again for that product only), a growing "Competitors so far" list next to the rivals the site names, and the buyers and what sends them looking. Buyers and triggers start as soon as the site read is in, instead of after every search. The step never waits on one search: it moves on when every search has finished or failed, or 150 s after the searches start; Continue works as soon as only searches are left. Searches still running fill in later, and step 6 shows any that are still running or did not finish. New `projects:searchProductCompetitors` (Try again) and `found` on `projects:fillProgress`.
+- A calmer, cleaner look: one main button per area, tools as icons, search in the same place on every screen.
+- Copy and open icons on every address and question.
+- Faster checks: several questions run at once.
 
-- **Slim header (Header.dc.html):** the top bar is 48 px and spruce like the sidebar, with light breadcrumbs; the sidebar's brand row matches it and holds the collapse button. Activity and searches left are icon buttons with badges and tooltips, ✦ Ask is a small outlined button, and a ⚙ menu holds App settings, Theme, Connections and keys, searches left, setup steps, the version line (it copies the build info) and Check for updates. The build chip leaves the main top bar. Screen headers are compact (19 px title, about 64 px) and take one green `primary` and a ⋯ `more` menu (Docs/HEADER.md). Every action button is green. The FoxCue gold sponsor moves to a card at the end of every screen. The Overview screen is now called Summary.
+### Notes
+
+- These builds are not code-signed yet. On a Mac, right-click the app and choose Open the first time; on Windows, choose More info › Run anyway.
 
 ## 0.12.0 — 2026-10-23
 

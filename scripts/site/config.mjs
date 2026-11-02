@@ -27,3 +27,14 @@ export const TAGLINE = 'Free AI visibility tracker for Google AI Overviews, Chat
 function withSlash(url) {
   return url.endsWith('/') ? url : `${url}/`
 }
+
+/** The browser demo and the sample reports, built by their own scripts under SITE_URL. */
+export const DEMO_URL = `${SITE_URL}demo/`
+export const SAMPLES_URL = `${SITE_URL}samples/`
+
+/**
+ * The affiliate disclosure: small type in every site footer and the README's last section,
+ * word for word (build-site.test.mjs checks both).
+ */
+export const AFFILIATE_DISCLOSURE =
+  'Affiliate disclosure: some links in CiteFox and on this site are affiliate or partner links. If you sign up through them we may earn a commission, at no extra cost to you. It helps keep CiteFox free.'

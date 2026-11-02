@@ -14,6 +14,19 @@ Every AI feature works with any of them. They share one interface
 JSON reply checked against a schema, optional web search, a timeout, and
 plain-English errors (`ProviderError` codes).
 
+## The search data service (checks)
+
+Checks are not AI calls: they go to a search data API on the user's own key.
+
+| Service | Engines | Price the app uses (`src/shared/domain/engines.ts`) |
+| ------- | ------- | --------------------------------------------------- |
+| cloro (default) | All six | Lite: $30 for 37,500 credits; 6 or 7 credits per question per engine |
+| SerpApi | Google AI Overviews only | $0 (250 searches) to $275 (30,000 searches) a month; 1 search per question, sometimes 2 |
+
+So ten questions on all six engines are about 390 cloro credits, about $0.31 on Lite. The app
+shows credits and dollars before each check (Settings › Track, setup step 7, Check now), records
+each check's cost in history, and stops at the monthly budget.
+
 ## How to switch
 
 - **Onboarding, step 2 ("AI")**: pick Claude Code or Codex. CiteFox saves the

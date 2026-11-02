@@ -32,8 +32,8 @@
   <text x="80" y="150.0" font-size="84.0" font-weight="800" fill="#f3e9d8" letter-spacing="-1.5">CiteFox</text>
   <text x="80" y="220.0" font-size="44.0" font-weight="700" fill="#f0915f">Free AI visibility tracker</text>
   <text x="80" y="280.0" font-size="28.0" font-weight="500" fill="#dccdb6">Is your website cited in AI answers?</text>
-  <text x="80" y="320.0" font-size="28.0" font-weight="500" fill="#dccdb6">Track it, fix it, report it. GEO and AEO for agencies.</text>
-  <text x="80" y="484.0" font-size="19.0" font-weight="600" fill="#c4b49c">Free desktop app · Mac, Windows, Linux · Source-available</text>
+  <text x="80" y="320.0" font-size="28.0" font-weight="500" fill="#dccdb6">Track it, fix it, report it. Six client-ready reports.</text>
+  <text x="80" y="484.0" font-size="19.0" font-weight="600" fill="#c4b49c">Free desktop app · Your own API keys · Your data stays on your computer</text>
   <g transform="translate(80.0 506.0)"><rect width="216.4" height="40.0" rx="20.0" fill="#3a2f25" stroke="#5a4a3a"/><text x="108.2" y="26.0" text-anchor="middle" font-size="17.0" font-weight="600" fill="#f3e9d8">Google AI Overviews</text></g>
   <g transform="translate(306.4 506.0)"><rect width="101.2" height="40.0" rx="20.0" fill="#3a2f25" stroke="#5a4a3a"/><text x="50.6" y="26.0" text-anchor="middle" font-size="17.0" font-weight="600" fill="#f3e9d8">ChatGPT</text></g>
   <g transform="translate(417.6 506.0)"><rect width="130.0" height="40.0" rx="20.0" fill="#3a2f25" stroke="#5a4a3a"/><text x="65.0" y="26.0" text-anchor="middle" font-size="17.0" font-weight="600" fill="#f3e9d8">Perplexity</text></g>

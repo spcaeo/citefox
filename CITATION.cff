@@ -6,7 +6,9 @@ abstract: >-
   CiteFox is a free, source-available desktop app that tracks whether Google AI
   Overviews, Google AI Mode, ChatGPT, Perplexity, Gemini and Copilot cite a
   website for buyer questions, shows which page is cited and who is cited
-  instead, writes fix briefs, tracks fixes over time and produces reports.
+  instead, writes fix briefs, tracks fixes over time and produces six
+  client-ready reports. It runs on the user's own API keys and keeps all data
+  in a local database on the user's computer.
 authors:
   - name: Space-O Technologies
     website: 'https://www.spaceo.ca'
@@ -24,3 +26,4 @@ keywords:
   - AI Overviews
   - AI search visibility
   - AI citation tracking
+  - local-first

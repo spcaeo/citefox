@@ -64,8 +64,8 @@ export function socialSvg(width, height) {
   <text x="${pad}" y="${(pad + 70 * s).toFixed(1)}" font-size="${(84 * s).toFixed(1)}" font-weight="800" fill="#f3e9d8" letter-spacing="-1.5">CiteFox</text>
   <text x="${pad}" y="${(pad + 140 * s).toFixed(1)}" font-size="${(44 * s).toFixed(1)}" font-weight="700" fill="#f0915f">Free AI visibility tracker</text>
   <text x="${pad}" y="${(pad + 200 * s).toFixed(1)}" font-size="${(28 * s).toFixed(1)}" font-weight="500" fill="#dccdb6">Is your website cited in AI answers?</text>
-  <text x="${pad}" y="${(pad + 240 * s).toFixed(1)}" font-size="${(28 * s).toFixed(1)}" font-weight="500" fill="#dccdb6">Track it, fix it, report it. GEO and AEO for agencies.</text>
-  <text x="${pad}" y="${(chipY - 22 * s).toFixed(1)}" font-size="${(19 * s).toFixed(1)}" font-weight="600" fill="#c4b49c">Free desktop app · Mac, Windows, Linux · Source-available</text>
+  <text x="${pad}" y="${(pad + 240 * s).toFixed(1)}" font-size="${(28 * s).toFixed(1)}" font-weight="500" fill="#dccdb6">Track it, fix it, report it. Six client-ready reports.</text>
+  <text x="${pad}" y="${(chipY - 22 * s).toFixed(1)}" font-size="${(19 * s).toFixed(1)}" font-weight="600" fill="#c4b49c">Free desktop app · Your own API keys · Your data stays on your computer</text>
   ${chips}
   </g>
 </svg>

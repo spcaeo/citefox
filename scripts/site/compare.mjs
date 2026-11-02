@@ -2,6 +2,7 @@
 // "How CiteFox compares" section so the two never disagree. The full matrix,
 // with a source for every cell, stays in Docs/COMPARISON.md on GitHub.
 import { REPO_URL } from './config.mjs'
+import { DIFFERENT } from './content.mjs'
 import { absolute, breadcrumbData, breadcrumbs, faqData, page } from './layout.mjs'
 import { escapeHtml as e, inline, renderMarkdown } from './markdown.mjs'
 
@@ -15,7 +16,7 @@ export const COMPARE_FAQ = [
   },
   {
     q: 'Is CiteFox a free alternative to Peec AI or Otterly.AI?',
-    a: 'CiteFox is free to download and use; checks run on your own API keys or credits, with the cost shown before each check. Peec AI starts at $95 a month and Otterly.AI at $29 a month (list prices on 2026-11-02), both as hosted dashboards with daily runs.'
+    a: 'CiteFox is free to download and use; checks run on your own API keys or credits, with the cost shown before each check, and your data stays on your computer. Peec AI starts at $95 a month and Otterly.AI at $29 a month (list prices on 2026-11-02), both as hosted dashboards with daily runs, which CiteFox does not have today.'
   },
   {
     q: 'Which AI visibility tool tracks the most engines?',
@@ -47,9 +48,11 @@ const cells = (line) =>
 function table(lines, link) {
   const [head, , ...rows] = lines.map(cells)
   const th = head.map((c) => `<th scope="col">${inline(c, link) || 'Feature'}</th>`)
-  const body = rows.map(
-    ([label, ...rest]) =>
-      `<tr><th scope="row">${inline(label, link)}</th>${rest.map((c) => `<td>${inline(c, link)}</td>`).join('')}</tr>`
+  // A row whose other cells are all empty is a group heading ("Pricing & control").
+  const body = rows.map(([label, ...rest]) =>
+    rest.every((c) => c === '')
+      ? `<tr class="group"><th scope="colgroup" colspan="${rest.length + 1}">${inline(label, link)}</th></tr>`
+      : `<tr><th scope="row">${inline(label, link)}</th>${rest.map((c) => `<td>${inline(c, link)}</td>`).join('')}</tr>`
   )
   return `<div class="table-wrap"><table class="compare-table"><thead><tr>${th.join('')}</tr></thead><tbody>${body.join('')}</tbody></table></div>`
 }
@@ -79,7 +82,13 @@ export function comparePage({ readme }) {
   const body = `    <main id="main" class="wrap doc compare">
       ${breadcrumbs(trail, root)}
       <h1>CiteFox vs Profound, Peec AI, Otterly.AI and other AI visibility tools</h1>
-      <p class="lead left">An honest, sourced comparison of the free CiteFox desktop app with the best-known GEO and AEO tracking tools: what each one tracks, what it costs to start, and where each one leads.</p>
+      <p class="lead left">Looking for a free, local alternative to Profound, Peec AI, Otterly.AI or Semrush’s AI toolkit? Here is an honest, sourced comparison: what each tool tracks, what it costs to start, and where each one leads. CiteFox is not affiliated with any of these companies.</p>
+      <section aria-labelledby="why-title">
+        <h2 id="why-title">Why teams pick CiteFox</h2>
+        <ul class="cards three">
+${DIFFERENT.map((x) => `          <li class="mini"><h3>${e(x.title)}</h3><p>${e(x.text)}</p></li>`).join('\n')}
+        </ul>
+      </section>
 ${section
   .split('\n')
   .map((l) => `      ${l}`)
@@ -103,9 +112,9 @@ ${COMPARE_FAQ.map((x) => `        <div class="qa"><h3>${e(x.q)}</h3><p>${e(x.a)}
     html: page({
       path,
       root,
-      title: 'CiteFox vs Profound, Peec AI, Otterly.AI: AI Visibility Tools',
+      title: 'Free Alternative to Profound, Peec AI, Otterly.AI | CiteFox',
       description:
-        'CiteFox compared with Profound, Peec AI, Otterly.AI, Scrunch, AthenaHQ, Searchable, Promptwatch, Semrush and Ahrefs Brand Radar, from each vendor’s own pages.',
+        'A free, local alternative to Profound, Peec AI and Otterly.AI, compared honestly with them, Scrunch, AthenaHQ, Semrush and Ahrefs, from each vendor’s own pages.',
       body,
       data: [
         breadcrumbData(trail),

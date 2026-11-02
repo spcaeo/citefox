@@ -23,6 +23,14 @@ product.
 - Suggest that Space-O Technologies made, checked or supports your version.
 - Sell CiteFox, or a product built on it, under any name.
 
+## Other companies' names
+
+CiteFox's README, website and comparison mention other products (for example Profound, Peec AI,
+Otterly.AI, Semrush and Ahrefs) and the AI engines it tracks. Those names are trademarks of their
+respective owners and are used only for reference and comparison. CiteFox is not associated with,
+affiliated with or endorsed by them. We admire these tools and happily recommend them where they fit
+better.
+
 ## Sponsors and partners
 
 The sponsor and partner names and logos shown in CiteFox (for example FoxCue and

@@ -850,3 +850,85 @@ tbody th {
     white-space: normal;
   }
 }
+
+/* Home: "In short" pills, keys and privacy, editions */
+.pills {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.pills li {
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 14px;
+  color: var(--ink-2);
+  background: var(--surface);
+}
+
+.split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.split .ticks,
+.mini .ticks {
+  columns: 1;
+  margin-top: 12px;
+}
+
+.pairs {
+  margin: 0;
+}
+
+.pairs dt {
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.pairs dd {
+  margin: 2px 0 0;
+  color: var(--ink-2);
+}
+
+.cards.editions {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 16px;
+}
+
+.mini p.status {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+}
+
+.mini p.status.now {
+  color: var(--ok);
+}
+
+.compare-table tr.group th {
+  background: var(--inset);
+  color: var(--ink);
+  font-weight: 700;
+  text-align: left;
+}
+
+@media (max-width: 720px) {
+  .split,
+  .cards.editions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.footer .disclosure {
+  margin-top: 4px;
+  padding-bottom: 16px;
+}
