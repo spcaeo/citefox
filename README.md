@@ -15,7 +15,9 @@
 [![Download for Windows][button-win]][site]
 [![Download for Linux][button-linux]][site]
 
-<img src="media/demo.gif" alt="CiteFox demo: adding a website, getting buyer questions and seeing which AI answers cite your pages" width="900">
+<a href="media/demo.mp4"><img src="media/demo.gif" alt="CiteFox product video: see how often AI answers cite you and the trend, then which page AI cites and where it ranks among the sources" width="900"></a>
+
+[▶ Watch the 75-second video with sound](media/demo.mp4)
 
 [Website][site] · [Live demo][demo] · [Sample reports][samples] · [Docs][docs] · [Compare](#how-citefox-compares) · [FAQ](#faq) · [Releases][releases]
 

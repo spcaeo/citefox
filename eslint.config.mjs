@@ -9,13 +9,17 @@ export default defineConfig(
   {
     ignores: [
       '**/node_modules/**',
+      '.public-export/**',
+      '.claude/**',
       '**/out/**',
       '**/dist/**',
       '**/release/**',
       '**/coverage/**',
       '**/playwright-report/**',
       '**/test-results/**',
-      'Docs/**'
+      'Docs/**',
+      // Revideo JSX (not React), typechecked with its own tsconfig by make-video.mjs
+      'scripts/media/video/src/**'
     ]
   },
   tseslint.configs.recommended,

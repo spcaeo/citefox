@@ -12,6 +12,7 @@
     "scripts/**/*",
     "tests/**/*"
   ],
+  "exclude": ["scripts/media/video/**/*"],
   "compilerOptions": {
     "composite": true,
     "strict": true,

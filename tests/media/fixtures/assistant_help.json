@@ -1,0 +1,8 @@
+{
+  "text": "What changed compares two checks side by side. With only one check there is nothing to compare yet, so it stays empty until your next scheduled check finishes. Press Check now if you want the second check sooner.",
+  "sources": ["H1"],
+  "unknowns": [],
+  "draft": null,
+  "questions": [],
+  "actions": []
+}

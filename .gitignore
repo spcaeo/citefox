@@ -88,3 +88,8 @@ mockups/
 
 # Screenshots copied from docs/media by scripts/site/build-site.mjs
 site/media/
+
+# Product video: footage and assets copied in by scripts/media/video/prepare.sh
+scripts/media/video/public/
+scripts/media/video/src/footage.json
+scripts/media/video/output/

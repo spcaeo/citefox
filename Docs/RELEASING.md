@@ -179,18 +179,33 @@ Preview locally: `npx serve site` (or any static server), then open the printed 
 
 ## Refresh screenshots and demo video
 
-The README and the download page use the files in `media/` (lowercase, at the repo root, not `Docs/`): `hero.png`, `summary.png`, `question.png`, `reports-home.png`, `report-visibility.png`, `competitors.png`, `fixes.png`, `demo.mp4` and `demo.gif`. The site build copies them into `site/media` itself.
+The README and the download page use the files in `media/` (lowercase, at the repo root, not `Docs/`). The site build copies them into `site/media` itself.
 
-Re-record them after a UI change:
+- Screenshots: `hero.png`, `summary.png`, `question.png`, `reports-home.png`, `report-visibility.png`, `competitors.png`, `fixes.png`.
+- Product video (v2): `demo.mp4` (1920×1080, H.264 + AAC with music, under 20 MB), `demo-silent.mp4` (the site's autoplay copy), `demo.gif` (Summary and question scenes, 960 px, under 8 MB, the README hero), `demo-poster.png`, `social-clip.mp4` (1080×1080, about 26 s) and the music `demo-music.m4a`.
+
+Both need Docker and nothing else; no window opens on your screen.
 
 ```sh
-npm run media:record                 # about 2 minutes; needs Docker
-npm run media:record -- --rebuild    # rebuild the e2e image first
+npm run media:record                 # screenshots, about 2 minutes
+npm run media:video                  # the video, about 15 minutes
+npm run media:video -- --rebuild     # rebuild the e2e image first (either script)
+npm run media:video -- --process <folder with film.mp4>   # only re-encode
+uv run --with numpy python scripts/media/make-music.py    # only after a timing change
 ```
 
-`scripts/media/record-demo.mjs` runs `tests/media/demo.spec.ts` inside the e2e Docker image (`docker/e2e.Dockerfile`), so no window opens on your screen. The spec seeds the TextBolt demo project (`tests/e2e/reports-seed.ts` plus the TextBolt topic; no keys, no live calls), opens the app at 1440×900 in Sepia with the guide and tips off, takes 2× screenshots, then records a screencast tour: Summary, a topic, a question, Competitors, Fixes, Reports › By goal, the Visibility report with a drill drawer, and back to Reports, with four short captions. The script then writes the PNGs at 2400 px wide, `demo.mp4` (H.264, about 50 s, under 10 MB) and `demo.gif` (the Reports drill, 960 px, under 8 MB) into `media/`, using ffmpeg and ImageMagick on your computer when both are installed and inside the container otherwise. It removes its container; the image and cache volumes stay, as with `npm run test:e2e:docker`.
+**Screenshots.** `scripts/media/record-demo.mjs` runs `tests/media/demo.spec.ts` in the e2e Docker image (`docker/e2e.Dockerfile`, through `scripts/media/container.mjs`). The spec seeds the TextBolt demo project (`tests/e2e/reports-seed.ts` plus the TextBolt topic; no keys, no live calls), opens the app at 1440×900 in Sepia with the guide and tips off and takes 2× screenshots; the script writes them at 2400 px wide.
 
-The spec is not part of the e2e suite (it lives in `tests/media/`, with its own Playwright config) and skips itself outside Docker. To change the tour or a shot, edit `tests/media/demo.spec.ts`. Look at every file before you commit it: no drawers half open, no spinners, no provider names, no real keys or personal names. `npm run media:record -- --process <folder>` re-encodes an earlier raw run.
+**Video.** `scripts/media/make-video.mjs` does four things in one throwaway container:
+
+1. **Footage.** `tests/media/video.spec.ts` drives the same demo project frame by frame at 2× (`tests/media/film.ts`): every scroll step, pointer move and typed letter is set up, then captured, so motion is smooth at 30 fps on any machine. Clicks and key presses are real. It writes clips, the still that ends each clip, and the boxes of what to highlight (`film.json`). Ask CiteFox answers through the e2e stand-in for the AI (`tests/e2e/claude-shim.mjs`) with `tests/media/fixtures/assistant_help.json`; the work console is hidden so no engine name shows.
+2. **Composition.** Revideo (MIT, `scripts/media/video/`; not Remotion, whose license needs a paid company plan) renders the scenes headless in Chrome headless shell: the app in a laptop on a sepia ground, camera moves into the numbers, spotlights, callout chips and karaoke captions. Scene lengths are beats in `scripts/media/video/timeline.json` (100 BPM); a scene that runs over its beats fails the render. The end card's download URL is `SITE_URL` from `scripts/site/config.mjs`.
+3. **Music.** `media/demo-music.m4a` is original, made by `scripts/media/make-music.py` from sine waves and noise on the same beat grid (D major I–V–vi–IV, soft pads, plucked arpeggio, light kick, rim and shaker), normalised to -16 LUFS. Re-run it after changing `timeline.json`.
+4. **Encode.** ffmpeg (on your computer when installed, else in the container) mixes the music in and writes the five files above.
+
+Scenes and their captions live in `scripts/media/video/src/film.tsx`; every number on screen must be the app's own (callout chips quote what the screen shows). Before you commit, pull frames (`ffmpeg -ss <t> -i media/demo.mp4 -frames:v 1 f.png`) at each scene and look: no half-open drawers, no spinners, no provider names, no keys or personal names, highlights on their targets; and check the loudness with `ffmpeg -i media/demo.mp4 -af ebur128 -f null -`.
+
+Both specs live in `tests/media/` with their own Playwright config, are not part of the e2e suite, and skip themselves outside Docker. The scripts remove their container; the image and the npm/cache volumes stay, as with `npm run test:e2e:docker`.
 
 ## First release checklist
 

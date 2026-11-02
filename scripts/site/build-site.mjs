@@ -36,7 +36,9 @@ export const MEDIA = [
   'fixes.png',
   'reports-home.png',
   'report-visibility.png',
-  'demo.mp4'
+  'demo.mp4',
+  'demo-silent.mp4',
+  'demo-poster.png'
 ]
 
 /** Width and height of a PNG or GIF, from its header. */

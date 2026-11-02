@@ -1,0 +1,10 @@
+{
+  "extends": "@revideo/2d/tsconfig.project.json",
+  "compilerOptions": {
+    "strict": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true
+  },
+  "include": ["src"]
+}

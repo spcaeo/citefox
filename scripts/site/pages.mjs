@@ -66,8 +66,25 @@ export function home({ media, version }) {
       'AI visibility tracker, AI Overview tracker, GEO, AEO, LLM SEO, generative engine optimization, answer engine optimization, AI citation tracking'
   }
   const faq = FAQ.map(({ q, a }) => ({ question: q, answer: a }))
-  const video = media['demo.mp4']
-    ? `<video class="shot" controls preload="none" playsinline${media['hero.png'] ? ` poster="media/hero.png"` : ''} width="${media['hero.png']?.width || 1600}" height="${media['hero.png']?.height || 1000}"><source src="media/demo.mp4" type="video/mp4" />Your browser cannot play this video.</video>`
+  // The product video plays silently in the hero (autoplay needs muted); the link opens
+  // the same video with its music. Without it the hero shows the screenshot.
+  const poster = media['demo-poster.png']
+  const heroMedia = media['demo-silent.mp4']
+    ? `<figure class="shot hero-video"><video class="shot" autoplay muted loop playsinline preload="metadata"${poster ? ` poster="${root}media/demo-poster.png" width="${poster.width}" height="${poster.height}"` : ''} aria-label="CiteFox product video: how often AI answers cite you, which page wins, who is cited instead, what to fix, and client-ready reports"><source src="${root}media/demo-silent.mp4" type="video/mp4" /></video>${media['demo.mp4'] ? `<figcaption class="small"><a href="${root}media/demo.mp4" target="_blank" rel="noopener">▶ Watch with sound</a></figcaption>` : ''}</figure>`
+    : figure(
+        media,
+        'hero.png',
+        'CiteFox showing which buyer questions AI answers cite your site for, by engine',
+        root,
+        { eager: true }
+      )
+  const video = media['demo-silent.mp4']
+    ? figure(
+        media,
+        'hero.png',
+        'CiteFox showing which buyer questions AI answers cite your site for, by engine',
+        root
+      )
     : ''
 
   const body = `    <main id="main">
@@ -94,7 +111,7 @@ export function home({ media, version }) {
         </p>
         <p id="other-platforms" class="small"></p>
         <p class="small"><a href="${DEMO_URL}" target="_blank" rel="noopener">Try the live demo</a> · <a href="${SAMPLES_URL}" target="_blank" rel="noopener">See sample reports</a> · <a href="${REPO_URL}" target="_blank" rel="noopener">Star CiteFox on GitHub</a></p>
-        ${figure(media, 'hero.png', 'CiteFox showing which buyer questions AI answers cite your site for, by engine', root, { eager: true })}
+        ${heroMedia}
       </section>
 
       <section class="wrap" id="keys" aria-labelledby="keys-title">

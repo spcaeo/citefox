@@ -4,3 +4,33 @@ Copyright 2026 Space-O Technologies (https://www.spaceo.ca)
 The citation celebration sound (src/renderer/src/assets/sounds/cited-soft-sparkle.wav)
 is original to CiteFox, synthesised from sine waves by scripts/sounds/make_jingles.py
 with no samples, and is licensed under the CiteFox Source-Available License with the rest of the project.
+
+The product video's music (media/demo-music.m4a, also mixed into media/demo.mp4 and
+media/social-clip.mp4) is original to CiteFox: an instrumental composed and synthesised
+from sine waves and noise by scripts/media/make-music.py, with no samples and no third-party
+recordings, and is licensed under the CiteFox Source-Available License with the rest of the
+project.
+
+The product video is composed with Revideo (https://github.com/midrender/revideo, MIT
+License), a development tool that is not shipped with the app. Its easing curves and the
+analytic spring in scripts/media/video/src/ease.ts are ported from snap-cn
+(https://github.com/shadcn-labs/snapcn), MIT License, Copyright (c) 2026 Sri Nath (snap-cn):
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this
+  software and associated documentation files (the "Software"), to deal in the Software
+  without restriction, including without limitation the rights to use, copy, modify, merge,
+  publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
+  to whom the Software is furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all copies or
+  substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+  FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+  DEALINGS IN THE SOFTWARE.
+
+The engine logos in the video's engines scene are the same files the app shows
+(src/renderer/src/assets/engines); they belong to their owners and only name the engines.

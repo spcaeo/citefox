@@ -1,0 +1,16 @@
+{
+  "comment": "The product video's beat grid, shared by the Revideo scenes (src/film.tsx) and the music (scripts/media/make-music.py). One beat = 60/bpm s. Change a scene's beats here and both follow.",
+  "fps": 30,
+  "bpm": 100,
+  "scenes": [
+    { "id": "hook", "beats": 12 },
+    { "id": "summary", "beats": 16 },
+    { "id": "question", "beats": 16 },
+    { "id": "competitors", "beats": 12 },
+    { "id": "fixes", "beats": 14 },
+    { "id": "ask", "beats": 16 },
+    { "id": "reports", "beats": 22 },
+    { "id": "engines", "beats": 8 },
+    { "id": "end", "beats": 8 }
+  ]
+}
