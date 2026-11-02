@@ -214,7 +214,12 @@ export function RivalSearchGrid({
             actions={actions}
             label="Add the picked questions to a topic"
           />
-          <Button size="sm" variant="primary" icon="pencil" onClick={() => actions.logFix(selected)}>
+          <Button
+            size="sm"
+            variant="primary"
+            icon="pencil"
+            onClick={() => actions.logFix(selected)}
+          >
             Log a fix
           </Button>
         </>

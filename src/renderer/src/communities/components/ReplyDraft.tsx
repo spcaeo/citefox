@@ -148,7 +148,12 @@ export function ReplyDraft({
         >
           {copied !== null && copied === result?.runId ? 'Copied' : 'Copy reply'}
         </Button>
-        <ToolButton kind="refresh" label="Try again" disabled={phase === 'running'} onClick={tryAgain} />
+        <ToolButton
+          kind="refresh"
+          label="Try again"
+          disabled={phase === 'running'}
+          onClick={tryAgain}
+        />
         <DrillLink target={{ kind: 'url', url: thread.url }} className={buttonClass('ghost', 'sm')}>
           Open thread
         </DrillLink>

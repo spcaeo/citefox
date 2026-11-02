@@ -91,7 +91,9 @@ export function classifySample(input: ClassifyInput): ClassifiedSample {
     // A topic with no target page yet: any page of the site is the cited page.
     const noTarget =
       input.targetUrl === null &&
-      (input.targetPages != null ? input.targetPages.length === 0 : (input.targetPage ?? null) === null)
+      (input.targetPages != null
+        ? input.targetPages.length === 0
+        : (input.targetPage ?? null) === null)
     return {
       status: noTarget ? 'page_cited' : 'other_own_page',
       named,

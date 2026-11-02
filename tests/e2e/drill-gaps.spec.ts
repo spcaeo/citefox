@@ -138,7 +138,9 @@ test('content gaps: every number drills, rows open, prompts link in the market',
       await weak.focus()
       await page.keyboard.press('Enter')
       const drawer = page.getByRole('dialog')
-      await expect(drawer.getByRole('heading', { name: 'Weak coverage · 1 question' })).toBeVisible()
+      await expect(
+        drawer.getByRole('heading', { name: 'Weak coverage · 1 question' })
+      ).toBeVisible()
       await expect(drawer.getByRole('link', { name: /Crew alerts/ })).toHaveAttribute(
         'href',
         /\/prompt\/prompt-1\?market=mkt-us$/

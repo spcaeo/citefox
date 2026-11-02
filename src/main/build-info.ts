@@ -7,8 +7,7 @@ import { validBuildNumber } from '@shared/release-line'
  * bundle is built. Vitest does not define it.
  */
 declare const __CITEFOX_BUILD__:
-  | { commit: string | null; number?: number; builtAt: string }
-  | undefined
+  { commit: string | null; number?: number; builtAt: string } | undefined
 
 /** When this process started: the fallback build time for a run that was not bundled. */
 const STARTED_AT = new Date().toISOString()

@@ -116,7 +116,10 @@ test('Fill from my website shows each real step live, then folds into the result
     })
 
     await test.step('the Claude call runs with a timer and the connection line', async () => {
-      const asking = step(panel, 'Asking CiteFox AI to read what your site sells and its brand names')
+      const asking = step(
+        panel,
+        'Asking CiteFox AI to read what your site sells and its brand names'
+      )
       await expect(asking).toHaveAttribute('data-state', 'running', { timeout: 20_000 })
       await expect(step(panel, 'Reading /compare')).toHaveAttribute('data-state', 'skipped')
       await expect(step(panel, 'Reading /compare')).toContainText('Not found or not readable')

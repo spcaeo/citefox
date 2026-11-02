@@ -41,8 +41,8 @@ export function AboutCard({ client }: { client: Pick<OnboardingClient, 'getInfo'
           <div>
             <dt>Affiliate links</dt>
             <dd>
-              Some partner links in CiteFox are affiliate links. If you sign up through them we
-              may earn a commission, at no extra cost to you. It helps keep CiteFox free.
+              Some partner links in CiteFox are affiliate links. If you sign up through them we may
+              earn a commission, at no extra cost to you. It helps keep CiteFox free.
             </dd>
           </div>
         </dl>

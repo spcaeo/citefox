@@ -111,7 +111,9 @@ test('Add page, Page read and Prompt detail in the v2 look', async () => {
       await shot(page, 'v2-prompt-detail-sources-1280')
 
       await tabs.getByRole('tab', { name: /^Markets/ }).click()
-      await expect(screen.getByRole('grid', { name: 'This question in other markets' })).toBeVisible()
+      await expect(
+        screen.getByRole('grid', { name: 'This question in other markets' })
+      ).toBeVisible()
       await screen.getByRole('button', { name: 'Actions for 🇬🇧 UK · EN' }).click()
       await expect(
         page.getByRole('menuitem', { name: /Show this question in this market/ })

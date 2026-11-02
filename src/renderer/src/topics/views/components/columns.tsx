@@ -1,7 +1,6 @@
 import type { ListColumn } from '../../../ui'
 import type { Search } from '../model'
-import { BestPageCell,
-  CitedCell, RefCell, ResultCell } from './cells'
+import { BestPageCell, CitedCell, RefCell, ResultCell } from './cells'
 import { stageText } from './text'
 
 /**

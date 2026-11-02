@@ -179,9 +179,7 @@ export function TopicSettingsDrawer({
       title="Topic settings"
       trail={topic ? [{ label: topic.name, href: topicHash(topic.id) }] : []}
       subtitle={
-        topic
-          ? `${name} · rename, pause or delete it.`
-          : 'Rename, pause or delete a topic.'
+        topic ? `${name} · rename, pause or delete it.` : 'Rename, pause or delete a topic.'
       }
       status={
         topic ? (

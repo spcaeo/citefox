@@ -492,7 +492,9 @@ describe('Edit question on Question detail', () => {
     expect(us).toHaveProperty('checked', true)
     expect(uk).toHaveProperty('checked', false)
     fireEvent.click(uk)
-    expect(within(panel).getAllByText(/Uses 6 searches in US · EN and UK · EN/).length).toBeGreaterThan(0)
+    expect(
+      within(panel).getAllByText(/Uses 6 searches in US · EN and UK · EN/).length
+    ).toBeGreaterThan(0)
     fireEvent.click(uk)
     fireEvent.click(within(panel).getByRole('button', { name: 'Spend and check now' }))
     await waitFor(() => expect(edits.starts).toHaveLength(1))

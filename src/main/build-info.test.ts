@@ -32,7 +32,11 @@ describe('build info', () => {
 
 describe('devAppBuild', () => {
   test('a development run names the checkout commit it started from', () => {
-    const build = devAppBuild('/repo', () => '9b520cb5\n', () => 1500)
+    const build = devAppBuild(
+      '/repo',
+      () => '9b520cb5\n',
+      () => 1500
+    )
     expect(build.commit).toBe('9b520cb5')
     expect(build.number).toBe(1500)
   })

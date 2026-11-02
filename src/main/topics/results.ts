@@ -102,9 +102,7 @@ export function topicPromptMetas(
       targetNormalizedUrl: targetUrl === null ? null : normalizeUrl(targetUrl),
       // Your other pages for it count only beside a target you set.
       alsoUrls: own ? (record.alsoUrls ?? []) : [],
-      alsoNormalizedUrls: own
-        ? (record.alsoUrls ?? []).map((url) => normalizeUrl(url) ?? url)
-        : [],
+      alsoNormalizedUrls: own ? (record.alsoUrls ?? []).map((url) => normalizeUrl(url) ?? url) : [],
       // Shown as a hint even when unsure; a reason means CiteFox AI has matched it.
       matchConfidence: record.matchConfidence,
       matchReason: record.matchReason,

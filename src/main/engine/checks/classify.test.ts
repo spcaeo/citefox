@@ -327,10 +327,7 @@ describe('classifySample for a topic', () => {
     })
     expect(also.status).toBe('page_cited')
     expect(also.citedUrl).toBe('https://textbolt.com/blog/sms-guide/')
-    expect(also.references.map((reference) => reference.classification)).toEqual([
-      'target',
-      'own'
-    ])
+    expect(also.references.map((reference) => reference.classification)).toEqual(['target', 'own'])
     // An empty list: the question has no target yet, so any own page counts.
     expect(
       classifySample({ ...topic('https://textbolt.com/features'), targetPages: [] }).status

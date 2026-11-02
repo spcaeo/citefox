@@ -126,7 +126,12 @@ export function SummaryBoardView({
       {board.widgets.length === 0 ? (
         <div className="wb-empty">
           <p>Your Summary has no widgets.</p>
-          <Button size="sm" variant="primary" icon="plus" onClick={() => setQuery({ add: '1', edit: '1' })}>
+          <Button
+            size="sm"
+            variant="primary"
+            icon="plus"
+            onClick={() => setQuery({ add: '1', edit: '1' })}
+          >
             Add widget
           </Button>
         </div>

@@ -233,11 +233,7 @@ test('Add questions: paste, import a CSV and Excel file, undo, New topic, Import
       await add.getByRole('button', { name: 'choose a file' }).click()
       await expect(importer).toBeVisible()
       await expect(importer).toHaveAttribute('data-drawer-depth', '1')
-      expect(await crumbs(importer)).toEqual([
-        'TextBolt',
-        'Topics',
-        'Add questions'
-      ])
+      expect(await crumbs(importer)).toEqual(['TextBolt', 'Topics', 'Add questions'])
       await importer.getByRole('button', { name: 'Choose a file' }).click()
       await expect(importer.getByRole('button', { name: 'Check 112 rows' })).toBeVisible()
       await expect(importer.getByLabel('CiteFox column for Funnel stage')).toHaveValue('stage')

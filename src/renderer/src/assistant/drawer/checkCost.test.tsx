@@ -91,9 +91,9 @@ describe('the cost of a "start a check" card', () => {
       )
     )
     expect(screen.getByRole('alert').textContent).toContain('Not enough searches left')
-    expect(
-      (screen.getByRole('button', { name: 'Check now' }) as HTMLButtonElement).disabled
-    ).toBe(true)
+    expect((screen.getByRole('button', { name: 'Check now' }) as HTMLButtonElement).disabled).toBe(
+      true
+    )
   })
 
   it('falls back to the plain line when the pages cannot be read', async () => {
@@ -101,8 +101,8 @@ describe('the cost of a "start a check" card', () => {
     expect(screen.getByTestId('asst-action-cost').textContent).toBe(
       'Uses 4 searches of your search key.'
     )
-    expect(
-      (screen.getByRole('button', { name: 'Check now' }) as HTMLButtonElement).disabled
-    ).toBe(false)
+    expect((screen.getByRole('button', { name: 'Check now' }) as HTMLButtonElement).disabled).toBe(
+      false
+    )
   })
 })

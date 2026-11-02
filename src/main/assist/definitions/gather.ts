@@ -203,7 +203,10 @@ export function resultsOf(
     reportsRoot: checkReportsRoot(context.host.storage.paths.root)
   })
   if (results.run === null) {
-    throw new AssistInputError('Press Check now first.', 'Press Check now on this page, then try again.')
+    throw new AssistInputError(
+      'Press Check now first.',
+      'Press Check now on this page, then try again.'
+    )
   }
   return results
 }

@@ -67,7 +67,10 @@ var DEFAULT_APP_TOKEN = 'citefox-public-v1'
 
 function cleanText(value, max) {
   if (typeof value !== 'string') return ''
-  return value.replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, max)
+  return value
+    .replace(/[\u0000-\u001f\u007f]/g, ' ')
+    .trim()
+    .slice(0, max)
 }
 
 /** A cell value that a spreadsheet will not run as a formula. */
@@ -502,13 +505,25 @@ function sendOne(to, name, compose, secret, baseUrl) {
     address: compose.address,
     unsubscribe: unsubscribeLink(baseUrl, to, secret)
   })
-  MailApp.sendEmail({ to: to, subject: email.subject, body: email.text, htmlBody: email.html, name: 'CiteFox' })
+  MailApp.sendEmail({
+    to: to,
+    subject: email.subject,
+    body: email.text,
+    htmlBody: email.html,
+    name: 'CiteFox'
+  })
 }
 
 function sendTestEmail() {
   var compose = readCompose()
   var me = Session.getEffectiveUser().getEmail()
-  sendOne(me, 'Test', compose, props().getProperty('UNSUBSCRIBE_SECRET') || 'test', ScriptApp.getService().getUrl())
+  sendOne(
+    me,
+    'Test',
+    compose,
+    props().getProperty('UNSUBSCRIBE_SECRET') || 'test',
+    ScriptApp.getService().getUrl()
+  )
   return me
 }
 
@@ -541,7 +556,10 @@ function sendEmailToOptedIn() {
   })
   var left = recipients.length - batch.length
   var text =
-    'Sent ' + batch.length + '.' + (left > 0 ? ' ' + left + ' left: run this again tomorrow (daily Gmail limit).' : '')
+    'Sent ' +
+    batch.length +
+    '.' +
+    (left > 0 ? ' ' + left + ' left: run this again tomorrow (daily Gmail limit).' : '')
   Logger.log(text)
   try {
     SpreadsheetApp.getUi().alert(text)

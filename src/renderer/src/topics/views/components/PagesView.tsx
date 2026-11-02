@@ -1,5 +1,14 @@
 import { useMemo, useState, type JSX } from 'react'
-import { Button, Chip, FilterBar, IconButton, SearchBox, SegmentedControl, UiIcon, UrlText } from '../../../ui'
+import {
+  Button,
+  Chip,
+  FilterBar,
+  IconButton,
+  SearchBox,
+  SegmentedControl,
+  UiIcon,
+  UrlText
+} from '../../../ui'
 import { filterSearches, pagesView, pathOf, type OwnPageRow, type SiteRow } from '../model'
 import type { ViewEnv } from '../types'
 import { CountLink } from './cells'

@@ -1,11 +1,5 @@
 import { useState, type JSX } from 'react'
-import {
-  CLORO_CREDITS,
-  ENGINE_IDS,
-  ENGINE_LABEL,
-  type EngineId,
-  type Market
-} from '@shared/domain'
+import { CLORO_CREDITS, ENGINE_IDS, ENGINE_LABEL, type EngineId, type Market } from '@shared/domain'
 import type { PromptTextRules, PromptVersionStep } from '@shared/ipc'
 import { drawerHref } from '../../shell/drawers'
 import { promptHash } from '../../shell/routes'
@@ -118,7 +112,9 @@ export function PromptEditDrawer(props: PromptEditDrawerProps): JSX.Element {
     .reduce((sum, engine) => sum + CLORO_CREDITS[engine] * chosen.length * samples, 0)
   const recheckCost = [
     google ? cost : null,
-    credits > 0 ? `about ${credits.toLocaleString('en-US')} CiteFox credits for the other engines` : null
+    credits > 0
+      ? `about ${credits.toLocaleString('en-US')} CiteFox credits for the other engines`
+      : null
   ]
     .filter((part): part is string => part !== null)
     .join(' · plus ')
@@ -249,8 +245,7 @@ export function PromptEditDrawer(props: PromptEditDrawerProps): JSX.Element {
           {!editing && chosen.length > 0 && !noEngine ? (
             <div className="pd2-recheck-warn" role="note">
               <strong>This check costs searches.</strong> {recheckCost}. They come off this
-              month&rsquo;s allowance and are not given back, even when the answer has not
-              changed.
+              month&rsquo;s allowance and are not given back, even when the answer has not changed.
             </div>
           ) : null}
           <DrawerSection

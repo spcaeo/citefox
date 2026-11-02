@@ -207,9 +207,7 @@ export function Opportunities({
               : [])
           ]
         }}
-        summary={() =>
-          'CiteFox never posts. You copy and post each reply.'
-        }
+        summary={() => 'CiteFox never posts. You copy and post each reply.'}
         empty={
           <EmptyWithFilters>
             <EmptyState

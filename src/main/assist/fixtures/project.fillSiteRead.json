@@ -33,10 +33,7 @@
       "evidence": null
     }
   ],
-  "comparedWith": [
-    "SimpleTexting",
-    "Text-Em-All"
-  ],
+  "comparedWith": ["SimpleTexting", "Text-Em-All"],
   "audiences": [
     {
       "name": "Field service",

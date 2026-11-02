@@ -55,7 +55,7 @@ rate limits.
 
 Paste the new `Code.gs`, save, then **Deploy › Manage deployments** › edit (pencil) the
 existing deployment › Version: **New version** › **Deploy**. The URL stays the same, so
-released apps keep working. Never make a *new* deployment for an update: that makes a new URL.
+released apps keep working. Never make a _new_ deployment for an update: that makes a new URL.
 
 ## Everyday use (the CiteFox menu in the Sheet)
 

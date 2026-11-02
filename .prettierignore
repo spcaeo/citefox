@@ -17,3 +17,5 @@ site/docs
 site/glossary
 site/compare
 site/media
+.public-export
+.claude

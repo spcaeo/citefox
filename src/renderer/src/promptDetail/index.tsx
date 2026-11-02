@@ -349,9 +349,7 @@ function PromptDetailBody({
     markets: page.markets,
     marketId: detail.marketId,
     samples: page.samples,
-    engines: (engineView?.engines ?? [])
-      .filter((item) => item.selected)
-      .map((item) => item.engine),
+    engines: (engineView?.engines ?? []).filter((item) => item.selected).map((item) => item.engine),
     engine: engineTab
   })
   const questionItems = useQuestionItems({

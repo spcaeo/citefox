@@ -107,7 +107,13 @@ export function TargetPctLink({
  * CiteFox AI's best page for a search with its fit ("/nagios-alerts/ · 94% fit"); the
  * reason on hover. "No page fits" when none does; a dash before matching.
  */
-export function BestPageCell({ search, site }: { search: Search; site: string | null }): JSX.Element {
+export function BestPageCell({
+  search,
+  site
+}: {
+  search: Search
+  site: string | null
+}): JSX.Element {
   const best = search.bestPage
   if (!best) return <span className="tv-muted">—</span>
   if (best.url === null)

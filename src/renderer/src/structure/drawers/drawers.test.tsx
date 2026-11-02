@@ -389,11 +389,7 @@ describe('GroupDrawer', { timeout: 20_000 }, () => {
     // The stacked picker names the group under it in its trail.
     const picker = await screen.findByRole('dialog', { name: 'Add pages to Money pages' })
     await waitFor(() =>
-      expect(crumbs(picker)).toEqual([
-        'TextBolt',
-        'Site structure',
-        'Money pages'
-      ])
+      expect(crumbs(picker)).toEqual(['TextBolt', 'Site structure', 'Money pages'])
     )
   })
 

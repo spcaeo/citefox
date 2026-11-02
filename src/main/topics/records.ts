@@ -295,7 +295,9 @@ function parseAlso(json: string | undefined): string[] {
   if (json === undefined) return []
   try {
     const value: unknown = JSON.parse(json)
-    return Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : []
+    return Array.isArray(value)
+      ? value.filter((item): item is string => typeof item === 'string')
+      : []
   } catch {
     return []
   }

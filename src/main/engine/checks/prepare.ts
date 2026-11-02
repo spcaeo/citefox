@@ -235,9 +235,7 @@ export function prepare(
     // A resumed run keeps the engines it started with; a new one takes today's choice.
     const only = request.engines ?? null
     const engines = runnableEngines(
-      anchor === null
-        ? (only ?? selectedEngines(db, page.id))
-        : runEngines(db, anchor.id),
+      anchor === null ? (only ?? selectedEngines(db, page.id)) : runEngines(db, anchor.id),
       withCloro
     )
     if (engines.length === 0) {

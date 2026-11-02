@@ -83,7 +83,9 @@ export function rejudgeTopicChecks(db: SqliteDatabase, topicId: string): number 
           .filter((key): key is string => key !== null)
       )
       const refs = refsOf.all(sample.id)
-      const own = refs.filter((ref) => ref.classification === 'target' || ref.classification === 'own')
+      const own = refs.filter(
+        (ref) => ref.classification === 'target' || ref.classification === 'own'
+      )
       for (const ref of own) {
         const next = keys.has(targetPageKey(ref.normalized_url) ?? '') ? 'target' : 'own'
         if (next !== ref.classification) {

@@ -96,12 +96,7 @@ export function QuestionTarget({
             : ''}
         </span>
       ) : (
-        <UrlText
-          className="pd2-target-path"
-          url={row.targetUrl ?? ''}
-          label={path}
-          icon={false}
-        />
+        <UrlText className="pd2-target-path" url={row.targetUrl ?? ''} label={path} icon={false} />
       )}
       {(row.alsoUrls ?? []).length > 0 ? (
         <span
@@ -115,7 +110,11 @@ export function QuestionTarget({
       {row.citedOwnUrl ? (
         <span className={row.state === 'right_page' ? 'pd2-target-cited' : 'tv-muted'}>
           {row.state === 'right_page' ? 'Right page: Google cites ' : 'Google cites your '}
-          <UrlText url={row.citedOwnUrl} label={urlPath(row.citedOwnUrl) ?? row.citedOwnUrl} icon={false} />
+          <UrlText
+            url={row.citedOwnUrl}
+            label={urlPath(row.citedOwnUrl) ?? row.citedOwnUrl}
+            icon={false}
+          />
         </span>
       ) : null}
       {path === null ? (

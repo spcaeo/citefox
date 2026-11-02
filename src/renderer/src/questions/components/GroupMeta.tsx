@@ -99,7 +99,13 @@ export function GroupMeta({
       </span>
       {mode === 'topic' && !notInTopic ? <BandChip band={clusterStats(rows, band).band} /> : null}
       {notInTopic ? (
-        <IconButton icon="sparkle" label="Sort into topics with AI" tip size="sm" onClick={onSort} />
+        <IconButton
+          icon="sparkle"
+          label="Sort into topics with AI"
+          tip
+          size="sm"
+          onClick={onSort}
+        />
       ) : null}
       {addHref !== null ? (
         <a

@@ -241,8 +241,7 @@ export function PageChangesWidget({ widget, env, tools }: WidgetProps): JSX.Elem
       kind: 'items',
       id: 'w:page-changes:open',
       title: 'Page changes nobody logged',
-      description:
-        'Pages that changed with no fix logged. Log each one, or mark it not a fix.',
+      description: 'Pages that changed with no fix logged. Log each one, or mark it not a fix.',
       noun: ['change', 'changes'],
       primaryLabel: 'Page',
       columns: [{ id: 'when', label: 'Changed', width: 'minmax(140px, 0.5fr)' }],

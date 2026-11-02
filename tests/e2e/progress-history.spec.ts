@@ -148,7 +148,9 @@ test('Progress logs a fix, shows its verdict and markers on real IPC', async () 
     )
     const planned = page.getByRole('dialog', { name: 'Log a fix' })
     await expect(planned.getByLabel('What changed')).toHaveValue('1. Add a reply-by-email FAQ')
-    await expect(planned.getByRole('checkbox', { name: /reply to an alert by email/ })).toBeChecked()
+    await expect(
+      planned.getByRole('checkbox', { name: /reply to an alert by email/ })
+    ).toBeChecked()
     // The old keys are gone; the drawer keeps the draft on its own URL over Progress › Fixes.
     await expect(page).toHaveURL(
       new RegExp(`#/pages/${PAGE}/progress\\?view=fixes&drawer=fix&fix=new&fix\\.page=${PAGE}`)

@@ -89,7 +89,10 @@ test('templates list every step, save project versions, compare, reset, try and 
         await expect(row).toContainText(label)
         await expect(row).toContainText('Default')
         await expect(
-          stepContainers(page).nth(index).locator('[title^="v"]').filter({ hasText: /^v\d+$/ })
+          stepContainers(page)
+            .nth(index)
+            .locator('[title^="v"]')
+            .filter({ hasText: /^v\d+$/ })
         ).toHaveAttribute('title', /^v\d+ · hash [0-9a-f]{4}…/)
       }
       // The file name sits in the step name's tooltip, not in the row text.
@@ -154,7 +157,9 @@ test('templates list every step, save project versions, compare, reset, try and 
       ).toBeVisible()
 
       await editor(page).getByRole('button', { name: 'Reset to default' }).click()
-      const dialog = page.getByRole('alertdialog', { name: 'Reset Buyer questions to the default?' })
+      const dialog = page.getByRole('alertdialog', {
+        name: 'Reset Buyer questions to the default?'
+      })
       await dialog.getByRole('button', { name: 'Reset' }).click()
       await expect(stepRow(page, 'Buyer questions')).toContainText('Default')
       await expect(editor(page).getByLabel('Tone')).toHaveValue('')
