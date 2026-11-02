@@ -1,0 +1,28 @@
+{
+  "verdict": "target",
+  "reason": "Google quotes the compare page because it lines up the gateway options side by side, and the target page never does. The target page still fits the buyer replacing the AT&T gateway, so strengthen it.",
+  "answerNeeds": [
+    "Name the main ways to send texts from email now that carrier gateways are closing",
+    "Compare them on set-up, cost and whether staff need an app",
+    "Say which option suits a team that sends alerts from a shared inbox"
+  ],
+  "citedHas": [
+    {
+      "section": "Opening",
+      "point": "A side-by-side table of email-to-SMS services with set-up time and price per message."
+    }
+  ],
+  "toChange": [
+    {
+      "section": "Opening",
+      "change": "Open with two sentences that name the best replacement for the AT&T gateway and who it suits. [check: the price per message]",
+      "why": "Answers \"email to sms gateway comparison\" before the buyer scrolls."
+    },
+    {
+      "section": "New section after the opening",
+      "change": "Add a short comparison of the three ways to keep texting from email: another carrier gateway, an email-to-SMS service, an SMS app.",
+      "why": "Gives the answer the side-by-side view it quotes from the compare page now."
+    }
+  ],
+  "risk": "Both pages answer the same comparison searches; add one line on the compare page that points AT&T users to the guide."
+}

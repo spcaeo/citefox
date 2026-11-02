@@ -1,0 +1,170 @@
+/* Site cells shared by every list of cited sites (sites/). Tokens from styles/tokens.css only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .site-faint {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  /* One line: the value, its marks and its quick action side by side. */
+  .site-cell-row {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1) var(--s-2);
+    min-width: 0;
+    max-width: 100%;
+    white-space: nowrap;
+  }
+
+  .site-name {
+    overflow: hidden;
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Your own site: the highlighter, as where an answer names the brand. */
+  .site-name-own,
+  .site-name-btn.site-name-own,
+  .site-name.ui-url-own .ui-url-value {
+    padding: 0 var(--s-1);
+    border-radius: var(--r-s);
+    background: var(--mark);
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  /* A name that opens what the list counts for the site. */
+  .site-name-btn {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-weight: var(--fw-medium);
+    text-align: left;
+    text-decoration: underline solid transparent;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .site-name-btn:hover,
+  .site-name-btn:focus-visible {
+    color: var(--action-ink);
+    text-decoration-color: currentcolor;
+  }
+
+  .site-name-btn:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+
+  .site-website .ui-url-value {
+    color: var(--ink-2);
+  }
+
+  /* The name already shows this domain: the website steps back. */
+  .site-website-same .ui-url-value {
+    color: var(--ink-3);
+  }
+
+  .site-type-text {
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .site-note {
+    cursor: help;
+  }
+
+  /* A row's quick action shows while the row is hovered or focused; always on touch screens. */
+  .site-quick {
+    opacity: 0;
+  }
+
+  .ui-lg-row:hover .site-quick:not(:disabled),
+  .ui-lg-row:focus-within .site-quick:not(:disabled),
+  .site-quick:focus-visible,
+  .site-quick[aria-busy='true'] {
+    opacity: 1;
+  }
+
+  /* A type you can change: the value is the button that opens its menu of choices. */
+  .site-pick {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    max-width: 100%;
+    margin: -2px -4px;
+    padding: 2px 4px;
+    border: 0;
+    border-radius: var(--r-s);
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .site-pick:hover,
+  .site-pick[aria-expanded='true'] {
+    background: var(--hover);
+  }
+
+  .site-pick:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+
+  .site-pick[aria-busy='true'] {
+    opacity: 0.6;
+  }
+
+  /* The chevron shows with the row, so a still list stays calm. */
+  .site-pick-icon {
+    flex: 0 0 auto;
+    color: var(--ink-3);
+    opacity: 0;
+  }
+
+  .ui-lg-row:hover .site-pick-icon,
+  .site-pick:focus-visible .site-pick-icon,
+  .site-pick[aria-expanded='true'] .site-pick-icon {
+    opacity: 1;
+  }
+
+  /* "edited": the user set this cell; a press puts it back to automatic. */
+  .site-edited {
+    padding: 0 4px;
+    border: 1px dashed var(--line);
+    border-radius: var(--r-pill);
+    background: none;
+    color: var(--ink-3);
+    font: inherit;
+    font-size: 11px;
+    line-height: 16px;
+    cursor: pointer;
+  }
+
+  .site-edited:hover {
+    border-style: solid;
+    color: var(--ink);
+  }
+
+  .site-edited:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+
+  @media (hover: none) {
+    .site-quick,
+    .site-pick-icon {
+      opacity: 1;
+    }
+  }
+}

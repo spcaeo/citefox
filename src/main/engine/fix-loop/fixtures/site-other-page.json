@@ -1,0 +1,14 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": { "status": "Success", "id": "fixture-site-other-page" },
+    "organic_results": [
+      {
+        "position": 1,
+        "title": "Text alerts for business: a platform list",
+        "link": "https://textbolt.com/blog/text-alerts-platforms/",
+        "displayed_link": "https://textbolt.com › blog"
+      }
+    ]
+  }
+}

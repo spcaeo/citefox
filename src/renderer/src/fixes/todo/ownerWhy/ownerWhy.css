@@ -1,0 +1,106 @@
+/* Fixes · an owner fix's "Why Google picks": the verdict, then short lists. Tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .ow-start,
+  .ow-result {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    align-items: flex-start;
+  }
+
+  .ow-start p,
+  .ow-result p {
+    margin: 0;
+  }
+
+  .ow-verdict {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    align-self: stretch;
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-m);
+    background: var(--inset);
+  }
+
+  .ow-verdict-line {
+    color: var(--ink);
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-h3);
+  }
+
+  .ow-reason {
+    color: var(--ink-2);
+  }
+
+  .ow-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    align-self: stretch;
+  }
+
+  .ow-block-head {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    justify-content: space-between;
+    min-height: 28px;
+  }
+
+  .ow-block-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-ui);
+  }
+
+  .ow-block-actions {
+    display: flex;
+    gap: var(--s-1);
+    align-items: center;
+  }
+
+  .ow-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding-inline-start: var(--s-5);
+    color: var(--ink-2);
+  }
+
+  .ow-list li {
+    padding-inline-start: var(--s-1);
+  }
+
+  .ow-list li > span {
+    display: block;
+  }
+
+  .ow-section {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+  }
+
+  .ow-why,
+  .ow-note {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ow-risk {
+    align-self: stretch;
+    padding: var(--s-2) var(--s-3);
+    border-inline-start: 3px solid var(--warn);
+    border-radius: var(--r-s);
+    background: var(--warn-tint);
+    color: var(--ink-2);
+  }
+}

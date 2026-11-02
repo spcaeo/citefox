@@ -1,0 +1,17 @@
+{
+  "terms": [
+    {
+      "term": "email to text",
+      "synonyms": ["email to sms", "email to text service"]
+    },
+    {
+      "term": "text alerts",
+      "synonyms": ["sms alerts", "sms notifications", "text notifications"]
+    },
+    {
+      "term": "mass texting",
+      "synonyms": ["group texting", "bulk sms"]
+    }
+  ],
+  "patterns": ["{X} service", "{X} for business", "free {X}", "best {X}", "{X} for {segment}"]
+}

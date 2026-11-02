@@ -1,0 +1,13 @@
+{
+  "summary": "Tells you on the desktop when a competitor is cited instead of your page on any tracked page.",
+  "items": [
+    { "text": "Competitor cited on tracked pages", "detail": null, "tag": "name", "verify": null, "sign": null },
+    { "text": "competitor_cited", "detail": null, "tag": "when", "verify": null, "sign": null },
+    { "text": "any", "detail": null, "tag": "competitor", "verify": null, "sign": null },
+    { "text": "tracked", "detail": null, "tag": "scope", "verify": null, "sign": null },
+    { "text": "all", "detail": null, "tag": "markets", "verify": null, "sign": null },
+    { "text": "desktop", "detail": null, "tag": "send", "verify": null, "sign": null },
+    { "text": "instant", "detail": null, "tag": "delivery", "verify": null, "sign": null }
+  ],
+  "caution": "No page, group or topic is about pricing yet, so it watches all tracked pages."
+}

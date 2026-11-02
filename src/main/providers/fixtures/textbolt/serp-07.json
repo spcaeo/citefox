@@ -1,0 +1,34 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": {
+      "status": "Success",
+      "id": "textbolt-p7"
+    },
+    "ai_overview": {
+      "text_blocks": [
+        {
+          "type": "paragraph",
+          "snippet": "Registration is required for business SMS to US numbers, and some gateways file it for you."
+        }
+      ],
+      "references": [
+        {
+          "title": "10DLC",
+          "link": "https://www.fcc.gov/10dlc",
+          "source": "FCC"
+        },
+        {
+          "title": "Registration",
+          "link": "https://simpletexting.com/10dlc",
+          "source": "SimpleTexting"
+        },
+        {
+          "title": "How to Set Up Text Alerts",
+          "link": "https://www.textbolt.com/blog/how-to-set-up-text-alerts-for-business/#faq",
+          "source": "TextBolt"
+        }
+      ]
+    }
+  }
+}

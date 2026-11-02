@@ -1,0 +1,26 @@
+{
+  "summary": "Answers the switch question in the first two sentences, then gives the set-up steps and the buyer questions as an FAQ.",
+  "changes": [
+    {
+      "op": "insert",
+      "block": "b1",
+      "kind": "p",
+      "text": "Switch to an email-to-text service: staff keep writing from the inbox they use now, and each phone gets a normal text. No app and no new numbers. [check: the price per message]",
+      "why": "Answers the best search in the first two sentences under the title."
+    },
+    {
+      "op": "insert",
+      "block": "b1",
+      "kind": "h2",
+      "text": "Set it up in three steps",
+      "why": "Gives the buyer the steps under a heading that matches what they ask."
+    },
+    {
+      "op": "replace",
+      "block": "b2",
+      "kind": "p",
+      "text": "Pick the service, approve the inbox that sends, then replace the old address in your contact sheet.",
+      "why": "Turns a general paragraph into the steps the buyer follows."
+    }
+  ]
+}

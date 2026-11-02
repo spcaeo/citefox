@@ -1,0 +1,458 @@
+/* All pages, v2 "Spruce & Fox" (Docs/TOPICS-SPEC.md §1, Mockups/v2). v2 tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .ap-screen {
+    gap: var(--card-gap);
+  }
+
+  .ap-sub-link {
+    color: inherit;
+    text-decoration: underline solid transparent;
+    text-underline-offset: 3px;
+  }
+
+  .ap-sub-link:hover {
+    color: var(--action-ink);
+    text-decoration: underline solid var(--action-ink);
+  }
+
+  /* ---- Section heads ---- */
+  .ap-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  .ap-panel-hint {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ap-message,
+  .ap-error {
+    margin: 0;
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .ap-notice {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+  }
+
+  /* ---- Needs attention as one line over a long grid ---- */
+  .ap-attn-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-width: 0;
+    padding: var(--s-2) var(--s-3) var(--s-2) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    color: var(--warn);
+  }
+
+  .ap-attn-title {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: var(--s-2);
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-body);
+    font-weight: 600;
+  }
+
+  .ap-attn-text {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ap-error {
+    border-color: var(--bad);
+    background: var(--bad-tint);
+    color: var(--bad);
+  }
+
+  /* ---- The list ---- */
+  .ap-list-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  .ap-page {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 16px;
+  }
+
+  .ap-page .page-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ap-page .page-title {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+    text-decoration: none;
+  }
+
+  .ap-page .page-title:hover {
+    color: var(--action-ink);
+    text-decoration: underline;
+  }
+
+  .ap-score {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    width: 100%;
+  }
+
+  .ap-bar {
+    position: relative;
+    flex: 1 1 40px;
+    min-width: 32px;
+    height: 6px;
+    overflow: hidden;
+    border-radius: var(--r-pill);
+    background: var(--chart-track);
+  }
+
+  .ap-bar > span {
+    position: absolute;
+    inset: 0 auto 0 0;
+    border-radius: var(--r-pill);
+    background: var(--ink-3);
+  }
+
+  .ap-score-btn {
+    width: 100%;
+    text-decoration: none;
+  }
+
+  .ap-score-btn:hover .mono {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .ap-chips {
+    display: inline-flex;
+    gap: var(--s-1);
+    overflow: hidden;
+  }
+
+  .ap-chip {
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    padding: 0 7px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    white-space: nowrap;
+  }
+
+  .ap-chip-link {
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .ap-chip-link:hover {
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+
+  .ap-up {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ap-down {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ap-pill-link {
+    border-radius: var(--r-pill);
+    text-decoration: none;
+  }
+
+  .ap-pill-link:hover .ui-chip {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .ap-chip-link:focus-visible,
+  .ap-pill-link:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .ap-members {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ap-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s-3);
+    margin: 0;
+    padding: var(--s-8) var(--s-6);
+    color: var(--ink-3);
+    text-align: center;
+  }
+
+  .ap-empty p {
+    margin: 0;
+  }
+
+  /* ---- Filter chips and panels above the list ---- */
+  .ap-fchips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .ap-fchip {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    height: 28px;
+    padding: 0 2px 0 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .ap-fchip .ui-icon-btn {
+    width: 24px;
+    height: 24px;
+  }
+
+  .ap-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    padding: var(--s-5) var(--card-pad);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .ap-panel-head {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .ap-panel-head h3 {
+    margin: 0;
+    font-size: var(--fs-h3);
+    line-height: var(--lh-h3);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ap-panel-head .ap-panel-hint {
+    flex: 1 1 auto;
+  }
+
+  .ap-panel-foot {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--s-2);
+  }
+
+  .ap-facets {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--s-4) var(--s-6);
+  }
+
+  .ap-facet {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .ap-facet legend {
+    padding: 0 0 var(--s-1);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ap-facet-list {
+    display: flex;
+    flex-direction: column;
+    max-height: 196px;
+    overflow-y: auto;
+  }
+
+  .ap-group-row {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .ap-group-label {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ap-columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0 var(--s-6);
+  }
+
+  .ap-check {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: 32px;
+    font-size: var(--fs-ui);
+    cursor: pointer;
+  }
+
+  .ap-check-label {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ap-check-count {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .ap-save {
+    padding: var(--s-3) var(--s-4);
+  }
+
+  .ap-save-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3);
+    color: var(--ink-3);
+  }
+
+  .ap-save-label {
+    flex: 0 1 260px;
+  }
+
+  .ap-save-label .ui-input {
+    width: 100%;
+  }
+
+  /* ---- Bulk bar confirm row ---- */
+  .ap-confirm {
+    display: flex;
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2) var(--s-3);
+    padding: var(--s-2) 0 var(--s-1);
+    border-top: 1px solid var(--fox-line);
+  }
+
+  .ap-cost {
+    flex: 1 1 280px;
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .ap-confirm .dg-inline span {
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  /* ---- Needs attention: Wrong page cited and cited but not tracked (one list grid) ---- */
+  /* The Citations screen stacks its two lists. */
+  .ap-reviews {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+  }
+
+  .ap-card {
+    padding: var(--s-5) var(--card-pad);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .ap-att-title {
+    overflow: hidden;
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ap-att-title:hover {
+    color: var(--action-ink);
+    text-decoration: underline;
+  }
+
+  .ap-att-clip,
+  .ap-att-status {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ap-att-status {
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .ap-att-off {
+    opacity: 0.7;
+  }
+
+  .ap-noise {
+    color: var(--warn);
+    font-weight: var(--fw-semibold);
+  }
+}

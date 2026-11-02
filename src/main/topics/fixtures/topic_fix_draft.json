@@ -1,0 +1,9 @@
+{
+  "where": "target",
+  "steps": [
+    "Add an H2 \"Send clinic closure alerts from Outlook\" under \"How it works\".",
+    "Answer the closure case in the first two sentences under it.",
+    "Add the three set-up steps from the shared Outlook inbox as a numbered list."
+  ],
+  "draft": "How do we text staff when the clinic closes early?\nWrite the closure notice in your shared Outlook inbox and send it to the staff group address; every phone gets it as a normal text, and replies come back to the same inbox. No one installs an app. Set up the group once, then each alert takes a minute to send. [Check the per-message price before publishing.]"
+}

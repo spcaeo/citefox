@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Docs
+    url: https://spcaeo.github.io/citefox/docs/
+    about: How every screen and report works.
+  - name: Discussions
+    url: https://github.com/spcaeo/citefox/discussions
+    about: Questions, ideas and show-and-tell.
+  - name: Security problem
+    url: https://github.com/spcaeo/citefox/security/policy
+    about: Report it privately, not as an issue.
+  - name: Email
+    url: mailto:getcitifox@gmail.com
+    about: Sponsorship and anything else.

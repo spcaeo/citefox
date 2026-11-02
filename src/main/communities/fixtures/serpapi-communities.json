@@ -1,0 +1,301 @@
+{
+  "_note": "Recorded-shape SerpApi google_ai_overview bodies for the Communities seed. Key: <check>|<market>|<prompt index>.",
+  "bodies": {
+    "1|us|0": {
+      "search_metadata": {
+        "status": "Success",
+        "id": "c1-us-0"
+      },
+      "ai_overview": {
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "You can alert a crew without a developer by sending email to an SMS gateway. Threads in r/sysadmin compare gateways."
+          }
+        ],
+        "references": [
+          {
+            "title": "vtext.com shutting down — what are you all using for email-to-SMS alerts?",
+            "link": "https://www.reddit.com/r/sysadmin/comments/1abc23x/vtext_shutting_down_what_are_you_using/",
+            "source": "Reddit · r/sysadmin",
+            "index": 0
+          },
+          {
+            "title": "How to Set Up Text Alerts for Business",
+            "link": "https://textbolt.com/blog/how-to-set-up-text-alerts-for-business/",
+            "source": "TextBolt",
+            "index": 1
+          },
+          {
+            "title": "Send SMS Alerts from Grafana in 5 Minutes",
+            "link": "https://youtu.be/Gr4fanaSMS1?t=30",
+            "source": "YouTube · Ops Shortcuts",
+            "index": 2
+          }
+        ]
+      }
+    },
+    "1|us|1": {
+      "search_metadata": {
+        "status": "Success",
+        "id": "c1-us-1"
+      },
+      "ai_overview": {
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "Plans with scheduled texts include SimpleTexting and Twilio-based tools."
+          }
+        ],
+        "references": [
+          {
+            "title": "Text employees",
+            "link": "https://simpletexting.com/blog/text-employees/",
+            "source": "SimpleTexting",
+            "index": 0
+          },
+          {
+            "title": "Send SMS Alerts from Grafana in 5 Minutes",
+            "link": "https://www.youtube.com/watch?v=Gr4fanaSMS1&t=49s",
+            "source": "YouTube · Ops Shortcuts",
+            "index": 1
+          },
+          {
+            "title": "Twilio quote was crazy for simple alerts, alternatives?",
+            "link": "https://old.reddit.com/r/smallbusiness/comments/1def45y/twilio_quote_was_crazy_alternatives/",
+            "source": "Reddit · r/smallbusiness",
+            "index": 2
+          },
+          {
+            "title": "Best SMS tool for staff alerts without coding?",
+            "link": "https://www.g2.com/discussions/best-sms-tool-for-staff-alerts",
+            "source": "G2",
+            "index": 3
+          }
+        ]
+      }
+    },
+    "1|uk|0": {
+      "search_metadata": {
+        "status": "Success",
+        "id": "c1-uk-0"
+      },
+      "ai_overview": {
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "UK teams often use an email-to-SMS gateway or Twilio."
+          }
+        ],
+        "references": [
+          {
+            "title": "Employee SMS",
+            "link": "https://www.twilio.com/en-us/blog/employee-sms-notifications",
+            "source": "Twilio",
+            "index": 0
+          },
+          {
+            "title": "vtext.com shutting down — what are you all using for email-to-SMS alerts?",
+            "link": "https://www.reddit.com/r/sysadmin/comments/1abc23x/vtext_shutting_down_what_are_you_using/",
+            "source": "Reddit · r/sysadmin",
+            "index": 1
+          },
+          {
+            "title": "Verizon's vtext.com shutdown: a checklist for IT teams",
+            "link": "https://www.linkedin.com/pulse/verizons-vtextcom-shutdown-checklist-it-teams-example",
+            "source": "LinkedIn",
+            "index": 2
+          }
+        ]
+      }
+    },
+    "1|uk|1": {
+      "search_metadata": {
+        "status": "Success",
+        "id": "c1-uk-1"
+      },
+      "ai_overview": {
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "TextBolt lists scheduled texts on its plans."
+          }
+        ],
+        "references": [
+          {
+            "title": "TextBolt pricing",
+            "link": "https://textbolt.com/pricing/",
+            "source": "TextBolt",
+            "index": 0
+          },
+          {
+            "title": "What is the cheapest way to send SMS alerts from a computer?",
+            "link": "https://www.quora.com/What-is-the-cheapest-way-to-send-SMS-alerts-from-a-computer",
+            "source": "Quora",
+            "index": 1
+          }
+        ]
+      }
+    },
+    "2|us|0": {
+      "search_metadata": {
+        "status": "Success",
+        "id": "c2-us-0"
+      },
+      "ai_overview": {
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "You can alert a crew without a developer by sending email to an SMS gateway; TextBolt is one option."
+          }
+        ],
+        "references": [
+          {
+            "title": "vtext.com shutting down — what are you all using for email-to-SMS alerts?",
+            "link": "https://www.reddit.com/r/sysadmin/comments/1abc23x/vtext_shutting_down_what_are_you_using/",
+            "source": "Reddit · r/sysadmin",
+            "index": 0
+          },
+          {
+            "title": "Email to SMS for Business: Setup Walkthrough",
+            "link": "https://www.youtube.com/shorts/Emai1ToSMS2",
+            "source": "YouTube · SmallBiz Tech Help",
+            "index": 1
+          },
+          {
+            "title": "How to Set Up Text Alerts for Business",
+            "link": "https://textbolt.com/blog/how-to-set-up-text-alerts-for-business/",
+            "source": "TextBolt",
+            "index": 2
+          },
+          {
+            "title": "We replaced our paging tool with email-to-SMS for after-hours alerts",
+            "link": "https://www.linkedin.com/posts/example-msp_after-hours-alerts-activity-7250000000000000000-abcd",
+            "source": "LinkedIn",
+            "index": 3
+          }
+        ]
+      }
+    },
+    "2|us|1": {
+      "search_metadata": {
+        "status": "Success",
+        "id": "c2-us-1"
+      },
+      "ai_overview": {
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "Plans with scheduled texts include SimpleTexting; a walkthrough video shows Grafana alerts."
+          }
+        ],
+        "references": [
+          {
+            "title": "Send SMS Alerts from Grafana in 5 Minutes",
+            "link": "https://m.youtube.com/watch?v=Gr4fanaSMS1&feature=share",
+            "source": "YouTube · Ops Shortcuts",
+            "index": 0
+          },
+          {
+            "title": "Send SMS Alerts from Grafana in 5 Minutes",
+            "link": "https://youtu.be/Gr4fanaSMS1?t=10",
+            "source": "YouTube · Ops Shortcuts",
+            "index": 1
+          },
+          {
+            "title": "Text employees",
+            "link": "https://simpletexting.com/blog/text-employees/",
+            "source": "SimpleTexting",
+            "index": 2
+          },
+          {
+            "title": "Twilio quote was crazy for simple alerts, alternatives?",
+            "link": "https://old.reddit.com/r/smallbusiness/comments/1def45y/twilio_quote_was_crazy_alternatives/",
+            "source": "Reddit · r/smallbusiness",
+            "index": 3
+          },
+          {
+            "title": "TextBolt reviews",
+            "link": "https://www.trustradius.com/products/textbolt/reviews",
+            "source": "TrustRadius",
+            "index": 4
+          }
+        ]
+      }
+    },
+    "2|uk|0": {
+      "search_metadata": {
+        "status": "Success",
+        "id": "c2-uk-0"
+      },
+      "ai_overview": {
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "UK teams often use an email-to-SMS gateway or Twilio."
+          }
+        ],
+        "references": [
+          {
+            "title": "Employee SMS",
+            "link": "https://www.twilio.com/en-us/blog/employee-sms-notifications",
+            "source": "Twilio",
+            "index": 0
+          },
+          {
+            "title": "vtext.com shutting down — what are you all using for email-to-SMS alerts?",
+            "link": "https://www.reddit.com/r/sysadmin/comments/1abc23x/vtext_shutting_down_what_are_you_using/",
+            "source": "Reddit · r/sysadmin",
+            "index": 1
+          },
+          {
+            "title": "Verizon's vtext.com shutdown: a checklist for IT teams",
+            "link": "https://www.linkedin.com/pulse/verizons-vtextcom-shutdown-checklist-it-teams-example",
+            "source": "LinkedIn",
+            "index": 2
+          },
+          {
+            "title": "Email to SMS for Business: Setup Walkthrough",
+            "link": "https://youtu.be/Emai1ToSMS2?si=share",
+            "source": "YouTube · SmallBiz Tech Help",
+            "index": 3
+          }
+        ]
+      }
+    },
+    "2|uk|1": {
+      "search_metadata": {
+        "status": "Success",
+        "id": "c2-uk-1"
+      },
+      "ai_overview": {
+        "text_blocks": [
+          {
+            "type": "paragraph",
+            "snippet": "TextBolt lists scheduled texts on its plans."
+          }
+        ],
+        "references": [
+          {
+            "title": "TextBolt pricing",
+            "link": "https://textbolt.com/pricing/",
+            "source": "TextBolt",
+            "index": 0
+          },
+          {
+            "title": "Replacement for carrier email-to-text gateways?",
+            "link": "https://community.spiceworks.com/t/replacement-for-carrier-email-to-text-gateways/1012345",
+            "source": "Spiceworks",
+            "index": 1
+          },
+          {
+            "title": "We replaced our paging tool with email-to-SMS for after-hours alerts",
+            "link": "https://www.linkedin.com/posts/example-msp_after-hours-alerts-activity-7250000000000000000-abcd",
+            "source": "LinkedIn",
+            "index": 2
+          }
+        ]
+      }
+    }
+  }
+}

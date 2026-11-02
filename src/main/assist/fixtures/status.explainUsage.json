@@ -1,0 +1,27 @@
+{
+  "summary": "This month CiteFox made 42 Claude calls on your plan and used 120 SerpApi searches. Assists and Ask CiteFox used no searches.",
+  "items": [
+    {
+      "text": "Most Claude calls came from check reports.",
+      "detail": "run_summary: 18 calls, aio_gap: 14 calls, assists: 10 calls.",
+      "tag": "Claude",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Claude used about 310,000 tokens in and 41,000 out this month.",
+      "detail": "All on the Claude Code connection, so no API key was billed.",
+      "tag": "Claude",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Your SerpApi key \"My plan\" used 120 of 250 searches this month.",
+      "detail": "No cap is set in CiteFox. The SerpApi account reports the Free plan.",
+      "tag": "SerpApi",
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": null
+}

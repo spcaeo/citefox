@@ -1,0 +1,15 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": { "status": "Success", "id": "fixture-site-indexed" },
+    "search_information": { "total_results": 1 },
+    "organic_results": [
+      {
+        "position": 1,
+        "title": "How to Set Up Text Alerts for Business",
+        "link": "https://www.textbolt.com/blog/how-to-set-up-text-alerts-for-business",
+        "displayed_link": "https://www.textbolt.com › blog"
+      }
+    ]
+  }
+}

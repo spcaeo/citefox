@@ -1,0 +1,29 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": {
+      "status": "Success",
+      "id": "textbolt-p8"
+    },
+    "ai_overview": {
+      "text_blocks": [
+        {
+          "type": "paragraph",
+          "snippet": "A developer API is one path. An email gateway is another when the team has no developers."
+        }
+      ],
+      "references": [
+        {
+          "title": "Pricing",
+          "link": "https://www.twilio.com/pricing",
+          "source": "Twilio"
+        },
+        {
+          "title": "Compare",
+          "link": "https://textbolt.com/compare/?utm_campaign=aio",
+          "source": "TextBolt"
+        }
+      ]
+    }
+  }
+}

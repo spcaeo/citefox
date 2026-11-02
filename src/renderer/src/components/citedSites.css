@@ -1,0 +1,20 @@
+/* CitedSites: the first source whole; the others in the tooltip. v2 tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .cited-sites {
+    display: flex;
+    gap: var(--s-1);
+    align-items: center;
+    min-width: 0;
+    max-width: 100%;
+    white-space: nowrap;
+  }
+
+  .cited-sites-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

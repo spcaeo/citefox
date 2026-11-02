@@ -1,0 +1,453 @@
+/*
+ * Communities tab, v2 "Spruce & Fox" (TOPICS-SPEC §1, Theme.dc.html): KPI
+ * tiles, sub-tabs, list grids. Fox marks only your own site; source types use the
+ * neutral chart series.
+ */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .cm-screen {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-6);
+    min-width: 0;
+  }
+
+  .cm-stack-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+
+  /* ---- Intro: one line and the weekly email link ---- */
+  .cm-intro {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-6);
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cm-lead {
+    max-width: 72ch;
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  /* The scope filters when no grid shows them (loading, no check, an empty list). */
+  .cm-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: center;
+  }
+
+  /* The project screen's market and page selects (`ProjectFilters`). */
+  .cm-filter-set {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .ui-input.cm-select {
+    width: auto;
+    max-width: 240px;
+  }
+
+  .cm-note {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .cm-muted {
+    color: var(--ink-3);
+  }
+
+  .cm-zero {
+    color: var(--ink-3);
+  }
+
+  .cm-status {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  .cm-status:empty {
+    display: none;
+  }
+
+  .cm-panel {
+    min-width: 0;
+  }
+
+  /* ---- Sections around the mix and the change grids ---- */
+  .cm-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  .cm-mix-body {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: var(--card-gap);
+    align-items: start;
+  }
+
+  /* The owner grid's toolbar: its title and the owner bar. */
+  .cm-owner-tool {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-width: 0;
+  }
+
+  .cm-tool-title {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    font-weight: var(--fw-medium);
+  }
+
+  /* Text that opens a drill: dotted underline means drillable. */
+  .cm-drill {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    text-decoration: underline solid transparent;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .cm-drill:hover,
+  .cm-drill:focus-visible {
+    color: var(--action-ink);
+    text-decoration-color: currentcolor;
+  }
+
+  .cm-drill:focus-visible {
+    border-radius: 2px;
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .cm-change-cell {
+    white-space: nowrap;
+  }
+
+  .cm-up {
+    color: var(--ink);
+  }
+
+  .cm-down {
+    color: var(--ink);
+  }
+
+  /* ---- Stacked bars ---- */
+  .cm-stack {
+    display: flex;
+    width: 100%;
+    height: 16px;
+    overflow: hidden;
+    border-radius: var(--r-s);
+    background: var(--chart-track);
+  }
+
+  .cm-stack-owner {
+    height: 12px;
+  }
+
+  .cm-stack .mark-btn {
+    flex: none;
+    min-width: 0;
+  }
+
+  .cm-seg {
+    display: block;
+    height: 100%;
+  }
+
+  .cm-swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: var(--s-2);
+    border-radius: 3px;
+    vertical-align: baseline;
+  }
+
+  .cm-seg-web {
+    background: var(--chart-not-cited);
+  }
+
+  .cm-seg-reddit {
+    background: var(--chart-2);
+  }
+
+  .cm-seg-youtube {
+    background: var(--chart-3);
+  }
+
+  .cm-seg-linkedin {
+    background: var(--info);
+  }
+
+  .cm-seg-review {
+    background: var(--warn);
+  }
+
+  .cm-seg-forum {
+    background: color-mix(in srgb, var(--chart-2) 55%, var(--chart-no-aio));
+  }
+
+  .cm-seg-other {
+    background: var(--chart-no-aio-hatch);
+  }
+
+  .cm-owner-yours {
+    background: var(--chart-cited);
+  }
+
+  .cm-owner-competitor {
+    background: var(--chart-not-cited);
+  }
+
+  .cm-owner-external {
+    background: var(--line-strong);
+  }
+
+  /* ---- Grid cells ---- */
+  .cm-grid {
+    min-width: 0;
+  }
+
+  .cm-source-link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .cm-source-link:hover {
+    text-decoration: underline;
+  }
+
+  .cm-thread {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: baseline;
+    min-width: 0;
+  }
+
+  /* The domain's Copy and Open sit on the tile's 16px sub line without growing the 88px tile. */
+  .cm-kpis .ui-kpi-sub .ui-url-btn {
+    margin-block: calc((var(--lh-small) - 22px) / 2);
+  }
+
+  .cm-thread > .cm-drill {
+    flex: none;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  /* Clipped links stay one box, so their target never spills into the next cell. */
+  .cm-thread > :last-child,
+  .cm-source-cell > a,
+  .cm-source-cell > .ui-url {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cm-source-cell {
+    display: flex;
+    gap: var(--s-1);
+    align-items: baseline;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .cm-source-cell > span {
+    flex: none;
+  }
+
+  /* WCAG 2.5.8: a bare count in a grid cell is still a 24px target. */
+  .cm-grid .ui-lg-td .drill-num,
+  .cm-grid .ui-lg-td .cm-drill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    column-gap: 0.25em;
+    min-width: 24px;
+    min-height: 24px;
+  }
+
+  .cm-source-kind {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .cm-clamp2 {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    white-space: normal;
+  }
+
+  .cm-why p {
+    margin: 0 0 var(--s-2);
+  }
+
+  .cm-reply {
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: var(--r-pill);
+    font: inherit;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+    cursor: pointer;
+  }
+
+  .cm-reply:hover {
+    text-decoration: underline;
+  }
+
+  .cm-reply:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .cm-reply-open {
+    background: var(--ok-tint);
+    color: var(--ok);
+  }
+
+  .cm-reply-archived,
+  .cm-reply-locked {
+    background: var(--warn-tint);
+    color: var(--warn);
+  }
+
+  .cm-reply-unchecked {
+    background: var(--inset);
+    color: var(--ink-2);
+  }
+
+  /* ---- FR-17.6 reply draft: one suggestion card under the Reddit grid ---- */
+  .cm-reply-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    max-width: 860px;
+    padding: var(--card-pad);
+    border: 1px solid var(--fox-line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .cm-reply-head {
+    display: flex;
+    gap: var(--s-3);
+    align-items: flex-start;
+  }
+
+  .cm-reply-mark {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--r-s);
+    background: var(--fox-tint);
+    color: var(--fox);
+  }
+
+  .cm-reply-titles {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .cm-reply-title {
+    margin: 0;
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-h3);
+  }
+
+  .cm-reply-quote {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: var(--s-3) var(--s-4);
+    border-left: 3px solid var(--fox-line);
+    border-radius: var(--r-s);
+    background: var(--inset);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    overflow-wrap: anywhere;
+  }
+
+  .cm-reply-quote p {
+    margin: 0;
+  }
+
+  .cm-reply-verify,
+  .cm-reply-reminder {
+    display: flex;
+    gap: var(--s-2);
+    align-items: flex-start;
+    margin: 0;
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-s);
+    background: var(--warn-tint);
+    color: var(--warn);
+    font-size: var(--fs-small);
+  }
+
+  .cm-reply-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .cm-reply-input {
+    flex: 1 1 240px;
+    width: auto;
+  }
+
+  /* Side by side only where the owner table's three columns fit (main 1150px+). */
+  @media (max-width: 1360px) {
+    .cm-mix-body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

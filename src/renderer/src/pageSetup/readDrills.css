@@ -1,0 +1,77 @@
+/* Drill pieces on Page read and Buyer profile (pageSetup/readDrills.tsx). */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .ps-drill-count {
+    flex: 0 0 auto;
+    margin-left: auto;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    white-space: nowrap;
+  }
+
+  .ps-flag-wrap {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+  }
+
+  .ps-flag-btn {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-weight: var(--fw-semibold);
+    text-align: left;
+    text-decoration: underline solid transparent;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .ps-flag-btn:hover,
+  .ps-flag-btn:focus-visible {
+    text-decoration-color: currentcolor;
+  }
+
+  .ps-flag-btn:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .ps-flag-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+    background: var(--inset);
+    color: var(--ink);
+    font-weight: normal;
+  }
+
+  .ps-compare {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .ps-compare-row {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: var(--s-2);
+    overflow-wrap: anywhere;
+  }
+
+  a.tag {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  a.tag:hover {
+    border-color: var(--line-strong);
+  }
+}

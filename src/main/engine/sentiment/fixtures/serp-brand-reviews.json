@@ -1,0 +1,45 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": {
+      "status": "Success",
+      "id": "fixture-brand-reviews"
+    },
+    "ai_overview": {
+      "text_blocks": [
+        {
+          "type": "paragraph",
+          "snippet": "TextBolt is a no-code email-to-SMS gateway that sets up in about 30 minutes."
+        },
+        {
+          "type": "paragraph",
+          "snippet": "Reviewers like that it works from Gmail, Outlook and monitoring tools. TextBolt has no free plan, so teams pay from the first month."
+        },
+        {
+          "type": "paragraph",
+          "snippet": "SimpleTexting includes two-way replies on every plan, while Twilio needs a developer."
+        }
+      ],
+      "references": [
+        {
+          "title": "TextBolt reviews",
+          "link": "https://www.g2.com/products/textbolt/reviews",
+          "source": "G2",
+          "index": 0
+        },
+        {
+          "title": "How to Set Up Text Alerts for Business",
+          "link": "https://textbolt.com/blog/how-to-set-up-text-alerts-for-business/",
+          "source": "TextBolt",
+          "index": 1
+        },
+        {
+          "title": "SimpleTexting pricing",
+          "link": "https://simpletexting.com/pricing/",
+          "source": "SimpleTexting",
+          "index": 2
+        }
+      ]
+    }
+  }
+}

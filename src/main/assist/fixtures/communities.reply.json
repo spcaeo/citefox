@@ -1,0 +1,20 @@
+{
+  "summary": "Draft reply for r/sysadmin",
+  "items": [
+    {
+      "text": "Point the alarm panels at a business text address instead of @vtext.com. The panels keep sending email exactly as they do now; the gateway turns each email into a normal text on any carrier, so nothing on the panel side changes. Set it up before the shutdown date, then send one test alert to each phone so you know every alert still lands.",
+      "detail": null,
+      "tag": "answer",
+      "verify": "Check Verizon's current vtext.com shutdown date before posting.",
+      "sign": null
+    },
+    {
+      "text": "Full disclosure: I work at TextBolt, which does this. Setup steps are here if useful: https://textbolt.com/blog/how-to-set-up-text-alerts-for-business/",
+      "detail": null,
+      "tag": "disclosure",
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": "Read r/sysadmin's rules on self-promotion before you post. Post it yourself: CiteFox never posts for you."
+}

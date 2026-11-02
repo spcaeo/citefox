@@ -1,0 +1,34 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": {
+      "status": "Success",
+      "id": "textbolt-p10"
+    },
+    "ai_overview": {
+      "text_blocks": [
+        {
+          "type": "paragraph",
+          "snippet": "Replies to a TextBolt alert return to the inbox that sent the email."
+        }
+      ],
+      "references": [
+        {
+          "title": "How to Set Up Text Alerts",
+          "link": "https://textbolt.com/blog/how-to-set-up-text-alerts-for-business/",
+          "source": "TextBolt"
+        },
+        {
+          "title": "Text to email",
+          "link": "https://textbolt.com/solutions/text-to-email-service/",
+          "source": "TextBolt"
+        },
+        {
+          "title": "Reply thread",
+          "link": "https://www.reddit.com/r/sysadmin/comments/replies",
+          "source": "Reddit"
+        }
+      ]
+    }
+  }
+}

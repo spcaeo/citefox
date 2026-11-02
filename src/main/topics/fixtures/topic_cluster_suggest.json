@@ -1,0 +1,164 @@
+{
+  "ideas": [
+    {
+      "name": "10DLC registration for small senders",
+      "situation": "A small business that texts customers from a local number is told its messages are blocked until it registers for 10DLC, and nobody on the team knows what that means.",
+      "example": "how to register for 10DLC as a small business",
+      "questions": [
+        {
+          "stage": "problem",
+          "text": "I run a five-person plumbing office and our appointment texts from a local number suddenly stopped arriving; the carrier says we must register for 10DLC first."
+        },
+        {
+          "stage": "options",
+          "text": "As the office manager of a small dental practice that texts from Outlook today, what ways are there to get our business number registered for 10DLC?"
+        },
+        {
+          "stage": "doubts",
+          "text": "We are a small accounting firm sending about two hundred texts a month; how long does 10DLC brand and campaign approval take, and what does it cost us?"
+        },
+        {
+          "stage": "fit",
+          "text": "I am the only admin at a nonprofit with no developer and we send event reminders by text; can a service handle 10DLC registration for us end to end?"
+        },
+        {
+          "stage": "compare",
+          "text": "Our small clinic is choosing between Twilio and SimpleTexting for reminders; which one makes 10DLC registration easier for a team without anyone technical on staff?"
+        },
+        {
+          "stage": "decide",
+          "text": "We have picked a texting service for our salon and need to go live this week; what details do I need ready to finish 10DLC registration quickly?"
+        },
+        {
+          "stage": "problem",
+          "text": "Our landscaping company texts crews from a shared Gmail inbox, and since last month replies say our messages are filtered as unregistered; what is going wrong here?"
+        },
+        {
+          "stage": "doubts",
+          "text": "I manage IT for a small law office and worry that a 10DLC rejection will stop our client texts; what usually gets a small sender rejected, and how is it fixed?"
+        }
+      ],
+      "fitsUrl": null
+    },
+    {
+      "name": "Text alerts from monitoring tools",
+      "situation": "An IT team gets server and alarm alerts by email from Datadog, Grafana or plant software, and the on-call person misses them at night because email is silent on the phone.",
+      "example": "send Grafana alerts as text messages",
+      "questions": [
+        {
+          "stage": "problem",
+          "text": "I am the on-call engineer at a small hosting company, and last night a Grafana disk alert sat in my email for three hours before anyone saw it."
+        },
+        {
+          "stage": "options",
+          "text": "Our two-person IT team gets Datadog alerts by email; what are the ways to turn those emails into text messages on our phones without writing any code?"
+        },
+        {
+          "stage": "doubts",
+          "text": "We run a water treatment plant whose alarm software only sends email; will texts sent from those emails arrive reliably at night, or can carriers filter them?"
+        },
+        {
+          "stage": "fit",
+          "text": "I look after IT for three small factories with old alarm panels that only email; does an email-to-text service work when the panel cannot be changed at all?"
+        },
+        {
+          "stage": "compare",
+          "text": "For texting Datadog alerts to our on-call phones, how does Twilio compare with a simple email-to-SMS service for a team that has no developer to build integrations?"
+        },
+        {
+          "stage": "decide",
+          "text": "We have chosen to text our Grafana alerts to the on-call rota; what are the setup steps, and can we test with one alert before moving the whole team?"
+        },
+        {
+          "stage": "problem",
+          "text": "Our carrier shut down its free email-to-text gateway, and now the alerts from our monitoring server that used it never reach my phone at all."
+        },
+        {
+          "stage": "options",
+          "text": "I run IT at a small school district and our network monitor emails alerts; is there a way to text a whole on-call group from one alert email?"
+        }
+      ],
+      "fitsUrl": "https://textbolt.com/blog/how-to-set-up-text-alerts-for-business/"
+    },
+    {
+      "name": "Appointment reminders by text for small clinics",
+      "situation": "A small clinic loses money to no-shows because reminder calls take staff hours, and it wants reminders to go out by text from the tools it already uses.",
+      "example": "appointment reminder texts for a small clinic",
+      "questions": [
+        {
+          "stage": "problem",
+          "text": "Our two-doctor physiotherapy clinic had nine no-shows last week, and our receptionist spends every afternoon phoning patients to remind them about tomorrow."
+        },
+        {
+          "stage": "options",
+          "text": "We book patients in Outlook calendars at our small chiropractic clinic; what ways exist to send appointment reminders by text without buying a whole new practice system?"
+        },
+        {
+          "stage": "doubts",
+          "text": "I manage a small dental office and worry about patient privacy; is it safe to send appointment reminders by text, and what should the message leave out?"
+        },
+        {
+          "stage": "fit",
+          "text": "Our counselling practice has three part-time staff and no IT person; can we send reminder texts from the shared email inbox we already use for bookings?"
+        },
+        {
+          "stage": "compare",
+          "text": "For reminder texts at a small vet clinic, how does SimpleTexting compare with sending texts straight from our email, on price and on handling patient replies?"
+        },
+        {
+          "stage": "decide",
+          "text": "We have decided to text reminders to patients at our clinic; how fast can we go live, and can patients reply to confirm or cancel by text?"
+        },
+        {
+          "stage": "doubts",
+          "text": "Our clinic reminder texts would go out from one number to hundreds of patients each week; will carriers block them, and how do we keep delivery reliable?"
+        },
+        {
+          "stage": "fit",
+          "text": "I run a small optician with two branches and one booking inbox; can reminder texts show which branch the appointment is at without extra software?"
+        }
+      ],
+      "fitsUrl": null
+    },
+    {
+      "name": "Cheaper alternative to Twilio for alerts",
+      "situation": "A small team that wired alerts to Twilio years ago now pays a developer to keep it working, and wants something cheaper it can run itself.",
+      "example": "cheaper alternative to Twilio for SMS alerts",
+      "questions": [
+        {
+          "stage": "problem",
+          "text": "Our small logistics firm pays a contractor every month to maintain the Twilio script that texts delivery alerts, and the bill keeps growing for a few hundred messages."
+        },
+        {
+          "stage": "options",
+          "text": "We send about five hundred alert texts a month through Twilio at our office; what simpler options exist that a non-developer could manage day to day?"
+        },
+        {
+          "stage": "doubts",
+          "text": "If we move our alert texts off Twilio at our small manufacturing company, will we lose our existing number, and what breaks for the people who get them?"
+        },
+        {
+          "stage": "fit",
+          "text": "I am the office manager at a property management company with no developer; is there an alerts service we can set up from email instead of code?"
+        },
+        {
+          "stage": "compare",
+          "text": "For low-volume business alerts, how do Twilio and SimpleTexting compare on monthly cost and setup effort for a team that cannot write or maintain code?"
+        },
+        {
+          "stage": "decide",
+          "text": "We are about to replace Twilio for our alert texts; how do we move our number and contact list, and is there a trial before we switch?"
+        },
+        {
+          "stage": "problem",
+          "text": "Our Twilio alert integration broke after an API change and our only developer has left; our facility alerts have not reached anyone by text for two days."
+        },
+        {
+          "stage": "compare",
+          "text": "Our IT team is weighing Twilio against an email-to-SMS gateway for alarm texts; which is cheaper per month at around a thousand messages?"
+        }
+      ],
+      "fitsUrl": null
+    }
+  ]
+}

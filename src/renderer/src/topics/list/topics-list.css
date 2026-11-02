@@ -1,0 +1,439 @@
+/* Topics (Docs/TOPICS-SPEC.md §8.1, Mockups Topics.dc.html). */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .tl-screen {
+    gap: var(--s-6);
+  }
+
+  .tl-screen[aria-busy='true'] .ui-kpis,
+  .tl-screen[aria-busy='true'] .tl-grid {
+    opacity: 0.6;
+    transition: opacity var(--shell-speed);
+  }
+
+  .tl-lead {
+    max-width: 72ch;
+    margin: var(--s-1) 0 0;
+    color: var(--ink-2);
+  }
+
+  .tl-empty-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .tl-empty-actions {
+    justify-content: center;
+  }
+
+  /* Status line after an action */
+  .tl-notice {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: center;
+    margin: 0;
+    padding: var(--s-2) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .tl-notice-ok {
+    border-color: var(--spruce-line);
+    background: var(--ok-tint);
+  }
+
+  .tl-notice-bad {
+    border-color: var(--bad);
+    background: var(--bad-tint);
+    color: var(--bad-ink);
+  }
+
+  .tl-notice > span {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  /* Topics grid */
+  .tl-topic {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .tl-topic-name {
+    overflow: hidden;
+    font-weight: var(--fw-semibold);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tl-topic-origin {
+    overflow: hidden;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tl-cited {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .tl-cited-bar {
+    flex: 1 1 56px;
+    min-width: 40px;
+  }
+
+  .tl-cited-pct {
+    min-width: 4ch;
+    font-weight: var(--fw-medium);
+    text-align: end;
+  }
+
+  .tl-targets {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .tl-target-url {
+    min-width: 0;
+  }
+
+  .tl-more {
+    flex: none;
+    font-size: var(--fs-small);
+  }
+
+  /* Name cell: the name and its Paused chip on one line; rename in place */
+  .tl-topic-line {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .tl-topic-line > .tl-topic-name {
+    cursor: pointer;
+  }
+
+  .tl-topic-editing {
+    gap: var(--s-1);
+  }
+
+  .tl-rename {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .tl-rename-error {
+    color: var(--bad-ink);
+    font-size: var(--fs-small);
+  }
+
+  /* New empty topic, above the grid or the empty state */
+  .tl-new-empty {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3) var(--s-4);
+    align-items: flex-end;
+    padding: var(--s-4) var(--s-5);
+    border: 1px solid var(--line);
+    border-radius: var(--r-l);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .tl-new-empty-field {
+    display: flex;
+    flex: 1 1 320px;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-width: 0;
+  }
+
+  .tl-new-empty-label {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .tl-new-empty-hint {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .tl-new-empty-actions {
+    display: flex;
+    flex: none;
+    gap: var(--s-2);
+    padding-bottom: var(--s-5);
+  }
+
+  .tl-bulk-menu-head {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  /* Suggest topics */
+  .tl-suggest {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--r-l);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .tl-suggest > .ui-sechead {
+    padding: var(--s-4) var(--s-5);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .tl-suggest > .ui-empty,
+  .tl-suggest > .ui-progress {
+    margin: var(--s-4) var(--s-5);
+  }
+
+  .tl-ideas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tl-idea {
+    display: flex;
+    gap: var(--s-3);
+    align-items: flex-start;
+    min-width: 0;
+    padding: var(--s-4) var(--s-5);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .tl-idea:nth-child(odd) {
+    border-right: 1px solid var(--line);
+  }
+
+  .tl-idea input {
+    flex: none;
+    margin-top: 3px;
+    accent-color: var(--select);
+  }
+
+  .tl-idea-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    cursor: pointer;
+  }
+
+  .tl-idea-name {
+    font-weight: var(--fw-semibold);
+  }
+
+  .tl-idea-example {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .tl-idea-meta {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .tl-suggest-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--s-3) var(--s-5);
+    background: var(--inset);
+  }
+
+  .tl-suggest-count {
+    margin: 0;
+  }
+
+  .tl-suggest-actions {
+    display: flex;
+    gap: var(--s-2);
+  }
+
+  .tl-error {
+    margin: 0;
+    color: var(--bad-ink);
+  }
+
+  /* Merge and Split drawers */
+  .tl-action p {
+    margin: 0;
+  }
+
+  .tl-moving {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding-left: var(--s-5);
+    color: var(--ink-2);
+  }
+
+  .tl-choices {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    max-height: 360px;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    border: 0;
+  }
+
+  .tl-choice {
+    display: flex;
+    gap: var(--s-3);
+    align-items: center;
+    min-height: 36px;
+    padding: 0 var(--s-2);
+    border-radius: var(--r-s);
+    cursor: pointer;
+  }
+
+  .tl-choice:hover {
+    background: var(--inset);
+  }
+
+  .tl-choice input {
+    accent-color: var(--select);
+  }
+
+  .tl-choice-note {
+    margin-left: auto;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    white-space: nowrap;
+  }
+
+  .tl-split {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tl-split li {
+    display: flex;
+    gap: var(--s-3);
+    align-items: center;
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-s);
+    background: var(--inset);
+  }
+
+  @media (width <= 1180px) {
+    .tl-ideas {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tl-idea:nth-child(odd) {
+      border-right: 0;
+    }
+  }
+
+  /* Dashboard: folder rows, counts, the Move to folder picker */
+  .tl-folder {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-3);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .tl-folder-name {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .tl-folder-meta {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .tl-folder-menu {
+    display: inline-flex;
+  }
+
+  /* A count that opens its list: plain until hover or keyboard focus (drill.css). */
+  .tl-count {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+    text-decoration: underline solid transparent;
+    text-underline-offset: 3px;
+  }
+
+  .tl-count:hover,
+  .tl-count:focus-visible {
+    text-decoration-color: currentcolor;
+  }
+
+  .tl-count:focus-visible {
+    border-radius: var(--r-s);
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .tl-dash-grid {
+    padding: var(--s-4);
+  }
+
+  /* The engine filter's spot, as in a list toolbar (audit #4). */
+  .tl-dash-bar {
+    margin-bottom: var(--s-3);
+  }
+
+  .tl-folder-pick {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .tl-folder-option {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    cursor: pointer;
+  }
+
+  .tl-folder-option:has(input:checked) {
+    border-color: var(--select-line);
+    background: var(--select-tint);
+  }
+
+  .tl-folder-option .faint {
+    margin-left: auto;
+  }
+}

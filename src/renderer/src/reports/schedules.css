@@ -1,0 +1,539 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * Scheduled reports, v2: header with one primary (New schedule), tabs for
+ * Schedules and Delivery history (each a ListGrid), the form in a side panel,
+ * and schedule or delivery details in the same side panel shell.
+ */
+@layer screens {
+  .rpt {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+  }
+
+  .rpt-tabpanel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin-top: calc(var(--s-2) * -1);
+  }
+
+  .rpt-tabpanel:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 4px;
+    border-radius: var(--r-s);
+  }
+
+  .rpt-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  .rpt-empty {
+    padding: var(--s-2);
+  }
+
+  .rpt-line {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .rpt-banner {
+    margin: 0;
+    padding: var(--s-2) var(--s-4);
+    border: 1px solid var(--warn-tint);
+    border-radius: var(--r-m);
+    background: var(--warn-tint);
+    color: var(--warn);
+    font-size: var(--fs-ui);
+  }
+
+  .rpt-banner a {
+    color: inherit;
+    font-weight: var(--fw-medium);
+  }
+
+  .rpt-alert {
+    margin: 0;
+    padding: var(--s-2) var(--s-4);
+    border-radius: var(--r-m);
+    background: var(--bad-tint);
+    color: var(--bad);
+    font-size: var(--fs-ui);
+  }
+
+  .rpt-alert:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .rpt-csv-note {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  /* ---- Grid cells: one line each (44px rows) ---- */
+  .rpt-clip {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .rpt-cell-strong {
+    font-weight: var(--fw-medium);
+  }
+
+  .rpt-muted,
+  .rpt-sub {
+    color: var(--ink-3);
+  }
+
+  .rpt-bad {
+    color: var(--bad);
+  }
+
+  .rpt-cell-link {
+    display: block;
+    max-width: 100%;
+    min-height: 24px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .rpt-cell-link:hover > span,
+  .rpt-cell-link:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--ink-4);
+  }
+
+  .rpt-cell-link:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .rpt-text-btn {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--action-ink);
+    font: inherit;
+    font-weight: var(--fw-medium);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .rpt-text-btn:hover:not(:disabled) {
+    text-decoration: underline;
+  }
+
+  .rpt-text-btn:disabled {
+    color: var(--ink-3);
+    cursor: default;
+  }
+
+  .rpt-text-btn:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .rpt .switch {
+    width: 36px;
+    height: 20px;
+  }
+
+  .rpt .switch .knob {
+    width: 16px;
+    height: 16px;
+  }
+
+  .rpt .switch.on {
+    background: var(--ok);
+  }
+
+  /* ---- Form (in the side panel) ---- */
+  .rpt-form,
+  .rpt-preview {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .rpt-form > .rpt-muted {
+    margin: 0;
+    font-size: var(--fs-ui);
+  }
+
+  .rpt-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .rpt-label {
+    padding: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-ui);
+  }
+
+  .rpt-help {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .rpt-select {
+    appearance: auto;
+  }
+
+  .rpt-grid2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-3) var(--s-4);
+  }
+
+  .rpt-trig,
+  .rpt-markets,
+  .rpt-rcpts,
+  .rpt-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .rpt-actions .ui-input {
+    flex: 1 1 200px;
+  }
+
+  .rpt-check {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: center;
+    font-size: var(--fs-body);
+  }
+
+  .rpt-check input {
+    margin: 0;
+    accent-color: var(--select);
+  }
+
+  /* "When to send": four bordered choices. */
+  .rpt-trig {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-bottom: var(--s-2);
+  }
+
+  .rpt-trig > .rpt-check {
+    min-height: var(--h-control);
+    padding: 0 var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+    cursor: pointer;
+  }
+
+  .rpt-trig > .rpt-check:has(input:checked) {
+    border-color: var(--select-line);
+    background: var(--select-tint);
+  }
+
+  .rpt-trig > .rpt-check:has(input:focus-visible) {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+
+  .rpt-toggle {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    padding: 0 var(--s-3);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--ink-2);
+    font: inherit;
+    font-size: var(--fs-ui);
+    cursor: pointer;
+  }
+
+  .rpt-toggle[aria-pressed='true'] {
+    border-color: var(--spruce);
+    background: var(--spruce);
+    color: var(--spruce-ink);
+  }
+
+  .rpt-toggle:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .rpt-chip {
+    display: inline-flex;
+    gap: var(--s-1);
+    align-items: center;
+    height: 28px;
+    padding: 0 var(--s-1) 0 var(--s-3);
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    border: 1px solid var(--line);
+    font-family: var(--font-code);
+    font-size: var(--fs-small);
+  }
+
+  .rpt-chip button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: none;
+    color: var(--ink-3);
+    cursor: pointer;
+  }
+
+  .rpt-chip button:hover {
+    background: var(--hover);
+    color: var(--ink);
+  }
+
+  /* ---- Email preview ---- */
+  .rpt-preview {
+    margin-top: var(--s-6);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--line);
+  }
+
+  .rpt-own {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin-top: var(--s-4);
+    padding: var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  .rpt-own-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2);
+  }
+
+  .rpt-own-head h4 {
+    margin: 0;
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .rpt-own-result {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .rpt-preview-head {
+    display: flex;
+    gap: var(--s-3);
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .rpt-preview-head h3 {
+    margin: 0;
+    font-size: var(--fs-h3);
+    line-height: var(--lh-h3);
+  }
+
+  .rpt-preview-head p {
+    margin: 0;
+    font-size: var(--fs-small);
+  }
+
+  .rpt-mail {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    /* Re-declared so the text takes the card's light tokens, not the inherited dark ink. */
+    color: var(--ink);
+    font-size: var(--fs-ui);
+  }
+
+  .rpt-mail-head,
+  .rpt-mail-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding: var(--s-3) var(--s-4);
+  }
+
+  .rpt-mail-head {
+    border-bottom: 1px solid var(--line);
+    background: var(--inset);
+  }
+
+  .rpt-mail-subject {
+    font-weight: var(--fw-semibold);
+  }
+
+  .rpt-mail-body p,
+  .rpt-mail-body ul {
+    margin: 0;
+  }
+
+  .rpt-mail-body ul {
+    padding-left: var(--s-5);
+  }
+
+  .rpt-k {
+    color: var(--ink-3);
+  }
+
+  .rpt-ai-lines {
+    margin: 0;
+    padding-left: var(--s-5);
+    font-size: var(--fs-ui);
+  }
+
+  /* ---- Schedule drawer (80% Drawer): settings left, live email preview right ---- */
+  .rpt-sd-cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.8fr);
+    gap: var(--s-6);
+    align-items: start;
+  }
+
+  .rpt-sd-form {
+    gap: var(--s-5);
+    min-width: 0;
+  }
+
+  .rpt-sd-preview {
+    position: sticky;
+    top: 0;
+    min-width: 0;
+  }
+
+  .rpt-sd-preview .rpt-preview {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .rpt-sd-foot {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .rpt-sd-foot > [data-testid='sd-next-send'] {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+  }
+
+  .rpt-sd-view {
+    align-items: start;
+  }
+
+  .rpt-rcpt-row {
+    display: flex;
+    gap: var(--s-2);
+    align-items: flex-start;
+  }
+
+  .rpt-rcpt-row > :first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .rpt-events {
+    margin-top: var(--s-2);
+  }
+
+  .rpt-points {
+    width: 64px;
+  }
+
+  .rpt-confirm-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: var(--s-2) 0;
+    padding-left: var(--s-5);
+    font-size: var(--fs-ui);
+  }
+
+  /* ---- All sends ---- */
+  .rpt-send-what {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .rpt-send-kind {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .rpt-plain {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rpt-sends {
+    font-size: var(--fs-ui);
+  }
+
+  @media (max-width: 1100px) {
+    .rpt-sd-cols {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .rpt-sd-preview {
+      position: static;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .rpt-grid2,
+    .rpt-trig {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

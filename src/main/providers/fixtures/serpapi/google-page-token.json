@@ -1,0 +1,7 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": { "status": "Success", "id": "fixture-google-token" },
+    "ai_overview": { "page_token": "fixture-page-token" }
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "_note": "Recorded Claude reply for the video_brief template (TextBolt seed page).",
+  "structured_output": {
+    "title": "Alert your crew by text without a developer",
+    "hook": "Your crew is out on site and nobody reads email. Here is how to turn the alerts you already send into texts, with no developer.",
+    "chapters": [
+      {
+        "at": "00:00",
+        "name": "The problem"
+      },
+      {
+        "at": "00:20",
+        "name": "Send email to a gateway"
+      },
+      {
+        "at": "01:05",
+        "name": "Test it"
+      },
+      {
+        "at": "01:40",
+        "name": "What it can't do"
+      }
+    ],
+    "script": [
+      {
+        "at": "00:00",
+        "text": "Your crew is out on site, and the alert sits in an inbox.",
+        "source": null
+      },
+      {
+        "at": "00:20",
+        "text": "TextBolt sends text alerts from email, so the tools you already use can text your crew.",
+        "source": 1
+      },
+      {
+        "at": "00:45",
+        "text": "No developer is required to set it up.",
+        "source": 1
+      },
+      {
+        "at": "01:05",
+        "text": "Send a test alert and watch it land on your phone in seconds.",
+        "source": 2
+      },
+      {
+        "at": "01:40",
+        "text": "Replies come back to the inbox that sent the alert.",
+        "source": 3
+      }
+    ],
+    "sources": [
+      {
+        "n": 1,
+        "section": "Text alerts for business",
+        "onPage": true
+      },
+      {
+        "n": 2,
+        "section": "Not on the page yet. Add a test step before you publish, or cut the line.",
+        "onPage": false
+      },
+      {
+        "n": 3,
+        "section": "Not on the page yet. Say that replies come back to the sending inbox before you publish, or cut the line.",
+        "onPage": false
+      }
+    ],
+    "description": "Turn the email alerts you already send into texts for your crew, with no developer.\n\nStep-by-step guide: https://textbolt.com/blog/how-to-set-up-text-alerts-for-business/\n\n00:00 The problem\n00:20 Send email to a gateway\n01:05 Test it\n01:40 What it can't do",
+    "thumbnailText": "Email alerts → texts",
+    "tags": ["text alerts", "email to sms", "crew alerts", "No Developer"],
+    "scenes": [
+      {
+        "name": "Hook",
+        "at": "00:00",
+        "kind": "card",
+        "note": "Nobody reads email on site"
+      },
+      {
+        "name": "Gateway",
+        "at": "00:20",
+        "kind": "screenshot",
+        "note": "Email settings with the gateway address"
+      },
+      {
+        "name": "Test",
+        "at": "01:05",
+        "kind": "demo",
+        "note": "The phone buzzes"
+      },
+      {
+        "name": "Limits",
+        "at": "01:40",
+        "kind": "slide",
+        "note": "No acknowledgment"
+      },
+      {
+        "name": "Call to action",
+        "at": "02:00",
+        "kind": "card",
+        "note": "Full guide linked below"
+      }
+    ]
+  }
+}

@@ -1,0 +1,140 @@
+/* The Edit question and Move / Duplicate drawers, and inline edit on Questions. Tokens from styles/tokens.css. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .qe-textarea {
+    height: auto;
+    min-height: 88px;
+    padding: var(--s-2) 12px;
+    resize: vertical;
+  }
+
+  .qe-check {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: center;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .qe-warning {
+    margin: var(--s-3) 0 0;
+    color: var(--bad);
+    font-size: var(--fs-ui);
+  }
+
+  .qe-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    align-items: flex-start;
+  }
+
+  .qe-dest-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .qe-dest {
+    display: flex;
+    gap: var(--s-3);
+    align-items: center;
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+    cursor: pointer;
+  }
+
+  .qe-dest:has(input:checked) {
+    border-color: var(--select);
+    background: var(--select-tint);
+  }
+
+  .qe-dest:has(input:disabled) {
+    cursor: default;
+    opacity: 0.6;
+  }
+
+  .qe-dest-name {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .qe-dest-meta {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    white-space: nowrap;
+  }
+
+  .qe-dest-head {
+    margin: var(--s-3) 0 var(--s-1);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .qe-picked {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .qe-picked li {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .qe-picked-from {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .qs-inline-edit {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .qs-inline-edit input {
+    height: var(--h-control-sm);
+    font-size: var(--fs-ui);
+  }
+
+  .qs-inline-hint {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .qs-inline-hint[data-problem] {
+    color: var(--bad);
+  }
+
+  /* The rail is narrow: a short label column, and long values wrap or clip. */
+  .qe-where .ui-drawer-fact {
+    grid-template-columns: minmax(56px, 80px) minmax(0, 1fr);
+    gap: var(--s-3);
+  }
+
+  .qe-where .ui-drawer-fact dd {
+    overflow: hidden;
+    overflow-wrap: anywhere;
+  }
+
+  .qe-where .ui-drawer-fact dd > * {
+    max-width: 100%;
+  }
+}

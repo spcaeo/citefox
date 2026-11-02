@@ -1,0 +1,4 @@
+{
+  "name": "Text alerts from monitoring tools",
+  "situation": "IT teams get alerts from monitoring and alarm software by email and miss them at night; they want those alerts to reach on-call phones as texts."
+}

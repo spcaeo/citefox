@@ -1,0 +1,239 @@
+@layer shared, results, screens, utilities;
+
+/* Alert rules: the list, the alert-rule drawer, the dry run and the Alert log. */
+@layer screens {
+  .ar-cell-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .ar-cell-end {
+    align-items: flex-end;
+  }
+
+  .ar-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  .ar-rule-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: var(--fw-semibold);
+  }
+
+  .ar-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    text-align: left;
+    text-decoration: underline;
+    text-decoration-color: var(--line-strong);
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .ar-link:hover {
+    text-decoration-color: var(--action-ink);
+  }
+
+  .ar-link:focus-visible {
+    border-radius: var(--r-s);
+    box-shadow: var(--focus-ring);
+    outline: none;
+  }
+
+  .ar-rule-filter .select {
+    height: var(--h-control-sm);
+    max-width: 220px;
+  }
+
+  /* When: one row per kind, the chosen one tinted with its value inline. */
+  .ar-when {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .ar-when-row {
+    display: grid;
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+    align-items: center;
+    gap: 2px var(--s-3);
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid transparent;
+    border-radius: var(--r-s);
+  }
+
+  .ar-when-row.on {
+    border-color: var(--select-line);
+    background: var(--select-tint);
+  }
+
+  .ar-when-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-weight: var(--fw-medium);
+    cursor: pointer;
+  }
+
+  .ar-when-label input {
+    accent-color: var(--select);
+  }
+
+  .ar-when-extra {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .ar-when-hint,
+  .ar-when-row > .ui-drawer-error {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding-left: 24px;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ar-when-row > .ui-drawer-error {
+    color: var(--bad-ink);
+  }
+
+  .ar-num.ob-input {
+    width: 72px;
+    height: var(--h-control-sm);
+    text-align: right;
+  }
+
+  .ar-domain.ob-input {
+    width: 100%;
+    max-width: 300px;
+    height: var(--h-control-sm);
+  }
+
+  .ar-scope,
+  .ar-send {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  .ar-markets {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .ar-check {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-1) var(--s-2);
+    font-weight: var(--fw-medium);
+    cursor: pointer;
+  }
+
+  .ar-check input {
+    accent-color: var(--select);
+  }
+
+  .ar-check .hint {
+    flex-basis: 100%;
+    padding-left: 24px;
+    font-weight: var(--fw-regular);
+  }
+
+  .ar-delivery {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    gap: var(--s-2);
+  }
+
+  .ar-delivery legend {
+    margin-bottom: var(--s-2);
+  }
+
+  .ar-save-error {
+    color: var(--bad-ink);
+    font-weight: var(--fw-regular);
+  }
+
+  /* Dry run and Alert log events. */
+  .ar-events {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ar-event {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    padding: var(--s-3) 0;
+    border-top: 1px solid var(--line);
+    /* UrlText parks its hidden Copy and Open past its end; keep them inside the rail. */
+    overflow-x: clip;
+  }
+
+  .ar-event:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .ar-event-top {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-2);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .ar-event-page {
+    overflow: hidden;
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ar-event-what {
+    margin: var(--s-1) 0 0;
+    color: var(--ink);
+  }
+
+  .ar-event-details {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ar-events-empty {
+    margin: 0;
+  }
+
+  .ar-described {
+    margin: var(--s-3) 0 0;
+  }
+}

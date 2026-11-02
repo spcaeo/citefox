@@ -1,0 +1,18 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": { "status": "Success", "id": "fixture-own-page" },
+    "ai_overview": {
+      "text_blocks": [
+        { "type": "paragraph", "snippet": "Pricing starts with the published plan." }
+      ],
+      "references": [
+        {
+          "title": "Pricing",
+          "link": "https://www.textbolt.com/pricing/?utm_source=aio",
+          "source": "TextBolt"
+        }
+      ]
+    }
+  }
+}

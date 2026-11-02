@@ -1,0 +1,18 @@
+#!/bin/sh
+# Stand-in for Claude Code, for testing what CiteFox does when Claude stops.
+# Point Settings > Claude binary path at this file. It runs ../fake-claude.mjs with Node.
+# See Docs/TESTING-CLAUDE-FAILURES.md.
+DIR="$(cd "$(dirname "$0")" && pwd)"
+NODE="${FAKE_CLAUDE_NODE:-}"
+if [ -z "$NODE" ]; then NODE="$(command -v node 2>/dev/null)"; fi
+if [ -z "$NODE" ]; then
+  # An app opened from the Dock has a short PATH: look in the usual places.
+  for candidate in "$HOME"/.nvm/versions/node/*/bin/node /opt/homebrew/bin/node /usr/local/bin/node; do
+    if [ -x "$candidate" ]; then NODE="$candidate"; fi
+  done
+fi
+if [ -z "$NODE" ]; then
+  echo "fake-claude: Node was not found. Set FAKE_CLAUDE_NODE to its full path." >&2
+  exit 127
+fi
+exec "$NODE" "$DIR/../fake-claude.mjs" "$@"

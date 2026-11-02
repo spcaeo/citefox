@@ -1,0 +1,24 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": {
+      "status": "Success",
+      "id": "textbolt-p5"
+    },
+    "ai_overview": {
+      "text_blocks": [
+        {
+          "type": "paragraph",
+          "snippet": "Replace the old carrier address with a registered gateway and send a test."
+        }
+      ],
+      "references": [
+        {
+          "title": "Carrier gateways",
+          "link": "https://simpletexting.com/carrier-gateways",
+          "source": "SimpleTexting"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,326 @@
+/* The citation celebration: masked window, a playing card dealt into the middle, confetti (celebrate/). v2 tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  /* Layers: the mask, then the confetti across the window, then the card. */
+  .celebrate-dim {
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-drawer) + 19);
+    background: var(--scrim);
+    backdrop-filter: blur(3px);
+  }
+
+  .celebrate-confetti {
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-drawer) + 20);
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+  }
+
+  .celebrate-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-drawer) + 21);
+    display: grid;
+    place-items: center;
+    padding: var(--s-4);
+    cursor: pointer;
+    perspective: 1400px;
+  }
+
+  /* The card: a bold fox-to-gold frame round a light face, portrait like a playing card. */
+  .celebrate-card {
+    position: relative;
+    width: min(400px, 100%);
+    max-height: calc(100vh - 2 * var(--s-4));
+    padding: 6px;
+    overflow: hidden;
+    border-radius: 22px;
+    background: linear-gradient(150deg, var(--fox), var(--mark-line) 55%, var(--fox));
+    box-shadow:
+      var(--e3),
+      0 0 0 1px var(--line);
+    font-family: var(--font-ui);
+    cursor: default;
+  }
+
+  .celebrate-face {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: min(500px, calc(100vh - 2 * var(--s-4) - 12px));
+    max-height: calc(100vh - 2 * var(--s-4) - 12px);
+    overflow-y: auto;
+    padding: var(--s-4) var(--s-6) var(--s-6);
+    border: 1px solid var(--tint-mint-line);
+    border-radius: 17px;
+    background: var(--surface);
+    color: var(--ink);
+    text-align: center;
+  }
+
+  /* The picture's own window at the top of the face, as on a trading card; it takes the spare height. */
+  .celebrate-art-window {
+    display: grid;
+    flex: 1 1 auto;
+    place-items: center;
+    align-self: stretch;
+    min-height: 0;
+    margin-bottom: var(--s-2);
+    border: 1px solid var(--tint-mint-line);
+    border-radius: var(--r-l);
+    background: var(--tint-mint);
+  }
+
+  .celebrate-art {
+    width: min(240px, 32vh);
+    height: auto;
+  }
+
+  .celebrate-headline {
+    margin: 0;
+    font-size: var(--fs-display);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    overflow-wrap: anywhere;
+  }
+
+  .celebrate-line {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-body);
+    font-weight: 600;
+  }
+
+  .celebrate-engine {
+    flex: none;
+    border-radius: var(--r-s);
+  }
+
+  .celebrate-prompt {
+    max-width: 100%;
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-body);
+    overflow-wrap: anywhere;
+  }
+
+  .celebrate-page {
+    max-width: 100%;
+    font-size: var(--fs-ui);
+  }
+
+  .celebrate-ok {
+    margin-top: var(--s-3);
+    min-width: 140px;
+  }
+
+  /* The shine that sweeps across the face once the card has landed. */
+  .celebrate-shine {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      105deg,
+      transparent 35%,
+      color-mix(in srgb, var(--surface) 70%, transparent) 50%,
+      transparent 65%
+    );
+    opacity: 0;
+    transform: translateX(-120%);
+    pointer-events: none;
+  }
+
+  /* The picture (CelebrationArt.tsx). */
+  .celebrate-art-glow {
+    fill: var(--mark);
+    opacity: 0.8;
+  }
+
+  .celebrate-art-cup {
+    fill: var(--fox);
+  }
+
+  .celebrate-art-handle {
+    fill: none;
+    stroke: var(--fox);
+    stroke-width: 7;
+    stroke-linecap: round;
+  }
+
+  .celebrate-art-cup-shine {
+    fill: none;
+    stroke: var(--on-fox);
+    stroke-width: 4;
+    stroke-linecap: round;
+    opacity: 0.35;
+  }
+
+  .celebrate-art-base {
+    fill: var(--chart-2);
+  }
+
+  .celebrate-art-star {
+    fill: var(--mark);
+    stroke: var(--mark-line);
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+  }
+
+  .celebrate-art-sparkle {
+    fill: var(--mark-line);
+  }
+
+  .celebrate-art-sparkle.is-b,
+  .celebrate-art-sparkle.is-d {
+    fill: var(--fox);
+  }
+
+  .celebrate-art-dot {
+    fill: var(--ok);
+  }
+
+  /*
+   * Motion only when the computer allows it: the card flies up from below with a flip
+   * and a little overshoot, the shine sweeps across, the trophy glows and the sparkles
+   * twinkle. With reduced motion the card only fades in.
+   */
+  .celebrate-moment > * {
+    transition: opacity 600ms ease-in;
+  }
+
+  .celebrate-moment[data-motion='on'][data-leaving] > * {
+    opacity: 0;
+  }
+
+  .celebrate-moment > .celebrate-dim {
+    animation: celebrate-fade 260ms ease-out;
+  }
+
+  .celebrate-moment[data-motion='off'] .celebrate-card {
+    animation: celebrate-fade 260ms ease-out;
+  }
+
+  .celebrate-moment[data-motion='on'] .celebrate-card {
+    animation: celebrate-deal 820ms cubic-bezier(0.2, 0.9, 0.3, 1) both;
+  }
+
+  .celebrate-moment[data-motion='on'] .celebrate-shine {
+    animation: celebrate-shine 900ms 760ms ease-in-out;
+  }
+
+  .celebrate-moment[data-motion='on'] .celebrate-art-glow {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: celebrate-glow 1100ms 700ms ease-in-out infinite alternate;
+  }
+
+  .celebrate-moment[data-motion='on'] .celebrate-art-trophy {
+    transform-box: view-box;
+    transform-origin: 80px 126px;
+    animation: celebrate-bounce 700ms 520ms cubic-bezier(0.3, 1.6, 0.5, 1) both;
+  }
+
+  .celebrate-moment[data-motion='on'] .celebrate-art-sparkle {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: celebrate-twinkle 700ms ease-in-out infinite alternate;
+  }
+
+  .celebrate-moment[data-motion='on'] .celebrate-art-sparkle.is-b {
+    animation-delay: 250ms;
+  }
+
+  .celebrate-moment[data-motion='on'] .celebrate-art-sparkle.is-c {
+    animation-delay: 450ms;
+  }
+
+  .celebrate-moment[data-motion='on'] .celebrate-art-sparkle.is-d {
+    animation-delay: 150ms;
+  }
+
+  .celebrate-moment[data-leaving] .celebrate-scrim {
+    pointer-events: none;
+  }
+
+  @keyframes celebrate-fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes celebrate-deal {
+    0% {
+      opacity: 0;
+      transform: translateY(90px) rotateY(-90deg) scale(0.86);
+    }
+
+    55% {
+      opacity: 1;
+      transform: translateY(-8px) rotateY(10deg) scale(1.03);
+    }
+
+    78% {
+      transform: translateY(2px) rotateY(-4deg) scale(0.995);
+    }
+
+    100% {
+      transform: none;
+    }
+  }
+
+  @keyframes celebrate-shine {
+    0% {
+      opacity: 1;
+      transform: translateX(-120%);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateX(120%);
+    }
+  }
+
+  @keyframes celebrate-glow {
+    from {
+      opacity: 0.55;
+      transform: scale(0.94);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1.06);
+    }
+  }
+
+  @keyframes celebrate-bounce {
+    0% {
+      transform: scale(0.6);
+    }
+
+    100% {
+      transform: none;
+    }
+  }
+
+  @keyframes celebrate-twinkle {
+    from {
+      opacity: 0.5;
+      transform: scale(0.75) rotate(0deg);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1.15) rotate(25deg);
+    }
+  }
+}

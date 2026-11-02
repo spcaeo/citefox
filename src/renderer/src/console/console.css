@@ -1,0 +1,454 @@
+/* The work console (Work console mock-up): a floating DOS-style window and its pill. v2 tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .wc {
+    position: fixed;
+    right: var(--s-6);
+    /* --wc-clear: the height of a sticky footer under the corner (WorkConsole.tsx). */
+    bottom: calc(var(--s-6) + var(--wc-clear, 0px));
+    z-index: var(--z-console);
+    display: flex;
+    flex-direction: column;
+    width: min(640px, calc(100vw - 32px));
+    max-height: min(520px, calc(100vh - 96px - var(--wc-clear, 0px)));
+    overflow: hidden;
+    border-radius: var(--r-m);
+    background: var(--spruce);
+    box-shadow:
+      0 0 0 1px var(--console-border),
+      0 24px 64px color-mix(in srgb, var(--e-color) 34%, transparent);
+    color: var(--spruce-ink);
+    font-family: var(--font-code);
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+
+  .wc-bar {
+    display: flex;
+    flex: none;
+    gap: var(--s-3);
+    align-items: center;
+    padding: var(--s-2) var(--s-2) var(--s-2) var(--s-4);
+    border-bottom: 1px solid var(--spruce-line);
+    background: var(--spruce-2);
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+  }
+
+  .wc-bar:active {
+    cursor: grabbing;
+  }
+
+  .wc-glyph,
+  .wc-prompt {
+    color: var(--console-prompt);
+    font-weight: var(--fw-medium);
+  }
+
+  .wc-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    font-family: var(--font-ui);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .wc-elapsed,
+  .wc-count {
+    color: var(--spruce-ink-2);
+    font-size: var(--fs-small);
+    white-space: nowrap;
+  }
+
+  .wc-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--h-control-sm);
+    height: var(--h-control-sm);
+    padding: 0;
+    border: 0;
+    border-radius: var(--r-s);
+    background: transparent;
+    color: var(--spruce-ink);
+    cursor: pointer;
+  }
+
+  .wc-icon svg {
+    fill: none;
+    stroke: currentcolor;
+    stroke-linecap: round;
+    stroke-width: 2.2;
+  }
+
+  .wc-icon:hover {
+    background: var(--spruce-line);
+  }
+
+  .wc-icon:focus-visible,
+  .wc-btn:focus-visible,
+  .wc-link:focus-visible,
+  .wc-tab:focus-visible,
+  .wc-log:focus-visible,
+  .wc-pill:focus-visible,
+  .wc-check input:focus-visible {
+    outline: 2px solid var(--console-prompt);
+    outline-offset: 2px;
+  }
+
+  .wc-tabs {
+    display: flex;
+    flex: none;
+    gap: 2px;
+    padding: var(--s-1) var(--s-1) 0;
+    overflow-x: auto;
+    background: var(--spruce-2);
+  }
+
+  .wc-tab {
+    display: inline-flex;
+    flex: none;
+    gap: var(--s-1);
+    align-items: center;
+    padding: var(--s-1) var(--s-3);
+    border: 0;
+    border-radius: var(--r-s) var(--r-s) 0 0;
+    background: transparent;
+    color: var(--spruce-ink-2);
+    font-family: var(--font-ui);
+    font-size: var(--fs-small);
+    cursor: pointer;
+  }
+
+  .wc-tab[aria-selected='true'] {
+    background: var(--spruce);
+    color: var(--spruce-ink);
+  }
+
+  .wc-tab[data-status='running'] .wc-tab-mark {
+    color: var(--console-prompt);
+  }
+
+  .wc-tab[data-status='done'] .wc-tab-mark {
+    color: var(--console-ok);
+  }
+
+  .wc-tab[data-status='error'] .wc-tab-mark {
+    color: var(--console-bad);
+  }
+
+  .wc-log {
+    flex: 1 1 auto;
+    min-height: 96px;
+    padding: var(--s-3) var(--s-4);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .wc-line {
+    margin: 0;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+  }
+
+  .wc-step,
+  .wc-dim {
+    color: var(--spruce-ink-2);
+  }
+
+  .wc-mark-running {
+    color: var(--console-prompt);
+  }
+
+  .wc-mark-ok,
+  .wc-ok {
+    color: var(--console-ok);
+  }
+
+  .wc-mark-skipped,
+  .wc-mark-warning,
+  .wc-warn {
+    color: var(--console-warn);
+  }
+
+  .wc-mark-error,
+  .wc-bad {
+    color: var(--console-bad);
+  }
+
+  .wc-error {
+    display: contents;
+  }
+
+  /* The items a job runs side by side (a check's questions), under its stage line. */
+  .wc-live-purpose {
+    padding-left: 2ch;
+  }
+
+  .wc-live-rows {
+    margin: 0;
+    padding: 0 0 0 2ch;
+    list-style: none;
+  }
+
+  /* Two lines per item: its number and words, then who is asked and for how long. */
+  .wc-live-row {
+    display: grid;
+    min-width: 0;
+  }
+
+  .wc-live-head {
+    display: flex;
+    gap: 1ch;
+    align-items: baseline;
+    min-width: 0;
+    white-space: nowrap;
+  }
+
+  .wc-live-id {
+    flex: none;
+  }
+
+  .wc-live-meta {
+    padding-left: 2ch;
+    color: var(--spruce-ink-2);
+    overflow-wrap: anywhere;
+  }
+
+  /* The words give way first; the full text is in the tooltip and copies whole. */
+  .wc-live-text {
+    --ui-url-actions: 20px;
+
+    flex: 1 1 auto;
+    min-width: 6ch;
+    color: var(--spruce-ink);
+  }
+
+  .wc-live-text .ui-url-value {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  .wc-live-text .ui-url-value:focus-visible {
+    outline-color: var(--console-prompt);
+  }
+
+  .wc-live-text .ui-url-btn {
+    width: 20px;
+    height: 20px;
+    border-color: var(--spruce-line);
+    background: var(--spruce-2);
+    color: var(--spruce-ink);
+  }
+
+  .wc-live-text.ui-url-copied .ui-url-copy {
+    border-color: var(--console-ok);
+    color: var(--console-ok);
+  }
+
+  .wc-live-engine-waiting {
+    color: var(--console-prompt);
+  }
+
+  .wc-live-engine-ok,
+  .wc-live-engine-cited {
+    color: var(--console-ok);
+  }
+
+  .wc-live-engine-failed {
+    color: var(--console-bad);
+  }
+
+  .wc-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--console-prompt);
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .wc-note {
+    flex: none;
+    margin: 0;
+    padding: var(--s-2) var(--s-4);
+    border-bottom: 1px solid var(--spruce-line);
+    color: var(--spruce-ink);
+    font-family: var(--font-ui);
+    font-size: var(--fs-small);
+    line-height: 1.45;
+  }
+
+  .wc-line .wc-spin {
+    margin-right: 0.45em;
+    vertical-align: -0.15em;
+  }
+
+  .wc-foot {
+    display: flex;
+    flex: none;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-3);
+    align-items: center;
+    padding: var(--s-2) var(--s-4) var(--s-3);
+    border-top: 1px solid var(--spruce-line);
+  }
+
+  .wc-progress {
+    flex: 1 1 120px;
+    height: 6px;
+    overflow: hidden;
+    border-radius: 3px;
+    background: var(--spruce-line);
+  }
+
+  .wc-progress > span {
+    display: block;
+    height: 100%;
+    background: var(--console-prompt);
+    transition: width var(--shell-speed) ease-out;
+  }
+
+  .wc-grow {
+    flex: 1 1 auto;
+  }
+
+  .wc-check {
+    display: inline-flex;
+    gap: var(--s-1);
+    align-items: center;
+    color: var(--spruce-ink-2);
+    font-family: var(--font-ui);
+    font-size: var(--fs-small);
+    cursor: pointer;
+  }
+
+  .wc-check input {
+    margin: 0;
+    accent-color: var(--console-prompt);
+  }
+
+  .wc-btn {
+    height: 30px;
+    padding: 0 var(--s-3);
+    border: 1px solid color-mix(in srgb, var(--spruce-ink) 30%, transparent);
+    border-radius: var(--r-s);
+    background: transparent;
+    color: var(--spruce-ink);
+    font-family: var(--font-ui);
+    font-size: var(--fs-small);
+    cursor: pointer;
+  }
+
+  .wc-btn:hover {
+    background: var(--spruce-line);
+  }
+
+  /* The pill: bottom right, the current prompt and time; green or red when a job ends. */
+  .wc-pill {
+    position: fixed;
+    right: var(--s-6);
+    bottom: calc(var(--s-6) + var(--wc-clear, 0px));
+    z-index: var(--z-console);
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: center;
+    max-width: calc(100vw - 32px);
+    height: 44px;
+    padding: 0 var(--s-4);
+    border: 0;
+    border-radius: var(--r-pill);
+    background: var(--spruce);
+    box-shadow:
+      0 0 0 1px var(--console-border),
+      0 12px 32px color-mix(in srgb, var(--e-color) 30%, transparent);
+    color: var(--spruce-ink);
+    font-family: var(--font-code);
+    font-size: 12.5px;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .wc-pill > .num {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .wc-pill-done {
+    background: var(--ok);
+    color: var(--on-solid);
+  }
+
+  .wc-pill-error {
+    background: var(--bad);
+    color: var(--on-solid);
+  }
+
+  .wc-spin {
+    flex: none;
+    fill: none;
+    stroke: var(--console-prompt);
+    stroke-linecap: round;
+    stroke-width: 2.4;
+    animation: wc-spin 0.9s linear infinite;
+  }
+
+  .wc-pill-shake {
+    animation: wc-shake 0.7s ease-in-out 3;
+  }
+
+  /* Reduced motion: no shake, one soft ring that stays until the pill is opened. */
+  .wc-pill-glow {
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, currentcolor 35%, transparent),
+      0 12px 32px color-mix(in srgb, var(--e-color) 30%, transparent);
+  }
+
+  @keyframes wc-shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+
+    15% {
+      transform: translateX(-6px);
+    }
+
+    30% {
+      transform: translateX(6px);
+    }
+
+    45% {
+      transform: translateX(-4px);
+    }
+
+    60% {
+      transform: translateX(4px);
+    }
+
+    75% {
+      transform: translateX(-2px);
+    }
+  }
+
+  @keyframes wc-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wc-spin,
+    .wc-pill-shake {
+      animation: none;
+    }
+  }
+}

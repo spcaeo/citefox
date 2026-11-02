@@ -1,0 +1,269 @@
+/* The page's Buyer profile tab, v2 (Seed-Profile.png, owner feedback 5). */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .au-screen {
+    gap: var(--card-gap);
+  }
+
+  /* Profile settings while there is no profile grid to hold it. */
+  .au-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: var(--s-4);
+  }
+
+  .au-note {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .au-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+    gap: var(--card-gap);
+    align-items: start;
+  }
+
+  .au-main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+
+  @media (max-width: 1100px) {
+    .au-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .au-point {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: var(--lh-small);
+  }
+
+  .au-point-text {
+    overflow: hidden;
+    color: var(--ink);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .au-point-reason {
+    overflow: hidden;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .au-gmeta {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .au-kv {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin: 0;
+  }
+
+  .au-kv div {
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: var(--s-3);
+  }
+
+  .au-kv dt {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-body);
+  }
+
+  .au-kv dd {
+    margin: 0;
+    min-width: 0;
+    color: var(--ink);
+    font-size: var(--fs-small);
+    line-height: var(--lh-body);
+    overflow-wrap: anywhere;
+  }
+
+  .au-rail-foot,
+  .au-editor-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .au-editor {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+  }
+
+  .au-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+  }
+
+  .au-grow {
+    flex: 1 1 260px;
+  }
+
+  .au-textarea {
+    height: auto;
+    min-height: 56px;
+    padding: var(--s-2) 12px;
+    resize: vertical;
+    font-family: var(--font-ui);
+    line-height: var(--lh-body);
+  }
+
+  /* Inline point edit: the point is a quiet button until it is clicked. */
+  .au-point-btn {
+    max-width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: text;
+  }
+
+  .au-point-btn:hover .au-point-text {
+    text-decoration: underline dotted var(--ink-4);
+    text-underline-offset: 3px;
+  }
+
+  .au-inline-input {
+    width: 100%;
+    height: var(--h-control-sm);
+  }
+
+  /* "+ Add trigger" in each section header, and its input. */
+  .au-gmeta-row {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .au-gadd {
+    width: min(360px, 40vw);
+  }
+
+  .au-drawer-error {
+    color: var(--bad);
+  }
+
+  /* Regenerate review: now and new side by side, per section. */
+  .au-diff {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .au-diff-head,
+  .au-diff-line {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 180px;
+    gap: var(--s-3);
+    align-items: start;
+  }
+
+  .au-diff-head {
+    padding-bottom: var(--s-2);
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+  }
+
+  .au-diff-line {
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .au-diff-line:last-child {
+    border-bottom: 0;
+  }
+
+  .au-diff-text,
+  .au-diff-empty {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    overflow-wrap: anywhere;
+  }
+
+  .au-diff-empty {
+    color: var(--ink-3);
+  }
+
+  .au-diff-line[data-kind='same'] .au-diff-text {
+    color: var(--ink-3);
+  }
+
+  /* The side that will not be saved fades. */
+  .au-diff-line[data-kind='changed'][data-choice='keep'] > .au-diff-text:nth-child(2),
+  .au-diff-line[data-kind='changed'][data-choice='replace'] > .au-diff-text:first-child {
+    color: var(--ink-3);
+  }
+  /* Facts in a narrow drawer rail: the label above its value. */
+  .au-rail-facts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin: 0;
+  }
+
+  .au-rail-facts dt {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .au-rail-facts dd {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    overflow-wrap: anywhere;
+  }
+
+  /* ✦ Help me fill this above the grid (HelpFill.dc.html panel 7). */
+  .au-help {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  .au-help-title {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .au-help-spark {
+    display: inline-flex;
+    color: var(--fox);
+  }
+}

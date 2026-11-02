@@ -1,0 +1,251 @@
+/* Progress tab (Mockups/Progress.dc.html) in the v2 look: KPI row, tabs, panels and list grids. Scoped to .vis-progress. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .vis-progress {
+    gap: var(--card-gap);
+  }
+
+  .vis-tabbar {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--s-4);
+    margin-bottom: calc(var(--s-2) * -1);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .vis-tabbar .ui-tabs {
+    flex: 1 1 auto;
+    min-width: 0;
+    border-bottom: 0;
+    overflow-y: hidden;
+  }
+
+  .vis-tabbar .ui-tab {
+    margin-bottom: 0;
+  }
+
+  .vis-tabbar-ai {
+    flex: none;
+    padding-bottom: var(--s-1);
+  }
+
+  .vis-tabpanel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    outline-offset: 4px;
+  }
+
+  /* A context panel: surface card, radius 10, padding 24. */
+  .vis-progress .vis-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+    padding: var(--card-pad);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .vis-progress h2 {
+    margin: 0;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    font-weight: var(--fw-semibold);
+  }
+
+  /* What changed: one chip per kind of change, then the changed prompts grouped by kind. */
+  .vis-chg-sum {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .vis-chg-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: 32px;
+    padding: 0 var(--s-2) 0 var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  .vis-progress .vis-chg-count {
+    margin-left: var(--s-1);
+    min-width: 24px;
+    padding: 1px 8px;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+
+  .vis-progress button.vis-chg-count {
+    text-decoration: underline solid transparent;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .vis-progress button.vis-chg-count:hover,
+  .vis-progress button.vis-chg-count:focus-visible {
+    color: var(--action-ink);
+    text-decoration-color: currentcolor;
+  }
+
+  .vis-progress .vis-ico-up {
+    color: var(--ok);
+  }
+
+  .vis-progress .vis-ico-down {
+    color: var(--bad);
+  }
+
+  .vis-progress .vis-ico-named {
+    color: var(--warn);
+  }
+
+  .vis-progress .vis-ico-flat {
+    color: var(--ink-3);
+  }
+
+  .vis-chg-prompt,
+  .vis-chg-detail,
+  .vis-chg-note,
+  .vis-hist-prompt,
+  .fx-grid-desc {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .vis-progress .vis-chg-note.mono {
+    font-size: var(--fs-small);
+  }
+
+  .vis-hist-fixes {
+    display: inline-flex;
+    gap: var(--s-1);
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  /* Chart detail and the page-cited / not-cited bar in the v2 chart colours. */
+  .vis-progress .vis-detail {
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--inset);
+  }
+
+  .vis-progress .vis-this {
+    background: var(--chart-cited);
+    color: var(--on-fox);
+  }
+
+  .vis-progress .vis-other {
+    background: var(--chart-not-cited);
+    color: var(--ink);
+  }
+
+  .vis-progress .vis-stack button.vis-other {
+    color: var(--ink);
+  }
+
+  .vis-progress .vis-legend {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  /* Fixes: the grid, then the picked fix as a panel. */
+  .fx-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .fx-notice:empty {
+    display: none;
+  }
+
+  .vis-progress .fx-card {
+    padding: var(--card-pad);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .vis-progress .fx-num {
+    padding: 2px 8px;
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    white-space: nowrap;
+  }
+
+  .vis-progress .fx-verdict {
+    padding: 2px 10px;
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    white-space: nowrap;
+  }
+
+  .vis-progress .fx-verdict-worked,
+  .vis-progress .fx-verdict-partly {
+    background: var(--ok-tint);
+    color: var(--ok);
+  }
+
+  .vis-progress .fx-verdict-got_worse {
+    background: var(--bad-tint);
+    color: var(--ink);
+  }
+
+  .vis-progress .fx-mark {
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink-2);
+  }
+
+  .vis-progress .fx-mark-planned {
+    border: 1px dashed var(--line-strong);
+    background: var(--surface);
+  }
+
+  .vis-progress .fx-cost {
+    border-radius: var(--r-s);
+    background: var(--inset);
+    color: var(--ink-2);
+  }
+
+  .vis-progress .fx-result-worked {
+    color: var(--ok);
+  }
+
+  .vis-progress .fx-result-got_worse {
+    color: var(--ink);
+  }
+}

@@ -1,0 +1,158 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * Light / dark theme helpers that are not tokens (styles/tokens.css holds the
+ * colours). Shared layer, so a screen's own rule for the same property wins.
+ */
+@layer shared {
+  /* Site icons sit on a plate with a faint ring, so dark glyphs read on the dark ground. */
+  img.site-icon {
+    background: var(--icon-plate);
+    box-shadow: 0 0 0 1px var(--icon-ring);
+  }
+
+  /* A dark sponsor wordmark gets a light plate on the dark strip. */
+  .sponsor-strip-logo {
+    background: var(--sponsor-plate);
+  }
+}
+
+/*
+ * A card on one of the soft tints (tokens.css "Card tints"):
+ * <section class="ui-panel ui-tint" data-tint="sky">. Sets only the ground and
+ * the line; utilities layer, so it wins over the card's own surface.
+ */
+@layer utilities {
+  .ui-tint[data-tint='sky'] {
+    border-color: var(--tint-sky-line);
+    background: var(--tint-sky);
+  }
+
+  .ui-tint[data-tint='sand'] {
+    border-color: var(--tint-sand-line);
+    background: var(--tint-sand);
+  }
+
+  .ui-tint[data-tint='lilac'] {
+    border-color: var(--tint-lilac-line);
+    background: var(--tint-lilac);
+  }
+
+  .ui-tint[data-tint='mint'] {
+    border-color: var(--tint-mint-line);
+    background: var(--tint-mint);
+  }
+
+  .ui-tint[data-tint='rose'] {
+    border-color: var(--tint-rose-line);
+    background: var(--tint-rose);
+  }
+
+  .ui-tint[data-tint='ai'] {
+    border-color: var(--tint-ai-line);
+    background: var(--tint-ai);
+  }
+
+  /* By meaning (ui tintProps): a win, something that needs a look. */
+  .ui-tint[data-tint='win'] {
+    border-color: var(--tint-win-line);
+    background: var(--tint-win);
+  }
+
+  .ui-tint[data-tint='attention'] {
+    border-color: var(--tint-attention-line);
+    background: var(--tint-attention);
+  }
+
+  /* Never a tint inside a tint: a tinted card inside one is a plain card. */
+  .ui-tint .ui-tint[data-tint] {
+    border-color: var(--line);
+    background: var(--surface);
+  }
+
+  /*
+   * The screen header's band (Tints.dc.html): main carries the open route's
+   * hue (sidebarNav hueForLocation), and the screen's own header, the first
+   * thing in main, sits on that hue from main's top edge to its sides with a
+   * hairline under it. Every hue is white now (tokens.css section aliases), so
+   * the band is the white page with only the hairline. The band is a border image painted past the header's
+   * box (main's overflow cuts it off), so the header keeps its place and
+   * width and nothing inside it is clipped.
+   */
+  .main[data-hue='visibility'] {
+    --band: var(--section-visibility);
+    --band-line: var(--section-visibility-line);
+  }
+
+  .main[data-hue='site'] {
+    --band: var(--section-site);
+    --band-line: var(--section-site-line);
+  }
+
+  .main[data-hue='tracking'] {
+    --band: var(--section-tracking);
+    --band-line: var(--section-tracking-line);
+  }
+
+  .main[data-hue='setup'] {
+    --band: var(--section-setup);
+    --band-line: var(--section-setup-line);
+  }
+
+  .main[data-hue] {
+    --band-bleed: 100vmax;
+    --band-end: linear-gradient(to top, var(--band-line) 1px, var(--band) 1px);
+  }
+
+  :is(.main[data-hue] > :first-child, .main[data-hue] > :first-child > :first-child):is(
+    .screen-header,
+    .ov-head,
+    .tr-head
+  ) {
+    padding-bottom: var(--s-3);
+    border-image: var(--band-end) fill 0 / / var(--main-top) var(--band-bleed) 1px;
+  }
+
+  /*
+   * A Pages or Settings tab (shell/hubs.ts): the hub's tab bar is main's first child,
+   * so the screen's header follows it with only its hairline, no band over the tabs.
+   */
+  :is(.main[data-hue] > .hub-tabs + *, .main[data-hue] > .hub-tabs + * > :first-child):is(
+    .screen-header,
+    .ov-head,
+    .tr-head
+  ) {
+    padding-bottom: var(--s-3);
+    border-image: var(--band-end) fill 0 / 0 / 0 var(--band-bleed) 1px;
+  }
+
+  /* Screens with their own banded header keep the compact title too. */
+  :is(.ov-head, .tr-head) h1 {
+    font-size: var(--fs-screen-title);
+    line-height: var(--lh-screen-title);
+  }
+
+  /*
+   * A standard section header (SectionFrame) followed by the screen's own lead
+   * line, such as Check history's "6 checks across…": the lead is the
+   * header's summary, so the band runs on under it, 4px below the title.
+   */
+  .main[data-hue]
+    > .section-frame
+    > .screen-header:first-child:has(
+      + * > :is(p:not(.sr-only, .pg-banner), [class$='-head']):first-child
+    ) {
+    padding-bottom: 0;
+    border-image: linear-gradient(var(--band) 0 0) fill 0 / / var(--main-top) var(--band-bleed) 0;
+  }
+
+  .main[data-hue]
+    > .section-frame
+    > .screen-header:first-child
+    + *
+    > :is(p:not(.sr-only, .pg-banner), [class$='-head']):first-child {
+    margin-top: calc(var(--s-1) - var(--main-row-gap));
+    padding-bottom: var(--s-3);
+    border-image: var(--band-end) fill 0 / / var(--s-2) var(--band-bleed) 1px;
+  }
+}

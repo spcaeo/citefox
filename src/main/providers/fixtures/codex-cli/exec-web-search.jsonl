@@ -1,0 +1,6 @@
+{"type":"thread.started","thread_id":"00000000-0000-7000-8000-000000000000"}
+{"type":"turn.started"}
+{"type":"item.started","item":{"id":"item_0","type":"web_search","id":"exec-redacted","query":"","action":{"type":"other"}}}
+{"type":"item.completed","item":{"id":"item_0","type":"web_search","id":"exec-redacted","query":"site:github.com/openai/codex/releases openai codex CLI latest release","action":{"type":"search","query":"site:github.com/openai/codex/releases openai codex CLI latest release"}}}
+{"type":"item.completed","item":{"id":"item_1","type":"agent_message","text":"0.164.0"}}
+{"type":"turn.completed","usage":{"input_tokens":19625,"cached_input_tokens":7552,"cache_write_input_tokens":0,"output_tokens":62,"reasoning_output_tokens":0}}

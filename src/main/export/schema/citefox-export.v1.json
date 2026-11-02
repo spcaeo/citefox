@@ -1,0 +1,665 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://citefox.app/schema/citefox-export.v1.json",
+  "title": "CiteFox export, schema version 1",
+  "description": "A CiteFox JSON export (FR-22.2, FR-22.3). Field names are stable within a schema version: a rename or removal bumps schemaVersion, a new optional field does not. Records are flat lists joined by id. Times are ISO-8601 UTC. The file never holds API keys, passwords, or other secrets.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "format",
+    "generatedAt",
+    "timeZone",
+    "selection",
+    "project",
+    "markets",
+    "pages",
+    "runs",
+    "prompts",
+    "results",
+    "references",
+    "raw"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "format": { "const": "citefox-export" },
+    "generatedAt": { "$ref": "#/definitions/instant" },
+    "timeZone": {
+      "type": "string",
+      "minLength": 1,
+      "description": "IANA zone the selection's dates and run labels use."
+    },
+    "selection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope", "checks", "from", "to", "sections", "pageIds", "marketIds"],
+      "properties": {
+        "scope": { "enum": ["page", "selected", "project", "view"] },
+        "checks": { "enum": ["latest", "trio", "all", "range"] },
+        "from": { "$ref": "#/definitions/nullableDate" },
+        "to": { "$ref": "#/definitions/nullableDate" },
+        "sections": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "results",
+              "prompt_results",
+              "progress",
+              "markets",
+              "sentiment",
+              "gaps",
+              "communities",
+              "raw"
+            ]
+          }
+        },
+        "pageIds": { "$ref": "#/definitions/idList" },
+        "marketIds": { "$ref": "#/definitions/idList" }
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "slug", "clientName"],
+      "properties": {
+        "name": { "type": "string" },
+        "slug": { "type": "string" },
+        "clientName": { "type": ["string", "null"] }
+      }
+    },
+    "markets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "code"],
+        "properties": {
+          "id": { "type": "string" },
+          "code": { "type": "string", "description": "Short code such as us-en." }
+        }
+      }
+    },
+    "pages": { "type": "array", "items": { "$ref": "#/definitions/page" } },
+    "runs": { "type": "array", "items": { "$ref": "#/definitions/run" } },
+    "prompts": { "type": "array", "items": { "$ref": "#/definitions/prompt" } },
+    "results": { "type": "array", "items": { "$ref": "#/definitions/result" } },
+    "references": { "type": "array", "items": { "$ref": "#/definitions/reference" } },
+    "raw": {
+      "type": "array",
+      "description": "Stored SerpApi responses. Empty unless the raw section was chosen. Credential fields are removed.",
+      "items": { "$ref": "#/definitions/rawSample" }
+    }
+  },
+  "definitions": {
+    "instant": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$"
+    },
+    "nullableInstant": {
+      "anyOf": [{ "$ref": "#/definitions/instant" }, { "type": "null" }]
+    },
+    "nullableDate": {
+      "anyOf": [{ "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" }, { "type": "null" }]
+    },
+    "idList": { "type": "array", "items": { "type": "string" } },
+    "count": { "type": "integer", "minimum": 0 },
+    "nullableNumber": { "type": ["number", "null"] },
+    "promptCheckStatus": {
+      "enum": ["page_cited", "other_own_page", "brand_mentioned", "not_cited", "no_aio", "error"]
+    },
+    "promptMovement": { "enum": ["gained", "lost", "improved", "declined", "unchanged"] },
+    "citationClass": { "enum": ["target", "own", "competitor", "other"] },
+    "citationSourceType": {
+      "enum": ["web", "reddit", "youtube", "linkedin", "review", "forum", "other"]
+    },
+    "checkRunKind": { "enum": ["baseline", "scheduled", "manual", "follow_up"] },
+    "checkRunStatus": { "enum": ["running", "finished", "cancelled", "error"] },
+    "promptSource": {
+      "enum": ["title_meta_h1", "trigger_event", "objection", "detail_check", "written_by_user"]
+    },
+    "intentStage": {
+      "enum": ["problem", "solution", "comparison", "objection", "trigger", "unset"]
+    },
+    "coverageLevel": { "enum": ["strong", "partial", "weak", "none"] },
+    "coverageAction": {
+      "enum": ["update_existing", "new_faq", "small_update", "optional_faq", "none"]
+    },
+    "coveragePriority": { "enum": ["high", "medium", "low"] },
+    "coverageFindingKind": {
+      "enum": [
+        "factual_claim",
+        "missing_promised_section",
+        "typo",
+        "title_length",
+        "title_meta_mismatch",
+        "other"
+      ]
+    },
+    "funnelStepId": {
+      "enum": ["checked", "aio_shown", "own_domain", "this_page", "cited_and_named"]
+    },
+    "opportunityBucketId": {
+      "enum": ["winning", "wrong_page", "named_not_linked", "invisible"]
+    },
+    "topActionScreen": { "enum": ["gaps", "communities", "page_read"] },
+    "leaderboardBadge": { "enum": ["you", "tracked", "observed"] },
+    "contentChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary", "faqsAdded", "wordsAdded", "headingsChanged"],
+      "properties": {
+        "summary": { "type": "string" },
+        "faqsAdded": { "type": "integer" },
+        "wordsAdded": { "type": "integer" },
+        "headingsChanged": { "type": "integer" }
+      }
+    },
+    "page": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "url",
+        "title",
+        "slug",
+        "metaDescription",
+        "h1",
+        "snapshotAt",
+        "promptSetVersion",
+        "stale",
+        "fixes",
+        "notes",
+        "sentiment",
+        "gaps"
+      ],
+      "properties": {
+        "id": { "type": "string" },
+        "url": { "type": "string" },
+        "title": { "type": ["string", "null"] },
+        "slug": { "type": "string" },
+        "metaDescription": { "type": ["string", "null"] },
+        "h1": { "type": ["string", "null"] },
+        "snapshotAt": { "$ref": "#/definitions/nullableInstant" },
+        "promptSetVersion": { "type": ["integer", "null"] },
+        "stale": {
+          "type": "boolean",
+          "description": "True when the latest check is older than 7 days."
+        },
+        "fixes": {
+          "type": "array",
+          "description": "Logged fixes. Empty unless the progress section was chosen.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["goLiveAt", "description", "status"],
+            "properties": {
+              "goLiveAt": { "$ref": "#/definitions/instant" },
+              "description": { "type": "string" },
+              "status": { "type": "string" }
+            }
+          }
+        },
+        "notes": {
+          "type": "array",
+          "description": "History notes. Empty unless the progress section was chosen.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["at", "text"],
+            "properties": {
+              "at": { "$ref": "#/definitions/instant" },
+              "text": { "type": "string" }
+            }
+          }
+        },
+        "sentiment": {
+          "type": "array",
+          "description": "Brand claims. Empty unless the sentiment section was chosen.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["marketId", "theme", "claim", "stance", "source", "factualProblem"],
+            "properties": {
+              "marketId": { "type": "string" },
+              "theme": { "type": "string" },
+              "claim": { "type": "string" },
+              "stance": { "type": "string" },
+              "source": { "type": "string" },
+              "factualProblem": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "gaps": {
+          "description": "Latest coverage matrix. Null unless the gaps section was chosen and a matrix is stored.",
+          "anyOf": [{ "$ref": "#/definitions/coverageMatrix" }, { "type": "null" }]
+        }
+      }
+    },
+    "coverageMatrix": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runId",
+        "pageId",
+        "recordedAt",
+        "templateId",
+        "templateName",
+        "templateHash",
+        "templateUpdatedAt",
+        "contentHash",
+        "reused",
+        "stale",
+        "rows",
+        "findings"
+      ],
+      "properties": {
+        "runId": { "type": "string" },
+        "pageId": { "type": "string" },
+        "recordedAt": { "$ref": "#/definitions/instant" },
+        "templateId": { "type": "string" },
+        "templateName": { "type": "string" },
+        "templateHash": { "type": "string" },
+        "templateUpdatedAt": { "$ref": "#/definitions/nullableInstant" },
+        "contentHash": { "type": "string" },
+        "reused": { "type": "boolean" },
+        "stale": { "type": "boolean" },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "runId",
+              "pageId",
+              "promptId",
+              "coverage",
+              "whereCovered",
+              "currentContent",
+              "whatToUpdate",
+              "mainGap",
+              "priority",
+              "actions",
+              "suggestedFaq",
+              "done"
+            ],
+            "properties": {
+              "id": { "type": "string" },
+              "runId": { "type": "string" },
+              "pageId": { "type": "string" },
+              "promptId": { "type": "string" },
+              "coverage": { "$ref": "#/definitions/coverageLevel" },
+              "whereCovered": { "type": "array", "items": { "type": "string" } },
+              "currentContent": { "type": "string" },
+              "whatToUpdate": { "type": "string" },
+              "mainGap": { "type": "string" },
+              "priority": { "$ref": "#/definitions/coveragePriority" },
+              "actions": {
+                "type": "array",
+                "minItems": 1,
+                "items": { "$ref": "#/definitions/coverageAction" }
+              },
+              "suggestedFaq": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["question", "answer", "wordCount"],
+                    "properties": {
+                      "question": { "type": "string" },
+                      "answer": { "type": "string" },
+                      "wordCount": { "$ref": "#/definitions/count" }
+                    }
+                  },
+                  { "type": "null" }
+                ]
+              },
+              "done": { "type": "boolean" }
+            }
+          }
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "runId", "pageId", "kind", "summary", "detail"],
+            "properties": {
+              "id": { "type": "string" },
+              "runId": { "type": "string" },
+              "pageId": { "type": "string" },
+              "kind": { "$ref": "#/definitions/coverageFindingKind" },
+              "summary": { "type": "string" },
+              "detail": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "run": {
+      "type": "object",
+      "description": "One finished check of one page in one market.",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "pageId",
+        "marketId",
+        "label",
+        "promptSetId",
+        "promptSetVersion",
+        "snapshotId",
+        "contentHash",
+        "kind",
+        "partial",
+        "status",
+        "startedAt",
+        "finishedAt",
+        "contentChanged",
+        "contentChange",
+        "metrics",
+        "funnel",
+        "buckets",
+        "topActions",
+        "leaderboard",
+        "cannibalizing"
+      ],
+      "properties": {
+        "id": { "type": "string" },
+        "pageId": { "type": "string" },
+        "marketId": { "type": "string" },
+        "label": {
+          "type": "string",
+          "description": "baseline, previous, current, or a calendar date in timeZone."
+        },
+        "promptSetId": { "type": "string" },
+        "promptSetVersion": { "type": ["integer", "null"] },
+        "snapshotId": { "type": "string" },
+        "contentHash": { "type": "string" },
+        "kind": { "$ref": "#/definitions/checkRunKind" },
+        "partial": { "type": "boolean" },
+        "status": { "$ref": "#/definitions/checkRunStatus" },
+        "startedAt": { "$ref": "#/definitions/instant" },
+        "finishedAt": { "$ref": "#/definitions/instant" },
+        "contentChanged": { "type": "boolean" },
+        "contentChange": {
+          "anyOf": [{ "$ref": "#/definitions/contentChange" }, { "type": "null" }]
+        },
+        "metrics": {
+          "type": "object",
+          "description": "Section 7.2 counts. Citation counts are links; the other counts are prompts.",
+          "additionalProperties": false,
+          "required": [
+            "promptsChecked",
+            "promptsWithAio",
+            "pageCited",
+            "otherOwnPage",
+            "brandMentioned",
+            "notCited",
+            "noAio",
+            "errors",
+            "points",
+            "pointsPossible",
+            "visibilityScore",
+            "citationsThisPage",
+            "citationsOtherOwn",
+            "citedAndNamed",
+            "averagePosition"
+          ],
+          "properties": {
+            "promptsChecked": { "$ref": "#/definitions/count" },
+            "promptsWithAio": { "$ref": "#/definitions/count" },
+            "pageCited": { "$ref": "#/definitions/count" },
+            "otherOwnPage": { "$ref": "#/definitions/count" },
+            "brandMentioned": { "$ref": "#/definitions/count" },
+            "notCited": { "$ref": "#/definitions/count" },
+            "noAio": { "$ref": "#/definitions/count" },
+            "errors": { "$ref": "#/definitions/count" },
+            "points": { "type": "number", "minimum": 0 },
+            "pointsPossible": { "type": "number", "minimum": 0 },
+            "visibilityScore": {
+              "anyOf": [{ "type": "number", "minimum": 0, "maximum": 100 }, { "type": "null" }]
+            },
+            "citationsThisPage": { "$ref": "#/definitions/count" },
+            "citationsOtherOwn": { "$ref": "#/definitions/count" },
+            "citedAndNamed": { "$ref": "#/definitions/count" },
+            "averagePosition": { "$ref": "#/definitions/nullableNumber" }
+          }
+        },
+        "funnel": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "count", "promptIds", "drop"],
+            "properties": {
+              "id": { "$ref": "#/definitions/funnelStepId" },
+              "count": { "$ref": "#/definitions/count" },
+              "promptIds": { "$ref": "#/definitions/idList" },
+              "drop": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["count", "reason", "promptIds"],
+                    "properties": {
+                      "count": { "$ref": "#/definitions/count" },
+                      "reason": { "type": "string" },
+                      "promptIds": { "$ref": "#/definitions/idList" }
+                    }
+                  },
+                  { "type": "null" }
+                ]
+              }
+            }
+          }
+        },
+        "buckets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "count", "promptIds"],
+            "properties": {
+              "id": { "$ref": "#/definitions/opportunityBucketId" },
+              "count": { "$ref": "#/definitions/count" },
+              "promptIds": { "$ref": "#/definitions/idList" }
+            }
+          }
+        },
+        "topActions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["rank", "text", "reason", "linkLabel", "screen", "promptId"],
+            "properties": {
+              "rank": { "type": "integer", "minimum": 1 },
+              "text": { "type": "string" },
+              "reason": { "type": "string" },
+              "linkLabel": { "type": "string" },
+              "screen": { "$ref": "#/definitions/topActionScreen" },
+              "promptId": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "leaderboard": {
+          "type": "array",
+          "description": "Competitor leaderboard. Counts are AI Overviews (prompts), not links.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "domain",
+              "badge",
+              "aioCount",
+              "overlap",
+              "gap",
+              "averagePosition",
+              "promptIds",
+              "gapPromptIds"
+            ],
+            "properties": {
+              "domain": { "type": "string" },
+              "badge": { "$ref": "#/definitions/leaderboardBadge" },
+              "aioCount": { "$ref": "#/definitions/count" },
+              "overlap": { "type": ["integer", "null"], "minimum": 0 },
+              "gap": { "type": ["integer", "null"], "minimum": 0 },
+              "averagePosition": { "type": "number" },
+              "promptIds": { "$ref": "#/definitions/idList" },
+              "gapPromptIds": { "$ref": "#/definitions/idList" }
+            }
+          }
+        },
+        "cannibalizing": {
+          "type": "array",
+          "description": "Own-domain URLs cited instead of this page.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["url", "tracked", "promptIds"],
+            "properties": {
+              "url": { "type": "string" },
+              "tracked": { "type": "boolean" },
+              "promptIds": { "$ref": "#/definitions/idList" }
+            }
+          }
+        }
+      }
+    },
+    "prompt": {
+      "type": "object",
+      "description": "A prompt in one prompt-set version of one page. The searched text per market is on results.",
+      "additionalProperties": false,
+      "required": ["id", "pageId", "promptSetId", "position", "label", "source", "intentStage"],
+      "properties": {
+        "id": { "type": "string" },
+        "pageId": { "type": "string" },
+        "promptSetId": { "type": "string" },
+        "position": { "type": "integer", "minimum": 0 },
+        "label": { "type": "string" },
+        "source": { "$ref": "#/definitions/promptSource" },
+        "intentStage": { "$ref": "#/definitions/intentStage" }
+      }
+    },
+    "result": {
+      "type": "object",
+      "description": "One prompt in one run. Empty list unless the prompt results section was chosen.",
+      "additionalProperties": false,
+      "required": [
+        "runId",
+        "pageId",
+        "marketId",
+        "promptId",
+        "text",
+        "status",
+        "frequency",
+        "position",
+        "citedUrl",
+        "wrongPageCited",
+        "named",
+        "movement",
+        "previousStatus",
+        "previousPosition",
+        "coverage",
+        "action",
+        "checkedAt",
+        "aioText",
+        "aioGap"
+      ],
+      "properties": {
+        "runId": { "type": "string" },
+        "pageId": { "type": "string" },
+        "marketId": { "type": "string" },
+        "promptId": { "type": "string" },
+        "text": { "type": "string" },
+        "status": { "$ref": "#/definitions/promptCheckStatus" },
+        "frequency": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["matching", "samples"],
+          "properties": {
+            "matching": { "$ref": "#/definitions/count" },
+            "samples": { "$ref": "#/definitions/count" }
+          }
+        },
+        "position": { "$ref": "#/definitions/nullableNumber" },
+        "citedUrl": { "type": ["string", "null"] },
+        "wrongPageCited": { "type": "boolean" },
+        "named": { "type": ["boolean", "null"] },
+        "movement": {
+          "anyOf": [{ "$ref": "#/definitions/promptMovement" }, { "type": "null" }]
+        },
+        "previousStatus": {
+          "anyOf": [{ "$ref": "#/definitions/promptCheckStatus" }, { "type": "null" }]
+        },
+        "previousPosition": { "$ref": "#/definitions/nullableNumber" },
+        "coverage": {
+          "anyOf": [{ "$ref": "#/definitions/coverageLevel" }, { "type": "null" }]
+        },
+        "action": { "type": ["string", "null"] },
+        "checkedAt": { "$ref": "#/definitions/nullableInstant" },
+        "aioText": {
+          "type": ["string", "null"],
+          "description": "Stored AI Overview text, quoted as stored (FR-22.7)."
+        },
+        "aioGap": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["fact", "likelySource"],
+            "properties": {
+              "fact": { "type": "string" },
+              "likelySource": { "type": ["string", "null"] }
+            }
+          }
+        }
+      }
+    },
+    "reference": {
+      "type": "object",
+      "description": "One source the AI Overview cited for a prompt in a run, in position order.",
+      "additionalProperties": false,
+      "required": [
+        "runId",
+        "promptId",
+        "id",
+        "position",
+        "url",
+        "normalizedUrl",
+        "domain",
+        "title",
+        "classification",
+        "untracked",
+        "sourceType"
+      ],
+      "properties": {
+        "runId": { "type": "string" },
+        "promptId": { "type": "string" },
+        "id": { "type": "string" },
+        "position": { "type": "integer", "minimum": 1 },
+        "url": { "type": "string" },
+        "normalizedUrl": { "type": "string" },
+        "domain": { "type": "string" },
+        "title": { "type": ["string", "null"] },
+        "classification": { "$ref": "#/definitions/citationClass" },
+        "untracked": { "type": "boolean" },
+        "sourceType": { "$ref": "#/definitions/citationSourceType" }
+      }
+    },
+    "rawSample": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["runId", "promptId", "sampleNo", "search", "aio"],
+      "properties": {
+        "runId": { "type": "string" },
+        "promptId": { "type": "string" },
+        "sampleNo": { "type": "integer", "minimum": 1 },
+        "search": {
+          "description": "Stored SerpApi search response. A string when the stored text is not JSON."
+        },
+        "aio": { "description": "Stored SerpApi AI Overview follow-up response, or null." }
+      }
+    }
+  }
+}

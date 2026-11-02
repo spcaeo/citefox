@@ -1,0 +1,374 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * Topic and Questions views (mock-ups TopicBig, TopicMatrix, TopicList, TopicPages,
+ * TopicBigDrill, FirstCheck): breadcrumb, summary card, first-check card, tree group
+ * labels, the stage × result grid, the pages table and the drill header. The result
+ * colours come from the --result-* tokens only (ui/resultTones.ts).
+ */
+@layer screens {
+  .tv-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+
+  .tv-muted {
+    color: var(--ink-3);
+  }
+
+  .tv-empty {
+    margin: 0;
+    padding: var(--s-6) var(--s-4);
+    color: var(--ink-3);
+    text-align: center;
+  }
+
+  .tv-note {
+    margin-left: var(--s-1);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .tv-note-line {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  /* ---- Target page suggestion (TopicPageMatch) ---- */
+  .tr-match {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    padding: var(--s-3) var(--s-5);
+  }
+
+  .tr-match p {
+    margin: 0;
+  }
+
+  .tr-match-actions {
+    display: flex;
+    gap: var(--s-2);
+  }
+
+  .tv-best {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--s-1);
+    min-width: 0;
+  }
+
+  /* ---- Summary card: the big result bar and Needs work ---- */
+  .tv-summary {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: var(--s-4) var(--s-5);
+  }
+
+  .tv-summary-top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-6);
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  .tv-summary-lead {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semibold);
+  }
+
+  .tv-summary-work {
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  .tv-summary p {
+    margin: 0;
+  }
+
+  /* ---- First check: calm card above the views ---- */
+  .tv-first {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: var(--s-5);
+    border-left: 3px solid var(--result-not-cited);
+  }
+
+  .tv-first-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-h2);
+    font-weight: var(--fw-semibold);
+  }
+
+  .tv-first-body {
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  .tv-first-steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding-left: var(--s-5);
+    color: var(--ink-2);
+  }
+
+  .tv-first-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: center;
+  }
+
+  /* ---- Cells ---- */
+  .tv-ref {
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tv-result {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  /* A count that opens its list: plain until hover or keyboard focus (drill.css). */
+  .tv-count {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+    text-decoration: underline solid transparent;
+    text-underline-offset: 3px;
+  }
+
+  .tv-count:hover,
+  .tv-count:focus-visible {
+    text-decoration-color: currentcolor;
+  }
+
+  .tv-count:focus-visible,
+  .tv-open-all:focus-visible {
+    border-radius: var(--r-s);
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  /* ---- Tree: group labels and leaves ---- */
+  .tv-group {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-2);
+    align-items: baseline;
+    min-width: 0;
+  }
+
+  .tv-group-label {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .tv-open-all {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    white-space: nowrap;
+  }
+
+  .tv-leaf {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: baseline;
+    min-width: 0;
+  }
+
+  .tv-leaf-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* ---- Grid: stage × result ---- */
+  .tv-grid-wrap {
+    overflow-x: auto;
+  }
+
+  .tv-grid,
+  .tv-pages-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tv-grid th,
+  .tv-grid td,
+  .tv-pages-table th,
+  .tv-pages-table td {
+    padding: var(--s-2) var(--s-3);
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  .tv-grid thead th,
+  .tv-pages-table thead th {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+  }
+
+  .tv-grid .num,
+  .tv-pages-table .num {
+    text-align: right;
+  }
+
+  .tv-grid-name {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+  }
+
+  /* Result counts are ink: the column head's square carries the colour (owner, 2026-10-30). */
+  .tv-grid-cell[data-result] .tv-grid-count {
+    color: var(--ink);
+  }
+
+  .tv-grid-all th,
+  .tv-grid-all td {
+    border-top: 1px solid var(--line-strong);
+    border-bottom: 0;
+    font-weight: var(--fw-semibold);
+  }
+
+  .tv-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--s-4);
+    align-items: stretch;
+  }
+
+  .tv-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tv-card-list li {
+    display: flex;
+    gap: var(--s-2);
+    align-items: baseline;
+    justify-content: space-between;
+    min-width: 0;
+  }
+
+  /* ---- Pages: your pages, cited instead, no page needed ---- */
+  .tv-pages {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: var(--s-4);
+  }
+
+  .tv-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: center;
+  }
+
+  .tv-search {
+    width: 280px;
+    max-width: 100%;
+  }
+
+  .tv-toolbar-end {
+    margin-inline-start: auto;
+  }
+
+  .tv-pages-section td {
+    padding-top: var(--s-4);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .tv-pages-name,
+  .tv-pages-subname {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .tv-pages-sub td:first-child {
+    padding-left: calc(var(--s-3) + 28px);
+  }
+
+  /* Stage rows sit under their page: lighter, so the page rows lead. */
+  .tv-pages-sub th {
+    color: var(--ink-2);
+    font-weight: var(--fw-regular);
+  }
+
+  .tv-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--r-s);
+    background: none;
+    color: var(--ink-3);
+    cursor: pointer;
+  }
+
+  .tv-arrow:hover {
+    color: var(--ink);
+  }
+
+  .tv-arrow-space {
+    display: inline-block;
+    width: 20px;
+  }
+
+  .tv-footer {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  /* ---- Fix brief ---- */
+  .tv-brief {
+    margin: 0;
+    padding: var(--s-3);
+    overflow: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: var(--fs-small);
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+
+  .tv-brief:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+}

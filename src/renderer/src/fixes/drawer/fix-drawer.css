@@ -1,0 +1,122 @@
+/* The fix drawer (window-wide). Tokens from styles/tokens.css only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .fxd-text {
+    min-height: calc(var(--s-16) * 2);
+    resize: vertical;
+  }
+
+  .fxd-checks {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+
+  .fxd-also {
+    margin-top: var(--s-4);
+  }
+
+  .fxd-also-name {
+    padding: 0;
+    margin-bottom: var(--s-2);
+    font-size: var(--fs-small);
+    font-weight: 600;
+  }
+
+  .fxd-check {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-2);
+    min-width: 0;
+    font-size: var(--fs-ui);
+  }
+
+  .fxd-check input {
+    flex: none;
+    align-self: flex-start;
+    margin-top: 3px;
+  }
+
+  /* Long questions wrap in their own column; the checkbox stays at the first line. */
+  .fxd-check-text {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .fxd-num {
+    flex: none;
+    padding: 0 var(--s-2);
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .fxd-error {
+    color: var(--bad);
+  }
+
+  .fxd-description {
+    overflow-wrap: anywhere;
+  }
+
+  .fxd-questions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .fxd-questions li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .fxd-question-text {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  /* ✦ Help write it, above What changed. */
+  .fxd-help {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+    margin-bottom: var(--s-4);
+  }
+
+  .fxd-help-for {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+    margin: 0;
+    font-size: var(--fs-small);
+  }
+
+  .fxd-help-for select {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .fxd-replaced {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin: var(--s-2) 0 0;
+    font-size: var(--fs-small);
+  }
+}

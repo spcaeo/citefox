@@ -1,0 +1,24 @@
+{
+  "questions": [
+    {
+      "stage": "problem",
+      "text": "Our staff miss urgent schedule changes we send by email because they are on the floor all day. How do other teams get those to their phones?",
+      "section": "What are SMS alerts?"
+    },
+    {
+      "stage": "options",
+      "text": "What kinds of alerts can a small business send by text, and which ones do staff on the floor actually read first?",
+      "section": "Types of business alerts you can send"
+    },
+    {
+      "stage": "options",
+      "text": "Can a text alert go out automatically when our booking system sends its confirmation email to a customer, without anyone copying it over by hand?",
+      "section": "Send alerts from email and other tools"
+    },
+    {
+      "stage": "doubts",
+      "text": "If we send closure alerts by text, how would I know every person on the rota actually received the message before their shift starts?",
+      "section": "Delivery reports"
+    }
+  ]
+}

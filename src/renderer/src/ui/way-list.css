@@ -1,0 +1,107 @@
+/* The one "way to start" chooser (ui/WayList.tsx): compact radio rows. */
+
+@layer shared, results, screens, utilities;
+
+@layer shared {
+  .ui-way-list,
+  .ui-way-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .ui-way-row {
+    display: grid;
+    grid-template-columns: 16px 28px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: var(--h-row);
+    padding: var(--s-2) var(--s-5);
+    border-top: 1px solid var(--line);
+    cursor: pointer;
+  }
+
+  .ui-way-list > :first-child > .ui-way-row:first-child {
+    border-top: 0;
+  }
+
+  .ui-way-row:hover {
+    background: var(--hover);
+  }
+
+  .ui-way-row.on {
+    background: var(--select-tint);
+  }
+
+  .ui-way-row.off {
+    color: var(--ink-3);
+    cursor: default;
+  }
+
+  .ui-way-row.off:hover {
+    background: transparent;
+  }
+
+  .ui-way-radio {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--select);
+  }
+
+  .ui-way-radio-space {
+    width: 16px;
+  }
+
+  .ui-way-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--r-s);
+    background: var(--inset);
+    color: var(--ink-2);
+  }
+
+  .ui-way-row.on .ui-way-icon {
+    background: var(--surface);
+    color: var(--select);
+  }
+
+  .ui-way-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .ui-way-title {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+  }
+
+  .ui-way-example {
+    min-width: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ui-way-mono {
+    font-family: var(--font-code);
+  }
+
+  .ui-way-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--s-1);
+  }
+}

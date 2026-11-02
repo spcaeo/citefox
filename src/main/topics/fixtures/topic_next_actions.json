@@ -1,0 +1,19 @@
+{
+  "nextActions": [
+    {
+      "text": "Add an H2 to /blog/how-to-set-up-text-alerts-for-business/ that answers how a clinic texts closure alerts from Outlook, with the three set-up steps.",
+      "promptNumbers": [1, 2],
+      "verify": null
+    },
+    {
+      "text": "Write a new page on replacing a carrier email-to-text gateway before it shuts down, for IT admins who send server alerts.",
+      "promptNumbers": [1, 3],
+      "verify": "Check which carriers have announced a shutdown date"
+    },
+    {
+      "text": "Add a comparison table to /pricing for teams weighing an email-to-text service against a texting app.",
+      "promptNumbers": [1],
+      "verify": "Check competitor prices before publishing"
+    }
+  ]
+}

@@ -1,0 +1,237 @@
+/* What to track (Engines board, panel 1) and a topic's own engines. Tokens from styles/tokens.css only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .et-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .et-head-note {
+    margin-left: var(--s-2);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-regular);
+  }
+
+  /* Provider cards: two equal columns, the picked one in action green. */
+  .et-provs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-3);
+  }
+
+  .et-prov {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  .et-prov:hover {
+    border-color: var(--line-strong);
+  }
+
+  .et-prov.on {
+    border-color: var(--ink);
+    background: var(--ok-tint);
+    box-shadow: inset 0 0 0 1px var(--ink);
+  }
+
+  .et-prov:focus-within {
+    box-shadow: var(--focus-ring);
+  }
+
+  .et-prov.on:focus-within {
+    box-shadow:
+      inset 0 0 0 1px var(--ink),
+      var(--focus-ring);
+  }
+
+  .et-prov-pick {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    cursor: pointer;
+  }
+
+  .et-prov.off .et-prov-pick {
+    cursor: default;
+  }
+
+  .et-prov-title {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .et-prov-text {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .et-prov-text strong {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .et-prov-foot {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: auto;
+  }
+
+  .et-link {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    width: fit-content;
+    color: var(--action-ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .et-link:hover {
+    color: var(--action-ink-hover);
+  }
+
+  .et-need {
+    margin: 0;
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid var(--tint-attention-line);
+    border-radius: var(--r-s);
+    background: var(--tint-attention);
+    color: var(--ink);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .et-need .et-link {
+    display: inline-flex;
+  }
+
+  /* Engine rows: box · mark and name · price · chip, on one baseline. */
+  .et-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .et-row {
+    display: grid;
+    grid-template-columns: 16px minmax(0, 1fr) 96px 104px;
+    gap: var(--s-3);
+    align-items: center;
+    min-height: 52px;
+    padding: var(--s-2) 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .et-row:first-child {
+    border-top: 0;
+  }
+
+  .et-check {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--select);
+  }
+
+  .et-row-main {
+    display: flex;
+    gap: var(--s-3);
+    align-items: center;
+    min-width: 0;
+    cursor: pointer;
+  }
+
+  .et-row.off .et-row-main {
+    cursor: default;
+  }
+
+  .et-row-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+
+  .et-name {
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .et-note {
+    overflow: hidden;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .et-price {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    text-align: right;
+  }
+
+  .et-chip {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .et-logo {
+    flex: 0 0 auto;
+    border-radius: var(--r-s);
+    object-fit: contain;
+  }
+
+  /* The cost and Save: price on the left, Cancel and the one green Save on the right. */
+  .et-foot {
+    display: flex;
+    gap: var(--s-4);
+    align-items: center;
+    justify-content: space-between;
+    padding-top: var(--s-3);
+    border-top: 1px solid var(--line);
+  }
+
+  .et-cost {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px var(--s-1);
+    min-width: 0;
+    color: var(--ink);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .et-cost strong {
+    font-weight: var(--fw-semibold);
+  }
+
+  .et-skipped {
+    flex-basis: 100%;
+  }
+
+  .et-foot-actions {
+    display: flex;
+    flex: 0 0 auto;
+    gap: var(--s-2);
+  }
+}

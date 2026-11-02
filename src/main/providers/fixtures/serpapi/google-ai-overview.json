@@ -1,0 +1,34 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": { "status": "Success", "id": "fixture-google-overview" },
+    "ai_overview": {
+      "text_blocks": [
+        {
+          "type": "paragraph",
+          "snippet": "You can text employees without a developer by turning email from tools you already use into SMS."
+        }
+      ],
+      "references": [
+        {
+          "title": "Text employees",
+          "link": "https://simpletexting.com/blog/text-employees/",
+          "source": "SimpleTexting",
+          "index": 0
+        },
+        {
+          "title": "How to Set Up Text Alerts for Business",
+          "link": "https://textbolt.com/blog/how-to-set-up-text-alerts-for-business/",
+          "source": "TextBolt",
+          "index": 1
+        },
+        {
+          "title": "Employee SMS",
+          "link": "https://www.twilio.com/en-us/blog/employee-sms-notifications",
+          "source": "Twilio",
+          "index": 2
+        }
+      ]
+    }
+  }
+}

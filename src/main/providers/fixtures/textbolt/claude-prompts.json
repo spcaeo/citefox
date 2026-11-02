@@ -1,0 +1,20 @@
+{
+  "status": 200,
+  "body": {
+    "id": "msg_textbolt_fixture",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-sonnet-5-5",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"prompts\":[{\"text\":\"How can I send text alerts to my employees without hiring a developer or learning a new app?\",\"label\":\"Alerts to employees, no developer, no new app\",\"source\":\"title_meta_h1\",\"intentStage\":\"problem\",\"mappedElement\":\"H1 and the no-code FAQ\"},{\"text\":\"Is there a way to schedule a text message to my whole team from Gmail or Outlook?\",\"label\":\"Schedule a text to the whole team from Gmail or Outlook\",\"source\":\"title_meta_h1\",\"intentStage\":\"solution\",\"mappedElement\":\"H2 How to Schedule a Text Alert From Gmail or Outlook\"},{\"text\":\"Our monitoring tool only sends email alerts. How do I get those as text messages on my phone?\",\"label\":\"Monitoring tool email alerts to texts\",\"source\":\"trigger_event\",\"intentStage\":\"problem\",\"mappedElement\":\"H3 Connect Your Existing Business Systems\"},{\"text\":\"My email-to-text through txt.att.net stopped working. What's the best replacement for business alerts?\",\"label\":\"Carrier email-to-text stopped, what to use instead\",\"source\":\"trigger_event\",\"intentStage\":\"trigger\",\"mappedElement\":\"FAQ about txt.att.net\"},{\"text\":\"Verizon is shutting down vtext.com. What should a small business switch to so our automated alerts keep reaching phones?\",\"label\":\"Carrier shutdown, what a small business switches to\",\"source\":\"trigger_event\",\"intentStage\":\"trigger\",\"mappedElement\":\"Note that names vtext.com\"},{\"text\":\"What's the easiest way to turn emails from our scheduling software into SMS reminders for customers and staff?\",\"label\":\"Scheduling software emails to SMS reminders\",\"source\":\"title_meta_h1\",\"intentStage\":\"solution\",\"mappedElement\":\"H3 What About Recurring Alerts\"},{\"text\":\"Do I need 10DLC registration to send text alerts to my own employees, and is there a service that handles it for me?\",\"label\":\"Registration for alerts to your own employees\",\"source\":\"objection\",\"intentStage\":\"objection\",\"mappedElement\":\"FAQ about 10DLC registration\"},{\"text\":\"What's a cheap alternative to Twilio for sending business text alerts if we don't have developers?\",\"label\":\"Cheap alternative to a developer SMS API\",\"source\":\"trigger_event\",\"intentStage\":\"comparison\",\"mappedElement\":\"H3 SMS API or Workflow Automation Tool\"},{\"text\":\"How do I send a text to my field techs early Saturday morning when I'm writing the update Friday afternoon?\",\"label\":\"Text field techs Saturday morning, written Friday\",\"source\":\"objection\",\"intentStage\":\"problem\",\"mappedElement\":\"H2 Who Holds the Clock\"},{\"text\":\"Can employees reply to an automated business text alert and have the reply come back to my email?\",\"label\":\"Employees reply, and the reply comes back to email\",\"source\":\"objection\",\"intentStage\":\"objection\",\"mappedElement\":\"FAQ about where replies go\"}]}"
+      }
+    ],
+    "stop_reason": "end_turn",
+    "usage": {
+      "input_tokens": 120,
+      "output_tokens": 80
+    }
+  }
+}

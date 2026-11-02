@@ -1,0 +1,40 @@
+{
+  "questions": [
+    {
+      "stage": "problem",
+      "text": "Our alarm system only emails when the freezer temperature drops, and nobody checks email on weekends. How do we get those alerts as texts?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "problem",
+      "text": "I manage 40 field techs and they keep missing schedule changes because they don't read email on the road. What's the simplest fix?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "problem",
+      "text": "Our monitoring tool sends email alerts at 2 a.m. that sit unread until morning. How can I turn them into text messages without code?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "problem",
+      "text": "We lost a client because a server-down email went unnoticed over a long weekend. How do other small IT teams make sure alerts reach a phone?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "problem",
+      "text": "My office manager sends the same urgent notice by email and then calls everyone who didn't read it. Is there a faster way to reach the whole team?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "problem",
+      "text": "I run three clinic locations and need to tell staff about closures fast, but half of them never open the staff app. What should we use instead?",
+      "namedTool": null,
+      "competitorNamed": null
+    }
+  ]
+}

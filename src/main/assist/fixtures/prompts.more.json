@@ -1,0 +1,41 @@
+{
+  "summary": "Five new situations that the saved set does not cover yet, mostly triggers and objections.",
+  "items": [
+    {
+      "text": "Our alarm panel at the warehouse only emails the office when a freezer gets too warm. How can the night manager get that as a text instead?",
+      "detail": "Source: trigger event · Maps to: Step 3: Point your existing tools at your text address",
+      "tag": "trigger",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "I run a church office and want to text all our volunteers from Outlook when Sunday plans change, without everyone downloading an app. Is that possible?",
+      "detail": "Source: title/meta/H1 · Maps to: Sending to Your Whole Team",
+      "tag": "solution",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "If I forward a scheduling email to a text alert service, do the customers see my office email address or a phone number when the text arrives?",
+      "detail": "Source: objection · Maps to: FAQ: What number do texts come from?",
+      "tag": "objection",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "We are a ten-person HVAC company. Is it cheaper to pay a texting service monthly or to hire a freelancer to build something on Twilio?",
+      "detail": "Source: objection · Maps to: Method 3 comparison table",
+      "tag": "comparison",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Our help desk sends ticket alerts by email, but my on-call tech misses them at night. What is the simplest way to turn those into texts?",
+      "detail": "Source: trigger event · Maps to: Step 5: Common setups (IT and help desk row)",
+      "tag": "problem",
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": null
+}

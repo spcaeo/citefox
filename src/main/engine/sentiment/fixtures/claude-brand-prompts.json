@@ -1,0 +1,24 @@
+{
+  "prompts": [
+    {
+      "kind": "review",
+      "text": "TextBolt reviews"
+    },
+    {
+      "kind": "pricing",
+      "text": "TextBolt pricing"
+    },
+    {
+      "kind": "alternatives",
+      "text": "TextBolt alternatives"
+    },
+    {
+      "kind": "comparison",
+      "text": "TextBolt vs SimpleTexting for staff alerts"
+    },
+    {
+      "kind": "use_case",
+      "text": "Is TextBolt good for sending staff alerts from Outlook"
+    }
+  ]
+}

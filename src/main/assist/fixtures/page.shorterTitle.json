@@ -1,0 +1,27 @@
+{
+  "summary": "The current title is about 100 characters, so Google cuts it before \"(No Developer Required)\". Each option keeps the no-code promise in view.",
+  "items": [
+    {
+      "text": "Business Text Alerts From Email, No Developer Needed",
+      "detail": "Leads with the email-to-SMS method and keeps the no-code promise. Drops \"scheduled\".",
+      "tag": "job first",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Set Up Business Text Alerts in 5 Steps, No Code",
+      "detail": "Matches the meta description's 5-step promise, so title and meta agree.",
+      "tag": "differentiator first",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Scheduled Text Alerts From Gmail or Outlook",
+      "detail": "Puts scheduling and the tools the buyer already uses first. Drops the no-code claim.",
+      "tag": "problem first",
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": null
+}

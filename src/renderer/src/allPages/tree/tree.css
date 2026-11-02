@@ -1,0 +1,66 @@
+@layer shared, results, screens, utilities;
+
+/* Pages · Tree · Folders: page rows and the folder rows' Silos actions. */
+@layer screens {
+  .apt-folders {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  .apt-page {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: baseline;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .apt-page-name {
+    flex: none;
+    max-width: 50%;
+    overflow: hidden;
+    color: var(--ink);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .apt-page .ui-url {
+    min-width: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .apt-folder {
+    min-width: 0;
+    font-weight: 600;
+  }
+
+  .apt-status {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .apt-markets {
+    display: flex;
+    gap: var(--s-1);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .apt-clip {
+    overflow: hidden;
+    min-width: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .apt-note {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+}

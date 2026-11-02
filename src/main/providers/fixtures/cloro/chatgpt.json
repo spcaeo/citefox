@@ -1,0 +1,101 @@
+{
+  "success": true,
+  "result": {
+    "model": null,
+    "text": "Yes. AT&T discontinued its email-to-text service on June 17, 2025. This is confirmed by AT&T's official support website.\n\nAccording to AT&T, the shutdown affects both directions of messaging.\n\nWhat no longer works?\n\nEmail to text: Sending an email to a phone number followed by (at)txt.att.net or (at)mms.att.net no longer delivers a text message.\n\nText to email: AT&T customers can no longer use the carrier's gateway to send text messages to email addresses.\n\nRegular texting: Ordinary SMS and MMS messages between phones continue to work normally.\n\nRegular email: Email services such as Gmail and Outlook are unaffected.\n\nWhat can you use instead?\n\nIt depends on how you used the service:\n\nFor personal use: Send a regular text from your phone, or use a messaging app.\n\nFor automated alerts or notifications: Use an email-to-SMS service or messaging provider that supports delivery to AT&T numbers. Twilio offers options for replacing the old carrier gateway.\n\nAT&T has not announced a replacement for its old public email-to-text gateway.\n\nCan I ask what you used AT&T email-to-text for? For example, sending emails to your own phone, receiving automated computer or security alerts, or sending texts to other AT&T customers. I can suggest the most practical alternative for your situation.",
+    "sources": [
+      {
+        "position": 1,
+        "label": "Say Goodbye to Email-to-Text and Text-to-Email",
+        "url": "https://www.att.com/support/article/wireless/KM1061254/?source=ESSZ0SSPR00T1EsEM&wtExtndSource=20230316030329_ATT_Mobility_REDDIT_9178492937",
+        "footnote": false
+      },
+      {
+        "position": 2,
+        "label": "AT&T discontinues email-to-text and text-to-email service",
+        "url": "https://oit.princeton.edu/news/att-discontinues-email-text-and-text-email-service",
+        "footnote": false
+      },
+      {
+        "position": 3,
+        "label": "AT&T Email-to-Text: Is txt.att.net Still Working? (July 2026)",
+        "url": "https://www.emailtotxt.com/carriers/att",
+        "footnote": false
+      },
+      {
+        "position": 4,
+        "label": "Email to SMS Gateways Are Going Away. How to Keep Your Alerts Working with Twilio Programmable Messaging",
+        "url": "https://www.twilio.com/en-us/blog/developers/tutorials/integrations/smtp-to-sms-programmable-messaging",
+        "footnote": false
+      },
+      {
+        "position": 5,
+        "label": "AT&T email-to-text service migration: AWS solution implementation",
+        "url": "https://aws.amazon.com/blogs/messaging-and-targeting/att-email-to-text-service-migration-aws-solution-implementation/",
+        "footnote": false
+      }
+    ],
+    "entities": [],
+    "map": [],
+    "followUpForm": null,
+    "markdown": "Yes. AT&T discontinued its email-to-text service on June 17, 2025. This is confirmed by AT&T's official support website. [Say Goodbye to Email-to-Text and Text-to-Email](https://www.att.com/support/article/wireless/KM1061254/?source=ESSZ0SSPR00T1EsEM&wtExtndSource=20230316030329_ATT_Mobility_REDDIT_9178492937)\n\nAccording to AT&T, the shutdown affects both directions of messaging.\n\n## What no longer works?\n\n- Email to text: Sending an email to a phone number followed by `(at)txt.att.net` or `(at)mms.att.net` no longer delivers a text message.\n- Text to email: AT&T customers can no longer use the carrier's gateway to send text messages to email addresses.\n- Regular texting: Ordinary SMS and MMS messages between phones continue to work normally.\n- Regular email: Email services such as Gmail and Outlook are unaffected. [Say Goodbye to Email-to-Text and Text-to-Email](https://www.att.com/support/article/wireless/KM1061254/?source=ESSZ0SSPR00T1EsEM&wtExtndSource=20230316030329_ATT_Mobility_REDDIT_9178492937)[AT&T discontinues email-to-text and text-to-email service](https://oit.princeton.edu/news/att-discontinues-email-text-and-text-email-service)\n\n## What can you use instead?\n\nIt depends on how you used the service:\n\n- For personal use: Send a regular text from your phone, or use a messaging app.\n- For automated alerts or notifications: Use an email-to-SMS service or messaging provider that supports delivery to AT&T numbers. Twilio offers options for replacing the old carrier gateway. [Email to SMS Gateways Are Going Away. How to Keep Your Alerts Working with Twilio Programmable Messaging](https://www.twilio.com/en-us/blog/developers/tutorials/integrations/smtp-to-sms-programmable-messaging)[AT&T email-to-text service migration: AWS solution implementation](https://aws.amazon.com/blogs/messaging-and-targeting/att-email-to-text-service-migration-aws-solution-implementation/)\n\nAT&T has not announced a replacement for its old public email-to-text gateway. [Say Goodbye to Email-to-Text and Text-to-Email](https://www.att.com/support/article/wireless/KM1061254/?source=ESSZ0SSPR00T1EsEM&wtExtndSource=20230316030329_ATT_Mobility_REDDIT_9178492937)[AT&T Email-to-Text: Is txt.att.net Still Working? (July 2026)](https://www.emailtotxt.com/carriers/att)\n\nCan I ask what you used AT&T email-to-text for? For example, sending emails to your own phone, receiving automated computer or security alerts, or sending texts to other AT&T customers. I can suggest the most practical alternative for your situation.",
+    "citationPills": [
+      {
+        "url": "https://www.att.com/support/article/wireless/KM1061254/?source=ESSZ0SSPR00T1EsEM&wtExtndSource=20230316030329_ATT_Mobility_REDDIT_9178492937",
+        "label": "Say Goodbye to Email-to-Text and Text-to-Email",
+        "domain": "att.com",
+        "type": "groupedWebpage",
+        "citationPillId": 0,
+        "position": 1
+      },
+      {
+        "url": "https://www.att.com/support/article/wireless/KM1061254/?source=ESSZ0SSPR00T1EsEM&wtExtndSource=20230316030329_ATT_Mobility_REDDIT_9178492937",
+        "label": "Say Goodbye to Email-to-Text and Text-to-Email",
+        "domain": "att.com",
+        "type": "groupedWebpage",
+        "citationPillId": 1,
+        "position": 1
+      },
+      {
+        "url": "https://oit.princeton.edu/news/att-discontinues-email-text-and-text-email-service",
+        "label": "AT&T discontinues email-to-text and text-to-email service",
+        "domain": "oit.princeton.edu",
+        "type": "groupedWebpage",
+        "citationPillId": 1,
+        "position": 2
+      },
+      {
+        "url": "https://www.twilio.com/en-us/blog/developers/tutorials/integrations/smtp-to-sms-programmable-messaging",
+        "label": "Email to SMS Gateways Are Going Away. How to Keep Your Alerts Working with Twilio Programmable Messaging",
+        "domain": "twilio.com",
+        "type": "groupedWebpage",
+        "citationPillId": 2,
+        "position": 4
+      },
+      {
+        "url": "https://aws.amazon.com/blogs/messaging-and-targeting/att-email-to-text-service-migration-aws-solution-implementation/",
+        "label": "AT&T email-to-text service migration: AWS solution implementation",
+        "domain": "aws.amazon.com",
+        "type": "groupedWebpage",
+        "citationPillId": 2,
+        "position": 5
+      },
+      {
+        "url": "https://www.att.com/support/article/wireless/KM1061254/?source=ESSZ0SSPR00T1EsEM&wtExtndSource=20230316030329_ATT_Mobility_REDDIT_9178492937",
+        "label": "Say Goodbye to Email-to-Text and Text-to-Email",
+        "domain": "att.com",
+        "type": "groupedWebpage",
+        "citationPillId": 3,
+        "position": 1
+      },
+      {
+        "url": "https://www.emailtotxt.com/carriers/att",
+        "label": "AT&T Email-to-Text: Is txt.att.net Still Working? (July 2026)",
+        "domain": "emailtotxt.com",
+        "type": "groupedWebpage",
+        "citationPillId": 3,
+        "position": 3
+      }
+    ]
+  }
+}

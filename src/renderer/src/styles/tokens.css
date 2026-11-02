@@ -1,0 +1,626 @@
+/*
+ * Design tokens, v2 "Spruce & Fox" (Docs/TOPICS-SPEC.md §1, Mockups/v2/Theme.dc.html),
+ * re-branded to the FoxCue look (owner, 2026-10-30): foxcue.com's white and
+ * near-black greys, its yellow for the one action, and Inter / Inter Tight /
+ * JetBrains Mono. The token names stay; "spruce" is now the near-black chrome.
+ *
+ * These are the only design tokens: every stylesheet uses these names (the v1
+ * names are retired; styles/tokens.test.ts keeps them out).
+ *
+ * Themes (Settings › Appearance): <html data-theme="light|dark|sepia"> is always the
+ * resolved theme (theme/ sets it, public/theme-boot.js before first paint). The
+ * light colours are written once below; the dark block gives every one of them
+ * a dark value (tokens.test.ts checks the two lists match). The colour rule is
+ * re-applied on any element with its own data-theme, so a scope such as the
+ * email preview can stay light inside a dark app and derived tokens
+ * (`var(--fox)` …) re-resolve there.
+ */
+
+@layer shared, results, screens, utilities;
+
+@layer shared {
+  /* ---- Colour: light ---- */
+  :root,
+  [data-theme] {
+    color-scheme: light;
+
+    /* Neutrals (FoxCue greys). The page is white like its cards (owner, 2026-10-30: a
+       white theme); hairlines (--line) tell a card from the page, --inset fills a well. */
+    --ground: #ffffff;
+    --surface: #ffffff;
+    --inset: #f9f9f9;
+    --line: #e0e0e0;
+    --line-strong: #cecece;
+    --hover: rgba(0, 0, 0, 0.04);
+
+    /* Ink (FoxCue 12, then 11 for quiet text so it clears AA). --ink-4 is decoration only. */
+    --ink: #202020;
+    --ink-2: #464646;
+    --ink-3: #646464;
+    --ink-4: #8d8d8d;
+    /* The .faint/.muted utilities' ink (--ink-3); the sidebar re-points it on spruce. */
+    --ink-quiet: var(--ink-3);
+
+    /* Shell chrome: FoxCue's near-black top bar and sidebar. */
+    --spruce: #111111;
+    --spruce-2: #191919;
+    --spruce-line: rgba(255, 255, 255, 0.1);
+    /* The project switcher's ring, its fill and hover, a sidebar row's hover and press. */
+    --spruce-line-strong: rgba(255, 255, 255, 0.16);
+    --spruce-fill: rgba(255, 255, 255, 0.04);
+    --spruce-fill-hover: rgba(255, 255, 255, 0.07);
+    --spruce-hover: rgba(255, 255, 255, 0.06);
+    --spruce-press: rgba(255, 255, 255, 0.1);
+    --spruce-ink: #eeeeee;
+    --spruce-ink-2: #b4b4b4;
+    /* A status dot that reads as "on" against spruce. */
+    --spruce-ok: #4cc38a;
+    /* A "needs you" badge on spruce (the top bar's setup steps left). */
+    --spruce-warn: #f2c46d;
+    /* The ✦ mark and Ask's outline on the spruce top bar (fox lifted to read on the dark). */
+    --fox-on-spruce: #f0915f;
+    /* Strong text on spruce chrome (the brand, the project name). */
+    --on-spruce: #fff;
+
+    /* Work console text on --spruce (Work console mock-up): prompt, ok, skipped, error. */
+    --console-prompt: #f0915f;
+    --console-ok: #6fcf97;
+    --console-warn: #f2c46d;
+    --console-bad: #ff9b8f;
+    /* The console's edge: none on the light ground, a line on the dark one. */
+    --console-border: transparent;
+
+    /* The one accent: the logo, the ✦ AI marks and the project's own brand being cited. */
+    --fox: #c2410c;
+    --fox-ink: #9a3412;
+    /* The ✦ AI grounds and edges are the plain grey ones (owner, 2026-10-30: no orange fills). */
+    --fox-tint: #f9f9f9;
+    --fox-line: #e0e0e0;
+    --on-fox: #fff;
+    /* The logo's ear, and link text that must clear AA on the ground colour. */
+    --fox-deep: #7c2d12;
+
+    /*
+     * Action yellow (FoxCue's accent): every action button (the kit's primary
+     * Button, + Add, a drawer's primary) as a yellow fill with --on-action text,
+     * AA on all three states. Yellow is never text or a thin line on white.
+     * --action-ink is a text button's and a link's ink, AA on the grounds and
+     * tints; --action-ink-hover is its hover.
+     */
+    --action: #ffd400;
+    --action-hover: #f5cb00;
+    --action-press: #ebc300;
+    --on-action: #1c1700;
+    --action-ink: #202020;
+    --action-ink-hover: #000000;
+
+    /*
+     * Selected: a picked tab's count, a ticked radio or checkbox, a chosen chip
+     * or card, the row open in a drawer. FoxCue's soft yellow ground and yellow
+     * edge with a dark ink mark, never the fox orange, which means Not cited
+     * (audit2 #4). --select is the mark and its text (AA on --select-tint and
+     * --surface), --select-tint the ground, --select-line its edge.
+     */
+    --select: #202020;
+    --select-tint: #fff7c7;
+    --select-line: #f0c400;
+
+    /*
+     * Semantic. The ok, warn and info grounds are the plain inset grey (owner,
+     * 2026-10-30: coloured grounds to a minimum); the tone lives in the text or
+     * icon. --bad-tint keeps its red: a failure must stand out.
+     */
+    --ok: #1b7046;
+    --ok-tint: #f9f9f9;
+    --warn: #835400;
+    --warn-tint: #f9f9f9;
+    --bad: #b42318;
+    --bad-tint: #fce9e7;
+    /* The danger button's hover fill. */
+    --bad-ink: #912018;
+    /* Text on a solid semantic fill (danger button, done step). */
+    --on-solid: #fff;
+    /* Text on an --ink fill (tooltips). */
+    --on-ink: #fff;
+    --info: #22539f;
+    --info-tint: #f9f9f9;
+
+    /*
+     * Highlighter: the project's own brand and site where an overview names them.
+     * --mark sits behind ink text (about 15:1 with --ink), --mark-tint behind a whole
+     * own-site card; --mark-line is decoration only.
+     */
+    --mark: #fff1a8;
+    --mark-tint: #fffae0;
+    --mark-line: #d9a400;
+
+    /*
+     * The four results a search ends in (ui/resultTones.ts), in bars, legends,
+     * dots and pills: not cited orange, your other page blue, target page
+     * green, no AI Overview grey. Bars are 3:1 on --surface; *-ink is pill
+     * text, AA on its *-tint.
+     */
+    --result-not-cited: #c2410c;
+    --result-not-cited-ink: #9a3412;
+    --result-not-cited-tint: #fcefe7;
+    --result-other: #22539f;
+    --result-other-ink: #22539f;
+    --result-other-tint: #e6edf8;
+    --result-target: #1b7046;
+    --result-target-ink: #1b7046;
+    --result-target-tint: #e3f1e9;
+    --result-none: #8d8d8d;
+    --result-none-ink: #646464;
+    --result-none-tint: #f0f0f0;
+
+    /*
+     * Charts. "Cited" is the target-page green in every chart, so a chart never
+     * paints "cited" in the orange that means "not cited" (audit #1, 2026-10-29).
+     * It follows --result-target, so the dark theme re-resolves it too.
+     */
+    --chart-cited: var(--result-target);
+    --chart-not-cited: #8299b6;
+    --chart-no-aio: #e0e0e0;
+    --chart-no-aio-hatch: repeating-linear-gradient(
+      135deg,
+      var(--chart-no-aio) 0 4px,
+      var(--inset) 4px 8px
+    );
+    --chart-band: #e8e8e8;
+    /* Past weeks' bars (Summary): 3:1 on the surface in both themes; this week is --chart-cited. */
+    --chart-past: #8d8d8d;
+    --chart-track: #e0e0e0;
+    --chart-2: #1f5e58;
+    --chart-3: #d9b46a;
+    /* SVG chart furniture (RateChart): grid, axis, labels, planned marks. */
+    --chart-grid: var(--line);
+    --chart-axis: var(--line-strong);
+    --chart-label: var(--ink-3);
+    --chart-planned: var(--ink-4);
+    /*
+     * The shared chart kit (ui/chart): hover line, the 14-day band after a fix, and the
+     * markers under every trend. A fix is a filled near-black dot, a Google update a
+     * grey ring, a page change nobody logged a dashed ring.
+     */
+    --chart-crosshair: var(--ink-4);
+    --chart-measure: #f3f9f5;
+    --chart-rollout: #fafafa;
+    --chart-rollout-line: #e2e2e4;
+    --marker-fix: var(--ink);
+    --marker-on-fix: var(--surface);
+    --marker-google: #5f6368;
+    --marker-page: var(--ink-4);
+
+    /*
+     * Card tints: soft grounds, each with its line, that tell areas apart and
+     * break up a long screen. --ink, --ink-2 and --ink-3 clear AA on every one.
+     * Use them through the section aliases below, or .ui-tint[data-tint].
+     */
+    --tint-sky: #eaf3fb;
+    --tint-sky-line: #cfe1f3;
+    --tint-sand: #fbf3e4;
+    --tint-sand-line: #efdcb8;
+    --tint-lilac: #f1eefb;
+    --tint-lilac-line: #dcd5f2;
+    --tint-mint: #e8f5ef;
+    --tint-mint-line: #c8e6d6;
+    --tint-rose: #fcefee;
+    --tint-rose-line: #f2d2cf;
+    /*
+     * What each tint means: an area of the app, a win, something to look at, AI.
+     * All white with a hairline (owner, 2026-10-30: few colours, white theme), so
+     * a screen header and a verdict read as plain cards; the hues stay above for
+     * the few places that still pick one by name.
+     */
+    --section-visibility: var(--surface);
+    --section-visibility-line: var(--line);
+    --section-site: var(--surface);
+    --section-site-line: var(--line);
+    --section-tracking: var(--surface);
+    --section-tracking-line: var(--line);
+    --section-setup: var(--surface);
+    --section-setup-line: var(--line);
+    --tint-win: var(--surface);
+    --tint-win-line: var(--line);
+    --tint-attention: var(--surface);
+    --tint-attention-line: var(--line);
+    --tint-ai: var(--surface);
+    --tint-ai-line: var(--line);
+    /*
+     * Each area's marker on the spruce sidebar (the square by a group's label,
+     * the bar on its open item): decoration, over 3:1 on --spruce and --spruce-2.
+     * One quiet grey for every area (owner, 2026-10-30: no coloured labels).
+     */
+    --section-visibility-mark: #8d8d8d;
+    --section-site-mark: #8d8d8d;
+    --section-tracking-mark: #8d8d8d;
+    --section-setup-mark: #8d8d8d;
+
+    /* Site icons: a plate and ring behind a favicon (none on light; dark glyphs need one on dark). */
+    --icon-plate: transparent;
+    --icon-ring: transparent;
+
+    /* The FoxCue gold card and strip ground. Brand marks stay in sponsors.css. */
+    --sponsor-ground: #fffdf3;
+    /* The gold sponsor card's edge (a soft FoxCue yellow). */
+    --sponsor-line: #f0dc8a;
+    /* A light plate behind a dark sponsor wordmark (none on light). */
+    --sponsor-plate: transparent;
+
+    /* Depth. Shadows are built from --e-color, never from --ink (it turns light in dark). */
+    --e-color: #000000;
+    --e1: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 12px -4px rgba(0, 0, 0, 0.06);
+    --e2: 0 12px 32px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.05);
+    --e3: 0 24px 64px rgba(0, 0, 0, 0.18);
+    /* The raised option of a segmented control. */
+    --e-control: 0 1px 2px rgba(0, 0, 0, 0.1);
+    /* A side panel's left shadow. */
+    --e-side: -16px 0 40px rgba(0, 0, 0, 0.14);
+    --scrim: rgba(0, 0, 0, 0.32);
+    /* Keyboard focus: an ink outline (FoxCue), --focus-ring where a shadow draws it. */
+    --focus: #202020;
+    --focus-ring: 0 0 0 2px var(--focus);
+  }
+
+  /* ---- Colour: dark (Mockups Theme.dc.html; every text pair AA on --surface and --inset) ---- */
+  :root[data-theme='dark'],
+  [data-theme='dark'] {
+    color-scheme: dark;
+
+    /* The page is the card colour, as in light: hairlines tell them apart. */
+    --ground: #111111;
+    --surface: #191919;
+    --inset: #222222;
+    --line: #313131;
+    --line-strong: #484848;
+    --hover: rgba(255, 255, 255, 0.06);
+
+    --ink: #eeeeee;
+    --ink-2: #cfcfcf;
+    --ink-3: #b4b4b4;
+    --ink-4: #6e6e6e;
+
+    /* The sidebar stays a step darker than the ground. */
+    --spruce: #0a0a0a;
+    --spruce-2: #191919;
+    --spruce-line: rgba(255, 255, 255, 0.1);
+    --spruce-line-strong: rgba(255, 255, 255, 0.16);
+    --spruce-fill: rgba(255, 255, 255, 0.04);
+    --spruce-fill-hover: rgba(255, 255, 255, 0.07);
+    --spruce-hover: rgba(255, 255, 255, 0.06);
+    --spruce-press: rgba(255, 255, 255, 0.1);
+    --spruce-ink: #eeeeee;
+    --spruce-ink-2: #b4b4b4;
+    --spruce-ok: #4cc38a;
+    --spruce-warn: #f2c46d;
+    --fox-on-spruce: #f0915f;
+    --on-spruce: #fff;
+
+    /* The work console stays dark in both themes. */
+    --console-prompt: #f0915f;
+    --console-ok: #6fcf97;
+    --console-warn: #f2c46d;
+    --console-bad: #ff9b8f;
+    --console-border: #3a4b48;
+
+    /* Fox (logo, ✦ AI marks, own brand): brighter, with dark text on it (white is 3.4:1). */
+    --fox: #e8743f;
+    --fox-ink: #f0915f;
+    --fox-tint: #222222;
+    --fox-line: #313131;
+    --on-fox: #1a0b03;
+    --fox-deep: #ffb38a;
+
+    /* The yellow action keeps its dark text in dark; links are light ink. */
+    --action: #ffd400;
+    --action-hover: #f5cb00;
+    --action-press: #ebc300;
+    --on-action: #1c1700;
+    --action-ink: #eeeeee;
+    --action-ink-hover: #ffffff;
+
+    /* Selected: a yellow mark on FoxCue's 14% yellow (flattened on --surface) with its 45% edge. */
+    --select: #ffd400;
+    --select-tint: #393316;
+    --select-line: #806d0e;
+
+    --ok: #6fcf97;
+    --ok-tint: #222222;
+    --warn: #f2c46d;
+    --warn-tint: #222222;
+    --bad: #ff8a7a;
+    --bad-tint: #3a1a17;
+    --bad-ink: #ffb3a8;
+    --on-solid: #0f1716;
+    --on-ink: #0f1716;
+    --info: #8db4f0;
+    --info-tint: #222222;
+
+    /* The yellow highlighter becomes a soft amber behind light ink (8:1). */
+    --mark: #4a4519;
+    --mark-tint: #23241a;
+    --mark-line: #c9a227;
+
+    --result-not-cited: #e8743f;
+    --result-not-cited-ink: #f0915f;
+    --result-not-cited-tint: #3a2317;
+    --result-other: #8db4f0;
+    --result-other-ink: #8db4f0;
+    --result-other-tint: #16243a;
+    --result-target: #6fcf97;
+    --result-target-ink: #6fcf97;
+    --result-target-tint: #15301f;
+    --result-none: #7b7b7b;
+    --result-none-ink: #b4b4b4;
+    --result-none-tint: #2a2a2a;
+
+    --chart-not-cited: #7f97b8;
+    --chart-no-aio: #2a2a2a;
+    --chart-band: #222222;
+    --chart-past: #6e6e6e;
+    --chart-track: #2a2a2a;
+    --chart-2: #5fb3a8;
+    --chart-measure: #13231a;
+    --chart-rollout: #1c1c1c;
+    --chart-rollout-line: #333336;
+    --marker-google: #a1a1a6;
+    --chart-3: #d9b46a;
+
+    /* Card tints: quiet on #0f1716 and #16201f, told apart by hue and their lines. */
+    --tint-sky: #13222d;
+    --tint-sky-line: #22384a;
+    --tint-sand: #262014;
+    --tint-sand-line: #3d3420;
+    --tint-lilac: #1d1a2b;
+    --tint-lilac-line: #322c48;
+    --tint-mint: #132520;
+    --tint-mint-line: #234036;
+    --tint-rose: #2a1a1a;
+    --tint-rose-line: #45292a;
+    /* The sidebar stays spruce; its area markers are the one quiet grey. */
+    --section-visibility-mark: #8d8d8d;
+    --section-site-mark: #8d8d8d;
+    --section-tracking-mark: #8d8d8d;
+    --section-setup-mark: #8d8d8d;
+
+    --icon-plate: #eeeeee;
+    --icon-ring: rgba(230, 238, 236, 0.18);
+
+    --sponsor-ground: #1a1810;
+    --sponsor-line: #4a4220;
+    --sponsor-plate: #fffdf3;
+
+    --e-color: #000;
+    --e1: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --e2: 0 12px 32px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.4);
+    --e3: 0 24px 64px rgba(0, 0, 0, 0.6);
+    --e-control: 0 1px 2px rgba(0, 0, 0, 0.5);
+    --e-side: -16px 0 40px rgba(0, 0, 0, 0.5);
+    --scrim: rgba(0, 0, 0, 0.56);
+    --focus: #eeeeee;
+  }
+
+  /*
+   * The AI Overview laid out as Google shows it (promptDetail/aioOverview.css)
+   * takes Google's own dark search page colours in dark, so it reads like the
+   * real thing: grey ground, soft white text, light blue links and chips.
+   */
+  /*
+   * ---- Colour: sepia ----
+   * A warm paper page for long reading (like Apple Books' Sepia): cream ground,
+   * brown-black ink, sand hairlines. The result colours keep their meaning, a shade
+   * deeper so they hold 4.5:1 on cream; the top bar stays dark, warmed. Every dark
+   * token has a sepia value (tokens.test.ts checks the lists match).
+   */
+  :root[data-theme='sepia'],
+  [data-theme='sepia'] {
+    color-scheme: light;
+
+    --ground: #f7f0e1;
+    --surface: #f7f0e1;
+    --inset: #efe6d3;
+    --line: #e2d6bd;
+    --line-strong: #d0c09f;
+    --hover: rgba(91, 70, 54, 0.06);
+    --ink: #33281e;
+    --ink-2: #4f3f31;
+    --ink-3: #6a5644;
+    --ink-4: #95806a;
+    --spruce: #2a221b;
+    --spruce-2: #352b22;
+    --spruce-line: rgba(255, 240, 215, 0.1);
+    --spruce-line-strong: rgba(255, 240, 215, 0.16);
+    --spruce-fill: rgba(255, 240, 215, 0.04);
+    --spruce-fill-hover: rgba(255, 240, 215, 0.07);
+    --spruce-hover: rgba(255, 240, 215, 0.06);
+    --spruce-press: rgba(255, 240, 215, 0.1);
+    --spruce-ink: #f3e9d8;
+    --spruce-ink-2: #c4b49c;
+    --spruce-ok: #4cc38a;
+    --spruce-warn: #f2c46d;
+    --fox-on-spruce: #f0915f;
+    --on-spruce: #fff;
+    --console-prompt: #f0915f;
+    --console-ok: #6fcf97;
+    --console-warn: #f2c46d;
+    --console-bad: #ff9b8f;
+    --console-border: transparent;
+    --fox: #b23c0a;
+    --fox-ink: #8f3010;
+    --fox-tint: #efe6d3;
+    --fox-line: #e2d6bd;
+    --on-fox: #fff;
+    --fox-deep: #6f2a10;
+    --action: #ffd400;
+    --action-hover: #f5cb00;
+    --action-press: #ebc300;
+    --on-action: #1c1700;
+    --action-ink: #33281e;
+    --action-ink-hover: #000000;
+    --select: #33281e;
+    --select-tint: #f6e7ad;
+    --select-line: #d9ae1f;
+    --ok: #186440;
+    --ok-tint: #efe6d3;
+    --warn: #765000;
+    --warn-tint: #efe6d3;
+    --bad: #a52015;
+    --bad-tint: #f4ddd3;
+    --bad-ink: #861d15;
+    --on-solid: #fff;
+    --on-ink: #fff;
+    --info: #1f4c91;
+    --info-tint: #efe6d3;
+    --mark: #f3df96;
+    --mark-tint: #f6ebc8;
+    --mark-line: #c99a00;
+    --result-not-cited: #b23c0a;
+    --result-not-cited-ink: #8f3010;
+    --result-not-cited-tint: #f3e0cf;
+    --result-other: #1f4c91;
+    --result-other-ink: #1f4c91;
+    --result-other-tint: #e1e3e5;
+    --result-target: #186440;
+    --result-target-ink: #186440;
+    --result-target-tint: #dfe8d6;
+    --result-none: #8a7865;
+    --result-none-ink: #6a5644;
+    --result-none-tint: #ebe2d0;
+    --chart-not-cited: #7f90a8;
+    --chart-no-aio: #e2d6bd;
+    --chart-band: #e9dfca;
+    --chart-past: #95806a;
+    --chart-track: #e2d6bd;
+    --chart-2: #1f5e58;
+    --chart-measure: #e9ecd8;
+    --chart-rollout: #f1e9d8;
+    --chart-rollout-line: #dccfb4;
+    --marker-google: #5f5a52;
+    --chart-3: #c9a24f;
+    --tint-sky: #e4e9e6;
+    --tint-sky-line: #c9d4d2;
+    --tint-sand: #f1e4c9;
+    --tint-sand-line: #e0cba2;
+    --tint-lilac: #ebe3e3;
+    --tint-lilac-line: #d6c8cc;
+    --tint-mint: #e1eadb;
+    --tint-mint-line: #c4d7bc;
+    --tint-rose: #f3e1d9;
+    --tint-rose-line: #e4c6ba;
+    --section-visibility-mark: #95806a;
+    --section-site-mark: #95806a;
+    --section-tracking-mark: #95806a;
+    --section-setup-mark: #95806a;
+    --icon-plate: transparent;
+    --icon-ring: transparent;
+    --sponsor-ground: #faf1d8;
+    --sponsor-line: #e6d08a;
+    --sponsor-plate: transparent;
+    --e-color: #3c2814;
+    --e1: 0 1px 2px rgba(60, 40, 20, 0.05), 0 4px 12px -4px rgba(60, 40, 20, 0.07);
+    --e2: 0 12px 32px rgba(60, 40, 20, 0.13), 0 2px 6px rgba(60, 40, 20, 0.06);
+    --e3: 0 24px 64px rgba(60, 40, 20, 0.19);
+    --e-control: 0 1px 2px rgba(60, 40, 20, 0.11);
+    --e-side: -16px 0 40px rgba(60, 40, 20, 0.15);
+    --scrim: rgba(40, 28, 16, 0.32);
+    --focus: #33281e;
+  }
+
+  [data-theme='dark'] .aio-g {
+    --surface: #1f1f1f;
+    --inset: #303134;
+    --line: #3c4043;
+    --line-strong: #5f6368;
+    --ink: #e3e3e3;
+    --ink-2: #c4c7c5;
+    --ink-3: #9aa0a6;
+    --info: #a8c7fa;
+    --info-tint: #1f2a3c;
+  }
+
+  /* ---- Type, space, shape and sizes (the same in both themes) ---- */
+  :root {
+    /* Type (FoxCue): Inter for UI with tabular numbers, Inter Tight for titles, JetBrains Mono for URLs and code only. */
+    --font-ui: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-display: 'Inter Tight', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-code: 'JetBrains Mono', ui-monospace, menlo, monospace;
+    --fs-display: 32px;
+    --lh-display: 40px;
+    --fs-h1: 22px;
+    --lh-h1: 28px;
+    /* A screen header's title (ScreenHeader): compact, so the list gets the room. */
+    --fs-screen-title: 19px;
+    --lh-screen-title: 24px;
+    --lh-screen-sub: 18px;
+    --fs-h2: 16px;
+    --lh-h2: 24px;
+    --fs-h3: 14px;
+    --lh-h3: 20px;
+    --fs-body: 14px;
+    --lh-body: 20px;
+    --fs-ui: 13px;
+    --lh-ui: 16px;
+    --fs-small: 12px;
+    --lh-small: 16px;
+    --fw-regular: 400;
+    --fw-medium: 500;
+    --fw-semibold: 600;
+    --ls-display: -0.02em;
+    --ls-h1: -0.015em;
+    --ls-h2: -0.005em;
+
+    /* Space: 4/8 grid */
+    --s-1: 4px;
+    --s-2: 8px;
+    --s-3: 12px;
+    --s-4: 16px;
+    --s-5: 20px;
+    --s-6: 24px;
+    --s-8: 32px;
+    --s-12: 48px;
+    --s-16: 64px;
+    --page-pad: 32px;
+    --card-pad: 24px;
+    --card-gap: 24px;
+
+    /* Shape */
+    --r-s: 8px;
+    /* A card (FoxCue 12px). */
+    --r-m: 12px;
+    /* A chip or tag (FoxCue 8px); --r-pill stays for counts and toggles. */
+    --r-chip: 8px;
+    --r-l: 14px;
+    --r-pill: 999px;
+
+    /* Sizes */
+    --h-control: 36px;
+    --h-control-sm: 32px;
+    --h-row: 44px;
+    --h-grid-bar: 56px;
+    --h-grid-head: 40px;
+    --h-grid-foot: 48px;
+    /* One KPI tile: label, number row and the always-reserved sub line. */
+    --h-kpi: 88px;
+    /* The back row above a drill-down title (ui PageNav). */
+    --h-pagenav: 32px;
+    --icon-s: 14px;
+    --icon-m: 16px;
+    --icon-l: 24px;
+    --stroke: 1.75px;
+    --stroke-strong: 2.25px;
+    /* Columns of the main + rail layout (ui-layout-main-rail), out of 12. */
+    --layout-main: 8;
+    --layout-rail: 4;
+    --shell-sidebar: 220px;
+    --shell-rail: 64px;
+    /* The top bar and the sidebar's brand row: one 48px frame. */
+    --shell-topbar: 48px;
+    --shell-speed: 180ms;
+    --z-sticky: 3;
+    /* The work console floats over content but under menus, popovers and drawers. */
+    --z-console: 20;
+    --z-pop: 30;
+    --z-drawer: 40;
+    --z-skip: 50;
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "status": 200,
+  "body": {
+    "id": "msg_textbolt_fixture",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-sonnet-5-5",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"facts\":[{\"fact\":\"The overview says a developer quote is required before any gateway plan.\",\"likelySource\":\"https://www.twilio.com/pricing\"}]}"
+      }
+    ],
+    "stop_reason": "end_turn",
+    "usage": {
+      "input_tokens": 120,
+      "output_tokens": 80
+    }
+  }
+}

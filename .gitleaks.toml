@@ -1,0 +1,33 @@
+# gitleaks settings for CiteFox (pre-commit hook, CI and scripts/public-sync.mjs).
+# Keeps every built-in gitleaks rule and only allows the known test values below.
+# Allow a value here only when it is plainly fake. Never allow a whole folder.
+title = "CiteFox gitleaks config"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Keychain item names (citefox.<provider>.<id>), not secrets"
+regexTarget = "secret"
+regexes = ['''^citefox\.[a-z0-9]+\.[A-Za-z0-9._-]+$''']
+
+[[allowlists]]
+description = "Test values that say they are fake"
+regexTarget = "secret"
+regexes = [
+  '''(?i)(fake|planted|fixture|dummy|placeholder|not-?a-?real|redacted)''',
+  '''^test[-_]''',
+  '''^(serp|serpapi)-[a-z-]+-0{3}[0-9]$''',
+]
+
+[[allowlists]]
+description = "Mock invite and unsubscribe tokens of the old web app's screens (history only)"
+condition = "AND"
+paths = ['''apps/web/src/api/mockAccess\.ts$''']
+regexes = ['''^inv-''', '''\.tok-[0-9a-f]{6}$''']
+
+[[allowlists]]
+description = "SMTP password of the in-memory email test harness"
+condition = "AND"
+paths = ['''src/main/email/harness\.ts$''']
+regexes = ['''^quil''']

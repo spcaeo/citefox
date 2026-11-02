@@ -1,0 +1,35 @@
+{
+  "$comment": "E2E stand-in site for the topic wizard (src/main/topics/e2e-site.ts). Read only by an unpackaged build started with CITEFOX_E2E_TOPICS=1; tests/e2e/launch.ts passes this file as CITEFOX_E2E_TOPIC_SITE. Kept out of src so release bundles never carry demo pages.",
+  "host": "textbolt.com",
+  "name": "TextBolt",
+  "pages": {
+    "/": {
+      "title": "TextBolt · Email to text for business alerts",
+      "text": "# Email to text for business alerts\n## Send alerts from Gmail or Outlook\n## No app for staff to install\n## Replies come back to your inbox\nTextBolt turns any email into a normal text message. Teams without a developer set it up in about 30 minutes."
+    },
+    "/pricing": {
+      "title": "Pricing · TextBolt",
+      "text": "# Pricing\n## Plans for small teams\n## What counts as a message?\nPlans start at [$29] a month for small teams."
+    },
+    "/features": {
+      "title": "Features · TextBolt",
+      "text": "# Features\n## Two-way texts\n## Scheduled alerts\n## Works with monitoring tools that send email\nWIN-911 alarm software sends its alarms through TextBolt as texts."
+    },
+    "/faq": {
+      "title": "FAQ · TextBolt",
+      "text": "# FAQ\n## Do I need 10DLC to text my staff?\n## What happens when a carrier gateway shuts down?\nAT&T shut down its email-to-text gateway in 2025, and Verizon is retiring vtext.com.\n## How is TextBolt different from Text-Em-All or SimpleTexting?\nCompare: Text-Em-All sells call and text credits ([text-em-all.com](https://www.text-em-all.com)); SimpleTexting is a marketing texting app.\n## Can employees reply?"
+    },
+    "/about": {
+      "title": "About · TextBolt",
+      "text": "# About\nTextBolt helps operations teams reach staff who are away from their desks."
+    },
+    "/use-cases": {
+      "title": "Use cases · TextBolt",
+      "text": "# Use cases\n## Field service\n## IT alerts\n## Multi-location clinics and schools"
+    },
+    "/sms-alerts-for-business/": {
+      "title": "Business SMS alerts: send urgent texts to staff and customers",
+      "text": "# Send SMS alerts your team actually reads\n## What are SMS alerts?\n## Types of business alerts you can send\n## Send alerts from email and other tools\n## Delivery reports\n## Integrations\nSend urgent alerts to staff and customers by text."
+    }
+  }
+}

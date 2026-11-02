@@ -1,0 +1,42 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * The short ready reports (sections/ReadySections.tsx): Pitch / audit's tiles, the
+ * Content plan rows and the Head-to-head winner tags. Docs/REPORT-SPEC.md "Short ready
+ * reports".
+ */
+@layer screens {
+  .rv-kpis-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .rv-win {
+    display: inline-block;
+    padding: 0 var(--s-2);
+    border-radius: var(--r-pill);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    background: var(--inset);
+    color: var(--ink-2);
+  }
+
+  .rv-win-you {
+    background: var(--result-target-tint);
+    color: var(--result-target-ink);
+  }
+
+  .rv-win-them {
+    background: var(--warn-tint);
+    color: var(--result-not-cited-ink);
+  }
+
+  .rv-rival-pick select {
+    min-width: 0;
+  }
+
+  @media (max-width: 900px) {
+    .rv-kpis-4 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}

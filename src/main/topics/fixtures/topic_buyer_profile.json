@@ -1,0 +1,148 @@
+{
+  "points": [
+    {
+      "section": "who",
+      "text": "Operations and office managers at US businesses with 10–250 staff",
+      "foundIn": "/about/",
+      "verify": null
+    },
+    {
+      "section": "who",
+      "text": "IT leads and MSP owners routing alerts to on-call staff",
+      "foundIn": "/use-cases/it-alerts/",
+      "verify": null
+    },
+    {
+      "section": "who",
+      "text": "Owner-operators with no developer on call",
+      "foundIn": "FAQ",
+      "verify": null
+    },
+    {
+      "section": "environment",
+      "text": "Gmail or Outlook all day",
+      "foundIn": "/integrations/",
+      "verify": null
+    },
+    {
+      "section": "environment",
+      "text": "Monitoring, booking and alarm systems that only send email",
+      "foundIn": "/email-to-sms/",
+      "verify": null
+    },
+    {
+      "section": "environment",
+      "text": "Staff away from desks: field crews, clinics, sites",
+      "foundIn": "/use-cases/",
+      "verify": null
+    },
+    {
+      "section": "environment",
+      "text": "A carrier email-to-text address that used to work",
+      "foundIn": "FAQ",
+      "verify": null
+    },
+    {
+      "section": "segments",
+      "text": "Field service and facilities",
+      "foundIn": "/use-cases/field-service/",
+      "verify": null
+    },
+    {
+      "section": "segments",
+      "text": "Small IT teams and MSPs",
+      "foundIn": "/use-cases/it-alerts/",
+      "verify": null
+    },
+    {
+      "section": "segments",
+      "text": "Multi-site: clinics, branches, schools",
+      "foundIn": "/use-cases/multi-location/",
+      "verify": null
+    },
+    {
+      "section": "segments",
+      "text": "Anyone whose carrier gateway broke",
+      "foundIn": "FAQ",
+      "verify": null
+    },
+    {
+      "section": "triggers",
+      "text": "A missed alert caused real damage",
+      "foundIn": "Reviews page",
+      "verify": null
+    },
+    {
+      "section": "triggers",
+      "text": "Carrier email-to-text stopped delivering",
+      "foundIn": "FAQ",
+      "verify": null
+    },
+    {
+      "section": "triggers",
+      "text": "Their carrier gateway is shutting down",
+      "foundIn": "FAQ",
+      "verify": "Check the shutdown date with the carrier"
+    },
+    {
+      "section": "triggers",
+      "text": "Told they need 10DLC just to text their own staff",
+      "foundIn": null,
+      "verify": null
+    },
+    {
+      "section": "triggers",
+      "text": "A developer quote for Twilio came back too high",
+      "foundIn": "/blog/twilio-alternative/",
+      "verify": null
+    },
+    {
+      "section": "values",
+      "text": "Set up in about 30 minutes, nothing new to install",
+      "foundIn": "/",
+      "verify": null
+    },
+    {
+      "section": "values",
+      "text": "Replies come back to the inbox",
+      "foundIn": "/email-to-sms/",
+      "verify": null
+    },
+    {
+      "section": "values",
+      "text": "Compliance handled for them",
+      "foundIn": "FAQ",
+      "verify": null
+    },
+    {
+      "section": "values",
+      "text": "A price around [$29–$49] a month",
+      "foundIn": "/pricing/",
+      "verify": "Re-check the price on the pricing page"
+    },
+    {
+      "section": "poor_fit",
+      "text": "SMS marketers running promo campaigns",
+      "foundIn": "FAQ",
+      "verify": null
+    },
+    {
+      "section": "poor_fit",
+      "text": "Developers building SMS into a product",
+      "foundIn": null,
+      "verify": null
+    },
+    {
+      "section": "poor_fit",
+      "text": "Teams that need acknowledgment and escalation",
+      "foundIn": null,
+      "verify": null
+    },
+    {
+      "section": "poor_fit",
+      "text": "High-volume senders above [10,000] texts a day",
+      "foundIn": "/pricing/",
+      "verify": "Confirm the volume limit"
+    }
+  ]
+}

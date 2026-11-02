@@ -1,0 +1,899 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * The v2 sidebar: spruce chrome, 220px, folding to a 64px icon rail
+ * (`.side[data-collapsed]`). Labels stay in the DOM in the rail so every link
+ * keeps its accessible name; they are visually hidden and `data-tip` shows them.
+ */
+@layer shared {
+  .side {
+    /* Text classes (.faint, .muted) read these, so they stay legible on spruce. */
+    --ink-quiet: var(--spruce-ink-2);
+
+    position: relative;
+    /* A stacking context keeps menus and tooltips above the scrolling page,
+       including a list's sticky header (z-sticky + 1). */
+    z-index: calc(var(--z-sticky) + 2);
+    flex: 0 0 var(--shell-sidebar);
+    width: var(--shell-sidebar);
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding: 0 var(--s-3) var(--s-3);
+    overflow: visible;
+    background: var(--spruce);
+    color: var(--spruce-ink-2);
+    transition:
+      flex-basis var(--shell-speed) ease,
+      width var(--shell-speed) ease,
+      padding var(--shell-speed) ease;
+  }
+
+  /*
+   * The brand row: the logo and the collapse button, as tall as the top bar and
+   * with the same hairline under it, so sidebar and top bar read as one frame.
+   */
+  .side-brand-row {
+    display: flex;
+    flex: 0 0 var(--shell-topbar);
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2);
+    height: var(--shell-topbar);
+    margin: 0 calc(var(--s-3) * -1) var(--s-3);
+    padding: 0 var(--s-3) 0 var(--s-4);
+    border-bottom: 1px solid var(--spruce-line);
+  }
+
+  .side-brand-row .brand {
+    padding: 0;
+  }
+
+  .side-top {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding-bottom: var(--s-3);
+    overflow: visible;
+  }
+
+  .side-scroll {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: 2px;
+    min-height: 0;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--spruce-2) transparent;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 32px;
+    padding: 0 var(--s-2);
+    color: var(--on-spruce);
+    font-weight: var(--fw-semibold);
+    font-size: 15px;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+
+  .brand:hover {
+    color: var(--on-spruce);
+  }
+
+  .side .fox-tile {
+    fill: transparent;
+  }
+
+  .pm-wrap {
+    position: relative;
+  }
+
+  .proj {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2);
+    width: 100%;
+    min-height: 48px;
+    padding: var(--s-2) 10px;
+    border: 1px solid var(--spruce-line-strong);
+    border-radius: 8px;
+    background: var(--spruce-fill);
+    color: var(--spruce-ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .proj:hover {
+    background: var(--spruce-fill-hover);
+  }
+
+  .proj .icon {
+    color: var(--spruce-ink-2);
+  }
+
+  .proj-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+    line-height: var(--lh-small);
+  }
+
+  .proj-name {
+    color: var(--on-spruce);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .proj .proj-domain {
+    color: var(--spruce-ink-2);
+    font-family: var(--font-ui);
+    font-size: var(--fs-small);
+  }
+
+  .proj-avatar {
+    display: none;
+  }
+
+  .proj[aria-expanded='true'] {
+    border-color: var(--fox-line);
+    box-shadow: none;
+  }
+
+  /* The switcher menu is a light popover over the page. */
+  .pm {
+    --ink-quiet: var(--ink-3);
+
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    z-index: var(--z-pop);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 240px;
+    padding: 6px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e2);
+    color: var(--ink);
+  }
+
+  .pm-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px var(--s-2) var(--s-1);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+  }
+
+  .pm-search {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    height: var(--h-control-sm);
+    padding: 0 10px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink-3);
+  }
+
+  .pm-search {
+    margin-bottom: var(--s-1);
+  }
+
+  .pm-search input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--ink);
+    font-size: var(--fs-ui);
+  }
+
+  .pm-search:focus-within {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+
+  .pm-item,
+  .pm-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: var(--r-s);
+    text-decoration: none;
+  }
+
+  .pm-item {
+    width: 100%;
+    min-height: 44px;
+    padding: var(--s-1) var(--s-2);
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .pm-link {
+    height: var(--h-control-sm);
+    padding: 0 var(--s-2);
+    color: var(--ink-2);
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-ui);
+  }
+
+  .pm-item:hover,
+  .pm-link:hover {
+    background: var(--inset);
+    color: var(--ink);
+  }
+
+  .pm-item.cur,
+  .pm-item.cur:hover {
+    background: var(--select-tint);
+  }
+
+  .pm-link-new,
+  .pm-link-new:hover {
+    color: var(--fox-ink);
+  }
+
+  .pm-sep {
+    height: 1px;
+    margin: var(--s-1) 0;
+    background: var(--line);
+  }
+
+  .pm-meta {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    line-height: var(--lh-small);
+  }
+
+  .pm-meta-name {
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-ui);
+  }
+
+  .pm-meta .proj-domain {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .pm-empty {
+    padding: var(--s-1) var(--s-2);
+    font-size: var(--fs-ui);
+  }
+
+  .nav-link {
+    position: relative;
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 10px;
+    height: 32px;
+    padding: 0 10px;
+    border-radius: var(--r-s);
+    color: var(--spruce-ink-2);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+    text-decoration: none;
+  }
+
+  .nav-link:hover {
+    background: var(--spruce-2);
+    color: var(--spruce-ink);
+  }
+
+  /* The open item: a lifted row with FoxCue's yellow bar at its left edge. */
+  .nav-link[aria-current='page'] {
+    background: var(--spruce-2);
+    box-shadow: inset 3px 0 0 var(--action);
+    color: var(--on-spruce);
+  }
+
+  /* Keyboard focus reads light on the near-black sidebar (its white menus keep the ink one). */
+  .side :focus-visible:not(.pm *):not(.side-add-menu *) {
+    outline-color: var(--spruce-ink);
+  }
+
+  .nav-link.add {
+    margin-top: var(--s-2);
+    background: var(--spruce-hover);
+    color: var(--spruce-ink);
+  }
+
+  .nav-link.add:hover,
+  .nav-link.add[aria-current='page'] {
+    background: var(--spruce-2);
+    color: var(--on-spruce);
+  }
+
+  .nav-text {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .nav-initial {
+    display: none;
+  }
+
+  .nav-score {
+    margin-left: auto;
+    color: var(--spruce-ink-2);
+    font-size: var(--fs-small);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- + Add: the primary button and its four paths (AddFlow.dc.html) ---- */
+  .side-add {
+    position: relative;
+  }
+
+  .side-add-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-2);
+    width: 100%;
+    height: var(--h-control);
+    padding: 0 var(--s-3);
+    /* FoxCue's yellow action on the near-black sidebar (owner, 2026-10-30). */
+    border: 1px solid var(--action);
+    border-radius: var(--r-s);
+    background: var(--action);
+    color: var(--on-action);
+    font: inherit;
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+  }
+
+  .side-add-btn:hover,
+  .side-add-btn[aria-expanded='true'] {
+    border-color: var(--action-hover);
+    background: var(--action-hover);
+  }
+
+  .side-add-btn:active {
+    border-color: var(--action-press);
+    background: var(--action-press);
+  }
+
+  .side-add-btn:focus-visible {
+    outline: 2px solid var(--spruce-ink);
+    outline-offset: 2px;
+  }
+
+  .side-add-menu {
+    --ink-quiet: var(--ink-3);
+
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: var(--z-pop);
+    display: flex;
+    flex-direction: column;
+    width: 304px;
+    margin: 0;
+    padding: 6px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e2);
+    list-style: none;
+  }
+
+  .side-add-menu[hidden] {
+    display: none;
+  }
+
+  /* Icon in its own column; label above hint beside it. */
+  .side-add-item {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    column-gap: 10px;
+    row-gap: 2px;
+    align-items: start;
+    padding: var(--s-2) 10px;
+    border-radius: var(--r-s);
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .side-add-item:hover,
+  .side-add-item:focus-visible {
+    background: var(--select-tint);
+    color: var(--ink);
+  }
+
+  .side-add-item > .icon {
+    grid-row: 1 / span 2;
+    margin-top: 1px;
+    color: var(--ink-3);
+  }
+
+  .side-add-item:hover > .icon,
+  .side-add-item:focus-visible > .icon {
+    color: var(--ink);
+  }
+
+  .side-add-label,
+  .side-add-hint {
+    grid-column: 2;
+  }
+
+  /* "Import": the file entries' heading, under a hairline. */
+  .side-add-heading {
+    display: block;
+    margin: var(--s-1) 4px 2px;
+    padding: var(--s-2) 6px 2px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .side-add-label {
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .side-add-hint {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  /* ---- Folding groups ---- */
+  .side-group {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .side-group + .side-group {
+    margin-top: var(--s-2);
+  }
+
+  /* Pages and Settings: plain items under the groups, one rule above them. */
+  .side-group-plain + .side-group-plain {
+    margin-top: 0;
+  }
+
+  .side-group-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    height: 28px;
+    padding: 0 10px;
+    border: 0;
+    border-radius: var(--r-s);
+    background: transparent;
+    color: var(--spruce-ink-2);
+    font: inherit;
+    font-size: 11px;
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.06em;
+    text-align: left;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .side-group-head:hover {
+    color: var(--spruce-ink);
+  }
+
+  .side-group-head:focus-visible {
+    outline: 2px solid var(--spruce-ink);
+    outline-offset: -2px;
+  }
+
+  .side-group-label {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /*
+   * The group's hue (sidebarNav GROUP_HUE, Tints.dc.html): a small square by
+   * its label. Every area's mark is the same quiet grey now (tokens.css), so
+   * the labels carry no colour; the open item's bar is the FoxCue yellow.
+   */
+  .side-group[data-hue='visibility'] {
+    --side-hue: var(--section-visibility-mark);
+  }
+
+  .side-group[data-hue='site'] {
+    --side-hue: var(--section-site-mark);
+  }
+
+  .side-group[data-hue='tracking'] {
+    --side-hue: var(--section-tracking-mark);
+  }
+
+  .side-group[data-hue='setup'] {
+    --side-hue: var(--section-setup-mark);
+  }
+
+  .side-group[data-hue] .side-group-head::before {
+    content: '';
+    flex: 0 0 auto;
+    width: 6px;
+    height: 6px;
+    border-radius: 1px;
+    background: var(--side-hue);
+  }
+
+  .side-group[data-hue] .nav-link[aria-current='page'] {
+    box-shadow: inset 3px 0 0 var(--action);
+  }
+
+  .side-group-count {
+    font-weight: var(--fw-medium);
+    letter-spacing: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .side-group-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: var(--r-pill);
+    background: var(--fox);
+  }
+
+  .side-group-chev {
+    transition: transform var(--shell-speed) ease;
+  }
+
+  .side-group-head[aria-expanded='false'] .side-group-chev {
+    transform: rotate(-90deg);
+  }
+
+  .side-group-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .side-group-body[hidden] {
+    display: none;
+  }
+
+  .side-group-body > .faint {
+    padding: 0 10px;
+    font-size: var(--fs-small);
+  }
+
+  .side-group-rule {
+    height: 1px;
+    margin: var(--s-2) 6px;
+    background: var(--spruce-line);
+  }
+
+  /* Topics under AI visibility: the Topics link, then each topic indented. */
+  .side-sublabel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 32px;
+    padding: 0 10px;
+    color: var(--spruce-ink-2);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  .side-sublabel ~ .nav-link[href^='#/topics/'],
+  .nav-link[href='#/topics'] ~ .nav-link[href^='#/topics/'] {
+    padding-left: 36px;
+  }
+
+  /* The sponsor card follows the groups and sits at the foot when there is room. */
+  .side-scroll > .side-sponsor,
+  .side-scroll > .side-sponsor-mini {
+    margin-top: auto;
+  }
+
+  @media (max-height: 820px) {
+    .side-scroll > .side-sponsor {
+      gap: 4px;
+      padding: var(--s-2) var(--s-3);
+    }
+  }
+
+  .side-label {
+    padding: var(--s-4) 10px var(--s-1);
+    color: var(--spruce-ink-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+  }
+
+  .side-scroll > .faint {
+    padding: 0 10px;
+    font-size: var(--fs-small);
+  }
+
+  .side-foot {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--s-2);
+    padding: var(--s-3) var(--s-1) 0 10px;
+    border-top: 1px solid var(--spruce-line);
+    color: var(--spruce-ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .side-tray {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .side-foot .drill-num {
+    color: var(--spruce-ink);
+  }
+
+  .tray-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tray-dot {
+    width: 6px;
+    height: 6px;
+    flex: 0 0 6px;
+    border-radius: var(--r-pill);
+    background: var(--spruce-ok);
+  }
+
+  .tray-dot.off {
+    background: var(--spruce-ink-2);
+  }
+
+  .side-toggle {
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--r-s);
+    background: transparent;
+    color: var(--spruce-ink-2);
+    cursor: pointer;
+  }
+
+  .side-toggle:hover {
+    background: var(--spruce-2);
+    color: var(--on-spruce);
+  }
+
+  .side-toggle:focus-visible {
+    outline: 2px solid var(--spruce-ink);
+    outline-offset: 0;
+  }
+
+  /* Its tooltip under it while the sidebar is open (the rail has its own, beside). */
+  .side:not([data-collapsed]) .side-toggle[data-tip]:hover::after,
+  .side:not([data-collapsed]) .side-toggle[data-tip]:focus-visible::after {
+    content: attr(data-tip);
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: var(--z-pop);
+    padding: var(--s-1) var(--s-2);
+    border-radius: var(--r-s);
+    background: var(--ink);
+    box-shadow: var(--e2);
+    color: var(--on-ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-small);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  /* ---- Collapsed: the 64px icon rail ---- */
+  .side[data-collapsed] {
+    flex-basis: var(--shell-rail);
+    width: var(--shell-rail);
+    padding: 0 10px var(--s-3);
+  }
+
+  /* The rail's brand row keeps only the expand button, in the same top spot. */
+  .side[data-collapsed] .side-brand-row {
+    justify-content: center;
+    margin: 0 -10px var(--s-3);
+    padding: 0;
+  }
+
+  .side[data-collapsed] .side-brand-row .brand {
+    display: none;
+  }
+
+  .side[data-collapsed] .side-scroll {
+    overflow-x: hidden;
+    scrollbar-width: none;
+  }
+
+  .side[data-collapsed] .brand {
+    justify-content: center;
+    padding: 0;
+  }
+
+  .side[data-collapsed] .brand-text,
+  .side[data-collapsed] .nav-text,
+  .side[data-collapsed] .nav-score,
+  .side[data-collapsed] .proj-copy {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .side[data-collapsed] .proj {
+    justify-content: center;
+    min-height: 44px;
+    padding: 0;
+  }
+
+  .side[data-collapsed] .proj > .icon {
+    display: none;
+  }
+
+  .side[data-collapsed] .proj-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--r-s);
+    background: var(--action);
+    color: var(--on-action);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .side[data-collapsed] .pm {
+    right: auto;
+    width: 260px;
+  }
+
+  .side[data-collapsed] .nav-link {
+    justify-content: center;
+    height: 36px;
+    padding: 0;
+  }
+
+  .side[data-collapsed] .nav-initial {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    background: var(--spruce-press);
+    color: var(--spruce-ink);
+    font-size: 11px;
+    font-weight: var(--fw-semibold);
+  }
+
+  .side[data-collapsed] .side-add-btn {
+    height: 36px;
+    padding: 0;
+  }
+
+  .side[data-collapsed] .side-add-text,
+  .side[data-collapsed] .side-add-chev {
+    display: none;
+  }
+
+  .side[data-collapsed] .side-add-menu {
+    top: 0;
+    left: calc(100% + 12px);
+  }
+
+  .side[data-collapsed] .side-sublabel {
+    display: none;
+  }
+
+  .side[data-collapsed] .side-sublabel ~ .nav-link[href^='#/topics/'],
+  .side[data-collapsed] .nav-link[href='#/topics'] ~ .nav-link[href^='#/topics/'] {
+    padding-left: 0;
+  }
+
+  .side[data-collapsed] .side-label {
+    height: 1px;
+    margin: var(--s-2) 6px;
+    padding: 0;
+    overflow: hidden;
+    background: var(--spruce-line);
+    color: transparent;
+    font-size: 0;
+  }
+
+  /* The tray line has no room in the rail (Collapse moved to the brand row). */
+  .side[data-collapsed] .side-foot {
+    display: none;
+  }
+
+  .side[data-collapsed] .side-tray {
+    display: none;
+  }
+
+  /*
+   * Rail tooltips: the label beside the icon on hover or keyboard focus. Fixed and
+   * anchored to the item, so the scrolling rail never clips them.
+   */
+  .side[data-collapsed] [data-tip]:hover,
+  .side[data-collapsed] [data-tip]:focus-visible {
+    anchor-name: --side-tip;
+  }
+
+  .side[data-collapsed] [data-tip]:hover::after,
+  .side[data-collapsed] [data-tip]:focus-visible::after {
+    content: attr(data-tip);
+    position: fixed;
+    position-anchor: --side-tip;
+    top: anchor(center);
+    left: anchor(right);
+    z-index: var(--z-pop);
+    margin-left: 12px;
+    padding: var(--s-1) var(--s-2);
+    border-radius: var(--r-s);
+    background: var(--ink);
+    box-shadow: var(--e2);
+    color: var(--on-ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-small);
+    white-space: nowrap;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .side[data-collapsed] .pm-wrap,
+  .side[data-collapsed] .proj {
+    position: relative;
+  }
+}

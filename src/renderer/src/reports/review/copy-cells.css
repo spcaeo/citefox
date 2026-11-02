@@ -1,0 +1,30 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * The copy/open rule on every Reports screen (Docs/REPORT-SPEC.md "Copy and open"):
+ * pages, URLs and sites use UrlText, questions and quotes use CopyText (copyCells.tsx).
+ */
+@layer screens {
+  /* A question or quote wraps like the text it replaces; Copy sits after its last line. */
+  .rv-copy {
+    align-items: flex-start;
+  }
+
+  .rv-copy .ui-url-value {
+    overflow: visible;
+    white-space: normal;
+  }
+
+  /* A row that opens its drawer takes the keyboard focus: its icons show then too. */
+  .rv-tbl tr:focus-visible .ui-url-actions {
+    margin-inline-end: 0;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* A site chip keeps its chip look inside the copy/open wrapper. */
+  .rv-site-copy .ui-url-value {
+    overflow: visible;
+    font-family: var(--font-ui);
+  }
+}

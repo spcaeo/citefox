@@ -1,0 +1,292 @@
+/* The build chip, its menu, the reset / fresh-test dialogs and the build toast (feedback batch 2). */
+
+@layer shared, results, screens, utilities;
+
+@layer shared {
+  /* ---- Chip (every top bar) ---- */
+  .bm-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    height: 28px;
+    padding: 0 var(--s-2) 0 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--ink-3);
+    font-family: var(--font-ui);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .bm-chip:hover {
+    border-color: var(--line-strong);
+    color: var(--ink-2);
+  }
+
+  .bm-chip:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .bm-chip[data-open] {
+    border-color: var(--line-strong);
+    background: var(--inset);
+    color: var(--ink);
+  }
+
+  .bm-chip[data-test-profile] {
+    padding-left: 3px;
+    border-color: var(--mark-line);
+  }
+
+  .bm-chip .ui-icon {
+    color: var(--ink-3);
+  }
+
+  .bm-chip-text {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bm-commit {
+    font-family: var(--font-code);
+    font-size: 11px;
+  }
+
+  .bm-badge {
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    padding: 0 8px;
+    border-radius: var(--r-pill);
+    background: var(--warn-tint);
+    color: var(--warn);
+    font-size: 11px;
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.01em;
+  }
+
+  /* ---- Menu header ---- */
+  .bm-head p {
+    margin: 0;
+  }
+
+  .bm-head-title {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    color: var(--ink);
+    font-size: var(--fs-h3);
+    line-height: var(--lh-h3);
+    font-weight: var(--fw-semibold);
+  }
+
+  .bm-head .bm-head-build {
+    margin-top: 2px;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  /* ---- Reset and fresh test confirms (inside ui/Confirm) ---- */
+  .bm-confirm {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .bm-facts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-3);
+  }
+
+  .bm-facts {
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--inset);
+  }
+
+  .bm-facts h3 {
+    margin: 0 0 var(--s-2);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .bm-facts ul {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bm-facts li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .bm-facts li .ui-icon {
+    flex: 0 0 auto;
+    margin-top: 1px;
+  }
+
+  .bm-facts-removed li .ui-icon {
+    color: var(--bad);
+  }
+
+  .bm-facts-kept li .ui-icon {
+    color: var(--ok);
+  }
+
+  .bm-note {
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .bm-dialog-error {
+    margin: 0;
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-s);
+    background: var(--bad-tint);
+    color: var(--bad);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  /* ---- Toast ---- */
+  .bm-toast-region {
+    position: fixed;
+    bottom: var(--s-6);
+    left: 50%;
+    z-index: var(--z-pop);
+    transform: translateX(-50%);
+  }
+
+  .bm-toast {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    max-width: min(480px, calc(100vw - 48px));
+    padding: 10px 10px 10px var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e2);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .bm-toast[data-tone='ok'] > .ui-icon {
+    color: var(--ok);
+  }
+
+  .bm-toast[data-tone='bad'] > .ui-icon {
+    color: var(--bad);
+  }
+
+  .bm-toast-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .bm-toast-link {
+    flex: 0 0 auto;
+    color: var(--fox-ink);
+    font-weight: var(--fw-medium);
+  }
+
+  .bm-toast-action {
+    flex: 0 0 auto;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--action-ink);
+    font: inherit;
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+  }
+
+  .bm-toast-action:hover,
+  .bm-toast-link:hover {
+    text-decoration: underline;
+  }
+
+  .bm-toast-action:focus-visible {
+    border-radius: var(--r-s);
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .bm-toast-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: 0;
+    border-radius: var(--r-s);
+    background: none;
+    color: var(--ink-3);
+    cursor: pointer;
+  }
+
+  .bm-toast-close:hover {
+    background: var(--inset);
+    color: var(--ink);
+  }
+
+  /* ---- Settings › About: Testing ---- */
+  .bm-panel-lead {
+    margin: 0 0 var(--s-2);
+  }
+
+  .bm-panel-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bm-panel-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding: var(--s-3) 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .bm-panel-list li:first-child {
+    border-top: 0;
+  }
+
+  .bm-panel-list p {
+    margin: 0;
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .bm-panel-name {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+  }
+
+  .bm-panel-list .muted {
+    margin-top: 2px;
+  }
+
+  .bm-panel-list .ui-btn {
+    flex: 0 0 auto;
+  }
+}

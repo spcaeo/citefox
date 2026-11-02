@@ -1,0 +1,160 @@
+/* "Setting up textbolt.com" (journey A2): the live step list and the rail details. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .su-meter {
+    padding: 0 var(--s-5) var(--s-3);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .su-count {
+    margin: var(--s-2) 0 0;
+    font-size: var(--fs-small);
+  }
+
+  .su-steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .su-step {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .su-step:last-child {
+    border-bottom: 0;
+  }
+
+  .su-step-running {
+    background: var(--fox-tint);
+  }
+
+  .su-step-main {
+    display: grid;
+    grid-template-columns: 22px minmax(150px, 0.9fr) minmax(0, 1.2fr) 56px;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: var(--h-row);
+    padding: var(--s-2) var(--s-5);
+  }
+
+  .su-label {
+    font-weight: var(--fw-medium);
+  }
+
+  .su-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .su-inner {
+    display: block;
+    max-width: 300px;
+  }
+
+  .su-time {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    text-align: right;
+  }
+
+  .su-mark {
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .su-mark-ok {
+    background: var(--spruce);
+    color: var(--on-spruce);
+  }
+
+  .su-mark-warning {
+    background: var(--warn-tint);
+    color: var(--warn);
+  }
+
+  .su-mark-failed {
+    background: var(--bad-tint);
+    color: var(--bad);
+  }
+
+  .su-mark-running {
+    border: 5px solid var(--fox-tint);
+    background: var(--fox);
+    box-shadow: 0 0 0 1px var(--fox-line);
+  }
+
+  .su-mark-pending {
+    border: 1px dashed var(--line-strong);
+  }
+
+  .su-subs {
+    margin: 0;
+    padding: 0 var(--s-5) var(--s-2) 52px;
+    list-style: none;
+  }
+
+  .su-subs li {
+    display: grid;
+    grid-template-columns: 16px minmax(140px, 0.9fr) minmax(0, 1.2fr) auto;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 32px;
+  }
+
+  .su-sub-mark {
+    color: var(--ink-3);
+    text-align: center;
+  }
+
+  .su-sub-retried {
+    color: var(--warn);
+  }
+
+  .su-buyers {
+    padding: 0 var(--s-5) var(--s-3);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .su-key {
+    margin: 0 0 var(--s-1);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .su-who {
+    margin: 0 0 var(--s-2);
+  }
+
+  .su-section {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .su-empty {
+    margin: 0;
+    padding: var(--s-4);
+  }
+
+  .su-note {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+}

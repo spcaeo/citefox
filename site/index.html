@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CiteFox: Free AI Visibility Tracker for AI Overviews &amp; ChatGPT</title>
+    <meta name="description" content="Free desktop app that tracks whether Google AI Overviews, ChatGPT, Perplexity, Gemini and Copilot cite your site. GEO and AEO reports for agencies. Mac, Windows, Linux." />
+    <link rel="canonical" href="https://spcaeo.github.io/citefox/" />
+    <meta name="citefox-repo" content="spcaeo/citefox" />
+    <meta name="theme-color" content="#2a221b" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="CiteFox" />
+    <meta property="og:title" content="CiteFox: Free AI Visibility Tracker for AI Overviews &amp; ChatGPT" />
+    <meta property="og:description" content="Free desktop app that tracks whether Google AI Overviews, ChatGPT, Perplexity, Gemini and Copilot cite your site. GEO and AEO reports for agencies. Mac, Windows, Linux." />
+    <meta property="og:url" content="https://spcaeo.github.io/citefox/" />
+    <meta property="og:image" content="https://spcaeo.github.io/citefox/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="CiteFox: free AI visibility tracker" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CiteFox: Free AI Visibility Tracker for AI Overviews &amp; ChatGPT" />
+    <meta name="twitter:description" content="Free desktop app that tracks whether Google AI Overviews, ChatGPT, Perplexity, Gemini and Copilot cite your site. GEO and AEO reports for agencies. Mac, Windows, Linux." />
+    <meta name="twitter:image" content="https://spcaeo.github.io/citefox/og.png" />
+    <meta name="twitter:image:alt" content="CiteFox: free AI visibility tracker" />
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./app.js"></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "CiteFox",
+      "description": "A free desktop app that tracks whether Google AI Overviews, Google AI Mode, ChatGPT, Perplexity, Gemini and Copilot cite your website, shows who is cited instead, writes fix briefs and builds client-ready reports.",
+      "url": "https://spcaeo.github.io/citefox/",
+      "downloadUrl": "https://github.com/spcaeo/citefox/releases",
+      "operatingSystem": "macOS, Windows, Linux",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "SEO software",
+      "softwareVersion": "0.12.0",
+      "image": "https://spcaeo.github.io/citefox/og.png",
+      "screenshot": "https://spcaeo.github.io/citefox/media/hero.png",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "isAccessibleForFree": true,
+      "license": "https://github.com/spcaeo/citefox/blob/main/LICENSE",
+      "codeRepository": "https://github.com/spcaeo/citefox",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Space-O Technologies",
+        "url": "https://www.spaceo.ca"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "Space-O Technologies",
+        "url": "https://www.spaceo.ca"
+      },
+      "keywords": "AI visibility tracker, AI Overview tracker, GEO, AEO, LLM SEO, generative engine optimization, answer engine optimization, AI citation tracking"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is CiteFox?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "CiteFox is a free desktop app for Mac, Windows and Linux that tracks whether Google AI Overviews, Google AI Mode, ChatGPT, Perplexity, Gemini and Copilot cite your website for the questions your buyers ask. It shows which page is cited, who is cited instead, what to fix, and whether your fixes worked."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is CiteFox free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The app is free to download and use. Checks use search credits from your own account with a search data service; free plans are enough to try it. CiteFox shows what a check will use before it runs and stops at a monthly budget you set."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I check if Google AI Overviews cite my website?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Add your website in CiteFox and run a check. It asks Google each buyer question in the markets you pick, records whether an AI Overview appeared, and lists every source it cited, with your pages marked. Re-checks show what changed over time."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can CiteFox track ChatGPT and Perplexity citations?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. CiteFox asks ChatGPT, Perplexity, Gemini, Copilot and Google AI Mode the same questions as Google, and shows for each engine whether your site was cited, named without a link, or missing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between GEO, AEO and SEO?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "SEO aims to rank pages in search results. GEO (generative engine optimization) and AEO (answer engine optimization) aim to get your pages cited, and your brand named, inside AI-written answers such as Google AI Overviews and ChatGPT. LLM SEO is another name for the same work."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does CiteFox send my data to a server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Your projects, questions, AI answers and reports stay on your computer, and your keys stay in your system keychain. CiteFox talks only to the services you connect and the pages you ask it to read. It sends its maker, Space-O Technologies, just two things: the details you give in the Join step, and an anonymous daily version ping."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is CiteFox open source?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "CiteFox is source-available, not open source. The full code is public on GitHub: you can read it, run it, change it for your own use and send improvements. Copies you share must keep the CiteFox name and sponsors. See the LICENSE file."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can agencies use CiteFox for client reports?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The license allows use for your company’s clients. CiteFox has six ready reports (Visibility, What changed, Impact review, Pitch / audit, Content plan and Head-to-head) that you can brand with your agency name and logo, download as offline HTML, PDF or CSV, or email on a schedule."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What do I need to run CiteFox?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A Mac, Windows or Linux computer, a key for a search data service (CiteFox links to sign-up pages with free plans and tests the key), and an AI assistant for CiteFox AI: one you already use on your computer under your own plan, or a paste-in mode with your own ChatGPT."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does my computer warn me when I open CiteFox?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "CiteFox builds are not code-signed with a paid certificate yet, so macOS and Windows ask once before the first start. On a Mac, click Open Anyway in System Settings › Privacy & Security. On Windows, choose More info, then Run anyway. Every release lists a SHA-256 checksum for each file."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which countries and languages does CiteFox support?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You pick the markets: a country and language pair, such as United States · English or Germany · German. CiteFox writes the buyer questions in each market’s wording and checks each market separately, because AI answers differ by place and language."
+          }
+        }
+      ]
+    }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="topbar">
+      <div class="wrap topbar-row">
+        <a class="brand" href="./">
+          <img src="./icon.svg" alt="" width="32" height="32" />
+          <span>CiteFox</span>
+        </a>
+        <nav aria-label="Main">
+          <a href="./#features">Features</a>
+          <a href="./docs/">Docs</a>
+          <a href="./glossary/">Glossary</a>
+          <a href="./#download">Download</a>
+          <a id="nav-source" href="https://github.com/spcaeo/citefox" target="_blank" rel="noopener">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero wrap" id="download">
+        <p class="eyebrow">Free desktop app · Mac, Windows and Linux · Source-available</p>
+        <h1>Free AI visibility tracker for Google AI Overviews, ChatGPT and Perplexity</h1>
+        <p class="lead">
+          CiteFox shows whether AI answers cite your website for the questions your buyers ask,
+          which page they cite, who they cite instead, and what to fix. Your keys and data stay on
+          your computer.
+        </p>
+        <div id="primary" class="primary" aria-live="polite">
+          <p class="muted">Finding the latest version…</p>
+        </div>
+        <p id="release-meta" class="muted small"></p>
+        <p id="mobile-note" class="note" hidden>
+          CiteFox is a desktop app. Open this page on your Mac or PC to download it.
+        </p>
+        <p id="other-platforms" class="small"></p>
+        <figure class="shot"><img src="./media/hero.png" alt="CiteFox showing which buyer questions AI answers cite your site for, by engine" width="2400" height="1500" fetchpriority="high" decoding="async" /></figure>
+      </section>
+
+      <section class="band" id="features" aria-labelledby="features-title">
+        <div class="wrap">
+          <h2 id="features-title">Track your citations in AI search, then win more of them</h2>
+          <p class="section-lead">GEO and AEO tools for agencies and marketing teams, in one free desktop app.</p>
+          <div class="features">
+            <article class="feature">
+              <h3>AI visibility tracking across six engines</h3>
+              <p>See how often AI answers cite your website, by engine, country and language. A trend line marks every fix you made, and each number opens the exact questions it counts.</p>
+              <figure class="shot"><img src="./media/summary.png" alt="CiteFox Summary screen with the AI visibility score, trend and next fixes" width="2400" height="1500" loading="lazy" decoding="async" /></figure>
+            </article>
+            <article class="feature">
+              <h3>Every AI answer and every cited source</h3>
+              <p>Open any buyer question to read the full answer, the sources it links and how it changed between checks. CiteFox tells you whether the right page was cited, another page of yours, your brand named without a link, or someone else.</p>
+              <figure class="shot"><img src="./media/question.png" alt="A question in CiteFox showing the full AI answer and the sources it cites" width="2400" height="1500" loading="lazy" decoding="async" /></figure>
+            </article>
+            <article class="feature">
+              <h3>Competitor citation tracking</h3>
+              <p>Find out who AI answers cite instead of you, on which questions and engines, and where a competitor wins and you do not.</p>
+              <figure class="shot"><img src="./media/competitors.png" alt="CiteFox Competitors screen listing the sites AI answers cite instead of you" width="2400" height="1500" loading="lazy" decoding="async" /></figure>
+            </article>
+            <article class="feature">
+              <h3>Fix briefs and before-and-after tracking</h3>
+              <p>Get a short brief for each page to improve or write. Log the change, and CiteFox measures the questions it should help for 14 days, then says whether it worked.</p>
+              <figure class="shot"><img src="./media/fixes.png" alt="CiteFox Fixes screen with page fixes, logged changes and verdicts" width="2400" height="1500" loading="lazy" decoding="async" /></figure>
+            </article>
+            <article class="feature">
+              <h3>Client-ready AI visibility reports</h3>
+              <p>Six reports rebuilt after every check: read them in the app, download offline HTML, PDF or CSV, put your agency name and logo on them, or email them to clients on a schedule.</p>
+              <figure class="shot"><img src="./media/reports-home.png" alt="CiteFox Reports screen with six ready reports" width="2400" height="1500" loading="lazy" decoding="async" /></figure>
+            </article>
+          </div>
+          <h3 class="sub">Also included</h3>
+          <ul class="ticks">
+            <li>Buyer questions written for you from your site, in the wording of each market</li>
+            <li>Topics and target pages: say which page should win each question</li>
+            <li>Scheduled re-checks while the app is closed, with a monthly budget you set</li>
+            <li>Alerts on the desktop, by email or in Slack when a target page loses its citation or a competitor is cited instead</li>
+            <li>Ask CiteFox: plain-English answers about your stored results, with links to the rows</li>
+            <li>Import questions, pages and competitors from a sitemap, CSV or Excel file</li>
+            <li>Many projects, each with its own markets and settings</li>
+            <li>Light and dark themes on Mac, Windows and Linux</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="wrap" aria-labelledby="how-title">
+        <h2 id="how-title">How CiteFox works</h2>
+        <ol class="how">
+          <li><h3>Add your website</h3><p>CiteFox AI reads your site and works out what you sell, who buys it and who your competitors are.</p></li>
+          <li><h3>Get your buyer questions</h3><p>It writes the questions your buyers really ask, grouped into topics, for each country and language you sell in.</p></li>
+          <li><h3>Check, fix, re-check</h3><p>It asks every AI engine, saves each answer and source, shows who is cited instead, writes fix briefs and re-checks on a schedule.</p></li>
+        </ol>
+        <video class="shot" controls preload="none" playsinline poster="media/hero.png" width="2400" height="1500"><source src="media/demo.mp4" type="video/mp4" />Your browser cannot play this video.</video>
+      </section>
+
+      <section class="wrap" id="engines" aria-labelledby="engines-title">
+        <h2 id="engines-title">Supported AI engines</h2>
+        <p>Every buyer question is asked on each engine you pick, in each market (country and language) you sell in.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Engine</th><th scope="col">What CiteFox records</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Google AI Overviews</th><td>The AI answer at the top of Google results: whether one shows, its text and every source it links.</td></tr>
+              <tr><th scope="row">Google AI Mode</th><td>Google’s full AI search answer and the sources it cites.</td></tr>
+              <tr><th scope="row">ChatGPT</th><td>ChatGPT answers to your buyer questions and the web sources they cite.</td></tr>
+              <tr><th scope="row">Perplexity</th><td>Perplexity answers and their numbered sources.</td></tr>
+              <tr><th scope="row">Gemini</th><td>Gemini answers and the pages they cite.</td></tr>
+              <tr><th scope="row">Copilot</th><td>Microsoft Copilot answers and the pages they cite.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small muted">For every answer: whether your page is cited, which page, your brand named without a link, or not there at all, plus every other site cited.</p>
+      </section>
+
+      <section class="band" id="reports" aria-labelledby="reports-title">
+        <div class="wrap">
+          <h2 id="reports-title">Client-ready AI visibility reports</h2>
+          <p class="section-lead">Rebuilt after every check. Read them in the app, download offline HTML, PDF or CSV, or email them on a schedule, with your agency’s name and logo.</p>
+          <ul class="cards">
+            <li class="mini"><h3><a href="docs/reports-visibility/">Visibility report</a></h3><p>Where you stand at one check, and who wins instead.</p></li>
+            <li class="mini"><h3><a href="docs/reports-changed/">What changed</a></h3><p>Any two checks compared, verdict first.</p></li>
+            <li class="mini"><h3><a href="docs/reports-impact/">Impact review</a></h3><p>What your published pages and fixes did, before and after.</p></li>
+            <li class="mini"><h3><a href="docs/reports-pitch/">Pitch / audit</a></h3><p>A short audit from one check, to win a client or brief your boss.</p></li>
+            <li class="mini"><h3><a href="docs/reports-content/">Content plan</a></h3><p>The pages to write or fix first, ready for a writer.</p></li>
+            <li class="mini"><h3><a href="docs/reports-rival/">Head-to-head</a></h3><p>You against one competitor: where they get cited and you do not.</p></li>
+          </ul>
+          <figure class="shot"><img src="./media/report-visibility.png" alt="The CiteFox Visibility report with share of voice and the questions that cite you" width="2400" height="1500" loading="lazy" decoding="async" /></figure>
+        </div>
+      </section>
+
+      <section class="wrap" aria-labelledby="who-title">
+        <h2 id="who-title">Who CiteFox is for</h2>
+        <ul class="cards three">
+          <li class="mini"><h3>SEO and GEO agencies</h3><p>Track AI citations for every client, pitch new clients with an audit, and send branded reports on a schedule.</p></li>
+          <li class="mini"><h3>In-house marketers</h3><p>Show whether AI answers recommend you or a competitor, and prove which page changes moved the numbers.</p></li>
+          <li class="mini"><h3>SaaS and ecommerce teams</h3><p>See which product, category and comparison pages AI engines cite for the questions buyers ask before they buy.</p></li>
+        </ul>
+      </section>
+
+      <section class="wrap" aria-labelledby="geo-title">
+        <h2 id="geo-title">GEO vs SEO: why AI citations matter</h2>
+        <p>SEO works to rank a page in the list of search results. GEO (generative engine optimization) and AEO (answer engine optimization) work to get a page cited as a source, or a brand named, inside an AI-written answer.</p>
+        <p>AI answers appear above the links or replace them. A page can rank well and still not be cited, and AI engines also cite pages that do not rank at the top.</p>
+        <p>Each engine picks its own sources, and answers change by country, language and over time. So citations have to be measured per engine and market, and checked again after every change.</p>
+        <p>CiteFox does that measuring: which questions cite you, which page, who is cited instead, and whether your fixes changed it.</p>
+        <p><a href="glossary/">Read the GEO and AEO glossary</a></p>
+      </section>
+
+      <section class="wrap" aria-labelledby="diff-title">
+        <h2 id="diff-title">What makes CiteFox different</h2>
+        <ul class="ticks">
+          <li>A desktop app: your projects, answers and reports stay on your computer, not in someone else’s cloud.</li>
+          <li>Free to download and use; checks run on your own keys, and CiteFox shows the cost before every check.</li>
+          <li>Source-available: anyone can read the code and see exactly what it does.</li>
+          <li>Page-level answers: which of your pages is cited, and whether it is the page you want cited.</li>
+          <li>A full loop: buyer questions, checks, fix briefs, 14-day verdicts and client reports in one tool.</li>
+        </ul>
+        <p class="small muted">Your projects stay on your computer. CiteFox sends its maker only the details you give when you join and an anonymous daily version ping. <a href="https://github.com/spcaeo/citefox/blob/main/Docs/PRIVACY.md" target="_blank" rel="noopener">Privacy details</a></p>
+      </section>
+
+      <section class="band" id="faq" aria-labelledby="faq-title">
+        <div class="wrap">
+          <h2 id="faq-title">Frequently asked questions</h2>
+          <div class="faq">
+            <div class="qa"><h3>What is CiteFox?</h3><p>CiteFox is a free desktop app for Mac, Windows and Linux that tracks whether Google AI Overviews, Google AI Mode, ChatGPT, Perplexity, Gemini and Copilot cite your website for the questions your buyers ask. It shows which page is cited, who is cited instead, what to fix, and whether your fixes worked.</p></div>
+            <div class="qa"><h3>Is CiteFox free?</h3><p>Yes. The app is free to download and use. Checks use search credits from your own account with a search data service; free plans are enough to try it. CiteFox shows what a check will use before it runs and stops at a monthly budget you set.</p></div>
+            <div class="qa"><h3>How do I check if Google AI Overviews cite my website?</h3><p>Add your website in CiteFox and run a check. It asks Google each buyer question in the markets you pick, records whether an AI Overview appeared, and lists every source it cited, with your pages marked. Re-checks show what changed over time.</p></div>
+            <div class="qa"><h3>Can CiteFox track ChatGPT and Perplexity citations?</h3><p>Yes. CiteFox asks ChatGPT, Perplexity, Gemini, Copilot and Google AI Mode the same questions as Google, and shows for each engine whether your site was cited, named without a link, or missing.</p></div>
+            <div class="qa"><h3>What is the difference between GEO, AEO and SEO?</h3><p>SEO aims to rank pages in search results. GEO (generative engine optimization) and AEO (answer engine optimization) aim to get your pages cited, and your brand named, inside AI-written answers such as Google AI Overviews and ChatGPT. LLM SEO is another name for the same work.</p></div>
+            <div class="qa"><h3>Does CiteFox send my data to a server?</h3><p>Your projects, questions, AI answers and reports stay on your computer, and your keys stay in your system keychain. CiteFox talks only to the services you connect and the pages you ask it to read. It sends its maker, Space-O Technologies, just two things: the details you give in the Join step, and an anonymous daily version ping.</p></div>
+            <div class="qa"><h3>Is CiteFox open source?</h3><p>CiteFox is source-available, not open source. The full code is public on GitHub: you can read it, run it, change it for your own use and send improvements. Copies you share must keep the CiteFox name and sponsors. See the LICENSE file.</p></div>
+            <div class="qa"><h3>Can agencies use CiteFox for client reports?</h3><p>Yes. The license allows use for your company’s clients. CiteFox has six ready reports (Visibility, What changed, Impact review, Pitch / audit, Content plan and Head-to-head) that you can brand with your agency name and logo, download as offline HTML, PDF or CSV, or email on a schedule.</p></div>
+            <div class="qa"><h3>What do I need to run CiteFox?</h3><p>A Mac, Windows or Linux computer, a key for a search data service (CiteFox links to sign-up pages with free plans and tests the key), and an AI assistant for CiteFox AI: one you already use on your computer under your own plan, or a paste-in mode with your own ChatGPT.</p></div>
+            <div class="qa"><h3>Why does my computer warn me when I open CiteFox?</h3><p>CiteFox builds are not code-signed with a paid certificate yet, so macOS and Windows ask once before the first start. On a Mac, click Open Anyway in System Settings › Privacy &amp; Security. On Windows, choose More info, then Run anyway. Every release lists a SHA-256 checksum for each file.</p></div>
+            <div class="qa"><h3>Which countries and languages does CiteFox support?</h3><p>You pick the markets: a country and language pair, such as United States · English or Germany · German. CiteFox writes the buyer questions in each market’s wording and checks each market separately, because AI answers differ by place and language.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="wrap">
+        <section id="unsigned" class="card" aria-labelledby="unsigned-title">
+          <h2 id="unsigned-title">Opening CiteFox the first time</h2>
+          <p>
+            CiteFox is not signed with a paid certificate yet, so your computer asks once before the
+            first start. This is expected. You can check every file against its SHA-256 below.
+          </p>
+          <div class="steps">
+            <div class="step" data-os="mac">
+              <h3>Mac</h3>
+              <ol>
+                <li>Open the downloaded <code>.dmg</code> and drag CiteFox to Applications.</li>
+                <li>Open CiteFox. macOS says it cannot check the app. Click <strong>Done</strong>.</li>
+                <li>
+                  Open <strong>System Settings › Privacy &amp; Security</strong>, scroll down and
+                  click <strong>Open Anyway</strong> next to CiteFox. Confirm with your password.
+                </li>
+                <li>
+                  On macOS 14 or older you can instead right-click CiteFox in Applications and choose
+                  <strong>Open</strong>.
+                </li>
+              </ol>
+              <p class="small muted">
+                After an update macOS may ask once to let CiteFox read its saved keys. Click
+                <strong>Always Allow</strong>.
+              </p>
+            </div>
+            <div class="step" data-os="win">
+              <h3>Windows</h3>
+              <ol>
+                <li>Run the downloaded installer.</li>
+                <li>
+                  If you see “Windows protected your PC”, click <strong>More info</strong>, then
+                  <strong>Run anyway</strong>.
+                </li>
+                <li>
+                  CiteFox installs for you only (no admin needed) and adds a Start menu and desktop
+                  shortcut.
+                </li>
+              </ol>
+            </div>
+            <div class="step" data-os="linux">
+              <h3>Linux</h3>
+              <ol>
+                <li>
+                  AppImage: allow it to run (Properties › Allow executing, or
+                  <code data-copy>chmod +x CiteFox-*.AppImage</code>) and open it.
+                </li>
+                <li>
+                  Ubuntu and Debian: install the <code>.deb</code> with
+                  <code data-copy>sudo apt install ./CiteFox-*.deb</code>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </section>
+
+        <section id="files-section" class="card" aria-labelledby="files-title" hidden>
+          <h2 id="files-title">All downloads</h2>
+          <div class="files-head small muted">
+            <span>File</span><span>Size</span><span>SHA-256</span>
+          </div>
+          <ul id="files" class="files"></ul>
+          <p id="sums" class="small"></p>
+        </section>
+
+        <section id="notes-section" class="card" aria-labelledby="notes-title" hidden>
+          <h2 id="notes-title">What’s new</h2>
+          <div id="notes" class="notes"></div>
+        </section>
+
+        <p class="small">
+          <a id="older" href="https://github.com/spcaeo/citefox/releases" target="_blank" rel="noopener">Older versions and betas</a>
+        </p>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer-grid small">
+        <div>
+          <p class="footer-brand"><strong>CiteFox</strong>, the free AI visibility tracker for Google AI Overviews, ChatGPT, Perplexity, Gemini, Copilot and AI Mode.</p>
+          <p class="muted">Contact: <a href="mailto:getcitifox@gmail.com" data-copy="getcitifox@gmail.com" data-what="email">getcitifox@gmail.com</a></p>
+        </div>
+        <nav aria-label="Footer">
+          <a href="./docs/">Docs</a>
+          <a href="./glossary/">GEO and AEO glossary</a>
+          <a href="./docs/getting-started/">Getting started</a>
+          <a href="https://github.com/spcaeo/citefox/blob/main/Docs/PRIVACY.md" target="_blank" rel="noopener">Privacy</a>
+          <a href="https://github.com/spcaeo/citefox" target="_blank" rel="noopener">Source code</a>
+        </nav>
+      </div>
+      <div class="wrap footer-row small">
+        <span>
+          <a id="license" href="https://github.com/spcaeo/citefox/blob/main/LICENSE" target="_blank" rel="noopener">Source-available</a>
+          · © 2026 <a href="https://www.spaceo.ca" target="_blank" rel="noopener">Space-O Technologies</a>
+        </span>
+        <span id="footer-release" class="muted"></span>
+      </div>
+    </footer>
+  </body>
+</html>

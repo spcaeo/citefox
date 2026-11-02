@@ -1,0 +1,115 @@
+{
+  "name": "citefox",
+  "productName": "CiteFox",
+  "version": "0.12.0",
+  "private": true,
+  "description": "Desktop app that tracks whether Google AI Overviews cite a website's pages.",
+  "license": "SEE LICENSE IN LICENSE",
+  "author": "Space-O Technologies (https://www.spaceo.ca)",
+  "homepage": "https://github.com/spcaeo/citefox#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spcaeo/citefox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/spcaeo/citefox/issues"
+  },
+  "main": "./out/main/index.js",
+  "engines": {
+    "node": ">=24.19.0"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=24.19.0",
+      "onFail": "error"
+    }
+  },
+  "scripts": {
+    "dev": "electron-vite dev",
+    "start": "electron-vite preview",
+    "build": "electron-vite build",
+    "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
+    "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
+    "typecheck": "npm run typecheck:node && npm run typecheck:web",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "site:build": "node scripts/site/build-site.mjs",
+    "site:check": "node scripts/site/build-site.mjs --check",
+    "site:og": "node scripts/site/render-social.mjs",
+    "test:unit": "vitest run",
+    "test:e2e": "vitest run --config vitest.e2e.config.mts && node scripts/run-e2e.mjs",
+    "test:e2e:docker": "node scripts/e2e-docker.mjs",
+    "media:record": "node scripts/media/record-demo.mjs",
+    "test": "electron-vite build && vitest run && npm run test:e2e",
+    "smoke:live": "CITEFOX_SMOKE_LIVE=1 node scripts/smoke-live.mjs",
+    "pack": "npm run build && electron-builder --config electron-builder.config.ts --dir --publish never",
+    "dist": "npm run build && electron-builder --config electron-builder.config.ts --publish never && node scripts/clean-release.mjs && node scripts/checksums.mjs",
+    "dist:mac": "npm run build && electron-builder --config electron-builder.config.ts --mac --publish never && node scripts/clean-release.mjs && node scripts/checksums.mjs",
+    "dist:win": "npm run build && electron-builder --config electron-builder.config.ts --win --publish never && node scripts/clean-release.mjs && node scripts/checksums.mjs",
+    "dist:linux": "npm run build && electron-builder --config electron-builder.config.ts --linux --publish never && node scripts/clean-release.mjs && node scripts/checksums.mjs",
+    "release": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/release.ts",
+    "icon": "electron scripts/render-icon.mjs",
+    "postinstall": "install-electron",
+    "prepare": "node scripts/hooks/install.mjs",
+    "secrets:scan": "node scripts/hooks/secret-scan.mjs --staged",
+    "public:sync": "node scripts/public-sync.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@electron-toolkit/eslint-config-prettier": "^3.0.1",
+    "@electron-toolkit/eslint-config-ts": "^4.0.0",
+    "@electron-toolkit/tsconfig": "^2.0.0",
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/inter-tight": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@playwright/test": "^1.64.1",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/node": "^24.19.2",
+    "@types/nodemailer": "^8.0.2",
+    "@types/pdfkit": "0.17.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "axe-core": "^4.14.0",
+    "electron": "^44.9.0",
+    "electron-builder": "^26.15.3",
+    "electron-vite": "^6.0.0",
+    "eslint": "^9.39.5",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "happy-dom": "^21.0.3",
+    "prettier": "^3.9.10",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-markdown": "10.1.0",
+    "remark-gfm": "4.0.1",
+    "smtp-server": "^3.20.2",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.5"
+  },
+  "dependencies": {
+    "@napi-rs/keyring": "^2.1.2",
+    "ajv": "^8.20.0",
+    "better-sqlite3": "^13.0.3",
+    "exceljs": "^4.4.0",
+    "nodemailer": "^10.1.7",
+    "pdfkit": "0.20.2",
+    "svg-to-pdfkit": "0.1.8"
+  },
+  "allowScripts": {
+    "better-sqlite3": false,
+    "fsevents": false,
+    "electron-winstaller": false
+  },
+  "overrides": {
+    "exceljs": {
+      "uuid": "^11.1.1"
+    }
+  }
+}

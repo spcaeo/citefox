@@ -1,0 +1,18 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": { "status": "Success", "id": "fixture-competitor" },
+    "ai_overview": {
+      "text_blocks": [
+        { "type": "paragraph", "snippet": "Several vendors offer business texting." }
+      ],
+      "references": [
+        {
+          "title": "Text employees",
+          "link": "https://simpletexting.com/blog/text-employees/",
+          "source": "SimpleTexting"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": {
+      "status": "Success",
+      "id": "fixture-brand-pricing"
+    },
+    "ai_overview": {
+      "text_blocks": [
+        {
+          "type": "paragraph",
+          "snippet": "TextBolt pricing starts at $19 a month for 500 texts. SimpleTexting starts at $29 a month."
+        },
+        {
+          "type": "paragraph",
+          "snippet": "A Reddit thread says TextBolt support can be slow to reply by email."
+        }
+      ],
+      "references": [
+        {
+          "title": "Pricing",
+          "link": "https://www.textbolt.com/pricing/",
+          "source": "TextBolt",
+          "index": 0
+        },
+        {
+          "title": "TextBolt support?",
+          "link": "https://www.reddit.com/r/smallbusiness/comments/abc123/textbolt_support/",
+          "source": "Reddit",
+          "index": 1
+        },
+        {
+          "title": "SimpleTexting pricing",
+          "link": "https://simpletexting.com/pricing/",
+          "source": "SimpleTexting",
+          "index": 2
+        }
+      ]
+    }
+  }
+}

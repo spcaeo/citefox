@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="176 186 672 672" width="1024" height="1024">
+  <!-- CiteFox menu-bar mark at 16px (@1x): the @2x mark (tray-icon.svg) without the eyes and with
+       wider cuts, so it stays clean at 16px.
+       macOS treats it as a template image, so only the alpha channel matters. -->
+  <defs>
+    <mask id="cut" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
+      <rect width="1024" height="1024" fill="#fff"/>
+      <g fill="none" stroke="#000" stroke-width="64" stroke-linejoin="miter">
+        <polyline points="200 600 384 556 512 770"/>
+        <polyline points="824 600 640 556 512 770"/>
+      </g>
+    </mask>
+  </defs>
+  <polygon points="262 226 424 360 600 360 762 226 790 500 824 600 512 812 200 600 234 500" fill="#000" mask="url(#cut)"/>
+</svg>

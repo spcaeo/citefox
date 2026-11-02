@@ -1,0 +1,824 @@
+/* + Add → Questions inside the shared Drawer (AddQuestions.dc.html). Tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  /* ---- Layout: the rows on the left, a tinted rail on the right, edge to edge ---- */
+  .aq-drawer .ui-drawer-body {
+    padding: 0;
+  }
+
+  .aq-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 288px;
+    min-height: 100%;
+  }
+
+  .aq-main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+    padding: var(--s-5) var(--s-6) var(--s-6);
+  }
+
+  .aq-rail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+    min-width: 0;
+    padding: var(--s-5);
+    border-left: 1px solid var(--line);
+    background: var(--inset);
+  }
+
+  /* A narrow window: the rail becomes a band above the rows, so the questions keep their width. */
+  @media (max-width: 1180px) {
+    .aq-layout {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto 1fr;
+    }
+
+    .aq-main {
+      padding: var(--s-4) var(--s-5) var(--s-5);
+    }
+
+    .aq-rail {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      order: -1;
+      gap: var(--s-3) var(--s-4);
+      padding: var(--s-4) var(--s-5);
+      border-bottom: 1px solid var(--line);
+      border-left: 0;
+    }
+
+    .aq-missing {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* ---- Shared bits ---- */
+  .aq-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .aq-grow {
+    flex: 1 1 auto;
+  }
+
+  .aq-grow.ui-search {
+    max-width: none;
+  }
+
+  .aq-label {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .aq-hint {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .aq-hint-bad {
+    color: var(--bad-ink);
+  }
+
+  .aq-error {
+    margin: 0;
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-s);
+    background: var(--bad-tint);
+    color: var(--bad-ink);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .aq-notice {
+    margin: 0;
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-s);
+    background: var(--info-tint);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .aq-link {
+    display: inline;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--action-ink);
+    font: inherit;
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+  }
+
+  .aq-link:hover:not(:disabled) {
+    text-decoration: underline;
+  }
+
+  .aq-link:disabled {
+    color: var(--ink-4);
+    cursor: default;
+  }
+
+  .aq-link:focus-visible,
+  .aq-tab:focus-visible,
+  .aq-plus:focus-visible,
+  .aq-expert-toggle:focus-visible,
+  .aq-bulk-btn:focus-visible,
+  .aq-more:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .aq-add-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1);
+    align-self: flex-start;
+    font-size: var(--fs-small);
+  }
+
+  .aq-mono {
+    font-family: var(--font-code);
+    font-size: var(--fs-small);
+  }
+
+  .aq-check {
+    display: flex;
+    gap: var(--s-2);
+    align-items: flex-start;
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    cursor: pointer;
+  }
+
+  .aq-check > input {
+    flex: 0 0 auto;
+    margin-top: 2px;
+  }
+
+  .aq-card {
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  /* ---- Tabs: a pill strip with the open tab's hint beside it ---- */
+  .aq-tabs-row {
+    display: flex;
+    gap: var(--s-4);
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .aq-tabs {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    border-radius: var(--r-m);
+    background: var(--inset);
+  }
+
+  .aq-tab {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    height: var(--h-control-sm);
+    padding: 0 var(--s-3);
+    border: 0;
+    border-radius: var(--r-s);
+    background: none;
+    color: var(--ink-2);
+    font: inherit;
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .aq-tab:hover {
+    color: var(--ink);
+  }
+
+  .aq-tab.on {
+    background: var(--surface);
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+    box-shadow: var(--e1);
+  }
+
+  .aq-tab > .ui-icon {
+    color: var(--fox);
+  }
+
+  .aq-tabs-hint {
+    flex: 1 1 200px;
+    max-width: 280px;
+  }
+
+  .aq-panel:empty {
+    display: none;
+  }
+
+  /* ---- "Have 100 or more?" drop zone ---- */
+  .aq-drop {
+    display: flex;
+    gap: var(--s-3);
+    align-items: flex-start;
+    padding: var(--s-3) var(--s-4);
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    color: var(--ink-3);
+  }
+
+  .aq-drop > .ui-icon {
+    flex: 0 0 auto;
+    margin-top: 2px;
+  }
+
+  .aq-drop-text {
+    flex: 1 1 auto;
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .aq-drop-text strong {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .aq-drop-template {
+    flex: 0 0 auto;
+    max-width: 96px;
+    font-size: var(--fs-ui);
+    text-align: left;
+  }
+
+  .aq-drop-large {
+    flex-direction: column;
+    align-items: center;
+    padding: var(--s-12) var(--s-6);
+    text-align: center;
+  }
+
+  .aq-drop-large .aq-drop-text {
+    max-width: 440px;
+  }
+
+  .aq-drop-large .aq-drop-template {
+    max-width: none;
+    text-align: center;
+  }
+
+  .aq-drop-over {
+    border-color: var(--fox);
+    background: var(--fox-tint);
+  }
+
+  /* ---- The rows ---- */
+  .aq-rows {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .aq-rows th {
+    padding: var(--s-2) var(--s-3);
+    border-bottom: 1px solid var(--line);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    text-align: left;
+  }
+
+  .aq-rows th:first-child {
+    border-top-left-radius: var(--r-m);
+  }
+
+  .aq-rows th:last-child {
+    border-top-right-radius: var(--r-m);
+  }
+
+  .aq-rows td {
+    padding: var(--s-2) var(--s-3);
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+  }
+
+  .aq-rows tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .aq-c-num {
+    width: 40px;
+    color: var(--ink-3);
+  }
+
+  .aq-c-stage {
+    width: 128px;
+  }
+
+  .aq-c-page {
+    width: 168px;
+  }
+
+  .aq-c-topic {
+    width: 128px;
+  }
+
+  .aq-c-market {
+    width: 104px;
+  }
+
+  .aq-c-tags {
+    width: 120px;
+  }
+
+  .aq-c-check {
+    width: 104px;
+  }
+
+  .aq-c-x {
+    width: 44px;
+    text-align: right;
+  }
+
+  .aq-row-similar td {
+    background: var(--tint-attention);
+  }
+
+  .aq-row-dup td {
+    background: var(--bad-tint);
+  }
+
+  .aq-q {
+    display: block;
+    width: 100%;
+    padding: 4px var(--s-2);
+    border: 1px solid transparent;
+    border-radius: var(--r-s);
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    resize: none;
+    /* Grows with its words, so a long question is never cut or scrolled. */
+    field-sizing: content;
+    overflow: hidden;
+  }
+
+  .aq-q:hover:not(:disabled) {
+    border-color: var(--line);
+  }
+
+  .aq-q:focus {
+    outline: none;
+    border-color: var(--fox);
+    background: var(--surface);
+    box-shadow: var(--focus-ring);
+  }
+
+  .aq-q::placeholder {
+    color: var(--ink-4);
+  }
+
+  .aq-q-dup {
+    color: var(--ink-3);
+    text-decoration: line-through;
+  }
+
+  .aq-note {
+    display: block;
+    padding: 2px var(--s-2) 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .aq-note-bad {
+    color: var(--bad-ink);
+  }
+
+  .aq-sel {
+    max-width: 100%;
+    height: var(--h-control-sm);
+    padding: 0 var(--s-2);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--fs-ui);
+    text-overflow: ellipsis;
+  }
+
+  .aq-sel:focus {
+    outline: none;
+    border-color: var(--fox);
+    box-shadow: var(--focus-ring);
+  }
+
+  .aq-sel-mono {
+    width: 100%;
+    font-family: var(--font-code);
+    font-size: var(--fs-small);
+  }
+
+  .aq-sel-empty {
+    color: var(--ink-3);
+  }
+
+  .aq-tags {
+    width: 100%;
+    height: var(--h-control-sm);
+    padding: 0 var(--s-2);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--fs-small);
+  }
+
+  .aq-pending {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .aq-x {
+    color: var(--ink-3);
+  }
+
+  .aq-more {
+    display: block;
+    width: 100%;
+    padding: var(--s-2);
+    border: 0;
+    border-top: 1px solid var(--line);
+    border-radius: 0 0 var(--r-m) var(--r-m);
+    background: var(--inset);
+    color: var(--action-ink);
+    font: inherit;
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+  }
+
+  /* ---- Bulk bar and Expert options ---- */
+  .aq-bulk {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .aq-bulk-btn {
+    display: inline-flex;
+    gap: var(--s-1);
+    align-items: center;
+    height: var(--h-control-sm);
+    padding: 0 var(--s-3);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--fs-ui);
+    cursor: pointer;
+  }
+
+  .aq-bulk-btn:hover:not(:disabled) {
+    background: var(--inset);
+  }
+
+  .aq-bulk-btn:disabled {
+    color: var(--ink-4);
+    cursor: default;
+  }
+
+  .aq-expert-toggle {
+    display: inline-flex;
+    gap: var(--s-1);
+    align-items: center;
+    margin-left: auto;
+    padding: var(--s-1) 0;
+    border: 0;
+    border-radius: var(--r-s);
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+  }
+
+  .aq-expert {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-3) var(--s-6);
+    padding: var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  /* ---- ✦ Match pages: the shared helper under the bulk bar ---- */
+  .aq-match {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+    padding: var(--s-4);
+  }
+
+  .aq-match-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-3);
+    align-items: baseline;
+  }
+
+  .aq-match-head .aq-label {
+    display: inline-flex;
+    gap: var(--s-1);
+    align-items: center;
+    margin: 0;
+  }
+
+  .aq-match-spark {
+    color: var(--fox);
+  }
+
+  .aq-match-lead {
+    flex: 1 1 16rem;
+    min-width: 0;
+  }
+
+  .aq-match-result {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .aq-match-result p {
+    margin: 0;
+  }
+
+  .aq-match-flag {
+    display: inline-flex;
+    gap: var(--s-1);
+    align-items: center;
+    color: var(--ink);
+  }
+
+  .aq-match-flag .ui-icon {
+    color: var(--warn);
+  }
+
+  .aq-match-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Clipped like a table cell: UrlText's hidden Copy and Open sit past its end at rest.
+     The padding keeps a focus ring on them inside. */
+  .aq-match-list li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-3);
+    min-width: 0;
+    padding-inline-end: var(--s-1);
+    overflow-x: clip;
+  }
+
+  .aq-match-list .aq-idea-text {
+    flex: 1 1 18rem;
+    min-width: 0;
+  }
+
+  .aq-expert-field {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .aq-interval {
+    width: auto;
+  }
+
+  /* ---- Footer summary ---- */
+  .aq-sum {
+    display: flex;
+    gap: var(--s-1) var(--s-5);
+    flex-wrap: wrap;
+    color: var(--ink-2);
+  }
+
+  .aq-sum strong {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .aq-sum-warn {
+    flex-basis: 100%;
+    color: var(--bad-ink);
+  }
+
+  /* ---- Rail ---- */
+  .aq-target {
+    text-overflow: ellipsis;
+  }
+
+  .aq-markets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1);
+  }
+
+  .aq-market {
+    padding: 4px var(--s-2);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+  }
+
+  .aq-missing {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding: var(--s-4);
+    border: 1px solid var(--fox-line);
+    border-radius: var(--r-m);
+    background: var(--fox-tint);
+  }
+
+  .aq-missing-title {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .aq-missing-title > .ui-icon {
+    color: var(--fox);
+  }
+
+  .aq-missing-text {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .aq-missing-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .aq-missing-list li {
+    display: flex;
+    gap: var(--s-2);
+    align-items: flex-start;
+    color: var(--ink);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .aq-plus {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--fox-line);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--fox-ink);
+    cursor: pointer;
+  }
+
+  .aq-plus:hover:not(:disabled) {
+    background: var(--fox-tint);
+  }
+
+  .aq-missing-actions {
+    display: flex;
+    gap: var(--s-3);
+    flex-wrap: wrap;
+  }
+
+  /* ---- ✦ Help me write and From tracked questions ---- */
+  .aq-suggest,
+  .aq-tracked {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: var(--s-4);
+  }
+
+  .aq-suggest-ask,
+  .aq-tracked-head {
+    display: flex;
+    gap: var(--s-3);
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .aq-ideas,
+  .aq-tracked-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    max-height: 280px;
+    margin: 0;
+    padding: 0;
+    /* A page's Copy and Open wait just past the row's end at rest (UrlText): no sideways scroll. */
+    overflow-x: hidden;
+    overflow-y: auto;
+    list-style: none;
+  }
+
+  .aq-ideas li,
+  .aq-tracked-list li {
+    display: flex;
+    gap: var(--s-3);
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--s-1) var(--s-2);
+    border-radius: var(--r-s);
+  }
+
+  .aq-ideas li:hover,
+  .aq-tracked-list li:hover {
+    background: var(--inset);
+  }
+
+  .aq-idea-text {
+    min-width: 0;
+  }
+
+  .aq-idea-meta {
+    display: flex;
+    flex: 0 0 auto;
+    gap: var(--s-2);
+    align-items: center;
+    max-width: 45%;
+    min-width: 0;
+  }
+
+  .aq-tracked-src {
+    flex: 0 0 auto;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .aq-ideas-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: center;
+  }
+
+  /* ---- Add a page (stacked) ---- */
+  .aq-page-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    max-width: 560px;
+  }
+}

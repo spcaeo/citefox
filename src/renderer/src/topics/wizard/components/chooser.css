@@ -1,0 +1,136 @@
+/* "What do you want to track?": the shared way rows (start/ways.css) plus the rail. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .twc-change {
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .twc-auto-row {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 64px;
+    padding: var(--s-3) var(--s-5);
+  }
+
+  .twc-icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--r-s);
+    background: var(--inset);
+    color: var(--ink-2);
+  }
+
+  .twc-auto .twc-icon {
+    background: var(--fox-tint);
+    color: var(--fox);
+  }
+
+  .twc-auto-text {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    font-size: var(--fs-ui);
+  }
+
+  .twc-auto-title {
+    color: var(--ink);
+    font-size: var(--fs-body);
+    font-weight: var(--fw-semibold);
+  }
+
+  .twc-suggest-title {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .twc-seed {
+    margin: 0;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    font-weight: var(--fw-semibold);
+  }
+
+  .twc-facts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    font-size: var(--fs-ui);
+  }
+
+  .twc-facts div {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: var(--s-2);
+  }
+
+  .twc-facts dt {
+    font-weight: var(--fw-semibold);
+  }
+
+  .twc-facts dd {
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  .twc-why {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .twc-suggest-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .twc-suggest-foot .tw-note {
+    margin-left: auto;
+  }
+
+  .twc-drafts,
+  .twc-gives {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .twc-drafts li {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .twc-gives li {
+    display: flex;
+    gap: var(--s-3);
+  }
+
+  .twc-gives-text {
+    display: flex;
+    flex-direction: column;
+    font-size: var(--fs-ui);
+  }
+
+  .twc-gives-title {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+}

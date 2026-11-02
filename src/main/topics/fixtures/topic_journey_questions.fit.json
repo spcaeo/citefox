@@ -1,0 +1,28 @@
+{
+  "questions": [
+    {
+      "stage": "fit",
+      "text": "We're a property management company with maintenance crews on call. Does email-to-text work for after-hours emergencies?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "fit",
+      "text": "I run IT for a small manufacturer and our equipment emails fault codes. Can those go straight to the on-call tech as a text?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "fit",
+      "text": "Can a school office text substitute teachers from a shared Outlook account without everyone installing an app?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "fit",
+      "text": "We're a 12-person HVAC company. Is email-to-text enough for us, or will we outgrow it within a year?",
+      "namedTool": null,
+      "competitorNamed": null
+    }
+  ]
+}

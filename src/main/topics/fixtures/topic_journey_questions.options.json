@@ -1,0 +1,34 @@
+{
+  "questions": [
+    {
+      "stage": "options",
+      "text": "What are my options for sending text alerts to employees if we don't have a developer or an IT department?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "options",
+      "text": "Our carrier email-to-text address stopped delivering messages. What do businesses switch to so automated alerts still reach phones?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "options",
+      "text": "Can I keep using Gmail to send staff alerts and have them arrive as normal texts, or do I need a separate texting app?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "options",
+      "text": "Is it better to send staff alerts from a texting app, from email-to-SMS, or from a paging service for a 30-person company?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "options",
+      "text": "Our booking system can only send emails. Is there a way to forward those automatically as SMS reminders to customers and staff?",
+      "namedTool": null,
+      "competitorNamed": null
+    }
+  ]
+}

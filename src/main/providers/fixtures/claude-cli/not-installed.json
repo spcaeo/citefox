@@ -1,0 +1,7 @@
+{
+  "spawnError": "ENOENT",
+  "exitCode": null,
+  "stdout": "",
+  "stderr": "spawn claude ENOENT",
+  "timedOut": false
+}

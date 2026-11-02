@@ -1,0 +1,192 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://citefox.app/schema/citefox-report-topics.v2.json",
+  "title": "CiteFox report model v2: topic coverage",
+  "definitions": {
+    "topicCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["empty", "topics"],
+      "properties": {
+        "empty": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["title", "message", "nextStep"],
+              "properties": {
+                "title": { "type": "string" },
+                "message": { "type": "string" },
+                "nextStep": { "type": ["string", "null"] }
+              }
+            },
+            { "type": "null" }
+          ]
+        },
+        "topics": { "type": "array", "items": { "$ref": "#/definitions/topic" } }
+      }
+    },
+    "topic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "topicId",
+        "name",
+        "sourceLine",
+        "marketId",
+        "marketLabel",
+        "checkedAt",
+        "executive",
+        "executiveSaved",
+        "executiveAt",
+        "nextActions",
+        "goals",
+        "stages",
+        "todo",
+        "keywords"
+      ],
+      "properties": {
+        "topicId": { "type": "string" },
+        "name": { "type": "string" },
+        "sourceLine": { "type": "string" },
+        "marketId": { "type": "string" },
+        "marketLabel": { "type": "string" },
+        "checkedAt": { "type": ["string", "null"] },
+        "executive": { "type": "string" },
+        "executiveSaved": { "type": "boolean" },
+        "executiveAt": { "type": ["string", "null"] },
+        "nextActions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["text", "verify"],
+            "properties": { "text": { "type": "string" }, "verify": { "type": ["string", "null"] } }
+          }
+        },
+        "goals": { "type": "array", "items": { "$ref": "#/definitions/topicGoal" } },
+        "stages": { "type": "array", "items": { "$ref": "#/definitions/topicStage" } },
+        "todo": { "type": "array", "items": { "$ref": "#/definitions/topicTodoGroup" } },
+        "keywords": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["byGroup", "byIntent", "byFunnel", "byPageType"],
+          "properties": {
+            "byGroup": { "type": "array", "items": { "$ref": "#/definitions/topicKeywordRow" } },
+            "byIntent": { "type": "array", "items": { "$ref": "#/definitions/topicKeywordRow" } },
+            "byFunnel": { "type": "array", "items": { "$ref": "#/definitions/topicKeywordRow" } },
+            "byPageType": { "type": "array", "items": { "$ref": "#/definitions/topicKeywordRow" } }
+          }
+        }
+      }
+    },
+    "topicGoal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "label",
+        "prompts",
+        "withAio",
+        "cited",
+        "rightPage",
+        "otherPage",
+        "named",
+        "noAio",
+        "failed",
+        "notChecked",
+        "rate",
+        "bandLo",
+        "bandHi",
+        "bandState",
+        "toReachBand"
+      ],
+      "properties": {
+        "kind": { "enum": ["question", "keyword"] },
+        "label": { "type": "string" },
+        "prompts": { "type": "integer", "minimum": 0 },
+        "withAio": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "cited": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "rightPage": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "otherPage": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "named": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "noAio": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "failed": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "notChecked": { "type": "integer", "minimum": 0 },
+        "rate": { "type": ["integer", "null"], "minimum": 0, "maximum": 100 },
+        "bandLo": { "type": "integer", "minimum": 0 },
+        "bandHi": { "type": "integer", "minimum": 0 },
+        "bandState": { "enum": ["below", "in", "above", null] },
+        "toReachBand": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "topicStage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stage", "label", "questions", "aio", "cited", "rate"],
+      "properties": {
+        "stage": { "enum": ["problem", "options", "doubts", "fit", "compare", "decide"] },
+        "label": { "type": "string" },
+        "questions": { "type": "integer", "minimum": 0 },
+        "aio": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "cited": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "rate": { "type": ["integer", "null"], "minimum": 0, "maximum": 100 }
+      }
+    },
+    "topicTodoGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "label", "hint", "count", "rows"],
+      "properties": {
+        "state": { "enum": ["right_page", "other_page", "not_cited", "no_page", "no_aio"] },
+        "label": { "type": "string" },
+        "hint": { "type": "string" },
+        "count": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "rows": { "type": "array", "items": { "$ref": "#/definitions/topicTodoRow" } }
+      }
+    },
+    "topicTodoRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "number",
+        "kind",
+        "text",
+        "stage",
+        "targetUrl",
+        "targetPath",
+        "citedInstead",
+        "winOdds",
+        "winLevel",
+        "rowId"
+      ],
+      "properties": {
+        "number": { "type": "integer", "minimum": 0 },
+        "kind": { "enum": ["question", "keyword"] },
+        "text": { "type": "string" },
+        "stage": { "type": ["string", "null"] },
+        "targetUrl": { "type": ["string", "null"] },
+        "targetPath": { "type": ["string", "null"] },
+        "citedInstead": { "type": "array", "items": { "type": "string" } },
+        "winOdds": { "type": ["integer", "null"], "minimum": 0, "maximum": 100 },
+        "winLevel": { "type": ["string", "null"] },
+        "rowId": { "type": ["string", "null"] }
+      }
+    },
+    "topicKeywordRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label", "groupKind", "keywords", "aio", "cited", "named", "rate"],
+      "properties": {
+        "key": { "type": "string" },
+        "label": { "type": "string" },
+        "groupKind": { "type": ["string", "null"] },
+        "keywords": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "aio": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "cited": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "named": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "rate": { "type": ["integer", "null"], "minimum": 0, "maximum": 100 }
+      }
+    }
+  }
+}

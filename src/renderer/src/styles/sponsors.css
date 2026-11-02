@@ -1,0 +1,448 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * Sponsors (src/shared/sponsors.ts, SPONSORS.md). Visible and calm: no motion,
+ * no remote images. Brand colours are the sponsors' own, so they are literal
+ * values here rather than CiteFox tokens.
+ */
+@layer shared {
+  /* ---- Gold sponsor strip: the first-run frame's top (StartFrame, SetupChrome) ---- */
+  .sponsor-strip {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex: 0 0 40px;
+    align-items: center;
+    gap: var(--s-3);
+    height: 40px;
+    padding: 0 var(--page-pad) 0 calc(var(--page-pad) + 2px);
+    border-bottom: 1px solid var(--line);
+    background: var(--sponsor-ground);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  /* FoxCue's yellow chevron edge, 6px, along the left side. */
+  .sponsor-chevrons {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 6px;
+    background-color: transparent;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='8'%3E%3Cpolygon points='0,0 3,0 6,4 3,8 0,8 3,4' fill='%23FFD400'/%3E%3C/svg%3E");
+    background-repeat: repeat-y;
+    background-size: 6px 8px;
+  }
+
+  .sponsor-strip-label {
+    flex: 0 0 auto;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .sponsor-strip-logo {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    border-radius: 4px;
+  }
+
+  .sponsor-wordmark {
+    display: block;
+    width: auto;
+  }
+
+  .sponsor-strip-line {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sponsor-strip-tagline {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+  }
+
+  .sponsor-strip-desc {
+    color: var(--ink-3);
+  }
+
+  .sponsor-strip-cta {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    height: 28px;
+    padding: 0 var(--s-3);
+    border: 1px solid #0a0a0a;
+    border-radius: var(--r-s);
+    background: #ffd400;
+    color: #0a0a0a;
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+    white-space: nowrap;
+    text-decoration: none;
+  }
+
+  .sponsor-strip-cta:hover {
+    background: #ffe04d;
+    color: #0a0a0a;
+  }
+
+  .sponsor-strip-hide {
+    flex: 0 0 auto;
+    padding: var(--s-1) 0;
+    border: 0;
+    background: none;
+    color: var(--ink-3);
+    font: inherit;
+    font-size: var(--fs-small);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .sponsor-strip-hide:hover {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+
+  .sponsor-strip :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  /* "Hide for now": a 4px yellow line until the next launch. */
+  .sponsor-strip-min {
+    flex: 0 0 4px;
+    height: 4px;
+    background: #ffd400;
+  }
+
+  .sponsor-strip-show {
+    display: block;
+    width: 100%;
+    height: 4px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .sponsor-strip-show:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 0;
+  }
+
+  @media (max-width: 1180px) {
+    .sponsor-strip-desc {
+      display: none;
+    }
+  }
+
+  /* ---- Gold sponsor card: the end of every screen's content, in the main scroll ---- */
+  .sponsor-card {
+    /* On a short screen it sits at the bottom like a footer bar, not mid-page (owner, 2026-10-29). */
+    margin-top: auto;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2) var(--s-3);
+    min-height: 56px;
+    padding: var(--s-3) var(--s-3) var(--s-3) calc(var(--s-4) + 6px);
+    overflow: hidden;
+    border: 1px solid var(--sponsor-line);
+    border-radius: var(--r-m);
+    background: var(--sponsor-ground);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-body);
+  }
+
+  .sponsor-card-label {
+    flex: 0 0 auto;
+    color: var(--warn);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* The line takes the room and wraps; the call to action and ✕ stay at the right. */
+  .sponsor-card-line {
+    flex: 1 1 320px;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .sponsor-card-desc {
+    color: var(--ink-2);
+  }
+
+  .sponsor-card .sponsor-strip-cta {
+    height: var(--h-control-sm);
+  }
+
+  .sponsor-card-hide {
+    flex: 0 0 auto;
+  }
+
+  .sponsor-card :focus-visible {
+    outline: 2px solid var(--spruce-ink);
+    outline-offset: 2px;
+  }
+
+  /* Hidden for now: a thin yellow line where the card was, until the next launch. */
+  .sponsor-card-min {
+    height: 4px;
+    border-radius: var(--r-pill);
+    background: #ffd400;
+  }
+
+  /* ---- Silver sponsor card: foot of the sidebar ---- */
+  .side-sponsor {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 6px;
+    margin: var(--s-2) 0 var(--s-1);
+    padding: var(--s-3);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    border-radius: var(--r-m);
+    background: #13213a;
+    color: #fffcf5;
+  }
+
+  .side-sponsor-head {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .sponsor-mark {
+    display: block;
+    flex: 0 0 auto;
+    border-radius: 6px;
+  }
+
+  .side-sponsor-id {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    line-height: var(--lh-small);
+  }
+
+  .side-sponsor-name {
+    color: #fffcf5;
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .side-sponsor-tier {
+    color: #d4af37;
+    font-size: 11px;
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+  }
+
+  .side-sponsor-line {
+    color: rgba(255, 252, 245, 0.86);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .side-sponsor-cta {
+    align-self: flex-start;
+    color: #d4af37;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    text-decoration: none;
+  }
+
+  .side-sponsor-cta:hover {
+    color: #e6c65a;
+    text-decoration: underline;
+  }
+
+  /* Short windows: the card keeps its name and link, the middle of the sidebar keeps the room. */
+  @media (max-height: 680px) {
+    .side-sponsor {
+      gap: 4px;
+      padding: var(--s-2) var(--s-3);
+    }
+
+    .side-sponsor-line {
+      display: none;
+    }
+  }
+
+  .side-sponsor-mini {
+    position: relative;
+    display: inline-flex;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin: var(--s-2) 0 var(--s-1);
+    border-radius: var(--r-s);
+  }
+
+  .side-sponsor-mini:hover {
+    background: var(--spruce-2);
+  }
+
+  /* ---- Sponsor list: Settings › About and the gallery ---- */
+  .sponsor-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .sponsor-list-items {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  .sponsor-list-item {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    padding: var(--s-3) var(--s-4);
+  }
+
+  .sponsor-list-item + .sponsor-list-item {
+    border-top: 1px solid var(--line);
+  }
+
+  .sponsor-list-copy {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .sponsor-list-name {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .sponsor-list-tier {
+    margin-left: var(--s-1);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+  }
+
+  .sponsor-list-desc {
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  .sponsor-list-link {
+    flex: 0 0 auto;
+    color: var(--fox-ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  .sponsor-list-why {
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  .sponsor-list-why strong {
+    color: var(--ink-2);
+    font-weight: var(--fw-semibold);
+  }
+
+  /* ---- Our writing tool: a card in a drawer's right rail, beside a brief ---- */
+  .write-with {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin-top: var(--s-3);
+    padding: var(--s-3);
+    border-radius: var(--r-m);
+    background: #0a0a0a;
+    color: #fffcf5;
+  }
+
+  .write-with-head {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .write-with-mark {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--r-s);
+    background: #ffd400;
+    color: #0a0a0a;
+    font-size: 12px;
+    font-weight: var(--fw-semibold);
+  }
+
+  .write-with-id {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: var(--lh-small);
+  }
+
+  .write-with-tier {
+    color: #ffd400;
+    font-size: 11px;
+    font-weight: var(--fw-medium);
+  }
+
+  .write-with-name {
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .write-with-line {
+    margin: 0;
+    color: rgba(255, 252, 245, 0.86);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .write-with-cta {
+    align-self: flex-start;
+    padding: 6px 12px;
+    border-radius: var(--r-s);
+    background: #ffd400;
+    color: #0a0a0a;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    text-decoration: none;
+  }
+
+  .write-with-cta:hover {
+    background: #ffe04d;
+  }
+
+  .write-with-cta:focus-visible {
+    outline: 2px solid #fffcf5;
+    outline-offset: 2px;
+  }
+}

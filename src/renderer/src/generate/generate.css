@@ -1,0 +1,47 @@
+/* Per-run template picker (TemplatePicker) in the v2 look. v2 tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .gen-pick {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-width: 0;
+  }
+
+  .gen-pick-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    max-width: 360px;
+  }
+
+  .gen-pick-label {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-small);
+  }
+
+  .gen-pick-select {
+    padding-right: 30px;
+    appearance: none;
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--ink-3) 50%),
+      linear-gradient(135deg, var(--ink-3) 50%, transparent 50%);
+    background-position:
+      calc(100% - 16px) 50%,
+      calc(100% - 11px) 50%;
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+
+  .gen-pick-status {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+}

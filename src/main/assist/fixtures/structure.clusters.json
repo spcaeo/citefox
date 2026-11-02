@@ -1,0 +1,19 @@
+{
+  "clusters": [
+    {
+      "name": "Email to SMS setup",
+      "pillar": "p1",
+      "pages": ["p1", "p2"],
+      "themes": [
+        "How do I send a text from my email?",
+        "Which email to SMS service should I choose?"
+      ]
+    },
+    {
+      "name": "Carrier gateway shutdowns",
+      "pillar": "p3",
+      "pages": ["p3"],
+      "themes": ["What replaces my carrier's email to text gateway?"]
+    }
+  ]
+}

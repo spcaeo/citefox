@@ -1,0 +1,23 @@
+{
+  "text": "These are written the way a buyer in this situation types them, ready to track.",
+  "sources": ["R1"],
+  "unknowns": [],
+  "draft": null,
+  "questions": [
+    "How can I text my whole crew when a job changes without an app?",
+    "What is the easiest way to send emergency texts to field staff from email?",
+    "Can I turn monitoring emails into text alerts for my team?"
+  ],
+  "actions": [
+    {
+      "kind": "add-questions",
+      "refs": [],
+      "questions": [
+        "How can I text my whole crew when a job changes without an app?",
+        "What is the easiest way to send emergency texts to field staff from email?",
+        "Can I turn monitoring emails into text alerts for my team?"
+      ],
+      "name": null
+    }
+  ]
+}

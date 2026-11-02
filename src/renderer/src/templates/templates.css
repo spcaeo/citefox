@@ -1,0 +1,368 @@
+/* Templates screen (Templates.dc.html). Shared tpl-* basics stay in styles/m2.css. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  /* v2 layout: tabs, then one panel per tab (Steps grid, step editor, app templates). */
+  .tpl-page {
+    gap: var(--s-6);
+  }
+
+  .tpl-page > .ui-tabs {
+    margin-bottom: calc(var(--s-2) * -1);
+  }
+
+  .tpl-library > .ui-panel.tpl-editor-card {
+    padding: var(--card-pad);
+  }
+
+  .tpl-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+
+  .tpl-panel[hidden] {
+    display: none;
+  }
+
+  .tpl-panel:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 4px;
+  }
+
+  .tpl-grid-name {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .tpl-grid-label {
+    overflow: hidden;
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  /* The step name stays whole; the file name gives way first. */
+  .tpl-grid-name > .tpl-grid-label {
+    flex: 0 0 auto;
+  }
+
+  .tpl-grid-file {
+    min-width: 0;
+    overflow: hidden;
+    font-size: var(--fs-small);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .tpl-deleted-bar {
+    display: flex;
+    margin-top: calc(var(--s-2) * -1);
+  }
+
+  .tpl-deleted-box {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding: var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--inset);
+  }
+
+  .tpl-deleted-box > p {
+    margin: 0;
+  }
+
+  .tpl-editor-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+
+  /* `.gsearch` grows to a 220px basis; in this column it must keep its control height. */
+
+  .tpl-scope {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  /* Highlighted template text. Both layers share the same box so the tints line up. */
+  .tpl-code,
+  .tpl-hl-layer {
+    font-family: var(--font-code);
+    font-size: var(--fs-small);
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    tab-size: 2;
+  }
+
+  .tpl-tok-var {
+    color: var(--fox-ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .tpl-tok-unknown {
+    color: var(--warn);
+    text-decoration: underline wavy;
+    text-underline-offset: 3px;
+  }
+
+  .tpl-tok-comment {
+    color: var(--ink-3);
+    font-style: italic;
+  }
+
+  .tpl-tok-error {
+    color: var(--bad);
+    background: var(--bad-tint);
+  }
+
+  .tpl-edit-wrap {
+    position: relative;
+  }
+
+  .tpl-edit-wrap .tpl-textarea {
+    position: relative;
+    display: block;
+    min-height: 240px;
+    overflow: hidden;
+    resize: none;
+    background: transparent;
+  }
+
+  .tpl-hl-layer {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    padding: 14px;
+    border: 1px solid transparent;
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: transparent;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* Behind the textarea only the tint shows; the textarea draws the text itself. */
+  .tpl-hl-layer .tpl-tok {
+    color: transparent;
+    text-decoration: none;
+    font-weight: inherit;
+    font-style: inherit;
+    border-radius: 3px;
+  }
+
+  .tpl-hl-layer .tpl-tok-var {
+    background: var(--select-tint);
+  }
+
+  .tpl-hl-layer .tpl-tok-unknown {
+    background: var(--warn-tint);
+  }
+
+  .tpl-hl-layer .tpl-tok-comment {
+    background: var(--inset);
+  }
+
+  .tpl-hl-layer .tpl-tok-error {
+    background: var(--bad-tint);
+  }
+
+  .tpl-settings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 14px;
+  }
+
+  .tpl-compare {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+    background: var(--inset);
+  }
+
+  .tpl-compare h3 {
+    margin: 0;
+    font-size: var(--fs-h3);
+  }
+
+  .tpl-diff {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .diff-line {
+    display: flex;
+    gap: var(--s-2);
+    padding: var(--s-1) 10px;
+    border-radius: var(--r-s);
+    font-size: var(--fs-small);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .diff-sign {
+    flex: 0 0 10px;
+    font-weight: var(--fw-semibold);
+  }
+
+  .diff-add {
+    background: var(--ok-tint);
+    color: var(--ok);
+  }
+
+  .diff-del {
+    background: var(--bad-tint);
+    color: var(--bad-ink);
+  }
+
+  .tpl-improve {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .tpl-versions summary {
+    cursor: pointer;
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  .tpl-versions ol {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: var(--s-2) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tpl-versions li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+    font-size: var(--fs-ui);
+  }
+
+  .tpl-lower {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: var(--s-5);
+    align-items: start;
+  }
+
+  .tpl-lower > section,
+  .tpl-side,
+  .tpl-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  .tpl-side {
+    gap: var(--s-5);
+  }
+
+  .tpl-schema,
+  .tpl-try-output {
+    overflow-x: auto;
+    font-size: var(--fs-small);
+  }
+
+  .tpl-try-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: var(--s-3);
+  }
+
+  .tpl-try-result:empty {
+    display: none;
+  }
+
+  .tpl-problem {
+    display: flex;
+    gap: var(--s-2);
+    align-items: flex-start;
+    margin: 0;
+    color: var(--warn);
+    font-weight: var(--fw-semibold);
+  }
+
+  .tpl-prompt-details summary {
+    cursor: pointer;
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  .tpl-prompt-details pre {
+    margin-top: var(--s-2);
+    overflow-x: auto;
+    font-size: var(--fs-small);
+  }
+
+  .tpl-library {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .tpl-library h3 {
+    margin: 0;
+    font-size: var(--fs-h3);
+  }
+
+  /* Drill-downs: a step or template row with its own version, last-run and usage links. */
+
+  /* The selected item's card holds its version line too, not just the button. */
+
+  .tpl-versions {
+    margin: 0;
+  }
+
+  .tpl-deleted-preview {
+    display: flex;
+    flex-basis: 100%;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-width: 0;
+  }
+
+  .tpl-var-sample {
+    display: block;
+    margin-top: 2px;
+    overflow-wrap: anywhere;
+  }
+
+  /* Inline drill links are at least 24px tall (WCAG 2.5.8 target size). */
+  /* .m3-link resets the font; the usage line keeps its small size. */
+  .tpl-when.m3-link {
+    font-size: var(--fs-small);
+  }
+
+  .tpl-editor-title .tpl-when .m3-link,
+  .tpl-when.m3-link,
+  .tpl-vars .m3-link,
+  .tpl-versions .drill-num {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+  }
+}

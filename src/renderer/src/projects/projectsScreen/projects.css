@@ -1,0 +1,182 @@
+/* Projects (v2): KPI row, tabs, the project list grid and usage by project. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .pj {
+    gap: var(--card-gap);
+  }
+
+  /* The big numbers are buttons or popover openers: keep the display type. */
+  .pj-kpis .glance-count {
+    display: inline;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+  }
+
+  .pj-kpis .ui-kpi-sub .drill-num {
+    font-size: inherit;
+  }
+
+  .pj-kpi-text .ui-kpi-value {
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h1);
+    letter-spacing: 0;
+    white-space: normal;
+  }
+
+  /* The usage line and its bar share the one sub line. */
+  .pj-kpi-usage {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  /* The words give way (cut, whole line on hover) so the bar always shows. */
+  .pj-kpi-usage > span:first-child {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .pj-kpi-usage .bar {
+    display: block;
+    flex: 0 0 64px;
+    height: 8px;
+  }
+
+  .pj-tabs {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pj-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    padding-top: var(--s-4);
+  }
+
+  .pj-panel:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  /* Two short lines in a 44px row: the name, then the domain. */
+  .pj-cell2 {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: var(--lh-small);
+  }
+
+  .pj-domain {
+    min-width: 0;
+    overflow: hidden;
+    font-size: var(--fs-small);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Links in the grids read as ink with the drill's dotted underline; fox is for the brand and ✦ AI. */
+  .pj .ui-lg-td a:not(.tag) {
+    color: var(--ink-2);
+    text-decoration: underline solid transparent;
+    text-underline-offset: 3px;
+  }
+
+  .pj .ui-lg-td a:not(.tag):hover,
+  .pj .ui-lg-td a:not(.tag):focus-visible {
+    color: var(--ink);
+    text-decoration-color: currentcolor;
+  }
+
+  .pj .ui-lg-td a.pj-title {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .pj .ui-lg-td a.pj-title:hover {
+    text-decoration: underline;
+  }
+
+  .pj-name {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  /* The typed name in the delete confirm, apart from the warning above it. */
+  .pj-delete-field {
+    margin-top: var(--s-3);
+  }
+
+  /* Rename in place: the field takes the name's line, never wider than the cell. */
+  .pj-rename {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 280px;
+  }
+
+  .pj-title {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pj-note {
+    min-width: 0;
+    overflow: hidden;
+    font-size: var(--fs-small);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pj-tags {
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+
+  .pj-searches {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    width: 100%;
+  }
+
+  .pj-searches .bar {
+    display: block;
+    width: 100%;
+    height: 4px;
+    min-height: 4px;
+    max-height: 4px;
+  }
+
+  /* Usage meters are spruce: fox means only your brand cited and ✦ AI. */
+  .pj-searches .bar > span,
+  .pj-kpi-usage .bar > span,
+  .pj-usage .usage-bar > span {
+    background: var(--chart-2);
+  }
+
+  .pj-searches .bar-muted > span {
+    background: var(--ink-3);
+  }
+
+  .pj-section-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--s-4);
+  }
+
+  .pj-total a {
+    color: inherit;
+  }
+}

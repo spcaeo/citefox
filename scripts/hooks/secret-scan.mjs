@@ -1,0 +1,69 @@
+// Secret scan for the pre-commit hook.
+//   node scripts/hooks/secret-scan.mjs --staged   scan what is staged (the hook)
+//   node scripts/hooks/secret-scan.mjs --builtin  force the built-in scan
+// Uses gitleaks (PATH, or GITLEAKS_BIN) with .gitleaks.toml when it is there,
+// otherwise the built-in pattern scan in scripts/lib/secret-scan.mjs.
+// Exit 1 blocks the commit. Never prints a whole secret.
+import { execFileSync, spawnSync } from 'node:child_process'
+import { existsSync } from 'node:fs'
+import { findGitleaks } from '../lib/gitleaks.mjs'
+import { scanDiff } from '../lib/secret-scan.mjs'
+
+const args = new Set(process.argv.slice(2))
+
+function runGitleaks(bin) {
+  const config = existsSync('.gitleaks.toml') ? ['--config', '.gitleaks.toml'] : []
+  const result = spawnSync(
+    bin,
+    ['protect', '--staged', '--redact', '--verbose', '--no-banner', ...config],
+    {
+      stdio: 'inherit'
+    }
+  )
+  return result.status === 0
+}
+
+function runBuiltin() {
+  const diff = execFileSync(
+    'git',
+    [
+      'diff',
+      '--cached',
+      '-U0',
+      '--no-color',
+      '--no-ext-diff',
+      '--src-prefix=a/',
+      '--dst-prefix=b/',
+      '--diff-filter=ACMR'
+    ],
+    {
+      encoding: 'utf8',
+      maxBuffer: 256 * 1024 * 1024
+    }
+  )
+  const findings = scanDiff(diff)
+  for (const f of findings) console.error(`  ${f.file}:${f.line}  ${f.rule}  ${f.preview}`)
+  return findings.length === 0
+}
+
+function main() {
+  if (!args.has('--staged') && !args.has('--builtin')) {
+    console.error('Usage: node scripts/hooks/secret-scan.mjs --staged [--builtin]')
+    process.exit(2)
+  }
+  const bin = args.has('--builtin') ? null : findGitleaks()
+  const clean = bin ? runGitleaks(bin) : runBuiltin()
+  if (clean) return
+  console.error(
+    [
+      '',
+      'Commit blocked: the staged changes look like they contain a secret (shown above, masked).',
+      'Keep keys in the OS keychain (the app) or in a .env file outside the repo, never in code.',
+      'A test value: make it plainly fake (for example "fake-key-0001"), or end the line with',
+      '"// gitleaks:allow". To skip once on purpose: git commit --no-verify'
+    ].join('\n')
+  )
+  process.exit(1)
+}
+
+main()

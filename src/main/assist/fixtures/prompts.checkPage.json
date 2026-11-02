@@ -1,0 +1,20 @@
+{
+  "summary": "One prompt has a direct answer on the page; the other is only touched in passing.",
+  "items": [
+    {
+      "text": "Prompt 1: The page answers this directly with a no-code method and steps.",
+      "detail": "Covered in the H1 \"(No Developer Required)\", the At a Glance box, and the FAQ \"Do I need to know how to code?\". It never says staff need no app.",
+      "tag": "strong",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Prompt 2: The page touches plans but does not say which plan includes scheduled texts.",
+      "detail": "Only \"Scheduling is available on [paid plans]\" in Step 2. No pricing table or FAQ names the plan.",
+      "tag": "weak",
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": null
+}

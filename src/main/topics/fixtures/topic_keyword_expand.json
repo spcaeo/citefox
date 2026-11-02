@@ -1,0 +1,218 @@
+{
+  "groups": [
+    {
+      "name": "Core Commercial / Category",
+      "kind": "intent",
+      "family": "core_category",
+      "intent": "commercial",
+      "funnel": "mofu",
+      "pageType": "landing page",
+      "keywords": [
+        "business text alerts",
+        "email to sms gateway",
+        "email to sms software",
+        "email to text service",
+        "sms alert service",
+        "text alert system for business"
+      ]
+    },
+    {
+      "name": "Definitional",
+      "kind": "intent",
+      "family": "definitional",
+      "intent": "informational",
+      "funnel": "tofu",
+      "pageType": "glossary",
+      "keywords": [
+        "what is email to sms",
+        "what is an sms gateway",
+        "what is a text alert",
+        "email to text meaning",
+        "what is 10dlc"
+      ]
+    },
+    {
+      "name": "Best / top lists",
+      "kind": "intent",
+      "family": "best_lists",
+      "intent": "commercial",
+      "funnel": "mofu",
+      "pageType": "listicle",
+      "keywords": [
+        "best email to sms service",
+        "best text alert app",
+        "best sms alert software",
+        "top email to text services",
+        "best mass texting service",
+        "best business texting app"
+      ]
+    },
+    {
+      "name": "Pricing / free / trial",
+      "kind": "intent",
+      "family": "pricing",
+      "intent": "commercial",
+      "funnel": "bofu",
+      "pageType": "product page",
+      "keywords": [
+        "email to sms pricing",
+        "text alert service cost",
+        "free email to text",
+        "sms alert free trial",
+        "cheap business text alerts",
+        "email to sms cost per message"
+      ]
+    },
+    {
+      "name": "Alternatives & vs",
+      "kind": "intent",
+      "family": "alternatives_vs",
+      "intent": "commercial",
+      "funnel": "bofu",
+      "pageType": "comparison page",
+      "keywords": [
+        "twilio alternative",
+        "simpletexting alternative",
+        "pagerduty alternative small team",
+        "clicksend alternative",
+        "eztexting alternative"
+      ]
+    },
+    {
+      "name": "Features",
+      "kind": "intent",
+      "family": "features",
+      "intent": "commercial",
+      "funnel": "mofu",
+      "pageType": "product page",
+      "keywords": [
+        "two way email to sms",
+        "sms replies to email",
+        "scheduled text alerts",
+        "text alert delivery reports",
+        "email to sms with replies"
+      ]
+    },
+    {
+      "name": "How-To",
+      "kind": "intent",
+      "family": "how_to",
+      "intent": "informational",
+      "funnel": "tofu",
+      "pageType": "blog",
+      "keywords": [
+        "how to send text alerts",
+        "how to send email as text",
+        "how to text employees",
+        "how to set up sms alerts",
+        "how to forward email to sms",
+        "how to send group text from email"
+      ]
+    },
+    {
+      "name": "Benefits / ROI",
+      "kind": "intent",
+      "family": "benefits_roi",
+      "intent": "informational",
+      "funnel": "tofu",
+      "pageType": "blog",
+      "keywords": [
+        "benefits of text alerts",
+        "sms vs email open rate",
+        "why text employees",
+        "text alerts roi",
+        "sms alerts for business benefits"
+      ]
+    },
+    {
+      "name": "Problem-aware",
+      "kind": "intent",
+      "family": "problem_aware",
+      "intent": "informational",
+      "funnel": "tofu",
+      "pageType": "blog",
+      "keywords": [
+        "employees not reading email",
+        "alerts missed on weekends",
+        "email alerts not noticed",
+        "monitoring alerts to phone",
+        "server down alert text"
+      ]
+    },
+    {
+      "name": "Question long-tail",
+      "kind": "intent",
+      "family": "question_long_tail",
+      "intent": "informational",
+      "funnel": "tofu",
+      "pageType": "blog",
+      "keywords": [
+        "can i send a text from email",
+        "does vtext still work",
+        "is txt.att.net shutting down",
+        "can i text from outlook",
+        "how do email to text addresses work"
+      ]
+    },
+    {
+      "name": "Trust / risk",
+      "kind": "intent",
+      "family": "trust_risk",
+      "intent": "informational",
+      "funnel": "mofu",
+      "pageType": "blog",
+      "keywords": [
+        "is email to sms secure",
+        "sms alerts spam filtering",
+        "text alert compliance",
+        "tcpa employee texts",
+        "10dlc for internal alerts"
+      ]
+    },
+    {
+      "name": "Emerging terms",
+      "kind": "intent",
+      "family": "emerging_terms",
+      "intent": "informational",
+      "funnel": "tofu",
+      "pageType": "blog",
+      "keywords": [
+        "ai text alerts",
+        "automated sms alerts ai",
+        "ai powered notifications",
+        "smart alert routing sms",
+        "no code sms automation"
+      ]
+    },
+    {
+      "name": "Branded defensive",
+      "kind": "intent",
+      "family": "branded_defensive",
+      "intent": "navigational",
+      "funnel": "bofu",
+      "pageType": "product page",
+      "keywords": [
+        "email to sms reviews",
+        "email to sms login",
+        "email to sms support",
+        "email to sms setup guide",
+        "email to sms app download"
+      ]
+    },
+    {
+      "name": "Competitor vs",
+      "kind": "intent",
+      "family": "competitor_vs",
+      "intent": "commercial",
+      "funnel": "bofu",
+      "pageType": "comparison page",
+      "keywords": [
+        "simpletexting vs twilio",
+        "clicksend vs twilio",
+        "eztexting vs simpletexting",
+        "textedly vs simpletexting",
+        "twilio vs plivo for alerts"
+      ]
+    }
+  ]
+}

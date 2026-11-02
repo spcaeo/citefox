@@ -1,0 +1,17 @@
+{
+  "points": [
+    {
+      "section": "who",
+      "text": "MSP owners routing client alerts",
+      "foundIn": "/use-cases",
+      "verify": null
+    },
+    {
+      "section": "triggers",
+      "text": "Told they need 10DLC just to text their own staff",
+      "foundIn": "/faq",
+      "verify": "Check the 10DLC rule for internal alerts"
+    }
+  ],
+  "explanation": "Each point names the page it came from. Two points have no source on the site."
+}

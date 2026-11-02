@@ -1,0 +1,8 @@
+{
+  "text": "This counts your 2 questions in 2 markets: 4 prompt checks from the latest check of each. Where your page is not the one cited, the overview leans on simpletexting.com. About 37 of your searches went into these checks.",
+  "sources": ["N1", "N3", "R1"],
+  "unknowns": [],
+  "draft": null,
+  "questions": [],
+  "actions": [{ "kind": "start-check", "refs": ["R1"], "questions": [], "name": null }]
+}

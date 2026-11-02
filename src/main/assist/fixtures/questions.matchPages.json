@@ -1,0 +1,27 @@
+{
+  "summary": "Two questions have a tracked page that answers them; one has none.",
+  "items": [
+    {
+      "text": "How much does it cost to text a whole crew from email every month?",
+      "detail": "/pricing/",
+      "tag": null,
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "How do I set up text alerts for my business without a developer?",
+      "detail": "/blog/how-to-set-up-text-alerts-for-business/",
+      "tag": null,
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Can church volunteers reply to a group text sent from the office?",
+      "detail": "none",
+      "tag": null,
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": null
+}

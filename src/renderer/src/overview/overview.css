@@ -1,0 +1,541 @@
+/* AI visibility home (nav-canvas Main.dc.html, Overview). Tokens from styles/tokens.css. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .ov {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+    width: 100%;
+    max-width: 1180px;
+    min-width: 0;
+  }
+
+  .ov-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .ov-head-top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    align-items: flex-start;
+  }
+
+  /* The filter toolbar: engine, market and period, in one row under the title. */
+  .ov-head-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-4);
+    align-items: center;
+  }
+
+  .ov-head-text {
+    display: flex;
+    flex: 1 1 320px;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-width: 0;
+  }
+
+  .ov-head h1 {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-h1);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-h1);
+    letter-spacing: var(--ls-h1);
+  }
+
+  .ov-head-text p {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+
+  .ov-head-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: center;
+  }
+
+  .ov-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--s-5);
+    align-items: start;
+  }
+
+  .ov-main {
+    display: flex;
+    grid-column: span 8;
+    flex-direction: column;
+    gap: var(--s-5);
+    min-width: 0;
+  }
+
+  .ov-rail {
+    display: flex;
+    grid-column: span 4;
+    flex-direction: column;
+    gap: var(--s-5);
+    min-width: 0;
+  }
+
+  @media (width <= 960px) {
+    .ov-main,
+    .ov-rail {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .ov-empty {
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .ov-meta {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  /* Text links are action green; fox stays for the logo and ✦ AI marks. */
+  .ov-link {
+    color: var(--action-ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-ui);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .ov-link:hover {
+    color: var(--action-ink);
+    text-decoration: underline;
+  }
+
+  .ov-link:focus-visible,
+  .ov-q:focus-visible,
+  .ov-fix-title:focus-visible {
+    border-radius: var(--r-s);
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .ov-note {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-body);
+  }
+
+  .ov-muted {
+    overflow: hidden;
+    color: var(--ink-3);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Weekly chart */
+  .ov-chart-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  /* A narrow panel: the question's page or topic as a muted second line (no From column). */
+  .ov-q-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .ov-q-from {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  /* Questions that changed */
+  .ov-changes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .ov-section-head {
+    display: flex;
+    gap: var(--s-3);
+    align-items: center;
+    min-height: var(--h-control-sm);
+  }
+
+  .ov-section-head h2 {
+    flex: 1 1 auto;
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-h2);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-h2);
+    letter-spacing: var(--ls-h2);
+  }
+
+  .ov-q {
+    display: block;
+    overflow: hidden;
+    color: var(--ink);
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ov-q:hover {
+    color: var(--action-ink);
+  }
+
+  .ov-instead {
+    display: block;
+    overflow: hidden;
+    color: var(--ink-2);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Who gets cited */
+  .ov-sites {
+    display: grid;
+    /* Names get the room; the bar is a fixed short scale. */
+    grid-template-columns: minmax(0, 1fr) 72px 28px;
+    gap: var(--s-2) var(--s-3);
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    list-style: none;
+  }
+
+  .ov-site {
+    display: contents;
+  }
+
+  .ov-site-name {
+    overflow: hidden;
+    min-width: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ov-own {
+    justify-self: start;
+    padding: 0 var(--s-1);
+    border-radius: var(--r-s);
+    background: var(--mark);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ov-site-count {
+    text-align: right;
+  }
+
+  /* Next fixes */
+  .ov-fixes {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    list-style: none;
+  }
+
+  .ov-fix {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding: var(--s-2) 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ov-fix:last-child {
+    border-bottom: 0;
+  }
+
+  .ov-fix-head {
+    display: flex;
+    gap: var(--s-2);
+    align-items: baseline;
+    justify-content: space-between;
+    min-width: 0;
+  }
+
+  .ov-fix-count {
+    flex: none;
+    color: var(--ink-3);
+    white-space: nowrap;
+  }
+
+  .ov-fix-title {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ov-fix-title:hover {
+    color: var(--action-ink);
+  }
+
+  .ov-fix-meta {
+    display: flex;
+    gap: var(--s-1);
+    align-items: center;
+    min-width: 0;
+    /* A long path's hidden Copy and Open sit past its end; keep them inside the panel
+       (a focus ring still shows in the clip margin). */
+    overflow: clip;
+    overflow-clip-margin: 4px;
+    color: var(--ink-3);
+  }
+
+  /* First check report */
+  .ov-report-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    margin-top: var(--s-2);
+  }
+
+  /* Results: the four shared results as one bar with its legend, then Needs work (in the verdict). */
+  .ov-results {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .ov-results-work {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  /* Verdict: badge row with Compare with and How we measure, then the findings. */
+  .ov-verdict {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .ov-verdict-head {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: var(--s-2) var(--s-3);
+    align-items: center;
+    min-height: var(--h-control-sm);
+  }
+
+  .ov-verdict-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-h3);
+  }
+
+  .ov-verdict-tools {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    gap: var(--s-2);
+    align-items: center;
+    margin-left: auto;
+  }
+
+  .ov-verdict-tools .select {
+    min-height: var(--h-control-sm);
+  }
+
+  .ov-impact-line {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .ov-link-button {
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  .ov-findings {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-1) var(--s-6);
+    margin: 0;
+    padding: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-body);
+    list-style: none;
+  }
+
+  @media (width <= 960px) {
+    .ov-findings {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .ov-finding-lead {
+    font-weight: var(--fw-semibold);
+  }
+
+  /* Findings are ink: the badge's dot carries the verdict's tone (owner, 2026-10-30: few colours). */
+  .ov-tone-ok,
+  .ov-tone-bad,
+  .ov-tone-warn,
+  .ov-tone-neutral {
+    color: var(--ink);
+  }
+
+  .ov-finding-num {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  /* Who gets cited: now on top, the compared check as a faint bar under it. */
+  .ov-site-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .ov-legend {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    margin: var(--s-3) 0 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ov-legend-swatch {
+    display: inline-block;
+    width: 16px;
+    height: 4px;
+    border-radius: var(--r-pill);
+    background: var(--line-strong);
+  }
+
+  /* How we measure (drawer body text) */
+  .ov-method {
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-body);
+  }
+
+  .ov-method p {
+    margin: 0 0 var(--s-2);
+  }
+
+  .ov-method p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* A result pill with its Named badge beside it. */
+  .ov-you {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+  }
+
+  /* A change chip or pill that opens what moved: the chip as drawn, a pointer and a ring. */
+  .ov-trend-btn {
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .ov-trend-btn:hover > * {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .ov-trend-btn:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  /* A week's point on the chart: a round target that opens that week's cited searches. */
+  .ov-point {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+  }
+
+  .ov-point:hover {
+    background: var(--hover);
+  }
+
+  .ov-point:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 0;
+  }
+
+  /* "N searches" after a next fix: the count opens them. */
+  .ov-fix-count .drill-num {
+    color: inherit;
+  }
+
+  .ov-all-fixes {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,59 @@
+/* The review screen's first-check bar (owner feedback 5). */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .fc-bar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-6);
+    padding: var(--s-5) var(--card-pad);
+    border-color: var(--fox-line);
+  }
+
+  .fc-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-width: 0;
+  }
+
+  .fc-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-h3);
+    line-height: var(--lh-h3);
+    font-weight: var(--fw-semibold);
+  }
+
+  .fc-sub {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fc-auto {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin-top: var(--s-1);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    cursor: pointer;
+  }
+
+  .fc-auto input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--select);
+  }
+
+  .fc-bar > .ui-btn {
+    flex: 0 0 auto;
+  }
+}

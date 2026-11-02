@@ -1,0 +1,259 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * v2 goal bar and KPI tiles (ui/GoalBar.tsx, ui/KpiTile.tsx). Imported right
+ * after ui/ui.css. Values come from the v2 tokens only.
+ */
+@layer shared {
+  /* ---- Goal bar ---- */
+  .ui-goal {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ui-goal-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-3);
+  }
+
+  .ui-goal-title {
+    margin: 0;
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  .ui-goal-target {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .ui-goal-track {
+    position: relative;
+    height: 8px;
+    margin: 4px 0;
+    border-radius: 4px;
+    background: var(--chart-track);
+  }
+
+  .ui-goal-band {
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    border-radius: 3px;
+    background: var(--chart-band);
+  }
+
+  .ui-goal-fill {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: 4px;
+    background: var(--chart-cited);
+  }
+
+  .ui-goal-ticks {
+    position: relative;
+    height: 16px;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ui-goal-tick {
+    position: absolute;
+    top: 0;
+  }
+
+  .ui-goal-tick-mid {
+    transform: translateX(-50%);
+  }
+
+  /* ---- KPI tile: 88px on every screen. Label, number row, one sub line (always reserved). ---- */
+  .ui-kpi {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    min-width: 0;
+    min-height: var(--h-kpi);
+    padding: var(--s-2) var(--card-pad);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  /* The label, and the trend at its right. */
+  .ui-kpi-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .ui-kpi-label {
+    margin: 0;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  /* One row, never wrapped (the tile keeps its 88px): the goal bar gives way first. */
+  .ui-kpi-row {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0 var(--s-3);
+    min-width: 0;
+    min-height: var(--lh-h1);
+  }
+
+  .ui-kpi-value {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin: 0;
+    font-size: var(--fs-h1);
+    line-height: var(--lh-h1);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-h1);
+    white-space: nowrap;
+  }
+
+  .ui-kpi-suffix {
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    font-weight: var(--fw-regular);
+    letter-spacing: 0;
+  }
+
+  /* A DrillNumber or link as the number: plain, underlined on hover or keyboard focus (drill.css). */
+  .ui-kpi-value .drill-num,
+  .ui-kpi-value a {
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-decoration: underline solid transparent;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 4px;
+  }
+
+  .ui-kpi-value .drill-num:hover,
+  .ui-kpi-value .drill-num:focus-visible,
+  .ui-kpi-value a:hover,
+  .ui-kpi-value a:focus-visible {
+    color: var(--action-ink);
+    text-decoration: underline solid currentcolor;
+    text-decoration-thickness: 1.5px;
+  }
+
+  /* The goal bar fills the room between the number and the side items, down to nothing. */
+  .ui-kpi-goal {
+    flex: 1 1 64px;
+    min-width: 0;
+  }
+
+  .ui-kpi-goal .ui-goal-track {
+    margin: 0;
+  }
+
+  .ui-kpi-side {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+
+  .ui-kpi-trend {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+  }
+
+  /* A trend is grey text: the arrow and the sign say up or down (owner, 2026-10-30: few colours). */
+  .ui-kpi-trend-ok,
+  .ui-kpi-trend-bad,
+  .ui-kpi-trend-neutral {
+    color: var(--ink-3);
+  }
+
+  /* One line, cut with an ellipsis (the title has the whole line). The clip
+     margin keeps the focus ring of a link inside it whole; the 4px above
+     keeps its links clear of the number's (24px target spacing). */
+  .ui-kpi-sub {
+    min-height: var(--lh-small);
+    margin-top: var(--s-1);
+    overflow: clip;
+    overflow-clip-margin: 4px;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  /* A row of tiles as one strip: one column per tile in flow (an absolutely
+     placed screen-reader extra takes none), or --kpi-cols columns when
+     KpiStrip is given `columns`. Each tile draws the divider on its left and
+     top; the strip clips the ones on its outer edge. */
+  .ui-kpis {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    min-width: 0;
+    overflow: clip;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .ui-kpis[data-cols] {
+    grid-template-columns: repeat(var(--kpi-cols), minmax(0, 1fr));
+    grid-auto-flow: row;
+  }
+
+  .ui-kpis > .ui-kpi {
+    flex: 1 1 180px;
+    border: 0;
+    border-radius: 0;
+    box-shadow:
+      -1px 0 0 var(--line),
+      0 -1px 0 var(--line);
+  }
+
+  /* Two by two on a narrow window (a lone tile keeps the width), one column on a very narrow one. */
+  @media (max-width: 900px) {
+    .ui-kpis,
+    .ui-kpis[data-cols] {
+      grid-template-columns: repeat(auto-fit, minmax(max(160px, calc(50% - 1px)), 1fr));
+      grid-auto-flow: row;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .ui-kpis,
+    .ui-kpis[data-cols] {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

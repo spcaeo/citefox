@@ -1,0 +1,93 @@
+/* Claude usage card (FR-25.6). Tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer shared {
+  .cu-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    font-size: var(--fs-ui);
+  }
+
+  .cu-title {
+    font-size: var(--fs-h3);
+  }
+
+  .cu-summary {
+    color: var(--ink-2);
+    font-weight: var(--fw-medium);
+  }
+
+  .cu-failed {
+    color: var(--warn);
+  }
+
+  .cu-block {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .cu-sub {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  summary.cu-sub {
+    cursor: pointer;
+  }
+
+  .cu-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cu-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px var(--s-3);
+    justify-content: space-between;
+  }
+
+  .cu-error {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-2);
+    align-items: baseline;
+  }
+}
+
+/* The full layout (Connections › Claude): KPI tiles, then list grids under tabs. */
+@layer shared {
+  .cu-full {
+    gap: var(--s-4);
+    font-size: var(--fs-body);
+  }
+
+  .cu-full .cu-title {
+    margin: 0;
+    font-size: var(--fs-h3);
+    line-height: var(--lh-h3);
+    font-weight: var(--fw-semibold);
+  }
+
+  .cu-detail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+
+  .cu-error-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

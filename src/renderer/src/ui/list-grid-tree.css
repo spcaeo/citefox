@@ -1,0 +1,120 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * Tree rows of the shared ListGrid (ui/listGrid/tree, TopicBig "Tree view"):
+ * top groups semibold on the card, deeper groups and leaves on the inset
+ * ground, an arrow per group, "Show N more" in action green, and a total
+ * row stuck to the bottom.
+ */
+@layer shared {
+  .ui-lg-tree-group {
+    cursor: pointer;
+  }
+
+  .ui-lg-tree-l0 .ui-lg-tree-cell {
+    font-weight: var(--fw-semibold);
+  }
+
+  .ui-lg-tree-l1 .ui-lg-tree-cell,
+  .ui-lg-tree-l2 .ui-lg-tree-cell {
+    font-weight: var(--fw-medium);
+  }
+
+  .ui-lg-tree-l1,
+  .ui-lg-tree-l2,
+  .ui-lg-tree-leaf,
+  .ui-lg-tree-more {
+    background: color-mix(in srgb, var(--inset) 55%, var(--surface));
+  }
+
+  .ui-lg-tree-group.open {
+    border-bottom-color: var(--line-strong);
+  }
+
+  .ui-lg-tree-cell {
+    gap: 0;
+  }
+
+  .ui-lg-tree-cell > .ui-lg-tree-toggle {
+    flex: 0 0 auto;
+    overflow: visible;
+  }
+
+  .ui-lg-tree-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--r-s);
+    background: none;
+    color: var(--ink-3);
+    cursor: pointer;
+  }
+
+  .ui-lg-tree-toggle:hover {
+    background: var(--line);
+    color: var(--ink);
+  }
+
+  .ui-lg-tree-label {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ui-lg-tree-more {
+    min-height: 34px;
+    grid-template-rows: minmax(33px, auto);
+    display: flex;
+  }
+
+  .ui-lg-tree-more > [role='gridcell'] {
+    display: flex;
+    align-items: center;
+  }
+
+  .ui-lg-tree-morebtn {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--action-ink);
+    font: inherit;
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+    cursor: pointer;
+  }
+
+  .ui-lg-tree-morebtn:hover {
+    color: var(--action-ink-hover);
+    text-decoration: underline;
+  }
+
+  .ui-lg-tree-totals {
+    position: sticky;
+    bottom: 0;
+    z-index: var(--z-sticky);
+  }
+
+  .ui-lg-tree-total,
+  .ui-lg-tree-total:hover {
+    border-top: 1px solid var(--line);
+    border-bottom: 0;
+    background: var(--inset);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ui-lg-tree-expand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .ui-lg-tree-sep {
+    color: var(--ink-3);
+  }
+}

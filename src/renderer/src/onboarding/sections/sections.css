@@ -1,0 +1,609 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * Onboarding v2 section cards and the card steps (4, 5, 6, 8), from
+ * Docs/onboarding-v2.mockup.html. Every class starts with `osc-`.
+ */
+@layer screens {
+  /* ---- Step frame ---- */
+  .osc-kicker {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .osc-from {
+    color: var(--fox-ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  /* ---- Card ---- */
+  .osc-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .osc-head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    min-height: 44px;
+    padding: var(--s-2) var(--s-3);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .osc-title {
+    margin: 0;
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .osc-grow {
+    flex-grow: 1;
+    min-width: 0;
+  }
+
+  .osc-hint {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .osc-head-hint {
+    min-width: 0;
+  }
+
+  .osc-ai-btn .ui-icon,
+  .osc-spark {
+    color: var(--fox);
+  }
+
+  .osc-spark {
+    display: inline-flex;
+  }
+
+  .osc-dots.osc-on {
+    border: 1px solid var(--ink);
+    background: var(--ok-tint);
+  }
+
+  .osc-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--action-ink);
+    font: inherit;
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+  }
+
+  .osc-link:hover {
+    color: var(--action-ink-hover);
+    text-decoration: underline;
+  }
+
+  .osc-link:focus-visible {
+    outline: none;
+    border-radius: var(--r-s);
+    box-shadow: var(--focus-ring);
+  }
+
+  .osc-mono {
+    font-family: var(--font-code);
+  }
+
+  .osc-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+
+  /* A text box beside its button stays on one line with it. */
+  .osc-row > .ui-input.osc-grow {
+    flex: 1 1 200px;
+    width: auto;
+  }
+
+  .osc-add .osc-row,
+  .osc-redo .osc-row {
+    flex-wrap: nowrap;
+  }
+
+  .osc-placeholder {
+    color: var(--ink-3);
+  }
+
+  /* ---- ⋯ menu: under the head, inside the card ---- */
+  .osc-menu.ui-menu {
+    position: absolute;
+    top: 46px;
+    right: var(--s-3);
+    width: 290px;
+  }
+
+  .osc-menu-gap {
+    width: 16px;
+    flex: 0 0 auto;
+  }
+
+  /* ---- Live line: running, result, warnings, error, Undo ---- */
+  .osc-status {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding: var(--s-2) var(--s-3);
+    border-bottom: 1px solid var(--line);
+    background: var(--inset);
+  }
+
+  .osc-status .osc-hint {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .osc-ok {
+    display: inline-flex;
+    color: var(--ok);
+  }
+
+  .osc-warn {
+    color: var(--warn);
+  }
+
+  .osc-bad {
+    color: var(--bad);
+  }
+
+  /* ---- List rows ---- */
+  .osc-items {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .osc-item {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr) auto auto auto;
+    align-items: center;
+    gap: var(--s-2);
+    padding: var(--s-2) var(--s-3);
+    border-top: 1px solid var(--line);
+  }
+
+  .osc-item:first-child {
+    border-top: 0;
+  }
+
+  .osc-item-new {
+    background: var(--mark-tint);
+  }
+
+  .osc-item-off .osc-item-name,
+  .osc-item-off .osc-item-sub {
+    color: var(--ink-3);
+  }
+
+  .osc-check {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--select);
+  }
+
+  .osc-item-main {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .osc-item-name {
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    font-weight: var(--fw-semibold);
+    overflow-wrap: anywhere;
+  }
+
+  .osc-item-sub {
+    display: block;
+    min-width: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    overflow-wrap: anywhere;
+  }
+
+  .osc-host {
+    display: flex;
+    margin-top: 1px;
+  }
+
+  .osc-tag {
+    display: inline-flex;
+    padding: 1px 8px;
+    border-radius: var(--r-pill);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    white-space: nowrap;
+  }
+
+  .osc-tag-tag,
+  .osc-tag-yours {
+    background: var(--inset);
+    color: var(--ink-3);
+  }
+
+  .osc-tag-ai {
+    background: var(--fox-tint);
+    color: var(--fox-ink);
+  }
+
+  .osc-tag-new {
+    background: var(--warn-tint);
+    color: var(--warn);
+  }
+
+  .osc-item-edit {
+    grid-template-columns: 18px minmax(0, 1fr) auto;
+    align-items: start;
+    background: var(--inset);
+  }
+
+  .osc-item-edit .osc-check {
+    margin-top: 8px;
+  }
+
+  .osc-edit-fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .osc-edit-field {
+    display: flex;
+    min-width: 0;
+  }
+
+  .osc-edit-field .ui-input {
+    width: 100%;
+  }
+
+  .osc-edit-actions {
+    display: flex;
+    gap: var(--s-2);
+    align-self: start;
+  }
+
+  .osc-empty {
+    margin: 0;
+    padding: var(--s-3);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .osc-add {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding: var(--s-2) var(--s-3);
+    border-top: 1px solid var(--line);
+  }
+
+  /* ---- Chips ---- */
+  .osc-chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+    margin: 0;
+    padding: var(--s-3);
+    list-style: none;
+  }
+
+  .osc-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    min-height: 28px;
+    padding: 0 4px 0 2px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    font-size: var(--fs-small);
+  }
+
+  .osc-chip-ai {
+    border-color: var(--fox-line);
+    background: var(--fox-tint);
+  }
+
+  .osc-chip-new {
+    border-color: var(--mark-line);
+    background: var(--mark-tint);
+  }
+
+  .osc-chip-name,
+  .osc-chip-x {
+    display: inline-flex;
+    align-items: center;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .osc-chip-name {
+    padding: 4px 4px 4px 8px;
+    border-radius: var(--r-pill);
+    color: var(--ink);
+  }
+
+  .osc-chip-x {
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border-radius: 50%;
+    color: var(--ink-3);
+  }
+
+  .osc-chip-x:hover,
+  .osc-chip-name:hover {
+    background: var(--hover);
+  }
+
+  .osc-chip-name:focus-visible,
+  .osc-chip-x:focus-visible,
+  .osc-chip-add:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .osc-chip-add {
+    padding: 0 12px;
+    border-style: dashed;
+    color: var(--action-ink);
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+  }
+
+  .osc-chip-edit {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .osc-chip-edit .ui-input {
+    width: 240px;
+  }
+
+  /* ---- Text sections ---- */
+  .osc-text-body {
+    margin: 0;
+    padding: var(--s-3);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-body);
+  }
+
+  .osc-text-edit {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-2);
+  }
+
+  .osc-textarea {
+    flex: 1;
+    height: auto;
+    min-height: 72px;
+    padding: var(--s-2);
+    resize: vertical;
+  }
+
+  .osc-field {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+
+  .osc-field-label {
+    margin: 0;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    color: var(--ink-2);
+  }
+
+  .osc-field-line {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: var(--h-control);
+    padding: 0 4px 0 var(--s-3);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+  }
+
+  .osc-field-text {
+    flex: 1;
+    min-width: 0;
+    font-size: var(--fs-ui);
+  }
+
+  .osc-field .osc-status,
+  .osc-field .osc-panel {
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+  }
+
+  /* ---- Inline panels: Redo, the prompt, your own ChatGPT ---- */
+  /* Scrolled into view when opened: clear the sticky footer below. */
+  .osc-panel-view {
+    scroll-margin-block: var(--s-4) 96px;
+  }
+
+  .osc-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding: var(--s-3);
+    border-top: 1px solid var(--line);
+    border-bottom-left-radius: var(--r-m);
+    border-bottom-right-radius: var(--r-m);
+  }
+
+  .osc-panel-head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--s-1);
+  }
+
+  .osc-panel-title {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1);
+    color: var(--ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .osc-redo {
+    background: var(--inset);
+  }
+
+  /* "Save as a project rule" under the Redo box. */
+  .osc-rule {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+    color: var(--ink);
+    font-size: var(--fs-small);
+  }
+
+  .osc-prompt,
+  .osc-chatbot {
+    background: var(--inset);
+  }
+
+  .osc-code {
+    width: 100%;
+    height: auto;
+    min-height: 120px;
+    box-sizing: border-box;
+    padding: var(--s-2) var(--s-3);
+    font-family: var(--font-code);
+    font-size: var(--fs-small);
+    line-height: 1.5;
+    resize: vertical;
+    white-space: pre-wrap;
+  }
+
+  /* ---- Step 6: the two lines under the card ---- */
+  .osc-lines {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-6);
+  }
+
+  .osc-line {
+    min-width: 0;
+  }
+
+  /* Running text, so a long list wraps as words and ✎ stays after the last name. */
+  .osc-line-text {
+    margin: 0;
+  }
+
+  .osc-line-edit {
+    display: inline-flex;
+    vertical-align: middle;
+    margin-left: 2px;
+  }
+
+  .osc-line-text b,
+  .osc-line-label {
+    color: var(--ink-2);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-small);
+  }
+
+  /* ---- Start over this step, at the right of the step heading ---- */
+  .osc-step-head {
+    display: grid;
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    column-gap: var(--card-gap);
+  }
+
+  .osc-step-head-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--s-4);
+    flex-wrap: wrap;
+  }
+
+  .osc-step-head-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-width: 0;
+  }
+
+  .osc-start-over {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--s-2);
+  }
+
+  .osc-start-over-error {
+    max-width: 22rem;
+    margin: 0;
+    color: var(--bad);
+    font-size: var(--fs-small);
+    text-align: right;
+  }
+
+  @media (max-width: 960px) {
+    .osc-step-head {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* Step 9: each prompt's shape, and ✦ 3 more of one shape. */
+  .osc-shape-tag {
+    color: var(--fox-ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .osc-more-shapes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+
+  .osc-credit p {
+    margin: 0;
+  }
+}

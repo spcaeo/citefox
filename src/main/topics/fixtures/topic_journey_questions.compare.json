@@ -1,0 +1,28 @@
+{
+  "questions": [
+    {
+      "stage": "compare",
+      "text": "How does a free carrier email-to-text address compare with a paid email-to-SMS service for sending business alerts?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "compare",
+      "text": "SimpleTexting or an email-to-SMS service for staff alerts: which is easier when nobody on the team writes code?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "compare",
+      "text": "Is ClickSend or EZ Texting better for sending operational alerts to employees, or is there a simpler option for small teams?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "compare",
+      "text": "PagerDuty feels like overkill for our small team. What's a lighter way to make sure alerts reach someone's phone?",
+      "namedTool": null,
+      "competitorNamed": null
+    }
+  ]
+}

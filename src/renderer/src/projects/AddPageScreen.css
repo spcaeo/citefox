@@ -1,0 +1,239 @@
+/* Add page, the "A page URL" path (v2 wizard: stepper, 8 + 4, sticky footer). */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .ap2 {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+  }
+
+  .ap2-layout {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--card-gap);
+    align-items: start;
+  }
+
+  .ap2-main {
+    grid-column: span 8;
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    min-width: 0;
+  }
+
+  .ap2-layout > .ui-rail {
+    grid-column: span 4;
+  }
+
+  @media (max-width: 1100px) {
+    .ap2-main,
+    .ap2-layout > .ui-rail {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .ap2-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .ap2-label {
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  .ap2-hint {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ap2-lead {
+    margin-top: calc(var(--s-2) * -1);
+  }
+
+  .ap2-count {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .ap2-narrow {
+    max-width: 160px;
+  }
+
+  .ap2-markets {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .ap2-market {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr) minmax(0, 1fr) auto;
+    gap: var(--s-2) var(--s-3);
+    align-items: end;
+    padding-bottom: var(--s-4);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ap2-market-end {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: var(--h-control);
+  }
+
+  .ap2-check {
+    grid-column: 1 / -1;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .ap2-market-add {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    flex-wrap: wrap;
+  }
+
+  .ap2-checks {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-6);
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .ap2-checks,
+    .ap2-market {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .ap2-cost {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin: 0;
+  }
+
+  .ap2-cost div {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-3);
+  }
+
+  .ap2-cost dt {
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .ap2-cost dd {
+    margin: 0;
+    font-weight: var(--fw-semibold);
+  }
+
+  .ap2-error {
+    margin: 0;
+    color: var(--bad);
+    font-weight: var(--fw-medium);
+  }
+
+  /* Page URL with sitemap suggestions (combobox). */
+  .ap2-combo {
+    position: relative;
+  }
+
+  .ap2-combo > .ui-input {
+    width: 100%;
+  }
+
+  .ap2-combo-list {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: var(--z-pop);
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    max-height: 320px;
+    overflow-y: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e2);
+  }
+
+  .ap2-combo-list[hidden] {
+    display: none;
+  }
+
+  .ap2-combo-option {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-3);
+    min-height: 40px;
+    padding: 8px 10px;
+    border-radius: var(--r-s);
+    cursor: pointer;
+  }
+
+  .ap2-combo-option[aria-selected='true'] {
+    background: var(--inset);
+  }
+
+  .ap2-combo-path {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ink);
+    font-size: var(--fs-small);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ap2-combo-meta {
+    display: flex;
+    flex: 0 1 auto;
+    gap: var(--s-2);
+    min-width: 0;
+    font-size: var(--fs-small);
+    white-space: nowrap;
+  }
+
+  .ap2-combo-title {
+    overflow: hidden;
+    color: var(--ink-2);
+    text-overflow: ellipsis;
+  }
+
+  .ap2-combo-more {
+    padding: 8px 10px 4px;
+    font-size: var(--fs-small);
+  }
+
+  /* The wizard footer runs edge to edge under the main column's padding. */
+  /* The screen fills the main column down to its bottom edge, so the sticky
+     footer stays at the window's bottom, edge to edge, even on a short page. */
+  .ap2 {
+    flex: 1 0 auto;
+    margin-bottom: calc(var(--s-12) * -1);
+  }
+
+  /* Chromium sticks inside the scroller's padding, so step past main's bottom padding. */
+  .ap2 > .ui-wizard-foot {
+    bottom: calc(var(--s-12) * -1);
+    margin: auto calc(var(--page-pad) * -1) 0;
+  }
+}

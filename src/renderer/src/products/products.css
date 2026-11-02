@@ -1,0 +1,58 @@
+/* Products and competitors by product (prompt audit PC). v2 tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .prod-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    max-width: 720px;
+  }
+
+  /* The two list grids: controls fill their cell. */
+  .prod-grid .ob-input,
+  .prod-grid .select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .prod-domain {
+    display: block;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  /* Page header: the same stacked label as Market, left-aligned. */
+  .prod-field {
+    align-items: flex-start;
+  }
+
+  .prod-field .select {
+    max-width: 220px;
+  }
+
+  /* Seed step: with a fifth fact the row wraps instead of pushing Edit out of the card. */
+  .tw-brand-facts:has(.prod-fact) {
+    flex-wrap: wrap;
+    row-gap: var(--s-3);
+    column-gap: var(--s-6);
+  }
+
+  .prod-fact-auto {
+    color: var(--ink-3);
+    font-weight: var(--fw-regular);
+  }
+
+  .prod-picker {
+    width: 100%;
+  }
+
+  .prod-hint {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+}

@@ -1,0 +1,642 @@
+/* Fill from website suggestions: one v2 suggestion card. v2 tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .fill-progress {
+    display: inline-flex;
+    gap: var(--s-1);
+    align-items: center;
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  .fill-progress .ui-icon {
+    color: var(--fox);
+  }
+
+  .fill-error {
+    margin: 0;
+    color: var(--bad);
+    font-size: var(--fs-ui);
+  }
+
+  .fill-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: var(--s-5);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .fill-head {
+    display: flex;
+    gap: var(--s-2);
+    align-items: flex-start;
+  }
+
+  .fill-mark {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: var(--r-s);
+    background: var(--fox-tint);
+    color: var(--fox);
+  }
+
+  .fill-titles {
+    min-width: 0;
+  }
+
+  .fill-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-h3);
+  }
+
+  .fill-meta,
+  .fill-hint,
+  .fill-note,
+  .fill-label,
+  .fill-reason {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .fill-body p {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+
+  .fill-body .fill-hint {
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  .fill-items {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+    list-style: none;
+  }
+
+  /* Text left, one small action right on the same line, even in the narrow rail. */
+  .fill-item {
+    display: flex;
+    gap: var(--s-2) var(--s-3);
+    align-items: flex-start;
+    justify-content: space-between;
+    min-height: var(--h-row);
+    padding: var(--s-2) 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .fill-item > .ui-btn {
+    flex: 0 0 auto;
+  }
+
+  .fill-copy {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .fill-text {
+    color: var(--ink);
+    font-size: var(--fs-body);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-body);
+    overflow-wrap: anywhere;
+  }
+
+  /* Company groups (Docs/FEEDBACK.md row 3): competitors, what buyers switch from,
+     integrations. List rows, one action per group. */
+  .fill-groups {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .fill-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+
+  .fill-group-head {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .fill-group-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-ui);
+  }
+
+  .fill-group-hint {
+    margin: 0 0 var(--s-1);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .fill-group-foot {
+    display: flex;
+    align-items: center;
+    padding-top: var(--s-2);
+  }
+
+  .fill-done {
+    display: inline-flex;
+    gap: var(--s-1);
+    align-items: center;
+    margin: 0;
+    color: var(--ok);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  .fill-name {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px var(--s-2);
+    align-items: baseline;
+  }
+
+  .fill-domain {
+    display: inline-flex;
+    min-width: 0;
+    max-width: 100%;
+    color: var(--ink-2);
+  }
+
+  .fill-unknown {
+    color: var(--warn);
+    font-size: var(--fs-small);
+  }
+
+  /* "found by lookup" / "added by you": subtle, the tooltip says how it was checked. */
+  .fill-domain-tag {
+    display: inline-flex;
+    align-self: center;
+  }
+
+  /* Type an unknown domain: input + Save on one line, the error below. */
+  .fill-domain-form {
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 100%;
+    gap: var(--s-1) var(--s-2);
+    align-items: center;
+    margin-top: var(--s-1);
+  }
+
+  .fill-domain-form .ui-input {
+    width: 14rem;
+    max-width: 100%;
+  }
+
+  .fill-domain-error {
+    flex-basis: 100%;
+    color: var(--bad);
+    font-size: var(--fs-small);
+  }
+
+  /* The page that shows it: the path (copy, open) and a quote below, each one line. */
+  .fill-evidence {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    margin-top: 2px;
+    padding-left: var(--s-2);
+    border-left: 2px solid var(--line);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .fill-evidence .ui-url-value {
+    color: var(--ink-2);
+  }
+
+  .fill-quote {
+    overflow: hidden;
+    min-width: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* "What textbolt.com does": one short muted paragraph under the card head. */
+  .fill-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  /* Your products (batch 2 row 5): small chips; the name renames, × removes. */
+  .fill-products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1);
+    margin: 0 0 var(--s-1);
+    padding: 0;
+    list-style: none;
+  }
+
+  .fill-product-chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--inset);
+  }
+
+  .fill-product-name,
+  .fill-product-x {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--fs-small);
+    cursor: pointer;
+  }
+
+  .fill-product-name {
+    padding: 0 var(--s-1) 0 var(--s-2);
+  }
+
+  .fill-product-x {
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-right: 2px;
+    border-radius: var(--r-pill);
+    color: var(--ink-3);
+  }
+
+  .fill-product-name:hover,
+  .fill-product-x:hover {
+    color: var(--ink);
+  }
+
+  .fill-product-x:hover {
+    background: var(--hover);
+  }
+
+  .fill-product-name:focus-visible,
+  .fill-product-x:focus-visible,
+  .fill-sources summary:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+
+  .fill-product-input {
+    width: 14rem;
+    max-width: 100%;
+    height: 22px;
+    padding: 0 var(--s-2);
+    border: 0;
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--fs-small);
+  }
+
+  /* One product: its name, then Direct / Partial as compact sub-lists. */
+  .fill-product {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding-top: var(--s-3);
+  }
+
+  .fill-product-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-body);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-body);
+  }
+
+  .fill-subgroup .fill-group-title {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-small);
+  }
+
+  .fill-price {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  /* "Sources (n)": closed by default, one link per line with copy/open and a biased tag. */
+  .fill-sources {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .fill-sources summary {
+    width: fit-content;
+    border-radius: var(--r-s);
+    cursor: pointer;
+  }
+
+  .fill-sources summary:hover {
+    color: var(--ink);
+  }
+
+  .fill-sources ul {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 2px 0 0;
+    padding: 0 0 0 var(--s-2);
+    border-left: 2px solid var(--line);
+    list-style: none;
+  }
+
+  .fill-sources li {
+    display: flex;
+    gap: var(--s-1);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .fill-sources .ui-url-value {
+    color: var(--ink-2);
+  }
+
+  /* The "biased" chip; the wrapper carries its tooltip. */
+  .fill-biased {
+    display: inline-flex;
+    flex: 0 0 auto;
+  }
+}
+
+/* Tabs and the competitor price table (owner feedback: "same and flat", the cheapest
+   price in green, where competitors end). Wide cards show columns; the narrow
+   onboarding rail folds each company into a few short lines. */
+@layer screens {
+  .fill-card {
+    container-type: inline-size;
+  }
+
+  .fill-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  /* Five tabs: an aligned two-column grid in the narrow rail (never off the edge), one row when wide. */
+  .fill-tabstrip.ui-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, max-content));
+    column-gap: var(--s-5);
+    row-gap: 0;
+    justify-content: start;
+  }
+
+  .fill-tabstrip.ui-tabs > .ui-tab {
+    justify-content: flex-start;
+  }
+
+  @container (min-width: 560px) {
+    .fill-tabstrip.ui-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: var(--s-4);
+    }
+  }
+
+  .fill-tabs .ui-tabpanel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .fill-tabs .ui-tabpanel[hidden] {
+    display: none;
+  }
+
+  .fill-empty {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  .fill-name .site-icon {
+    align-self: center;
+  }
+
+  .fill-cheapest {
+    display: flex;
+    gap: var(--s-2);
+    align-items: flex-start;
+    margin: 0;
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid color-mix(in srgb, var(--ok) 28%, transparent);
+    border-radius: var(--r-m);
+    background: var(--ok-tint);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .fill-cheapest .ui-icon {
+    flex: none;
+    margin-top: 1px;
+    color: var(--ok);
+  }
+
+  .fill-cheapest strong {
+    color: var(--ok);
+    font-weight: var(--fw-semibold);
+  }
+
+  .fill-rivals-head {
+    display: none;
+  }
+
+  .fill-rival {
+    display: grid;
+    grid-template-areas:
+      'name action'
+      'why why'
+      'price price';
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--s-1) var(--s-3);
+    align-items: start;
+    padding: var(--s-2) 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .fill-rival-name {
+    display: flex;
+    flex-direction: column;
+    grid-area: name;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .fill-rival-why {
+    display: flex;
+    flex-direction: column;
+    grid-area: why;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .fill-rival-price {
+    grid-area: price;
+    min-width: 0;
+  }
+
+  .fill-rival-action {
+    display: flex;
+    grid-area: action;
+    justify-content: flex-end;
+  }
+
+  .fill-price-none {
+    color: var(--ink-3);
+  }
+
+  .fill-rival .fill-price:not(.fill-price-none, .fill-price-low) {
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  /* The cheapest of the group: green, with what was compared under it. */
+  .fill-price-low {
+    display: inline-flex;
+    flex-direction: column;
+    padding: 2px var(--s-2);
+    border-radius: var(--r-s);
+    background: var(--ok-tint);
+    color: var(--ok);
+    cursor: help;
+  }
+
+  .fill-price-value {
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-ui);
+  }
+
+  .fill-price-note {
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-small);
+  }
+
+  @container (min-width: 560px) {
+    .fill-rivals-head,
+    .fill-rival {
+      display: grid;
+      grid-template-areas: 'name why price action';
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 2fr) minmax(96px, 0.8fr) 72px;
+      gap: var(--s-1) var(--s-4);
+    }
+
+    .fill-rivals-head {
+      padding: 0 0 var(--s-1);
+      color: var(--ink-3);
+      font-size: var(--fs-small);
+      font-weight: var(--fw-medium);
+      line-height: var(--lh-small);
+    }
+
+    .fill-rivals-head > span:nth-child(1) {
+      grid-area: name;
+    }
+
+    .fill-rivals-head > span:nth-child(2) {
+      grid-area: why;
+    }
+
+    .fill-rivals-head > span:nth-child(3) {
+      grid-area: price;
+    }
+
+    .fill-rivals-head > span:nth-child(4) {
+      grid-area: action;
+    }
+  }
+
+  /* Buyers: one small card per buyer type, two to a row when there is room. */
+  .fill-buyers-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .fill-buyers {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .fill-buyer {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--inset);
+  }
+
+  .fill-buyer-from {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px var(--s-2);
+    align-items: center;
+    margin-top: 2px;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  @container (min-width: 560px) {
+    .fill-buyers {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}

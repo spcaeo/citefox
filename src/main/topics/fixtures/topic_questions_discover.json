@@ -1,0 +1,26 @@
+{
+  "questions": [
+    {
+      "stage": "fit",
+      "text": "We run four dental clinics and front-desk staff miss closure emails. Can a texting service send them alerts from our shared Outlook inbox?",
+      "replaces": null,
+      "reason": "Fit has nothing for clinics yet"
+    },
+    {
+      "stage": "decide",
+      "text": "We are moving off an old pager system next month. What should we set up first so on-call staff still get alerts as texts on day one?",
+      "replaces": null,
+      "reason": "Decide has nothing on switching"
+    }
+  ],
+  "gaps": [
+    {
+      "stage": "fit",
+      "note": "Fit has nothing for clinics"
+    },
+    {
+      "stage": "decide",
+      "note": "Decide has nothing on switching"
+    }
+  ]
+}

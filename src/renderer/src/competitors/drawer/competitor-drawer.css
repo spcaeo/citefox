@@ -1,0 +1,56 @@
+/* The competitor drawer and the gap drawer (window-wide). Tokens from styles/tokens.css only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .cmp-domain-field {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .cmp-domain-field .ui-input {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .cmp-checks {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+
+  .cmp-checks legend {
+    margin-bottom: var(--s-1);
+    padding: 0;
+  }
+
+  .cmp-check {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+    font-size: var(--fs-ui);
+  }
+
+  .cmp-check > span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cmp-drawer-error {
+    color: var(--bad);
+  }
+
+  .cmp-gap-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+  }
+}

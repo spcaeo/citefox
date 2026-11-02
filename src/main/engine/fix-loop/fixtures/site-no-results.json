@@ -1,0 +1,12 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": { "status": "Success", "id": "fixture-site-no-results" },
+    "search_parameters": {
+      "engine": "google",
+      "q": "site:textbolt.com/blog/schedule-text-messages"
+    },
+    "search_information": { "organic_results_state": "Fully empty" },
+    "error": "Google hasn't returned any results for this query."
+  }
+}

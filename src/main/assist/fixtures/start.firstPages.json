@@ -1,0 +1,39 @@
+{
+  "pages": [
+    {
+      "path": "/alternatives/simpletexting-alternatives/",
+      "reason": "Teams weighing SimpleTexting ask for simpler options; overviews for those searches list alternatives pages like this one.",
+      "evidence": "Facts given: Alternatives page; names simpletexting.com, a direct competitor."
+    },
+    {
+      "path": "/alternatives/twilio-alternatives/",
+      "reason": "Small teams that find Twilio needs a developer search for no-code options; this page answers that list.",
+      "evidence": "Facts given: Alternatives page; names twilio.com, a direct competitor."
+    },
+    {
+      "path": "/pricing/",
+      "reason": "Buyers ask what email-to-text costs per month; overviews quote plan prices from pricing pages.",
+      "evidence": "Homepage links Pricing; the page lists plans from [$29] a month."
+    },
+    {
+      "path": "/use-cases/text-messaging-for-churches/",
+      "reason": "Church admins ask how to text the congregation without a developer; this page walks through that.",
+      "evidence": "Sitemap: Use cases section, 210 pages."
+    },
+    {
+      "path": "/use-cases/text-messaging-for-schools/",
+      "reason": "School offices search for ways to text closure notices to parents; this page covers it.",
+      "evidence": "Sitemap: Use cases section, 210 pages."
+    },
+    {
+      "path": "/compare/textbolt-vs-simpletexting/",
+      "reason": "Buyers comparing texting tools side by side get overviews that cite comparison pages.",
+      "evidence": "Sitemap: Compare section, 48 pages."
+    },
+    {
+      "path": "/features/email-to-sms/",
+      "reason": "Teams whose alerts arrive only by email ask how to get them as texts; this page explains it.",
+      "evidence": "Homepage heading: Send alerts from Gmail or Outlook."
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "summary": "Two blocks close this gap: a clearer FAQ answer and one new FAQ about the shutdown.",
+  "items": [
+    {
+      "text": "Carrier email-to-text gateways such as txt.att.net, tmomail.net and vtext.com are being shut down or limited. If your alerts used one, point the same email at your new text address instead: nothing else in your monitoring tool has to change.",
+      "detail": "Replace the answer under the FAQ \"Why did my email-to-text stop working?\" so it says what to do, not only why.",
+      "tag": "update",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Verizon is shutting down vtext.com. What should we switch to?\nPoint the alerts that go to vtext.com at a business text address instead. Your monitoring tool, scheduler or alarm panel keeps sending email the same way, and the message arrives as a normal text on any carrier. Set it up before [March 2027] so no alert goes missing during the switch, and test one alert to each phone first.",
+      "detail": "Add as a new FAQ after \"Why did my email-to-text stop working?\".",
+      "tag": "new FAQ",
+      "verify": "Check Verizon's current shutdown date before publishing.",
+      "sign": null
+    }
+  ],
+  "caution": "The shutdown date is in [brackets]. Re-check it at the source."
+}

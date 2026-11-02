@@ -1,0 +1,748 @@
+@layer shared, results, screens, utilities;
+
+@layer results {
+  .m3-steps {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2) var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .m3-steps li {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .m3-step-sep {
+    width: 28px;
+    height: 1px;
+    background: var(--line-strong);
+  }
+
+  .m3-step {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: var(--h-control);
+    padding: 0 var(--s-1);
+    color: var(--ink-3);
+    font-weight: var(--fw-medium);
+    text-decoration: none;
+  }
+
+  .m3-step:hover {
+    color: var(--ink);
+  }
+
+  .m3-step.done {
+    color: var(--ink-2);
+  }
+
+  .m3-step.current {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .m3-dot {
+    display: inline-flex;
+    flex: 0 0 28px;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--r-pill);
+    background: var(--hover);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    font-weight: 700;
+  }
+
+  .m3-step.done .m3-dot {
+    background: var(--ok-tint);
+    color: var(--ok);
+  }
+
+  .m3-step.current .m3-dot {
+    background: var(--surface);
+    color: var(--select);
+    box-shadow: 0 0 0 2px var(--select);
+  }
+
+  .m3-markets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .m3-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: var(--h-control);
+    padding: 0 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--ink-2);
+    font-weight: var(--fw-medium);
+  }
+
+  .m3-pill.now {
+    border-color: var(--select-line);
+    background: var(--select-tint);
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .m3-pill.wait {
+    background: var(--inset);
+    color: var(--ink-3);
+  }
+
+  /* Keeps a dotted label as one inline box inside flex parents such as pills and sort buttons. */
+  /* "Not cited" with its Named badge beside it. */
+  .m3-status-named {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .m3-dotted {
+    min-width: 0;
+  }
+
+  .m3-screen {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .m3-screen .vscroll {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .m3-now {
+    min-width: 0;
+  }
+
+  .m3-searching {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--fox-ink);
+  }
+
+  .m3-spin {
+    animation: m3-spin 1.2s linear infinite;
+  }
+
+  @keyframes m3-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .m3-spin {
+      animation: none;
+    }
+  }
+
+  .m3-pill-label {
+    min-width: 0;
+  }
+
+  .m3-kpi {
+    width: 100%;
+    color: var(--ink);
+    font: inherit;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .m3-kpi-val {
+    font-size: 32px;
+    font-weight: var(--fw-semibold);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .m3-kpi-val .faint {
+    font-size: 16px;
+    font-weight: var(--fw-medium);
+    letter-spacing: 0;
+  }
+
+  /* The link sits under the number in every tile; the definition takes the slack. */
+  .m3-kpi-more {
+    padding-top: var(--s-1);
+    color: var(--action-ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  /* The report's one-line definition (src/shared/report-copy.ts), under the tile. */
+  .m3-kpi-def {
+    margin-top: auto;
+    color: var(--ink-3);
+    font-size: 12.5px;
+    line-height: 1.35;
+  }
+
+  .m3-headline {
+    font-size: 15px;
+    font-weight: var(--fw-semibold);
+  }
+
+  .m3-ok {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--ok);
+    font-weight: var(--fw-semibold);
+  }
+
+  .m3-failed {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--warn);
+    font-weight: var(--fw-semibold);
+  }
+
+  .m3-pair {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(440px, 100%), 1fr));
+    gap: var(--s-4);
+    align-items: start;
+    min-width: 0;
+    overflow-x: auto;
+  }
+
+  .m3-pair > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .m3-funnel {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .m3-funnel li {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .m3-bar-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    padding: var(--s-2) 10px;
+    border: 1px solid transparent;
+    border-radius: var(--r-s);
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .m3-bar-btn:hover {
+    border-color: var(--line);
+    background: var(--inset);
+  }
+
+  .m3-bar-top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  /* Funnel bars: the shared calm bar (ui/chart BarFill), soft and rounded. */
+  .m3-track {
+    display: block;
+    height: 10px;
+    overflow: hidden;
+    border-radius: var(--r-pill);
+    background: var(--inset);
+  }
+
+  .m3-fill {
+    display: block;
+    height: 100%;
+    border-radius: var(--r-pill);
+  }
+
+  .m3-lost {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: 6px;
+    min-height: 32px;
+    margin-left: 10px;
+    padding: 0 10px;
+    border: 1px dashed var(--fox-line);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+  }
+
+  .m3-lost:hover {
+    background: var(--hover);
+    color: var(--ink);
+  }
+
+  .m3-stack {
+    display: flex;
+    gap: 2px;
+    height: 30px;
+    overflow: hidden;
+    border-radius: var(--r-s);
+  }
+
+  .m3-stack span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    color: var(--on-fox);
+    font-family: var(--font-code);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .m3-buckets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+  }
+
+  .m3-bucket {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding: var(--s-3) 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .m3-bucket:hover {
+    border-color: var(--line-strong);
+    background: var(--inset);
+  }
+
+  .m3-swatch {
+    display: inline-block;
+    flex: 0 0 12px;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+  }
+
+  .m3-b-win {
+    background: var(--info);
+    color: var(--on-fox);
+  }
+
+  .m3-b-wrong {
+    background: var(--info-tint);
+    color: var(--info);
+  }
+
+  .m3-b-named {
+    background: var(--warn-tint);
+    color: var(--warn);
+  }
+
+  .m3-b-invisible {
+    background: var(--hover);
+    color: var(--ink-2);
+    box-shadow: inset 0 0 0 1px var(--ink-4);
+  }
+
+  .m3-overlay {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: var(--s-3) 14px;
+    border: 1px dashed var(--ink-4);
+    border-radius: var(--r-m);
+    background: var(--inset);
+  }
+
+  .m3-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    font-weight: var(--fw-medium);
+    text-align: left;
+    text-decoration: underline;
+    text-decoration-color: var(--line-strong);
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  /* The reset above drops .mono's size; keep it for mono links. */
+  .m3-link.mono {
+    font-size: var(--fs-small);
+  }
+
+  .m3-link:hover {
+    color: var(--action-ink);
+  }
+
+  .m3-actions {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .m3-action {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: var(--s-3) 0;
+    border-top: 1px solid var(--fox-line);
+  }
+
+  .m3-act-n {
+    display: inline-flex;
+    flex: 0 0 26px;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: var(--r-pill);
+    background: var(--fox);
+    color: var(--on-fox);
+    font-size: var(--fs-small);
+  }
+
+  .seg.m3-seg button[aria-pressed='true'] {
+    border-color: transparent;
+    background: var(--ink);
+    color: var(--on-ink);
+  }
+
+  .m3-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 0 var(--s-3);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--ink-2);
+    font: inherit;
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+    cursor: pointer;
+  }
+
+  .m3-filter[aria-pressed='true'] {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: var(--on-ink);
+  }
+
+  .m3-prompt-head,
+  .m3-prompt-row,
+  .m3-lead-head,
+  .m3-lead-row,
+  .m3-drill-head,
+  .m3-drill-row {
+    display: grid;
+    gap: var(--s-2);
+    align-items: center;
+    min-height: 48px;
+    padding: 0 10px;
+  }
+
+  .m3-prompt-head,
+  .m3-lead-head,
+  .m3-drill-head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    border-bottom: 1px solid var(--line);
+    background: var(--inset);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  /* Number columns' headers line up right but keep the header font. */
+  .m3-drill-head .m3-num {
+    font-family: inherit;
+  }
+
+  .m3-prompt-row,
+  .m3-lead-row,
+  .m3-drill-row {
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .m3-prompt-row:focus,
+  .m3-lead-row:focus,
+  .m3-drill-row:focus {
+    outline: none;
+  }
+
+  .m3-prompt-row:focus-visible,
+  .m3-lead-row:focus-visible,
+  .m3-drill-row:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: calc(2px * -1);
+  }
+
+  .m3-clamp {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .m3-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--s-3);
+    margin: 0;
+    padding: var(--s-3);
+    list-style: none;
+  }
+
+  .m3-kind {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 10px;
+    border-radius: var(--r-pill);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    white-space: nowrap;
+  }
+
+  .m3-kind-you {
+    background: var(--info);
+    color: var(--on-fox);
+  }
+
+  .m3-kind-observed {
+    border: 1px dashed var(--ink-4);
+    background: var(--surface);
+    color: var(--ink-3);
+  }
+
+  .m3-kind-tracked {
+    background: var(--fox-tint);
+    color: var(--fox-ink);
+  }
+
+  .m3-up {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .m3-down {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .m3-flat {
+    color: var(--ink-3);
+  }
+
+  .m3-num {
+    font-family: var(--font-code);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .m3-drill-scroll {
+    min-width: 0;
+    overflow-x: auto;
+  }
+
+  .m3-drill-scroll .m3-drill-head,
+  .m3-drill-scroll .m3-drill-row {
+    min-width: 760px;
+  }
+
+  .m3-stats {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+  }
+
+  .m3-stats div {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 2px;
+    padding: var(--s-2) 10px;
+    border-right: 1px solid var(--line);
+  }
+
+  .m3-stats div:last-child {
+    border-right: 0;
+  }
+
+  .m3-stats dt {
+    color: var(--ink-3);
+    font-size: 11px;
+    font-weight: var(--fw-semibold);
+    line-height: 1.25;
+  }
+
+  .m3-stats dd {
+    margin: 0;
+    font-family: var(--font-code);
+    font-size: 20px;
+    font-weight: var(--fw-semibold);
+    line-height: 1.1;
+  }
+
+  .m3-note {
+    display: flex;
+    gap: var(--s-3);
+    align-items: flex-start;
+    padding: var(--s-4) var(--s-5);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--inset);
+  }
+
+  /* A plain box: orange means Not cited (audit2 #4). */
+  .m3-summary {
+    background: var(--surface);
+    border-color: var(--line);
+  }
+
+  .m3-action-title {
+    font-weight: var(--fw-semibold);
+  }
+
+  .m3-h1 {
+    font-size: 16px;
+    line-height: 1.43;
+  }
+
+  /* Fixed columns, so every bar starts and ends at the same x and lengths compare. */
+  .m3-cited {
+    display: grid;
+    grid-template-columns: minmax(0, 11rem) minmax(60px, 1fr) 4ch 5.5rem;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .m3-cited > :first-child {
+    justify-self: start;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .m3-cited > :nth-child(3) {
+    justify-self: end;
+  }
+
+  .m3-cited .bar {
+    height: 8px;
+  }
+
+  .m3-pop {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 280px;
+    max-width: calc(100vw - 32px);
+    padding: var(--s-3) 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e2);
+  }
+
+  .m3-pop-anchor {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .m3-ai-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding-left: 22px;
+    color: var(--ink-2);
+  }
+
+  .m3-ask {
+    flex: 1 1 220px;
+    min-width: 0;
+    min-height: var(--h-control);
+    padding: 0 var(--s-3);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .m3-headline {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  /* Results for a check pinned by the route (History "View results"). */
+  .m3-pinned {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: baseline;
+    justify-content: space-between;
+    margin: 0;
+    border-color: var(--fox-line);
+    background: var(--fox-tint);
+  }
+}

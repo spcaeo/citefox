@@ -1,0 +1,539 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://citefox.app/schema/citefox-report-more.v2.json",
+  "title": "CiteFox report model v2: universe to content gaps",
+  "definitions": {
+    "universe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["empty", "segments", "largest", "best", "weakest", "dimensions"],
+      "properties": {
+        "empty": { "$ref": "citefox-report-common.v2.json#/definitions/empty" },
+        "segments": { "type": "integer", "minimum": 0 },
+        "largest": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["label", "prompts"],
+              "properties": {
+                "label": { "type": "string" },
+                "prompts": { "type": "integer", "minimum": 0 }
+              }
+            },
+            { "type": "null" }
+          ]
+        },
+        "best": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["label", "rate"],
+              "properties": {
+                "label": { "type": "string" },
+                "rate": { "type": "integer", "minimum": 0 }
+              }
+            },
+            { "type": "null" }
+          ]
+        },
+        "weakest": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["label", "rate"],
+              "properties": {
+                "label": { "type": "string" },
+                "rate": { "type": "integer", "minimum": 0 }
+              }
+            },
+            { "type": "null" }
+          ]
+        },
+        "dimensions": {
+          "type": "array",
+          "items": { "$ref": "citefox-report-common.v2.json#/definitions/universeDimension" }
+        }
+      }
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "empty",
+        "note",
+        "total",
+        "yours",
+        "yoursPct",
+        "competitor",
+        "external",
+        "gapsToWin",
+        "platforms",
+        "youtube",
+        "reddit",
+        "linkedin",
+        "influential"
+      ],
+      "properties": {
+        "empty": { "$ref": "citefox-report-common.v2.json#/definitions/empty" },
+        "note": { "type": "string" },
+        "total": { "type": "integer", "minimum": 0 },
+        "yours": { "type": "integer", "minimum": 0 },
+        "yoursPct": { "$ref": "citefox-report-common.v2.json#/definitions/pct" },
+        "competitor": { "type": "integer", "minimum": 0 },
+        "external": { "type": "integer", "minimum": 0 },
+        "gapsToWin": { "type": "integer", "minimum": 0 },
+        "platforms": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "label", "pages", "citations", "share", "prompts"],
+            "properties": {
+              "type": {
+                "enum": ["web", "reddit", "youtube", "linkedin", "review", "forum", "other"]
+              },
+              "label": { "type": "string" },
+              "pages": { "type": "integer", "minimum": 0 },
+              "citations": { "type": "integer", "minimum": 0 },
+              "share": { "$ref": "citefox-report-common.v2.json#/definitions/pct" },
+              "prompts": { "$ref": "citefox-report-common.v2.json#/definitions/count" }
+            }
+          }
+        },
+        "youtube": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["videos", "channels", "detailsMissing"],
+          "properties": {
+            "videos": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "videoId",
+                  "url",
+                  "title",
+                  "channel",
+                  "views",
+                  "publishedAt",
+                  "prompts",
+                  "citations",
+                  "gap"
+                ],
+                "properties": {
+                  "videoId": { "type": "string" },
+                  "url": { "type": "string" },
+                  "title": { "type": ["string", "null"] },
+                  "channel": { "type": ["string", "null"] },
+                  "views": { "type": ["integer", "null"] },
+                  "publishedAt": { "type": ["string", "null"] },
+                  "prompts": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+                  "citations": { "type": "integer", "minimum": 0 },
+                  "gap": { "$ref": "citefox-report-common.v2.json#/definitions/count" }
+                }
+              }
+            },
+            "channels": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["channel", "videos", "prompts", "citations"],
+                "properties": {
+                  "channel": { "type": "string" },
+                  "videos": { "type": "integer", "minimum": 0 },
+                  "prompts": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+                  "citations": { "type": "integer", "minimum": 0 }
+                }
+              }
+            },
+            "detailsMissing": { "type": "boolean" }
+          }
+        },
+        "reddit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["threads", "subreddits", "sentence"],
+          "properties": {
+            "threads": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "url",
+                  "title",
+                  "subreddit",
+                  "replyStatus",
+                  "upvotes",
+                  "comments",
+                  "prompts",
+                  "citations"
+                ],
+                "properties": {
+                  "url": { "type": "string" },
+                  "title": { "type": ["string", "null"] },
+                  "subreddit": { "type": "string" },
+                  "replyStatus": { "enum": ["open", "archived", "locked", "unchecked"] },
+                  "upvotes": { "type": ["integer", "null"] },
+                  "comments": { "type": ["integer", "null"] },
+                  "prompts": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+                  "citations": { "type": "integer", "minimum": 0 }
+                }
+              }
+            },
+            "subreddits": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["name", "threads", "prompts", "citations"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "threads": { "type": "integer", "minimum": 0 },
+                  "prompts": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+                  "citations": { "type": "integer", "minimum": 0 }
+                }
+              }
+            },
+            "sentence": { "type": "string" }
+          }
+        },
+        "linkedin": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["url", "title", "kind", "prompts", "citations"],
+            "properties": {
+              "url": { "type": "string" },
+              "title": { "type": ["string", "null"] },
+              "kind": { "enum": ["post", "article", "other"] },
+              "prompts": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+              "citations": { "type": "integer", "minimum": 0 }
+            }
+          }
+        },
+        "influential": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["url", "domain", "who", "title", "prompts", "citations", "gap"],
+            "properties": {
+              "url": { "type": "string" },
+              "domain": { "type": "string" },
+              "who": { "enum": ["you", "competitor", "observed"] },
+              "title": { "type": ["string", "null"] },
+              "prompts": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+              "citations": { "type": "integer", "minimum": 0 },
+              "gap": { "$ref": "citefox-report-common.v2.json#/definitions/count" }
+            }
+          }
+        }
+      }
+    },
+    "answerShape": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "empty",
+        "legend",
+        "labels",
+        "analysed",
+        "notAnalysed",
+        "blockTypes",
+        "repeatingShapes",
+        "mostCommon",
+        "changed",
+        "frequency",
+        "journeys",
+        "changes",
+        "templateHash"
+      ],
+      "properties": {
+        "empty": { "$ref": "citefox-report-common.v2.json#/definitions/empty" },
+        "legend": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "label", "codes"],
+            "properties": {
+              "id": { "type": "string" },
+              "label": { "type": "string" },
+              "codes": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "A1",
+                    "A2",
+                    "A3",
+                    "B1",
+                    "B2",
+                    "B3",
+                    "C1",
+                    "C2",
+                    "C3",
+                    "C4",
+                    "D1",
+                    "D2",
+                    "D3",
+                    "E1",
+                    "E2",
+                    "E3",
+                    "E4",
+                    "F1",
+                    "F2"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "A1",
+            "A2",
+            "A3",
+            "B1",
+            "B2",
+            "B3",
+            "C1",
+            "C2",
+            "C3",
+            "C4",
+            "D1",
+            "D2",
+            "D3",
+            "E1",
+            "E2",
+            "E3",
+            "E4",
+            "F1",
+            "F2"
+          ],
+          "properties": {
+            "A1": { "type": "string" },
+            "A2": { "type": "string" },
+            "A3": { "type": "string" },
+            "B1": { "type": "string" },
+            "B2": { "type": "string" },
+            "B3": { "type": "string" },
+            "C1": { "type": "string" },
+            "C2": { "type": "string" },
+            "C3": { "type": "string" },
+            "C4": { "type": "string" },
+            "D1": { "type": "string" },
+            "D2": { "type": "string" },
+            "D3": { "type": "string" },
+            "E1": { "type": "string" },
+            "E2": { "type": "string" },
+            "E3": { "type": "string" },
+            "E4": { "type": "string" },
+            "F1": { "type": "string" },
+            "F2": { "type": "string" }
+          }
+        },
+        "analysed": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "notAnalysed": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "blockTypes": { "type": "integer", "minimum": 0 },
+        "repeatingShapes": { "type": "integer", "minimum": 0 },
+        "mostCommon": {
+          "anyOf": [
+            { "$ref": "citefox-report-common.v2.json#/definitions/journey" },
+            { "type": "null" }
+          ]
+        },
+        "changed": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "frequency": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["code", "label", "answers", "blocks"],
+            "properties": {
+              "code": {
+                "enum": [
+                  "A1",
+                  "A2",
+                  "A3",
+                  "B1",
+                  "B2",
+                  "B3",
+                  "C1",
+                  "C2",
+                  "C3",
+                  "C4",
+                  "D1",
+                  "D2",
+                  "D3",
+                  "E1",
+                  "E2",
+                  "E3",
+                  "E4",
+                  "F1",
+                  "F2"
+                ]
+              },
+              "label": { "type": "string" },
+              "answers": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+              "blocks": { "type": "integer", "minimum": 0 }
+            }
+          }
+        },
+        "journeys": {
+          "type": "array",
+          "items": { "$ref": "citefox-report-common.v2.json#/definitions/journey" }
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["rowId", "prompt", "before", "after"],
+            "properties": {
+              "rowId": { "type": "string" },
+              "prompt": { "type": "string" },
+              "before": { "type": "string" },
+              "after": { "type": "string" }
+            }
+          }
+        },
+        "templateHash": { "type": ["string", "null"] }
+      }
+    },
+    "contentGaps": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["empty", "pageRead", "matrix", "summary", "oneByOne", "pageWide"],
+      "properties": {
+        "empty": { "$ref": "citefox-report-common.v2.json#/definitions/empty" },
+        "pageRead": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "url",
+                "title",
+                "metaDescription",
+                "h1",
+                "readAt",
+                "lastModified",
+                "titleLength",
+                "titleTruncated",
+                "mismatches"
+              ],
+              "properties": {
+                "url": { "type": "string" },
+                "title": { "type": ["string", "null"] },
+                "metaDescription": { "type": ["string", "null"] },
+                "h1": { "type": ["string", "null"] },
+                "readAt": { "$ref": "citefox-report-common.v2.json#/definitions/nullableInstant" },
+                "lastModified": {
+                  "$ref": "citefox-report-common.v2.json#/definitions/nullableInstant"
+                },
+                "titleLength": { "type": "integer", "minimum": 0 },
+                "titleTruncated": { "type": "boolean" },
+                "mismatches": { "type": "array", "items": { "type": "string" } }
+              }
+            },
+            { "type": "null" }
+          ]
+        },
+        "matrix": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "number",
+              "rowId",
+              "prompt",
+              "coverage",
+              "whereCovered",
+              "mainGap",
+              "actions",
+              "actionLabel"
+            ],
+            "properties": {
+              "number": { "type": "integer", "minimum": 0 },
+              "rowId": { "type": ["string", "null"] },
+              "prompt": { "type": "string" },
+              "coverage": { "enum": ["strong", "partial", "weak", "none"] },
+              "whereCovered": { "type": "array", "items": { "type": "string" } },
+              "mainGap": { "type": "string" },
+              "actions": {
+                "type": "array",
+                "items": {
+                  "enum": ["update_existing", "new_faq", "small_update", "optional_faq", "none"]
+                }
+              },
+              "actionLabel": { "type": "string" }
+            }
+          }
+        },
+        "summary": { "type": "string" },
+        "oneByOne": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["number", "prompt", "now", "update", "newFaq", "faq"],
+            "properties": {
+              "number": { "type": "integer", "minimum": 0 },
+              "prompt": { "type": "string" },
+              "now": { "type": "string" },
+              "update": { "type": "string" },
+              "newFaq": { "type": "boolean" },
+              "faq": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["question", "answer", "words"],
+                    "properties": {
+                      "question": { "type": "string" },
+                      "answer": { "type": "string" },
+                      "words": { "type": "integer", "minimum": 0 }
+                    }
+                  },
+                  { "type": "null" }
+                ]
+              }
+            }
+          }
+        },
+        "pageWide": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["kind", "summary", "detail"],
+            "properties": {
+              "kind": {
+                "enum": [
+                  "factual_claim",
+                  "missing_promised_section",
+                  "typo",
+                  "title_length",
+                  "title_meta_mismatch",
+                  "other"
+                ]
+              },
+              "summary": { "type": "string" },
+              "detail": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

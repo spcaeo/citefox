@@ -1,0 +1,620 @@
+/* Onboarding v2 steps 1, 2, 3 and 7 (Docs/onboarding-v2.mockup.html). Tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .obs-req {
+    color: var(--bad-ink);
+  }
+
+  .obs-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--action-ink);
+    font: inherit;
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+  }
+
+  .obs-link:hover {
+    color: var(--action-ink-hover);
+    text-decoration: underline;
+  }
+
+  .obs-link:focus-visible {
+    border-radius: var(--r-s);
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .obs-skip {
+    margin: var(--s-3) 0 0;
+  }
+
+  .obs-grow {
+    flex-grow: 1;
+  }
+
+  .obs-card-title {
+    margin: 0;
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  /* Choice cards (step 3's three ways, step 7's two providers). */
+  .obs-ways {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-3);
+  }
+
+  .obs-ways-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .obs-way {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-width: 0;
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    cursor: pointer;
+  }
+
+  .obs-way:hover {
+    border-color: var(--line-strong);
+  }
+
+  .obs-way.on {
+    border-color: var(--ink);
+    background: var(--ok-tint);
+    box-shadow: inset 0 0 0 1px var(--ink);
+  }
+
+  .obs-way.off {
+    cursor: default;
+    opacity: 0.75;
+  }
+
+  .obs-way:focus-within {
+    box-shadow: var(--focus-ring);
+  }
+
+  .obs-way.on:focus-within {
+    box-shadow:
+      inset 0 0 0 1px var(--ink),
+      var(--focus-ring);
+  }
+
+  .obs-way-title {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+    color: var(--ink);
+  }
+
+  .obs-way-text {
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    color: var(--ink-3);
+  }
+
+  .obs-spark {
+    display: inline-flex;
+    color: var(--fox);
+  }
+
+  .obs-done p,
+  .obs-cost p {
+    margin: 0;
+  }
+
+  /* Step 3's working view. */
+  .obs-note {
+    display: flex;
+    gap: var(--s-3);
+    align-items: flex-start;
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--info-tint);
+    color: var(--ink);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .obs-note > svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--info);
+  }
+
+  .obs-note p {
+    margin: 0;
+  }
+
+  .obs-read {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin-top: var(--s-3);
+  }
+
+  .obs-bar {
+    height: 6px;
+    overflow: hidden;
+    border-radius: var(--r-pill);
+    background: var(--inset);
+  }
+
+  .obs-bar-fill {
+    display: block;
+    height: 100%;
+    background: var(--fox);
+    transition: width 300ms ease;
+  }
+
+  .obs-stages {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    list-style: none;
+  }
+
+  .obs-stage {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr) auto;
+    gap: var(--s-2);
+    align-items: center;
+    font-size: var(--fs-ui);
+    color: var(--ink);
+  }
+
+  .obs-stage-waiting {
+    color: var(--ink-3);
+  }
+
+  .obs-stage-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .obs-stage-note {
+    font-size: var(--fs-small);
+    color: var(--ink-3);
+  }
+
+  .obs-stage-time {
+    font-size: var(--fs-small);
+    color: var(--ink-3);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .obs-bar-fill {
+      transition: none;
+    }
+  }
+
+  .obs-failed p {
+    margin: 0;
+  }
+
+  /* Step 7. */
+  .obs-key-ok {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+    margin: 0;
+  }
+
+  .obs-engines {
+    padding: 0;
+  }
+
+  .obs-engines-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+    padding: var(--s-3) var(--s-4);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .obs-every {
+    width: auto;
+    min-width: 108px;
+  }
+
+  .obs-engine-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .obs-engine {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 96px;
+    gap: var(--s-2);
+    align-items: center;
+    padding: var(--s-2) var(--s-4);
+    border-top: 1px solid var(--line);
+    font-size: var(--fs-ui);
+  }
+
+  .obs-engine:first-child {
+    border-top: 0;
+  }
+
+  .obs-engine.off {
+    color: var(--ink-3);
+  }
+
+  .obs-engine-label {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .obs-engine.off .obs-engine-label {
+    cursor: default;
+  }
+
+  .obs-engine-credits {
+    text-align: right;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .obs-cost > span {
+    font-weight: var(--fw-semibold);
+    color: var(--ok);
+  }
+
+  /* PLACEHOLDER lists (agent B's cards replace them at merge). */
+  .obs-ph-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 760px) {
+    .obs-ways,
+    .obs-ways-2 {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* ---- Step 7: provider logos, several keys, the side panel ---- */
+  .obs-way-title {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .obs-way-logo,
+  .obs-rail-head img,
+  .obs-plan-name img {
+    flex: none;
+    border-radius: var(--r-s);
+  }
+
+  .obs-key-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .obs-rail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+  }
+
+  .obs-rail-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .obs-rail-card .hint {
+    margin: 0;
+  }
+
+  .obs-rail-head,
+  .obs-plan-name {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .obs-plan-name {
+    margin: 0;
+    font-weight: var(--fw-semibold);
+  }
+
+  .obs-rail-sub {
+    margin: var(--s-3) 0 0;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    color: var(--ink-2);
+  }
+
+  .obs-rail-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding-left: var(--s-4);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-body);
+  }
+
+  .obs-plan {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-1);
+    padding-bottom: var(--s-3);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .obs-plan:last-of-type {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .obs-rail-fine {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  .obs-plan-line {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  /* ---- Step 8: how buyers ask AI ---- */
+  .obs-outcome {
+    flex-direction: column;
+    gap: var(--s-2);
+    border-color: var(--line);
+  }
+
+  .obs-outcome-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-1) var(--s-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .obs-outcome-list li::before {
+    content: '✓';
+    margin-right: var(--s-2);
+    color: var(--ok);
+    font-weight: var(--fw-semibold);
+  }
+
+  .obs-shapes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-3);
+    align-items: stretch;
+  }
+
+  .obs-shape {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .obs-shape.on {
+    border-color: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--ink);
+  }
+
+  .obs-shape p {
+    margin: 0;
+  }
+
+  .obs-shape-how {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .obs-shape-label {
+    display: block;
+    margin-bottom: 2px;
+    color: var(--ink-3);
+    font-size: 11px;
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .obs-shape-like {
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-s);
+    background: var(--inset);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .obs-shape-like.generic q {
+    color: var(--ink-2);
+  }
+
+  .obs-shape-outcome {
+    flex-grow: 1;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .obs-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1);
+  }
+
+  .obs-stepper {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    padding-top: var(--s-2);
+    border-top: 1px solid var(--line);
+  }
+
+  .obs-stepper-minus span {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .obs-stepper-input {
+    width: 64px;
+    text-align: center;
+  }
+
+  .obs-own {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .obs-own .hint {
+    margin: 0;
+  }
+
+  .obs-own-head {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .obs-own-text {
+    width: 100%;
+    height: auto;
+    min-height: 110px;
+    padding: var(--s-2) var(--s-3);
+    font-family: inherit;
+    line-height: var(--lh-body);
+    resize: vertical;
+  }
+
+  .obs-own-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .obs-own-list li {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: var(--fs-small);
+  }
+
+  .obs-own-name {
+    flex-grow: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .obs-terms {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+  }
+
+  .obs-terms dt {
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    color: var(--ink);
+  }
+
+  .obs-terms dd {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .obs-rail-note {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .obs-claude-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .obs-claude-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-2);
+  }
+
+  .obs-claude-list li > :first-child {
+    flex: none;
+    margin-top: 1px;
+  }
+
+  @media (max-width: 1100px) {
+    .obs-shapes {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .obs-outcome-list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

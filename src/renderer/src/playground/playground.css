@@ -1,0 +1,34 @@
+/* Playground drill-downs: the numbered source list and the page's row after "Position N". */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  ol.pg-sources {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pg-source-marked {
+    border-radius: var(--r-s);
+    background: var(--info-tint);
+  }
+
+  .pg-source:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .pg-tag-btn {
+    border: 0;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .pg-page .m3-link,
+  .pg-page .drill-num {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+  }
+}

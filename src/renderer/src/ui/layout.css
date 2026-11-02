@@ -1,0 +1,490 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * v2 page structure: the screen header (components/Header.tsx ScreenHeader
+ * with `nav` or `meta`, PageHeader), section heads (ui/SectionHead), the
+ * layout grids and UrlText. Imported right after ui/ui.css. Values come from
+ * the v2 tokens only.
+ */
+@layer shared {
+  /* ---- Screen header: PageNav row, then one title row ---- */
+  .screen-header.ui-head {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  /* The h1 with its chips at the left, the actions at the right, one row. */
+  .ui-head-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2) var(--s-4);
+    min-width: 0;
+    min-height: var(--h-control);
+  }
+
+  .ui-head-title {
+    display: flex;
+    flex: 1 1 320px;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-1) var(--s-3);
+    min-width: 0;
+  }
+
+  .ui-head-title h1 {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /*
+   * A control after the h1 (ScreenHeader `titleAction`, such as Edit): the
+   * row stays one line so a long title wraps beside the control, which sits on
+   * the title's first line.
+   */
+  .ui-head-title-has-action {
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: var(--s-2);
+  }
+
+  .ui-head-title-action {
+    display: inline-flex;
+    flex: 0 0 auto;
+    margin-top: var(--s-1);
+  }
+
+  .ui-head-meta,
+  .ui-head-chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-1) 6px;
+    min-width: 0;
+  }
+
+  .ui-head-chips {
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* A header chip that opens its setting (Page settings). */
+  .ui-chip-btn {
+    font: inherit;
+    font-size: var(--fs-small);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .ui-chip-btn:hover {
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+
+  .ui-chip-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .ui-head-actions {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .ui-head-sub {
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-screen-sub);
+  }
+
+  /* The header's ⋯ (ScreenHeader `more`): an outlined square beside the green primary. */
+  .ui-head-more {
+    position: relative;
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+  }
+
+  .ui-head-more[data-tip]:hover::after,
+  .ui-head-more[data-tip]:focus-visible::after {
+    content: attr(data-tip);
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: var(--z-pop);
+    padding: var(--s-1) var(--s-2);
+    border-radius: var(--r-s);
+    background: var(--ink);
+    box-shadow: var(--e2);
+    color: var(--on-ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-small);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .ui-head-more[aria-expanded='true']::after {
+    display: none;
+  }
+
+  .ui-head-none {
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  /* A header field: its label on the same line as the control. */
+  .ui-head-field,
+  .ui-head-actions .market-field {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--s-2);
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+  }
+
+  /* ---- Section head: title, count, helper line; actions and the AI menu at the right ---- */
+  .ui-sechead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    min-width: 0;
+    min-height: var(--h-control-sm);
+  }
+
+  .ui-sechead-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .ui-sechead-title {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin: 0;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-h2);
+  }
+
+  .ui-sechead-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 7px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    font-weight: var(--fw-medium);
+    letter-spacing: 0;
+  }
+
+  .ui-sechead-desc {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .ui-sechead-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  /*
+   * ---- Layout grids ----
+   * .ui-layout-main-rail: the main column and a right rail, 8 and 4 of 12
+   *   columns (--layout-main, --layout-rail).
+   * .ui-cols-2 / -3 / -4: equal columns; cards in one row share a height.
+   * Both stack below 1100px (four columns go two by two first), and every
+   * grid stacks to one column below 900px.
+   */
+  .ui-layout-main-rail {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: start;
+    gap: var(--card-gap);
+    min-width: 0;
+  }
+
+  .ui-layout-main-rail > * {
+    grid-column: span var(--layout-rail);
+    min-width: 0;
+  }
+
+  .ui-layout-main-rail > :first-child {
+    grid-column: span var(--layout-main);
+  }
+
+  .ui-cols-2,
+  .ui-cols-3,
+  .ui-cols-4 {
+    display: grid;
+    align-items: stretch;
+    gap: var(--card-gap);
+    min-width: 0;
+  }
+
+  .ui-cols-2 > *,
+  .ui-cols-3 > *,
+  .ui-cols-4 > * {
+    min-width: 0;
+  }
+
+  .ui-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ui-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .ui-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  @media (max-width: 1100px) {
+    .ui-layout-main-rail > *,
+    .ui-layout-main-rail > :first-child {
+      grid-column: 1 / -1;
+    }
+
+    .ui-cols-4 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 900px) {
+    .ui-cols-2,
+    .ui-cols-3,
+    .ui-cols-4 {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* ---- UrlText / PathText: every URL, domain, site path or file on screen (UrlStates board,
+     owner rule 2026-10-21). The site's icon in front; Copy and Open (or Show in Finder) at the
+     end on hover or keyboard focus; always shown on touch screens. ---- */
+  .ui-url {
+    /* The two 24 px controls and the 2 px gap between them. */
+    --ui-url-actions: 50px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    max-width: 100%;
+    min-width: 0;
+    vertical-align: middle;
+  }
+
+  /* CopyText: a text value with Copy only. */
+  .ui-url-text {
+    --ui-url-actions: 24px;
+  }
+
+  .ui-url-value {
+    display: inline-flex;
+    min-width: 0;
+    overflow: hidden;
+    border-radius: var(--r-s);
+    font-family: var(--font-code);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* A single text node needs a block to ellipsise; split labels lay out their parts in a row. */
+  .ui-url-value:not(:has(> span)) {
+    display: inline-block;
+  }
+
+  .ui-url-value:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+
+  .ui-url-plain .ui-url-value,
+  .ui-url-domain .ui-url-value {
+    font-family: var(--font-ui);
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  /*
+   * Cut in the middle of the path, never the domain: the middle gives way first,
+   * then the last segment (UrlStates board, state 5).
+   */
+  .ui-url-head,
+  .ui-url-middle,
+  .ui-url-tail {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* The domain never gives way; in a very narrow cell the value clips it at its edge. */
+  .ui-url-head {
+    flex: 0 0 auto;
+  }
+
+  /* Room for the ellipsis, so a cut is always shown between the domain and the end. */
+  /* Shrinks a thousand times faster than the end, so the end gives way only once the
+     middle is down to its ellipsis. (A shrink factor under 1 on the end would leave most
+     of the overflow unabsorbed: flex sums under 1 only use that share of the space.) */
+  .ui-url-middle {
+    flex: 0 1000 auto;
+    min-width: 2ch;
+  }
+
+  /*
+   * The last segment is what tells pages apart: it gives way only once the
+   * middle is down to its ellipsis, and then from its start, so the end of the
+   * path always shows (audit2 #5). The rtl box cuts it on the left;
+   * the <bdi> inside keeps the text itself left to right.
+   */
+  .ui-url-tail {
+    flex: 0 1 auto;
+    direction: rtl;
+    /* The middle already shows its "…" by then: one ellipsis, "/…to-set-up-alerts/". */
+    text-overflow: clip;
+  }
+
+  /* The project's own site keeps the yellow highlighter (state 6). */
+  .ui-url-own .ui-url-value {
+    padding: 0 3px;
+    background: var(--mark);
+    color: var(--ink);
+  }
+
+  .ui-url-kind {
+    flex: none;
+    color: var(--ink-3);
+    font-family: var(--font-ui);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    white-space: nowrap;
+  }
+
+  .ui-url-note {
+    color: var(--bad);
+    font-family: var(--font-ui);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    white-space: normal;
+  }
+
+  /*
+   * In the row after the text. At rest a negative margin takes back their room, so
+   * nothing is reserved and nothing moves; while shown they take it, and the text
+   * gives way (ellipsis) only when the row has no room left. They never cover the
+   * text, so they need no fade over whatever colour the row is (the old gradient
+   * assumed --surface and smeared on hovered, tinted and dark rows).
+   */
+  .ui-url-actions {
+    display: inline-flex;
+    flex: none;
+    gap: 2px;
+    margin-inline-end: calc(-1 * var(--ui-url-actions) - var(--s-2));
+    opacity: 0;
+    transition: opacity 120ms ease;
+    pointer-events: none;
+  }
+
+  .ui-url:hover .ui-url-actions,
+  .ui-url:focus-within .ui-url-actions,
+  .ui-url-copied .ui-url-actions,
+  .ui-url-failed .ui-url-actions {
+    margin-inline-end: 0;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* After the tick, or after Open: hidden until the pointer or focus comes back.
+     A keyboard focus ring on Copy or Open keeps them shown, so the focused control never vanishes. */
+  .ui-url.ui-url-done .ui-url-actions {
+    margin-inline-end: calc(-1 * var(--ui-url-actions) - var(--s-2));
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .ui-url.ui-url-done:has(.ui-url-btn:focus-visible) .ui-url-actions {
+    margin-inline-end: 0;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Touch screens have no hover: always shown (state 8). */
+  @media (hover: none) {
+    .ui-url .ui-url-actions,
+    .ui-url.ui-url-done .ui-url-actions {
+      margin-inline-end: 0;
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  .ui-url-btn {
+    display: inline-grid;
+    flex: none;
+    place-items: center;
+    /* 24px: the WCAG 2.5.8 minimum target, also next to another link. */
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink-2);
+    cursor: pointer;
+  }
+
+  .ui-url-btn:hover,
+  .ui-url-btn:focus-visible {
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+
+  .ui-url-btn:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+
+  .ui-url-copied .ui-url-copy {
+    border-color: var(--ok);
+    background: var(--ok-tint);
+    color: var(--ok);
+  }
+
+  .ui-url-failed .ui-url-copy {
+    border-color: var(--bad);
+    background: var(--bad-tint);
+    color: var(--bad);
+  }
+}

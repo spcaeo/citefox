@@ -1,0 +1,25 @@
+{
+  "findings": [
+    {
+      "type": "factual_claim",
+      "text": "The page gives the single-SMS length for GSM characters as 155; a standard segment holds 160.",
+      "quote": "155 characters when using standard GSM characters",
+      "correction": "A single SMS segment holds 160 standard GSM characters.",
+      "verify": "Re-check the GSM 03.38 single-segment length before publishing."
+    },
+    {
+      "type": "typo",
+      "text": "An FAQ question ends with two question marks.",
+      "quote": "stop working??",
+      "correction": "stop working?",
+      "verify": null
+    },
+    {
+      "type": "missing_promised_section",
+      "text": "The intro promises a list of carrier gateways that no longer work, but the page gives no such list.",
+      "quote": "which carrier email-to-text gateways no longer work",
+      "correction": null,
+      "verify": null
+    }
+  ]
+}

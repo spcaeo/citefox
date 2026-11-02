@@ -1,0 +1,382 @@
+/* New topic inside the shared Drawer (Mockups NewTopic.dc.html). Tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .nt-steps {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+  }
+
+  .nt-steps .ui-stepper {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .nt-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+
+  .nt-step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+
+  .nt-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .nt-field-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+  }
+
+  .nt-label {
+    padding: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .nt-text {
+    width: 100%;
+    resize: vertical;
+  }
+
+  .nt-hint {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .nt-notice {
+    margin: 0;
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-s);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .nt-error {
+    margin: 0;
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-s);
+    background: var(--bad-tint);
+    color: var(--bad-ink);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  /* Start: four ways as cards, two by two. */
+  .nt-ways {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+
+  .nt-ways > legend {
+    grid-column: 1 / -1;
+    margin-bottom: var(--s-2);
+  }
+
+  .nt-way {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    cursor: pointer;
+  }
+
+  .nt-way:hover {
+    border-color: var(--line-strong);
+  }
+
+  .nt-way[data-on] {
+    border-color: var(--fox);
+    background: var(--fox-tint);
+  }
+
+  .nt-way:has(.nt-way-input:focus-visible) {
+    box-shadow: var(--focus-ring);
+  }
+
+  .nt-ways:disabled .nt-way {
+    cursor: default;
+    opacity: 0.7;
+  }
+
+  .nt-way-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .nt-way-title {
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .nt-way-body {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  /* Preview: one question per stage. */
+  .nt-preview {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--inset);
+  }
+
+  .nt-preview-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+  }
+
+  .nt-preview-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .nt-preview-list,
+  .nt-picks,
+  .nt-review,
+  .nt-targets {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nt-preview-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .nt-preview-row {
+    display: grid;
+    grid-template-columns: 80px minmax(0, 1fr);
+    gap: var(--s-3);
+    align-items: baseline;
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .nt-stage,
+  .nt-tag {
+    flex: 0 0 auto;
+    justify-self: start;
+    padding: 2px var(--s-2);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .nt-tag {
+    background: var(--inset);
+  }
+
+  .nt-claude {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    white-space: nowrap;
+  }
+
+  /* Tracked questions with a tick each. */
+  .nt-picks {
+    max-height: 220px;
+    overflow: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+  }
+
+  .nt-pick + .nt-pick {
+    border-top: 1px solid var(--line);
+  }
+
+  .nt-pick-label {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    padding: var(--s-2) var(--s-3);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    cursor: pointer;
+  }
+
+  .nt-pick-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .nt-fit {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .nt-fit-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .nt-fit-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    cursor: pointer;
+  }
+
+  /* Review questions. */
+  .nt-review {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+  }
+
+  .nt-review-row,
+  .nt-add {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) 128px auto;
+    gap: var(--s-2);
+    align-items: center;
+    padding: var(--s-2) var(--s-3);
+  }
+
+  .nt-review-row + .nt-review-row {
+    border-top: 1px solid var(--line);
+  }
+
+  .nt-review-row[data-off] .nt-review-text {
+    color: var(--ink-3);
+  }
+
+  .nt-add {
+    grid-template-columns: minmax(0, 1fr) 128px auto;
+    padding: 0;
+  }
+
+  .nt-review-text {
+    width: 100%;
+  }
+
+  /* Target pages. */
+  .nt-targets {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+  }
+
+  .nt-target {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 280px);
+    gap: var(--s-1) var(--s-4);
+    align-items: start;
+    padding: var(--s-3);
+  }
+
+  .nt-target + .nt-target {
+    border-top: 1px solid var(--line);
+  }
+
+  .nt-target-question {
+    display: flex;
+    gap: var(--s-2);
+    align-items: baseline;
+    min-width: 0;
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .nt-target-question .nt-stage {
+    background: var(--inset);
+  }
+
+  .nt-target-text {
+    min-width: 0;
+  }
+
+  .nt-target-page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-width: 0;
+  }
+
+  /*
+   * A long page name or a new page's full address stays inside its column: the select
+   * fills it, and the address's resting Copy/Open (pulled in by a negative margin) is
+   * clipped rather than widening the drawer. The clip margin keeps focus rings whole.
+   */
+  .nt-target-page {
+    overflow: clip;
+    overflow-clip-margin: 4px;
+  }
+
+  .nt-target-page > select {
+    width: 100%;
+  }
+
+  .nt-target > .nt-hint {
+    grid-column: 1 / -1;
+  }
+
+  .nt-foot-note {
+    color: var(--ink-2);
+  }
+
+  @media (max-width: 640px) {
+    .nt-ways,
+    .nt-target {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

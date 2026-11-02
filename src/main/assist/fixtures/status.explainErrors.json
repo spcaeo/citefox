@@ -1,0 +1,13 @@
+{
+  "summary": "Two Claude calls failed this month, both for the same reason. No SerpApi key has a problem.",
+  "items": [
+    {
+      "text": "Claude Code was signed out when two check reports ran.",
+      "detail": "Run claude in Terminal and sign in again, then re-run the check report.",
+      "tag": "Claude",
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": null
+}

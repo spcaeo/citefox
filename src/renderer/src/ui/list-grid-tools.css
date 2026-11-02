@@ -1,0 +1,107 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * ListGrid tools (grid audit R6, R10, R13): column drag edges, the copy icon
+ * in a cell, and placeholder rows while loading. ui/list-grid.css has the grid.
+ */
+@layer shared {
+  .ui-lg-th {
+    position: relative;
+  }
+
+  /* A 12 px hit area astride the gap between two headers; a 2 px line shows on hover. */
+  .ui-lg-resize {
+    position: absolute;
+    top: 6px;
+    right: calc(-1 * var(--s-4) / 2 - 6px);
+    bottom: 6px;
+    z-index: 1;
+    width: 12px;
+    cursor: col-resize;
+    touch-action: none;
+  }
+
+  .ui-lg-resize::after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 5px;
+    width: 2px;
+    border-radius: 1px;
+    background: transparent;
+    content: '';
+    transition: background-color 120ms ease;
+  }
+
+  .ui-lg-head:hover .ui-lg-resize::after {
+    background: var(--line-strong);
+  }
+
+  .ui-lg-resize:hover::after,
+  .ui-lg-resize:focus-visible::after,
+  .ui-lg-resizing .ui-lg-resize:active::after {
+    background: var(--action);
+  }
+
+  .ui-lg-resize:focus-visible {
+    outline: none;
+  }
+
+  /* While a column edge is dragged, the whole grid shows the resize cursor and text stays put. */
+  .ui-lg-resizing,
+  .ui-lg-resizing * {
+    cursor: col-resize !important;
+    user-select: none;
+  }
+
+  /* A copy column: the cell's own content, then the shared copy icon. */
+  .ui-lg-copy {
+    max-width: 100%;
+  }
+
+  .ui-lg-copy > .ui-url-value {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ---- Placeholder rows while loading ---- */
+  .ui-lg-row-loading:hover {
+    background: var(--surface);
+  }
+
+  .ui-lg-skel {
+    display: block;
+    height: 10px;
+    border-radius: var(--r-pill);
+    background: var(--line);
+    animation: ui-lg-pulse 1.4s ease-in-out infinite;
+  }
+
+  .ui-lg-end .ui-lg-skel {
+    margin-left: auto;
+  }
+
+  @keyframes ui-lg-pulse {
+    50% {
+      opacity: 0.45;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-lg-skel {
+      animation: none;
+    }
+  }
+
+  /* R4: sort icons always show, faint until the column is sorted. */
+  .ui-lg-sort .ui-lg-arrow {
+    opacity: 0.55;
+  }
+
+  .ui-lg-sort:hover .ui-lg-arrow,
+  .ui-lg-sort:focus-visible .ui-lg-arrow,
+  .ui-lg-sort .ui-lg-arrow.on {
+    opacity: 1;
+  }
+}

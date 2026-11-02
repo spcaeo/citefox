@@ -1,0 +1,201 @@
+/* Connections at scale (FR-11.1-11.10), v2: KPI row, tabs per provider, list grids, 8 + 4 split. */
+
+@layer shared, results, screens, utilities;
+
+@layer shared {
+  .connections {
+    gap: var(--card-gap);
+  }
+
+  /* KPI row: three equal tiles for the last 24 hours, the failover line under them. */
+  .connections .conn-activity {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .connections .conn-activity-note {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 44px;
+    padding: var(--s-2) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  .connections .conn-activity-note p {
+    margin: 0;
+  }
+
+  /* WCAG 2.5.8: the note's inline buttons keep a 24px target. */
+  .connections .conn-activity .m3-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+  }
+
+  /* One provider tab: heading row, then the main column and the right rail. */
+  .connections .conn-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  /* Panels side by side share a height (Claude login and its note; rotation and terms). */
+  .connections .conn-split {
+    display: grid;
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    gap: var(--card-gap);
+    align-items: stretch;
+  }
+
+  .connections .conn-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--card-gap);
+    align-items: stretch;
+  }
+
+  .connections .conn-name-cell {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--s-2);
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  @media (width < 1100px) {
+    .connections .conn-split,
+    .connections .conn-row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .connections .conn-main,
+  .connections .conn-block,
+  .connections .conn-keys {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+
+  .connections .conn-block > .hint {
+    margin: 0;
+  }
+
+  .connections .conn-narrow {
+    max-width: 720px;
+  }
+
+  /* Cells: status badge and switch buttons, compact selects. */
+  .connections .conn-status-btn {
+    border: 0;
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  .connections .conn-status-btn:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  /* Used this month: CiteFox's figure, then the account's on a quieter second line. */
+  .connections .conn-used {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .connections .conn-used .mini {
+    white-space: nowrap;
+  }
+
+  .connections .conn-used .mini .bar {
+    width: 48px;
+    flex: 0 0 48px;
+  }
+
+  .connections .conn-used-account {
+    max-width: 100%;
+    overflow: hidden;
+    font-size: var(--fs-small);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* The section's totals sentence, then the provider's scope on its own line. */
+  .connections .conn-blurb-line {
+    display: block;
+  }
+
+  /* Search usage is not a citation: spruce, not fox (fox means your brand cited). */
+  .connections .ui-lg .bar > span {
+    background: var(--chart-2);
+  }
+
+  .connections .conn-cell-select {
+    width: 100%;
+    height: var(--h-control-sm);
+    min-height: 0;
+    padding-block: 0;
+  }
+
+  .connections .ui-lg .key-name {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* The open key: status and settings under the grid. */
+  .connections .conn-editor {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .connections .conn-key-status {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-2);
+  }
+
+  .connections .conn-key-status p {
+    margin: 0;
+  }
+
+  .connections .conn-editor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--s-4);
+  }
+
+  .connections .conn-projects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-6);
+    margin: 0;
+    padding: var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+  }
+
+  .connections .conn-projects legend {
+    font-weight: var(--fw-semibold);
+  }
+
+  .connections .conn-projects .hint {
+    flex-basis: 100%;
+  }
+
+  .connections .conn-add {
+    max-width: 560px;
+  }
+}

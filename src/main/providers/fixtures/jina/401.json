@@ -1,0 +1,10 @@
+{
+  "status": 401,
+  "body": {
+    "data": null,
+    "code": 401,
+    "name": "AuthenticationFailed",
+    "status": 40101,
+    "message": "Invalid API key"
+  }
+}

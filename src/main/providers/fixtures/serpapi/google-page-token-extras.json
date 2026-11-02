@@ -1,0 +1,58 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": { "status": "Success", "id": "fixture-google-token-extras" },
+    "ai_overview": { "page_token": "fixture-page-token" },
+    "related_questions": [
+      {
+        "question": "Can I send text alerts to employees for free?",
+        "snippet": "Some tools offer a free trial for employee text alerts.",
+        "title": "Free employee text alerts",
+        "link": "https://simpletexting.com/blog/free-text-alerts/"
+      },
+      {
+        "question": "Which plan covers scheduled texts?",
+        "snippet": "Most plans include scheduled texts.",
+        "link": "https://textbolt.com/pricing/"
+      },
+      {
+        "question": "How do I set up an emergency text alert system?",
+        "snippet": "Choose a provider, import contacts and write templates.",
+        "link": "https://www.twilio.com/en-us/blog/emergency-alerts"
+      },
+      {
+        "question": "can i send text alerts to employees for free",
+        "snippet": "A repeat in other words.",
+        "link": "https://example.com/free"
+      },
+      { "question": "What is the best mass texting service for small business?" },
+      { "question": "Is business texting legal?" }
+    ],
+    "organic_results": [
+      {
+        "position": 1,
+        "title": "Text employees",
+        "link": "https://simpletexting.com/blog/text-employees/",
+        "displayed_link": "https://simpletexting.com › blog"
+      },
+      {
+        "position": 2,
+        "title": "Employee SMS notifications",
+        "link": "https://www.twilio.com/en-us/blog/employee-sms-notifications",
+        "displayed_link": "https://www.twilio.com › blog"
+      },
+      {
+        "position": 3,
+        "title": "How to Set Up Text Alerts for Business",
+        "link": "https://textbolt.com/blog/how-to-set-up-text-alerts-for-business/",
+        "displayed_link": "https://textbolt.com › blog"
+      },
+      {
+        "position": 4,
+        "title": "TextBolt pricing",
+        "link": "https://textbolt.com/pricing/",
+        "displayed_link": "https://textbolt.com › pricing"
+      }
+    ]
+  }
+}

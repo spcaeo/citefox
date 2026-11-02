@@ -1,0 +1,20 @@
+{
+  "summary": "Of the 2 page and market pairs compared, 1 got better and 1 stayed the same.",
+  "items": [
+    {
+      "text": "Alerts in US got better from Oct 5, 2026 to Oct 19, 2026: score 44 → 78 (change +34), and the page was cited for 2 questions instead of 1.",
+      "detail": null,
+      "tag": "better",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Alerts in UK stayed the same from Oct 5, 2026 to Oct 19, 2026: score 11, and the page was still not cited (0 questions).",
+      "detail": null,
+      "tag": "same",
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": null
+}

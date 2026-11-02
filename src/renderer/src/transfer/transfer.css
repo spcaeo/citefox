@@ -1,0 +1,135 @@
+/*
+ * Moving to a new Mac: Export project, Import project, Import app settings
+ * (transfer/*Drawer.tsx) and the Data card's "Move to a new Mac" box. Tokens
+ * from styles/tokens.css only. In `screens`, as layers.test.ts asks of a
+ * stylesheet imported by its component.
+ */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .tf-table-wrap {
+    overflow-x: auto;
+  }
+
+  .tf-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-ui);
+  }
+
+  .tf-table th {
+    padding: 7px var(--s-2);
+    border-bottom: 1px solid var(--line);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .tf-table td {
+    padding: 7px var(--s-2);
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  .tf-table .tf-num {
+    width: 88px;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  .tf-table .tf-value {
+    overflow-wrap: anywhere;
+  }
+
+  .tf-table tr.tf-changed td {
+    background: var(--fox-tint);
+  }
+
+  .tf-zero {
+    color: var(--ink-3);
+  }
+
+  .tf-notes {
+    margin: var(--s-1) 0 0;
+    padding-left: var(--s-4);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .tf-outcome-applied {
+    color: var(--ok);
+  }
+
+  .tf-outcome-unchanged {
+    color: var(--ink-3);
+  }
+
+  .tf-outcome-failed {
+    color: var(--bad);
+  }
+
+  .tf-check {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-2);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+  }
+
+  .tf-check input {
+    margin-top: 3px;
+    accent-color: var(--select);
+  }
+
+  .tf-check-hint {
+    display: block;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .tf-ways {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .tf-way {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-2);
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    cursor: pointer;
+  }
+
+  .tf-way.on {
+    border-color: var(--select);
+    background: var(--select-tint);
+  }
+
+  .tf-way input {
+    margin-top: 3px;
+    accent-color: var(--select);
+  }
+
+  .tf-note {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .tf-move-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin-top: var(--s-3);
+  }
+}

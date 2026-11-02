@@ -1,0 +1,234 @@
+/* A full AI answer laid out as the engine showed it (AnswerView.tsx). Tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .ans {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-2);
+    min-width: 0;
+    max-width: 72ch;
+  }
+
+  .ans-body {
+    position: relative;
+    align-self: stretch;
+    min-width: 0;
+    color: var(--ink);
+    font-size: var(--fs-body);
+    line-height: 1.6;
+    overflow-wrap: break-word;
+  }
+
+  /* About 16 lines, faded out at the bottom like Google's "Show more" */
+  .ans-body.is-folded {
+    max-height: 26em;
+    overflow: hidden;
+    mask-image: linear-gradient(to bottom, var(--ink) 78%, transparent);
+  }
+
+  .ans-body .md {
+    line-height: 1.6;
+  }
+
+  .ans-body .md-block > * + * {
+    margin-top: var(--s-3);
+  }
+
+  /* Headings (h3 and below under the card's h2): bold at body size, as Google does */
+  .ans-body .md-block :is(h3, h4, h5, h6) {
+    margin: var(--s-5) 0 0;
+    font-size: var(--fs-body);
+    line-height: 1.5;
+    letter-spacing: normal;
+  }
+
+  .ans-body .md-block > :is(h3, h4, h5, h6):first-child {
+    margin-top: 0;
+  }
+
+  /* With the card's h2 above, a markdown "#" is an h3 and "##" an h4 (baseLevel 3) */
+  .ans-body .md-block h3:not(.ans-sub) {
+    font-size: var(--fs-h2);
+  }
+
+  .ans-body .md-block h4 {
+    font-size: 1.0625em;
+  }
+
+  .ans-body .md-block :is(h3, h4, h5, h6) + :is(p, ul, ol, .ans-table) {
+    margin-top: var(--s-2);
+  }
+
+  .ans-body .md-block ul,
+  .ans-body .md-block ol {
+    padding-inline-start: 22px;
+  }
+
+  .ans-body .md-block ul {
+    list-style: disc;
+  }
+
+  .ans-body .md-block ul ul {
+    list-style: circle;
+  }
+
+  .ans-body .md-block li + li {
+    margin-top: var(--s-2);
+  }
+
+  .ans-body .md-block li > :is(ul, ol) {
+    margin-top: var(--s-2);
+  }
+
+  .ans-body .md-block li > p + p {
+    margin-top: var(--s-1);
+  }
+
+  .ans-body .md-block li::marker {
+    color: var(--ink-3);
+  }
+
+  .ans-body .md-block hr {
+    margin: var(--s-5) 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .ans-body .md-block strong {
+    font-weight: var(--fw-semibold);
+  }
+
+  /* Tables: a header row on a tint, light rules, sideways scroll when narrow */
+  .ans-table {
+    max-width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+  }
+
+  .ans-body .md-block .ans-table table {
+    width: 100%;
+    min-width: 480px;
+    border-collapse: collapse;
+    font-size: var(--fs-ui);
+    line-height: 1.5;
+  }
+
+  .ans-body .md-block .ans-table :is(th, td) {
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    padding: var(--s-2) var(--s-3);
+    text-align: start;
+    vertical-align: top;
+  }
+
+  .ans-body .md-block .ans-table tr > :is(th, td) + :is(th, td) {
+    border-left: 1px solid var(--line);
+  }
+
+  .ans-body .md-block .ans-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .ans-body .md-block .ans-table th {
+    background: var(--inset);
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  /* Source chips after a sentence: the site's icon and short name */
+  .ans-cites-row {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--s-1);
+    margin-inline-start: var(--s-1);
+    vertical-align: 1px;
+  }
+
+  .ans-body .md a.ans-chip,
+  .ans-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    max-width: 18ch;
+    height: 22px;
+    padding: 0 8px 0 4px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--ink-2);
+    font: inherit;
+    font-size: var(--fs-small);
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .ans-body .md a.ans-chip:hover,
+  .ans-chip:hover {
+    border-color: var(--line-strong);
+    background: var(--hover);
+    color: var(--ink);
+  }
+
+  .ans-chip-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* The owner's site: the brand accent, so "your page was cited here" stands out */
+  .ans-body .md a.ans-chip.is-own {
+    border-color: var(--fox-line);
+    background: var(--fox-tint);
+    color: var(--fox-deep);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ans-body .md a.ans-chip.is-own:hover {
+    border-color: var(--fox);
+  }
+
+  .ans-body .md a.ans-chip.is-competitor {
+    border-color: var(--warn);
+    background: var(--warn-tint);
+    color: var(--ink);
+  }
+
+  .ans-chip-count {
+    padding: 0 5px;
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .ans-chip-more {
+    padding: 0 8px;
+  }
+
+  .ans-more {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1);
+    height: var(--h-control-sm);
+    padding: 0 var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+    cursor: pointer;
+  }
+
+  .ans-more:hover {
+    border-color: var(--line-strong);
+    background: var(--hover);
+  }
+}

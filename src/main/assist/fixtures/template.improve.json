@@ -1,0 +1,34 @@
+{
+  "summary": "Three line changes from the last runs: two prompts came back too short and one named a brand.",
+  "items": [
+    {
+      "text": "- Count the words before you reply. A prompt under 15 words is too short.",
+      "detail": "Add after the line that starts \"- Write it in full sentences\". Two of the last runs had 9-word prompts.",
+      "tag": null,
+      "verify": null,
+      "sign": "add"
+    },
+    {
+      "text": "- Check every prompt for the brand names before you reply, including spelled-out domains.",
+      "detail": "Add after the line that starts \"- Never include the brand name\". One run wrote \"textbolt.com\".",
+      "tag": null,
+      "verify": null,
+      "sign": "add"
+    },
+    {
+      "text": "Reply with JSON that matches the schema and no other text.",
+      "detail": "Replace with the clearer line below.",
+      "tag": null,
+      "verify": null,
+      "sign": "remove"
+    },
+    {
+      "text": "Reply with JSON only. Use null for a field the page does not support.",
+      "detail": "Add at the end, in place of the removed line.",
+      "tag": null,
+      "verify": null,
+      "sign": "add"
+    }
+  ],
+  "caution": null
+}

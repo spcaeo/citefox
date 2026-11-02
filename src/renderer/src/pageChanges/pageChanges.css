@@ -1,0 +1,282 @@
+/* Page change history: the Pages banner, the diff drawer, the list drawer and Page versions. Tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  /* "Is this a fix?" on Pages: one calm card with the dashed "?" marker. */
+  .pc-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-3);
+    padding: var(--s-4);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--marker-page);
+    border-radius: var(--r-l);
+    background: var(--surface);
+  }
+
+  .pc-banner > .ui-mk,
+  .pc-list-item > .ui-mk {
+    flex: none;
+    margin-top: 2px;
+  }
+
+  .pc-banner-body {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+
+  .pc-banner-count {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .pc-banner-lead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 var(--s-1);
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-body);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-body);
+  }
+
+  .pc-banner-detail {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .pc-banner-error {
+    margin: 0;
+    color: var(--bad-ink);
+    font-size: var(--fs-small);
+  }
+
+  .pc-banner-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin-top: var(--s-2);
+  }
+
+  /* Published · Updated · Last read, on one quiet line. */
+  .pc-dates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-4);
+    margin: var(--s-1) 0 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .pc-dates > div {
+    display: flex;
+    gap: var(--s-1);
+  }
+
+  .pc-dates dt {
+    color: var(--ink-3);
+  }
+
+  .pc-dates dd {
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  /* The diff drawer. */
+  .pc-sub {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 var(--s-3);
+  }
+
+  .pc-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+  }
+
+  .pc-sentence {
+    margin: 0 0 var(--s-3);
+    color: var(--ink);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+
+  /* The inline document: no room kept for Page edits' Keep / Undo buttons. */
+  .pc-doc {
+    max-width: none;
+    padding: 0;
+  }
+
+  .pc-doc .pc-row,
+  .pc-side .pc-row {
+    padding-right: 0;
+  }
+
+  .pc-row del,
+  .pc-row ins {
+    display: block;
+  }
+
+  .pc-row .pe-text:hover {
+    background: none;
+  }
+
+  .pc-row ins.pe-add:hover {
+    background: color-mix(in srgb, var(--action) 30%, var(--surface));
+  }
+
+  .pc-fold {
+    margin: var(--s-2) 0;
+  }
+
+  .pc-fold-button {
+    padding: 2px var(--s-2);
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--r-pill);
+    background: none;
+    color: var(--ink-3);
+    font: inherit;
+    font-size: var(--fs-small);
+    cursor: pointer;
+  }
+
+  .pc-fold-button:hover {
+    color: var(--ink);
+    border-color: var(--ink-3);
+  }
+
+  .pc-fold-button:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  /* Side by side: before on the left, after on the right, rows lined up. */
+  .pc-side {
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .pc-side-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--s-4);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .pc-side-head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: var(--s-2) 0;
+    background: var(--surface);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .pc-side-cell {
+    min-width: 0;
+    padding: var(--s-1) 0;
+  }
+
+  .pc-side .pe-h1 {
+    font-size: 24px;
+  }
+
+  .pc-side .pe-h2 {
+    margin-top: var(--s-2);
+    font-size: 19px;
+  }
+
+  .pc-side .pe-h3,
+  .pc-side .pe-h4 {
+    margin-top: var(--s-2);
+    font-size: 16px;
+  }
+
+  .pc-side .pe-p {
+    margin: var(--s-1) 0;
+  }
+
+  .pc-fold-side {
+    display: block;
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* The list drawer. */
+  .pc-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pc-list-item {
+    display: flex;
+    gap: var(--s-3);
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .pc-list-body {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .pc-list-lead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    margin: 0;
+    font-weight: var(--fw-semibold);
+  }
+
+  .pc-list-detail {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  /* History › Page versions. */
+  .pc-versions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .pc-versions > p {
+    margin: 0;
+  }
+
+  .pc-version-read,
+  .pc-version-change {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .pc-version-read .faint {
+    font-size: var(--fs-small);
+  }
+}

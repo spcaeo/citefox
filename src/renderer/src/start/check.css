@@ -1,0 +1,94 @@
+/* "Asking Google N questions" (journey A5): cell contents and the rail list. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .ck-live {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+    font-size: var(--fs-ui);
+  }
+
+  .ck-bar {
+    display: block;
+    width: 140px;
+  }
+
+  .ck-text,
+  .ck-cited {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ck-cited {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .ck-you-row,
+  .ck-cited-sites {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .ck-cited-sites {
+    gap: var(--s-3);
+  }
+
+  .ck-you {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ck-skeleton {
+    display: block;
+    width: 70%;
+    height: 8px;
+    border-radius: var(--r-pill);
+    background: var(--inset);
+  }
+
+  .ck-kpi-name .ui-kpi-value {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ck-empty {
+    margin: 0;
+    padding: var(--s-6);
+  }
+
+  .ck-note {
+    font-size: var(--fs-small);
+  }
+
+  .ck-domains {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ck-domains li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 96px 24px;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 32px;
+    font-size: var(--fs-ui);
+  }
+
+  .ck-own {
+    color: var(--fox-ink);
+    font-weight: var(--fw-medium);
+  }
+}

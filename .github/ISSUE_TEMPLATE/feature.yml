@@ -1,0 +1,41 @@
+name: Feature request
+description: An idea that would make CiteFox more useful.
+title: '[Feature]: '
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: Tell us the problem first. The best ideas start with what you are trying to get done.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: For example "show a client which competitor ChatGPT cites for our pricing questions".
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help?
+      description: How you picture it working. A sketch or screenshot is welcome.
+    validations:
+      required: true
+  - type: dropdown
+    id: who
+    attributes:
+      label: Who are the reports for?
+      options:
+        - Clients (agency)
+        - My company (in-house)
+        - My own sites
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What do you do today instead?
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you send
+      options:
+        - label: I searched the existing issues and discussions.
+          required: true

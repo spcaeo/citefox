@@ -1,0 +1,20 @@
+{
+  "status": 200,
+  "body": {
+    "id": "msg_textbolt_fixture",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-sonnet-5-5",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"headline\":\"Counts stay with the stored check.\",\"body\":\"The check states the citation rate and the content fingerprint together.\"}"
+      }
+    ],
+    "stop_reason": "end_turn",
+    "usage": {
+      "input_tokens": 120,
+      "output_tokens": 80
+    }
+  }
+}

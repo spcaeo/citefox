@@ -1,0 +1,41 @@
+{
+  "summary": "The overview answers with the email-to-SMS idea but never names TextBolt; TextBolt's page is the 2nd of 3 sources, behind SimpleTexting.",
+  "items": [
+    {
+      "text": "absent",
+      "detail": null,
+      "tag": "tone",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Its guide on texting employees matches the question word for word and is listed first.",
+      "detail": "You can text employees without a developer",
+      "tag": "competitor: SimpleTexting",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Open the page with one sentence that names TextBolt and answers how to text employees without a developer.",
+      "detail": "You can text employees without a developer by turning email from tools you already use into SMS.",
+      "tag": "action",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Add a short list of the tools staff already use (Gmail, Outlook, scheduling apps) with one setup step each.",
+      "detail": "turning email from tools you already use into SMS",
+      "tag": "action",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Add an FAQ that compares the setup time with an employee texting app, so the page covers what SimpleTexting's guide covers.",
+      "detail": "simpletexting.com",
+      "tag": "action",
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": "Confidence: medium. One sample with a single short paragraph."
+}

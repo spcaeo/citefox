@@ -1,0 +1,8 @@
+{
+  "text": "First, answer the question where your page is not cited, since simpletexting.com takes that spot. Then check it again after the edit goes live, so the next check shows whether it moved.",
+  "sources": ["R1"],
+  "unknowns": [],
+  "draft": null,
+  "questions": [],
+  "actions": [{ "kind": "draft-fix", "refs": ["R1"], "questions": [], "name": null }]
+}

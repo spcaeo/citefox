@@ -1,0 +1,54 @@
+{
+  "brandsNamed": ["TextBolt", "SimpleTexting", "Twilio"],
+  "reason": "Named first as the no-code email-to-SMS option, ahead of SimpleTexting and Twilio.",
+  "claims": [
+    {
+      "brand": "TextBolt",
+      "theme": "Ease of setup",
+      "attribute": "sets up in about 30 minutes",
+      "tone": "positive",
+      "sentence": "TextBolt is a no-code email-to-SMS gateway that sets up in about 30 minutes.",
+      "url": "https://www.g2.com/products/textbolt/reviews"
+    },
+    {
+      "brand": "TextBolt",
+      "theme": "Integrations",
+      "attribute": "works from Gmail, Outlook and monitoring tools",
+      "tone": "positive",
+      "sentence": "Reviewers like that it works from Gmail, Outlook and monitoring tools.",
+      "url": "https://www.g2.com/products/textbolt/reviews"
+    },
+    {
+      "brand": "TextBolt",
+      "theme": "Pricing",
+      "attribute": "no free plan",
+      "tone": "negative",
+      "sentence": "TextBolt has no free plan, so teams pay from the first month.",
+      "url": "https://www.g2.com/products/textbolt/reviews"
+    },
+    {
+      "brand": "SimpleTexting",
+      "theme": "Replies",
+      "attribute": "two-way replies on every plan",
+      "tone": "positive",
+      "sentence": "SimpleTexting includes two-way replies on every plan, while Twilio needs a developer.",
+      "url": "https://simpletexting.com/pricing/"
+    },
+    {
+      "brand": "Twilio",
+      "theme": "Ease of setup",
+      "attribute": "needs a developer",
+      "tone": "negative",
+      "sentence": "SimpleTexting includes two-way replies on every plan, while Twilio needs a developer.",
+      "url": null
+    },
+    {
+      "brand": "TextBolt",
+      "theme": "Reliability",
+      "attribute": "never misses a message",
+      "tone": "positive",
+      "sentence": "TextBolt never misses a message.",
+      "url": null
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+/*
+ * Page setup helpers shared with other screens (stacks, rows, fields, the
+ * prompt and read check lines, the old small button variants). v2 tokens only.
+ */
+
+@layer shared, results, screens, utilities;
+
+@layer shared {
+  .ps-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .ps-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: center;
+  }
+
+  .ps-spread {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .ps-grow {
+    display: flex;
+    flex: 1 1 320px;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-width: 0;
+  }
+
+  .ps-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  /* In a column a field keeps its own height, and a lone button its own width. */
+  .ps-stack > .ps-field {
+    flex: none;
+  }
+
+  .ps-stack > .ui-btn,
+  .ps-card > .ui-btn {
+    align-self: flex-start;
+  }
+
+  .ps-status {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--s-3) var(--s-5);
+  }
+
+  .ps-ok {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    color: var(--ok);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ps-warn {
+    display: flex;
+    gap: var(--s-2);
+    align-items: flex-start;
+    color: var(--fox-ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ps-key {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ps-flag {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    color: var(--fox-ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ps-flag.ok {
+    color: var(--ok);
+  }
+
+  .ps-ai-tag {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    color: var(--fox-ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--h-control);
+    height: var(--h-control);
+    border: 1px solid transparent;
+    border-radius: var(--r-s);
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .icon-btn:hover {
+    background: var(--hover);
+  }
+
+  .ps-field {
+    display: flex;
+    flex: 1 1 240px;
+    flex-direction: column;
+    gap: var(--s-1);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ps-field input,
+  .ps-field textarea {
+    width: 100%;
+    min-height: var(--h-control);
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    font-weight: var(--fw-medium);
+  }
+
+  .ps-acc + .ps-acc {
+    border-top: 1px solid var(--line);
+  }
+
+  .ps-acc-btn {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+    width: 100%;
+    min-height: var(--h-control);
+    padding: var(--s-3);
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .ps-error {
+    color: var(--fox-deep);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ps-version-pick {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-width: 520px;
+  }
+}

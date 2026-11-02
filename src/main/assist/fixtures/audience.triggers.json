@@ -1,0 +1,27 @@
+{
+  "summary": "Three named events from the page that send this buyer looking now.",
+  "items": [
+    {
+      "text": "Verizon announces it is shutting down its vtext.com email-to-text gateway.",
+      "detail": "Alerts sent to @vtext.com addresses will stop arriving, so the team needs a replacement address before the date.",
+      "tag": "Step 3: Point your existing tools at your text address",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "An urgent alert email sits unread while the crew is on site.",
+      "detail": "Email reaches a crew too slowly, so the manager looks for a way to turn the same email into a text.",
+      "tag": "At a Glance",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "A staff member replies to an alert and nobody knows where the reply went.",
+      "detail": "They ask whether replies come back to the sender's inbox before they trust texts for alerts.",
+      "tag": "Can employees reply to a text alert??",
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": null
+}

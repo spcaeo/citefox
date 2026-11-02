@@ -1,0 +1,18 @@
+/* ClaudeWait and LinkedText: when Claude is back, and screen names as links. v2 tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .claude-wait {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .screen-link {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+}

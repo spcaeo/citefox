@@ -1,0 +1,143 @@
+/* Check now (drawer and #/check), the page's Check now menu, and Add a page. Tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .cn2-modes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .cn2-mode {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-2);
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    cursor: pointer;
+  }
+
+  .cn2-mode:has(input:checked) {
+    border-color: var(--select);
+    background: var(--select-tint);
+  }
+
+  .cn2-mode:has(input:focus-visible) {
+    box-shadow: var(--focus-ring);
+  }
+
+  .cn2-mode input:focus-visible {
+    outline: none;
+  }
+
+  .cn2-mode:has(input:disabled) {
+    cursor: default;
+    opacity: 0.6;
+  }
+
+  .cn2-mode input {
+    margin-top: 3px;
+  }
+
+  .cn2-mode-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .cn2-mode-label {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .cn2-mode-hint,
+  .cn2-note {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .cn2-note {
+    margin-top: var(--s-2);
+  }
+
+  .cn2-error {
+    margin: var(--s-2) 0 0;
+    color: var(--bad);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .cn2-blocked {
+    color: var(--ink-2);
+  }
+
+  /* #/check: the same body as the drawer, on the screen, with its footer row. */
+  .cn2-screen {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .cn2-screen-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  .cn2-screen-foot-text {
+    min-width: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  /* The page header's split button: Check now + the menu of narrower checks. */
+  .cn2-split {
+    display: inline-flex;
+    align-items: stretch;
+  }
+
+  .cn2-split > :first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .cn2-split-toggle {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-left: 1px;
+    padding-inline: var(--s-2);
+  }
+
+  /* Looks like the primary next to it without being a second primary button. */
+  .cn2-split-toggle-primary {
+    border-color: var(--ink);
+    background: var(--action);
+    color: var(--on-action);
+  }
+
+  .cn2-split-toggle-primary:hover {
+    border-color: var(--action-hover);
+    background: var(--action-hover);
+    color: var(--on-action);
+  }
+
+  .cn2-split-toggle-primary:active {
+    border-color: var(--action-press);
+    background: var(--action-press);
+  }
+}

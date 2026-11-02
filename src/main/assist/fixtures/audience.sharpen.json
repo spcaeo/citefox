@@ -1,0 +1,34 @@
+{
+  "summary": "The profile is close. These changes name the tools, the region, and the trigger events the page actually covers.",
+  "items": [
+    {
+      "text": "Operations and office managers, IT leads, and owner-operators at US and Canadian businesses with 10 to 250 staff. Not developers. They live in Gmail or Outlook.",
+      "detail": "The page says \"no developer required\" and addresses office staff, so naming non-developers and company size makes prompts more specific.",
+      "tag": "who",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "A carrier email-to-text gateway (txt.att.net, vtext.com) stopped delivering their alerts\nA monitoring tool such as Datadog or Grafana only sends email alerts\nA missed alert caused damage or a missed shift\nThey hit the 10DLC registration wall\nA developer quote for a Twilio build came back too expensive",
+      "detail": "Each one is a named event on the page that sends a buyer looking now.",
+      "tag": "triggers",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "SMS marketers: the page is about alerts to staff, not campaigns\nDevelopers building SMS into a product: they want an API\nTeams that need acknowledgement and escalation: PagerDuty or Opsgenie fits them better",
+      "detail": "The page points escalation needs to PagerDuty, so saying so keeps prompts away from the wrong buyers.",
+      "tag": "poorFit",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Setup in about 30 minutes\nNothing new for staff to install\nReplies come back to the inbox\nCompliance (10DLC) handled for them\nAbout [$29 to $49 a month]",
+      "detail": "The page states the setup time and replies to email. The price is not on this page.",
+      "tag": "values",
+      "verify": "Check the current plan prices before using them in a prompt.",
+      "sign": null
+    }
+  ],
+  "caution": "The price range in values is in [brackets] because this page does not state it."
+}

@@ -1,0 +1,310 @@
+/* Fixes · Changes (and the cells the loop views share). Tokens from styles/tokens.css only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  /* The ledger's box, for the guide's "Did it work?" steps. */
+  .chg-ledger {
+    min-width: 0;
+  }
+
+  /* Two lines inside a 44px grid row: 16 + 16. */
+  .chg-two {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: var(--lh-small);
+  }
+
+  .chg-two-main,
+  .chg-two-sub {
+    overflow: hidden;
+    min-width: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .chg-two-main {
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  /* The name, then the kind chip; the name gives way first. */
+  .chg-page-line {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .chg-page-line > :last-child {
+    flex: none;
+  }
+
+  .chg-two-title {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+  }
+
+  .chg-two-sub {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .chg-two-sub .ui-url {
+    font-size: var(--fs-small);
+  }
+
+  .chg-chip-link {
+    display: inline-flex;
+    border-radius: var(--r-pill);
+    text-decoration: none;
+  }
+
+  .chg-chip-link:hover .ui-chip {
+    text-decoration: underline;
+  }
+
+  .chg-chip-link:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  /* "1 → 2": the before and now counts, each its own drill. */
+  .chg-cited {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: baseline;
+  }
+
+  .chg-index {
+    display: inline-flex;
+  }
+
+  .chg-sponsor {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    text-decoration: underline;
+    text-decoration-color: var(--line-strong);
+  }
+
+  .chg-sponsor:hover {
+    color: var(--fox-ink);
+  }
+
+  /* "How fast changes get cited": four bars, each a drill button. */
+  .chg-speed-line {
+    margin: 0 0 var(--s-4);
+  }
+
+  .chg-bars {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .chg-bar-btn {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    align-items: center;
+    width: 100%;
+    padding: var(--s-2);
+    border: 0;
+    border-radius: var(--r-m);
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .chg-bar-btn:hover {
+    background: var(--inset);
+  }
+
+  .chg-bar-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .chg-bar-pct {
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semibold);
+  }
+
+  /* The column itself is ui/chart's BarFill: a soft rounded track with its fill. */
+  .chg-bar-col {
+    display: block;
+    width: min(56px, 100%);
+    height: 120px;
+  }
+
+  .chg-bar-label {
+    margin-top: var(--s-1);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .chg-bar-sub {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  /* Change detail. */
+  .chg-detail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .chg-detail-chips,
+  .chg-detail-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .chg-facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-3);
+    margin: 0;
+  }
+
+  .chg-facts dt {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .chg-facts dd {
+    margin: 0;
+  }
+
+  .chg-q-link {
+    overflow: hidden;
+    min-width: 0;
+    color: var(--ink);
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .chg-q-link:hover {
+    color: var(--fox-ink);
+    text-decoration: underline;
+  }
+
+  .chg-detail-empty {
+    padding: var(--s-4);
+  }
+
+  /* Did it work? A pill per verdict: Worked green, Worse orange, the rest grey. */
+  .chg-verdict {
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    padding: 0 8px;
+    border-radius: var(--r-pill);
+    background: var(--result-none-tint);
+    color: var(--result-none-ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-small);
+    white-space: nowrap;
+  }
+
+  .chg-verdict-md {
+    height: 24px;
+    padding: 0 10px;
+  }
+
+  .chg-verdict-good {
+    background: var(--result-target-tint);
+    color: var(--result-target-ink);
+  }
+
+  .chg-verdict-bad {
+    background: var(--result-not-cited-tint);
+    color: var(--result-not-cited-ink);
+  }
+
+  /* The change drawer's before → now boxes. */
+  .chg-work {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .chg-work-boxes {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: var(--s-3);
+    align-items: stretch;
+  }
+
+  .chg-work-arrow {
+    align-self: center;
+    color: var(--ink-4);
+    font-size: var(--fs-h3);
+  }
+
+  .chg-work-box {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-width: 0;
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  .chg-work-when {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .chg-work-count {
+    display: flex;
+    gap: var(--s-2);
+    align-items: baseline;
+    color: var(--ink);
+    font-size: var(--fs-ui);
+  }
+
+  .chg-work-count .drill-num,
+  .chg-work-count .drill-num-zero,
+  .chg-work-big {
+    font-size: var(--fs-h1);
+    font-weight: var(--fw-semibold);
+  }
+
+  .chg-work-line {
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  .chg-work-google {
+    display: flex;
+    gap: var(--s-2);
+    align-items: flex-start;
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  .chg-work-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+
+  @media (width < 700px) {
+    .chg-bars {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}

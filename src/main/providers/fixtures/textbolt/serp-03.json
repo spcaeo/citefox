@@ -1,0 +1,29 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": {
+      "status": "Success",
+      "id": "textbolt-p3"
+    },
+    "ai_overview": {
+      "text_blocks": [
+        {
+          "type": "paragraph",
+          "snippet": "TextBolt pricing starts with a flat monthly plan."
+        }
+      ],
+      "references": [
+        {
+          "title": "Pricing",
+          "link": "https://textbolt.com/pricing/",
+          "source": "TextBolt"
+        },
+        {
+          "title": "SMS",
+          "link": "https://www.twilio.com/sms",
+          "source": "Twilio"
+        }
+      ]
+    }
+  }
+}

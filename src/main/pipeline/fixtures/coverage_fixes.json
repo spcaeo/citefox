@@ -1,0 +1,50 @@
+{
+  "note": "Recorded TextBolt content gaps, split from the recorded matrix (TEXTBOLT_COVERAGE in src/main/pipeline/textbolt-fixture.ts). The e2e stand-in returns the rows whose positions the prompt lists.",
+  "rows": [
+    {
+      "position": 1,
+      "currentContent": "How to Set Up Text Alerts for Business, Including Scheduled Alerts From Email (No Developer Required)",
+      "whatToUpdate": "The H1 promises no developer, but it never says employees need no new app.",
+      "suggestedFaq": {
+        "question": "How can employees get text alerts without a developer or a new app?",
+        "answer": "Employees can receive text alerts without hiring a developer and without learning a new app. Send the notice as an email from Gmail, Outlook, or any system that already sends mail, and a gateway turns that email into a normal text message. Staff keep working in the inbox they already use, and setup stays inside tools the office already knows."
+      }
+    },
+    {
+      "position": 4,
+      "currentContent": "Why did free carrier email-to-SMS gateways like txt.att.net stop working??",
+      "whatToUpdate": "The FAQ explains why the gateway stopped, not how to switch.",
+      "suggestedFaq": {
+        "question": "What should replace txt.att.net for business alerts?",
+        "answer": "Replace each old carrier address with a registered email to SMS gateway address. The same address works across carriers, so the tools that used to email txt.att.net keep sending the same kind of alert. Send one test to a phone and confirm it arrives before you retire the old address for the whole team."
+      }
+    },
+    {
+      "position": 5,
+      "currentContent": "@vtext.com",
+      "whatToUpdate": "vtext.com appears in one note and has no dedicated answer.",
+      "suggestedFaq": {
+        "question": "What should a small business use when a carrier email gateway shuts down?",
+        "answer": "List every system that still emails a carrier gateway address, including alarms, scheduling tools, and monitoring. Replace each address with a registered gateway address before the carrier stops handing those messages to phones. Then send a test alert to a phone on that carrier and confirm it arrives."
+      }
+    },
+    {
+      "position": 6,
+      "currentContent": "What About Recurring Alerts?; 5. Connect Your Existing Business Systems",
+      "whatToUpdate": "Recurring alerts are covered, but customer reminders are not addressed to phones.",
+      "suggestedFaq": {
+        "question": "How do scheduling-software emails become SMS reminders?",
+        "answer": "If the scheduling tool can send email, it can send a text. Add each staff gateway address as a recipient for internal reminders. For customer reminders, the tool must allow a recipient address built from the phone number. Send a test before the reminder goes live."
+      }
+    },
+    {
+      "position": 8,
+      "currentContent": "3. SMS API or Workflow Automation Tool; How Much Does It Cost to Set Up Business Text Alerts?",
+      "whatToUpdate": "The API section and pricing are present, without a direct comparison.",
+      "suggestedFaq": {
+        "question": "What is a low-cost path when a team has no developers?",
+        "answer": "An email to SMS gateway covers the same alert job when the message already leaves as email. A developer API needs setup, testing, and upkeep that a small team may not have. A gateway takes about half an hour, runs on a flat monthly plan, and keeps registration work off the operator."
+      }
+    }
+  ]
+}

@@ -1,0 +1,196 @@
+/* Questions: every tracked question of the project in one list grid. Tokens from styles/tokens.css. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .qs-screen {
+    min-width: 0;
+  }
+
+  .qs-subtitle {
+    margin: 0;
+    font-size: var(--fs-small);
+  }
+
+  .qs-message {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .qs-select {
+    max-width: 240px;
+  }
+
+  /* Group header meta: cited share, band chip, and the topic's or bucket's action. */
+  .qs-gmeta {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .qs-gmeta-text {
+    white-space: nowrap;
+  }
+
+  /* The result pill, then Google's place or a Named badge. */
+  .qs-result {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1);
+    min-width: 0;
+  }
+
+  /* Drag to move: the question text is the handle; a topic heading lights up under a drag. */
+  .qs-drag {
+    display: inline-flex;
+    min-width: 0;
+    max-width: 100%;
+    cursor: grab;
+  }
+
+  .qs-drop .ui-lg-group[data-drop-over] {
+    background: var(--select-tint);
+    box-shadow: inset 0 0 0 2px var(--select-line);
+  }
+
+  /* Drawers: Sort into topics, Set target page. */
+  .qs-drawer p {
+    margin: 0;
+  }
+
+  .qs-panel-status {
+    color: var(--ink-2);
+  }
+
+  .qs-proposals,
+  .qs-pages {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    list-style: none;
+  }
+
+  .qs-proposal,
+  .qs-page {
+    display: flex;
+    gap: var(--s-3);
+    align-items: center;
+    padding: var(--s-2) var(--s-3);
+    border-top: 1px solid var(--line);
+  }
+
+  .qs-proposal:first-child,
+  .qs-page:first-child {
+    border-top: 0;
+  }
+
+  .qs-proposal-body {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .qs-proposal-body .faint {
+    font-size: var(--fs-small);
+  }
+
+  .qs-proposal .qs-select {
+    flex: none;
+    width: 180px;
+  }
+
+  .qs-page-pick {
+    display: inline-flex;
+    flex: 1 1 auto;
+    gap: var(--s-2);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .qs-page-title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .qs-panel-find {
+    flex: 1 1 auto;
+  }
+
+  .qs-dest {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .qs-dest-row {
+    display: flex;
+    gap: var(--s-3);
+    align-items: baseline;
+    justify-content: space-between;
+    min-width: 0;
+  }
+
+  .qs-dest-name {
+    display: -webkit-box;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ink-2);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  /* Cells. */
+  .qs-text {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: center;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    color: var(--ink);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .qs-text-words {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .qs-text-off {
+    color: var(--ink-3);
+  }
+
+  .qs-mark {
+    padding: 0 2px;
+    border-radius: var(--r-s);
+    background: var(--mark);
+    color: inherit;
+  }
+
+  .qs-off-chip {
+    flex: none;
+  }
+
+  .qs-source {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: center;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .qs-source-name,
+  .qs-instead {
+    color: var(--ink-2);
+  }
+}

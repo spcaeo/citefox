@@ -1,0 +1,444 @@
+/*
+ * Ask CiteFox drawer: the conversation on the left, what it reads and the
+ * suggested questions in the rail. Tokens only.
+ */
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .asst-chat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-height: 100%;
+  }
+
+  .asst-empty {
+    margin: 0;
+    padding: var(--s-4);
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--r-m);
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  .asst-turns {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .asst-turn {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .asst-q {
+    align-self: flex-end;
+    max-width: 80%;
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid var(--fox-line);
+    border-radius: var(--r-m);
+    background: var(--fox-tint);
+  }
+
+  .asst-q-where {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .asst-q-text {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-body);
+    white-space: pre-wrap;
+  }
+
+  .asst-wait {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  .asst-wait .ui-icon {
+    color: var(--fox);
+  }
+
+  .asst-error,
+  .asst-notready {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3);
+    padding: var(--s-3);
+    border: 1px solid var(--tint-attention-line);
+    border-radius: var(--r-m);
+    background: var(--tint-attention);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+  }
+
+  .asst-error p,
+  .asst-notready p {
+    flex: 1 1 240px;
+    margin: 0;
+  }
+
+  .asst-answer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  .asst-answer-text {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+
+  .asst-flagged {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .asst-flagged .ui-icon {
+    color: var(--warn);
+  }
+
+  .asst-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+
+  .asst-block-title {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .asst-sources,
+  .asst-unknowns,
+  .asst-questions,
+  .asst-action-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding-inline-start: var(--s-5);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .asst-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--fox-ink);
+    font: inherit;
+    text-align: start;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+
+  .asst-link:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .asst-meta {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .asst-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .asst-draft {
+    margin: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+    background: var(--inset);
+  }
+
+  .asst-draft-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2);
+    padding: var(--s-1) var(--s-2) var(--s-1) var(--s-3);
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .asst-draft-text {
+    margin: 0;
+    padding: var(--s-3);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: var(--fs-ui);
+    white-space: pre-wrap;
+  }
+
+  .asst-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--s-3);
+  }
+
+  .asst-action {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding: var(--s-3);
+    border: 1px solid var(--tint-ai-line);
+    border-radius: var(--r-m);
+    background: var(--tint-ai);
+  }
+
+  .asst-action-kicker {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .asst-action-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .asst-action-detail,
+  .asst-action-cost,
+  .asst-action-status {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .asst-action-error {
+    margin: 0;
+    color: var(--bad-ink);
+    font-size: var(--fs-small);
+  }
+
+  .asst-action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin-top: auto;
+  }
+
+  .asst-action-done {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+  }
+
+  .asst-action-done p {
+    margin: 0;
+  }
+
+  .asst-compose {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin-top: auto;
+    padding: var(--s-3);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .asst-compose:focus-within {
+    border-color: var(--fox-line);
+  }
+
+  .asst-about {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    align-self: flex-start;
+    margin: 0;
+    padding: 0 var(--s-2);
+    border: 1px solid var(--fox-line);
+    border-radius: var(--r-pill);
+    background: var(--fox-tint);
+    color: var(--fox-ink);
+    font-size: var(--fs-small);
+  }
+
+  .asst-about-clear {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .asst-input {
+    width: 100%;
+    min-height: calc(var(--h-control) * 1.5);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--fs-body);
+    resize: vertical;
+  }
+
+  .asst-input:focus {
+    outline: none;
+  }
+
+  .asst-compose-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+  }
+
+  .asst-compose-hint {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .asst-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .asst-chip {
+    max-width: 100%;
+    overflow: hidden;
+    padding: 0 var(--s-2);
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-ui);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .asst-suggestions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .asst-suggestion {
+    width: 100%;
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--fs-ui);
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .asst-suggestion:hover:not(:disabled) {
+    border-color: var(--fox-line);
+    background: var(--fox-tint);
+  }
+
+  .asst-suggestion:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .asst-suggestion:disabled {
+    color: var(--ink-3);
+    cursor: default;
+  }
+
+  .asst-footer {
+    color: var(--ink-3);
+  }
+
+  /* "Read more: <help topic>" and the one next step under an answer. */
+  .asst-help {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .asst-help li {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1);
+  }
+
+  /* The empty drawer: common how / why questions for this screen, and its help topic. */
+  .asst-start {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .asst-start-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .asst-start-topic {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1);
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+}

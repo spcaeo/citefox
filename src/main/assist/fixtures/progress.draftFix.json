@@ -1,0 +1,20 @@
+{
+  "summary": null,
+  "items": [
+    {
+      "text": "Add an FAQ that names the plan with scheduled texts and link it to pricing.",
+      "detail": "Targets prompt 2.",
+      "tag": "Fix 2",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Which plan includes scheduled text alerts?\nScheduled alerts are included on [the Standard plan and above]. Write the message in Gmail or Outlook, pick a send time, and every phone in the group gets it as a normal text at that time. Staff install nothing, and replies come back to your inbox. See the pricing page for the current plans and limits.",
+      "detail": "Add after the FAQ \"Can I schedule a text for later?\".",
+      "tag": "new FAQ",
+      "verify": "Check which plans include scheduling before publishing.",
+      "sign": null
+    }
+  ],
+  "caution": "The plan name is in [brackets]. Confirm it on the pricing page."
+}

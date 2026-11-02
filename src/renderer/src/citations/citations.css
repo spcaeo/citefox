@@ -1,0 +1,66 @@
+/* Project Citations (#/citations). Tokens from styles/tokens.css only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .cit-screen {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    min-width: 0;
+  }
+
+  .cit-part {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .cit-questions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: var(--s-1) 0;
+    list-style: none;
+  }
+
+  .cit-question {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  .cit-question-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .cit-question > .ui-btn {
+    flex: none;
+  }
+
+  .cit-question-text {
+    color: var(--ink);
+    overflow-wrap: anywhere;
+  }
+
+  /* The question keeps wrapping; its copy icon sits at the end of the first line. */
+  .cit-question-copy {
+    align-items: flex-start;
+  }
+
+  .cit-question-copy > .ui-url-value {
+    display: block;
+    white-space: normal;
+  }
+
+  .cit-question-meta {
+    font-size: var(--fs-small);
+  }
+}

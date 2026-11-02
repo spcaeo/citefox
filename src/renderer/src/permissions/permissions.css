@@ -1,0 +1,384 @@
+/* "What CiteFox needs" and the Claude gate (owner feedback #2). v2 tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .pm-summary {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  .pm-note {
+    margin: 2px 0 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .pm-group {
+    margin-top: var(--s-4);
+  }
+
+  .pm-group-title {
+    margin: 0 0 var(--s-1);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .pm-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pm-row {
+    display: grid;
+    grid-template-columns: 8px minmax(0, 1fr) auto;
+    column-gap: var(--s-3);
+    align-items: start;
+    padding: var(--s-2) 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .pm-row:first-child {
+    border-top: 0;
+  }
+
+  .pm-dot {
+    width: 8px;
+    height: 8px;
+    margin-top: 6px;
+    border-radius: 50%;
+    background: var(--ink-4);
+  }
+
+  .pm-dot-ok {
+    background: var(--ok);
+  }
+
+  .pm-dot-warn {
+    background: var(--warn);
+  }
+
+  .pm-dot-info {
+    background: var(--info);
+  }
+
+  .pm-body {
+    min-width: 0;
+  }
+
+  .pm-title,
+  .pm-state,
+  .pm-purpose,
+  .pm-detail {
+    margin: 0;
+  }
+
+  .pm-title {
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  .pm-state {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .pm-row[data-state='action'] .pm-state {
+    color: var(--warn);
+  }
+
+  .pm-purpose,
+  .pm-detail {
+    margin-top: 2px;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .pm-act {
+    align-self: center;
+  }
+
+  .pm-row-confirm {
+    grid-column: 2 / -1;
+    margin-top: var(--s-2);
+  }
+
+  .pm-confirm {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--info);
+    border-radius: var(--r-s);
+    background: var(--inset);
+  }
+
+  .pm-confirm-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .pm-confirm-body {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .pm-confirm-actions {
+    display: flex;
+    gap: var(--s-2);
+  }
+
+  .pm-live {
+    margin: var(--s-3) 0 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .pm-live:empty {
+    display: none;
+  }
+
+  /* Review before Finish setup: a wider card in the main column. */
+  .pm-review .pm-row {
+    padding: var(--s-3) 0;
+  }
+
+  /* ---- Permissions page: the lede, then the grid and the rail starting on one line ---- */
+  .pm-screen {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+
+  .pm-page {
+    display: grid;
+    grid-template-columns: minmax(0, 8fr) minmax(280px, 4fr);
+    gap: var(--card-gap);
+    align-items: start;
+  }
+
+  .pm-page-main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+
+  .pm-lede {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+
+  .pm-cell-title {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .pm-cell-title a {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+    text-decoration: none;
+  }
+
+  .pm-cell-title a:hover,
+  .pm-cell-title a:focus-visible {
+    text-decoration: underline;
+  }
+
+  .pm-cell-sub {
+    overflow: hidden;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pm-detail-panel {
+    position: sticky;
+    top: var(--s-4);
+  }
+
+  .pm-detail-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin-bottom: var(--s-3);
+  }
+
+  .pm-detail-text {
+    margin: 0 0 var(--s-3);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .pm-checks {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0 0 var(--s-3);
+    padding: 0;
+    list-style: none;
+  }
+
+  .pm-check {
+    display: grid;
+    grid-template-columns: 16px minmax(0, 1fr);
+    column-gap: var(--s-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .pm-check-mark {
+    color: var(--ink-4);
+  }
+
+  .pm-check[data-state='ok'] .pm-check-mark {
+    color: var(--ok);
+  }
+
+  .pm-check[data-state='warning'] .pm-check-mark {
+    color: var(--warn);
+  }
+
+  .pm-check-label {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+  }
+
+  .pm-check-detail {
+    grid-column: 2;
+    overflow-wrap: anywhere;
+    color: var(--ink-3);
+  }
+
+  .pm-os {
+    margin: 0 0 var(--s-3);
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-s);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .pm-os strong {
+    display: block;
+    margin-bottom: 2px;
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  @media (max-width: 1100px) {
+    .pm-page {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .pm-detail-panel {
+      position: static;
+    }
+  }
+
+  /* ---- Claude gate on the Profile step ---- */
+  .cg-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .cg-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--inset);
+  }
+
+  .cg-panel[data-tone='warn'] {
+    border-color: transparent;
+    background: var(--warn-tint);
+  }
+
+  .cg-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .cg-text {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .cg-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cg-step {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .cg-step[data-state='ok'] .pm-check-mark {
+    color: var(--ok);
+  }
+
+  .cg-step[data-state='warning'] .pm-check-mark {
+    color: var(--warn);
+  }
+
+  .cg-step[data-state='running'] .pm-check-mark {
+    color: var(--info);
+  }
+
+  .cg-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+}

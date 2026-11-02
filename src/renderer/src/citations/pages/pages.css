@@ -1,0 +1,35 @@
+@layer shared, results, screens, utilities;
+
+/* Citations · Pages: the section rows and each line's name. */
+@layer screens {
+  .cpg-section {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .cpg-name {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: baseline;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .cpg-lead {
+    flex: none;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .cpg-note {
+    overflow: hidden;
+    min-width: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

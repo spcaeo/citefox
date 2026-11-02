@@ -1,0 +1,20 @@
+{
+  "summary": "Two markets look worth adding: competitors already rank there and the page is in English.",
+  "items": [
+    {
+      "text": "Canada · English · Toronto",
+      "detail": "The buyer profile names US and Canadian businesses, and simpletexting.com serves Canada.",
+      "tag": "CA",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Australia · English · Sydney",
+      "detail": "Carrier email-to-text gateways are also being shut down there [unconfirmed], and the page needs no translation.",
+      "tag": "AU",
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": "Each new market adds searches to every future check."
+}

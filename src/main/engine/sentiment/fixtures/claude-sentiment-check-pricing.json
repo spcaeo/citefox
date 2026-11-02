@@ -1,0 +1,14 @@
+{
+  "checks": [
+    {
+      "claimIndex": 0,
+      "problem": {
+        "basis": "page",
+        "why": "Your pricing page says plans start at $29 a month, not $19.",
+        "correction": "TextBolt plans start at $29 a month.",
+        "sourceToFix": "https://www.textbolt.com/pricing/"
+      }
+    },
+    { "claimIndex": 1, "problem": null }
+  ]
+}

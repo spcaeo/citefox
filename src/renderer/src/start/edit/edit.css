@@ -1,0 +1,199 @@
+/* Editing along the journey: chips, rows, the Undo toast, the buyer profile panel. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .ed-chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .ed-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding-right: 2px;
+  }
+
+  .ed-chip .ui-row-menu {
+    width: 20px;
+    height: 20px;
+    opacity: 0.55;
+  }
+
+  .ed-chip:hover .ui-row-menu,
+  .ed-chip:focus-within .ui-row-menu {
+    opacity: 1;
+  }
+
+  .ed-input {
+    height: 28px;
+    min-width: 140px;
+    padding: 0 8px;
+    font-size: var(--fs-small);
+  }
+
+  .ed-input-wide {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  .ed-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ed-row {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 36px;
+    padding: 0 var(--s-5);
+    border-top: 1px solid var(--line);
+  }
+
+  .ed-row:first-child {
+    border-top: 0;
+  }
+
+  .ed-row .ui-row-menu {
+    margin-left: auto;
+  }
+
+  .ed-lead {
+    flex: 0 0 28px;
+  }
+
+  .ed-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ed-add {
+    display: flex;
+    gap: var(--s-2);
+    padding: var(--s-2) var(--s-5);
+    border-top: 1px solid var(--line);
+  }
+
+  .ed-add .ap2-combo {
+    flex: 1 1 auto;
+  }
+
+  /*
+   * Over the middle of the sticky footer (72px), between Back and the primary,
+   * so it never covers the screen; the footer note hides while it shows
+   * (start.css). Two lines at most, each cut with an ellipsis.
+   */
+  .ed-toast {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    z-index: calc(var(--z-pop) + 2);
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    width: max-content;
+    max-width: min(480px, calc(100vw - 560px));
+    min-width: 280px;
+    min-height: 52px;
+    padding: 6px var(--s-3) 6px var(--s-4);
+    border-radius: var(--r-m);
+    background: var(--ink);
+    color: var(--surface);
+    box-shadow: var(--e2);
+    transform: translateX(-50%);
+  }
+
+  .ed-toast-text {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+    font-size: var(--fs-ui);
+  }
+
+  .ed-toast-text > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ed-toast-effect {
+    color: var(--line-strong);
+    font-size: var(--fs-small);
+  }
+
+  .ed-toast-close {
+    padding: 0 var(--s-1);
+    border: 0;
+    background: none;
+    color: inherit;
+    font-size: var(--fs-h2);
+    cursor: pointer;
+  }
+
+  /* Inside the Edit the buyer profile drawer: the section box gives the padding. */
+  .ed-drawer .ed-row,
+  .ed-drawer .ed-add {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .ed-textarea {
+    height: auto;
+    min-height: 72px;
+    padding: 8px;
+    resize: vertical;
+  }
+
+  .ed-error {
+    margin: var(--s-2) 0 0;
+    color: var(--bad);
+    font-size: var(--fs-small);
+  }
+
+  .ed-page-add {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .ed-page-add .ap2-combo {
+    flex: 1 1 auto;
+  }
+
+  .ed-rivals-facts {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ed-fact {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr);
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 36px;
+  }
+
+  .ed-fact-label {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .ed-facts {
+    padding: var(--s-2) var(--s-5) var(--s-3);
+  }
+
+  .ed-chips-list {
+    display: contents;
+  }
+}

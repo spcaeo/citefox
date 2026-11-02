@@ -1,0 +1,671 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * The shared Drawer and the small Confirm (Docs/DRAWER.md,
+ * DrawerStandard.dc.html). Tokens only: the dark theme swaps the tokens.
+ * Geometry: 80% of the window (at least 880, at most 1280 px); a narrow
+ * window keeps a 48 px strip of the screen as context and a click-out
+ * target. A stacked drawer is 48 px narrower than the one under it.
+ */
+@layer shared {
+  .ui-drawer-scrim {
+    --drawer-gutter: 48px;
+    --drawer-w: min(max(880px, 80vw), 1280px, calc(100vw - var(--drawer-gutter)));
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-drawer);
+    display: flex;
+    justify-content: flex-end;
+    background: var(--scrim);
+    animation: ui-drawer-fade var(--shell-speed) ease-out;
+  }
+
+  .ui-drawer-scrim-1 {
+    z-index: calc(var(--z-drawer) + 2);
+  }
+
+  .ui-drawer {
+    container: drawer / inline-size;
+    display: flex;
+    flex-direction: column;
+    width: var(--drawer-w);
+    height: 100%;
+    border-radius: var(--r-l) 0 0 var(--r-l);
+    background: var(--surface);
+    box-shadow: var(--e3);
+    overflow: hidden;
+    animation: ui-drawer-in var(--shell-speed) ease-out;
+  }
+
+  .ui-drawer-depth-1 {
+    width: calc(var(--drawer-w) - var(--drawer-gutter));
+  }
+
+  /*
+   * Motion without opacity: text inside never shows at a blended, lower
+   * contrast while the drawer comes in (axe reads it mid-animation too).
+   */
+  @keyframes ui-drawer-in {
+    from {
+      transform: translateX(32px);
+    }
+  }
+
+  @keyframes ui-drawer-fade {
+    from {
+      background-color: transparent;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-drawer,
+    .ui-drawer-scrim {
+      animation: none;
+    }
+  }
+
+  /* ---- Header: crumbs, title row, one subtitle line, an optional Stepper/Tabs row ---- */
+  .ui-drawer-head {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding: var(--s-4) var(--s-6) var(--s-4);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ui-drawer-crumbs {
+    min-width: 0;
+  }
+
+  .ui-drawer-crumbs ol {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    list-style: none;
+    white-space: nowrap;
+  }
+
+  .ui-drawer-crumb {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  /* Project and section keep their words; the middle shortens next; the last first. */
+  .ui-drawer-crumb-lead {
+    flex: 0 0 auto;
+    max-width: 28ch;
+  }
+
+  .ui-drawer-crumb-mid {
+    flex: 0 1 auto;
+  }
+
+  .ui-drawer-crumb-last {
+    flex: 0 100 auto;
+  }
+
+  .ui-drawer-crumb > a,
+  .ui-drawer-crumb > span:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ui-drawer-crumb > a {
+    border-radius: var(--r-s);
+    color: var(--ink-3);
+    text-decoration: none;
+  }
+
+  .ui-drawer-crumb > a:hover {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+
+  .ui-drawer-crumb > a:focus-visible {
+    box-shadow: var(--focus-ring);
+    outline: none;
+  }
+
+  .ui-drawer-crumb [aria-current='page'] {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+  }
+
+  .ui-drawer-crumb-sep {
+    flex: 0 0 auto;
+    padding: 0 var(--s-1);
+    color: var(--ink-4);
+  }
+
+  .ui-drawer-titlerow {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: var(--h-control);
+  }
+
+  .ui-drawer-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    font-size: var(--fs-h1);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-h1);
+    letter-spacing: var(--ls-h1);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ui-drawer-title:focus {
+    outline: none;
+  }
+
+  .ui-drawer-status,
+  .ui-drawer-step {
+    flex: 0 1 auto;
+    min-width: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    white-space: nowrap;
+  }
+
+  .ui-drawer-status {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Tool icons sit tight together just before ✕. */
+  .ui-drawer-tool + .ui-drawer-tool,
+  .ui-drawer-tool + .ui-drawer-close {
+    margin-left: calc(var(--s-3) * -1 + var(--s-1));
+  }
+
+  .ui-drawer-close.ui-icon-btn {
+    border-color: var(--line);
+    border-radius: var(--r-m);
+  }
+
+  /* One line by intent; a long one wraps to a second rather than losing words. */
+  .ui-drawer-subtitle {
+    display: -webkit-box;
+    max-width: 96ch;
+    margin: 0;
+    overflow: hidden;
+    color: var(--ink-2);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .ui-drawer-extra {
+    padding-top: var(--s-3);
+  }
+
+  /* ---- Body: scrolls alone; header and footer never move ---- */
+  .ui-drawer-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: var(--s-6);
+    overflow-y: auto;
+  }
+
+  @media (min-width: 1440px) {
+    .ui-drawer-body {
+      padding: var(--s-6) var(--s-8);
+    }
+
+    .ui-drawer-head,
+    .ui-drawer-foot {
+      padding-right: var(--s-8);
+      padding-left: var(--s-8);
+    }
+  }
+
+  .ui-drawer-failed {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-3);
+    max-width: 72ch;
+    padding: var(--s-4);
+    border: 1px solid var(--bad);
+    border-radius: var(--r-m);
+    background: var(--bad-tint);
+    color: var(--bad-ink);
+  }
+
+  .ui-drawer-failed p {
+    margin: 0;
+  }
+
+  /* ---- 12-column grid; boxes span 4, 6, 8 or 12 and share a row's height ---- */
+  .ui-drawer-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: stretch;
+    gap: var(--s-4) var(--s-5);
+  }
+
+  .ui-drawer-span-4 {
+    grid-column: span 4;
+  }
+
+  .ui-drawer-span-6 {
+    grid-column: span 6;
+  }
+
+  .ui-drawer-span-8 {
+    grid-column: span 8;
+  }
+
+  .ui-drawer-span-12 {
+    grid-column: 1 / -1;
+  }
+
+  @container drawer (max-width: 720px) {
+    .ui-drawer-span-4,
+    .ui-drawer-span-6,
+    .ui-drawer-span-8 {
+      grid-column: 1 / -1;
+    }
+
+    .ui-drawer-fields-2 {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .ui-drawer-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+    padding: var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  .ui-drawer-section-plain {
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .ui-drawer-section-head {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-3);
+  }
+
+  .ui-drawer-section-text {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .ui-drawer-section-title {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin: 0;
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-h3);
+  }
+
+  .ui-drawer-section-count {
+    padding: 0 var(--s-2);
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-small);
+  }
+
+  .ui-drawer-section-desc {
+    max-width: 72ch;
+    margin: var(--s-1) 0 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ui-drawer-section-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .ui-drawer-section-error {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3);
+    padding: var(--s-3);
+    border-radius: var(--r-s);
+    background: var(--bad-tint);
+    color: var(--bad-ink);
+  }
+
+  .ui-drawer-section-error p {
+    flex: 1 1 auto;
+    margin: 0;
+  }
+
+  .ui-drawer-main,
+  .ui-drawer-rail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+
+  /* ---- Fields: label above (12 semibold), one hint line under ---- */
+  .ui-drawer-fields {
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  .ui-drawer-fields-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ui-drawer-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-width: 0;
+  }
+
+  .ui-drawer-field-wide {
+    grid-column: 1 / -1;
+  }
+
+  .ui-drawer-field-top {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-2);
+  }
+
+  .ui-drawer-label {
+    flex: 1 1 auto;
+    color: var(--ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-small);
+  }
+
+  .ui-drawer-counter,
+  .ui-drawer-hint {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ui-drawer-hint,
+  .ui-drawer-error {
+    margin: 0;
+  }
+
+  .ui-drawer-error {
+    color: var(--bad);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ui-drawer-facts {
+    display: grid;
+    gap: var(--s-2);
+    margin: 0;
+  }
+
+  .ui-drawer-fact {
+    display: grid;
+    grid-template-columns: minmax(140px, 200px) minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--s-4);
+  }
+
+  /* A 4-column rail is too narrow for label | value: stack them, label above. */
+  .ui-drawer-rail .ui-drawer-fact {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-1);
+  }
+
+  .ui-drawer-fact dt {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  /* Clip, so a UrlText's resting Copy/Open (pulled past its end) never widens the body;
+     the margin keeps focus rings visible. */
+  .ui-drawer-fact dd {
+    min-width: 0;
+    margin: 0;
+    overflow: clip;
+    overflow-clip-margin: var(--s-1);
+    color: var(--ink);
+  }
+
+  .ui-drawer-fact-hint {
+    display: block;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  /* ---- Expert options ---- */
+  .ui-drawer-expert {
+    gap: 0;
+    padding: 0;
+  }
+
+  .ui-drawer-expert-toggle {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-1);
+    width: 100%;
+    padding: var(--s-3) var(--s-4);
+    border: 0;
+    border-radius: var(--r-m);
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .ui-drawer-expert-toggle:focus-visible {
+    box-shadow: var(--focus-ring);
+    outline: none;
+  }
+
+  .ui-drawer-expert-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1);
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-h3);
+  }
+
+  .ui-drawer-expert-summary {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ui-drawer-expert-body {
+    padding: 0 var(--s-4) var(--s-4);
+  }
+
+  /* ---- Loading: the real layout, greyed ---- */
+  .ui-drawer-loading .ui-drawer-section {
+    min-height: 120px;
+    background: var(--inset);
+  }
+
+  .ui-drawer-skel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .ui-drawer-skel-line,
+  .ui-drawer-skel-title {
+    display: block;
+    height: 8px;
+    border-radius: var(--r-s);
+    background: var(--line);
+  }
+
+  .ui-drawer-skel-title {
+    width: 34%;
+    height: 12px;
+    background: var(--line-strong);
+  }
+
+  /* ---- Footer: summary left, Cancel · one secondary · one primary right ---- */
+  .ui-drawer-foot {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 64px;
+    padding: var(--s-3) var(--s-6);
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .ui-drawer-foot-danger {
+    flex: 0 0 auto;
+  }
+
+  .ui-drawer-foot-summary {
+    flex: 1 1 auto;
+    min-width: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .ui-drawer-foot-summary strong {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ui-drawer-foot-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  /* ---- The small Confirm ---- */
+  .ui-confirm-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-drawer) + 6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--s-6);
+    background: var(--scrim);
+  }
+
+  .ui-confirm {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    width: min(440px, 100%);
+    padding: var(--s-6);
+    border-radius: var(--r-l);
+    background: var(--surface);
+    box-shadow: var(--e3);
+  }
+
+  .ui-confirm-title {
+    margin: 0;
+    font-size: var(--fs-h2);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-h2);
+  }
+
+  .ui-confirm-body {
+    color: var(--ink-2);
+  }
+
+  .ui-confirm-body p {
+    margin: 0;
+  }
+
+  .ui-confirm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--s-2);
+    padding-top: var(--s-2);
+  }
+}
+
+/* The window-wide "Removed 3 questions · Undo" toast (ui/UndoToast.tsx). */
+@layer shared {
+  .ui-undo-toast {
+    position: fixed;
+    bottom: var(--s-4);
+    left: 50%;
+    z-index: calc(var(--z-drawer) + 8);
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    width: max-content;
+    min-width: 280px;
+    max-width: min(560px, calc(100vw - 48px));
+    min-height: 48px;
+    padding: var(--s-2) var(--s-2) var(--s-2) var(--s-4);
+    border-radius: var(--r-m);
+    background: var(--ink);
+    color: var(--surface);
+    box-shadow: var(--e3);
+    transform: translateX(-50%);
+  }
+
+  /* Over an open drawer, sit above its footer so the summary line stays readable. */
+  body:has(.ui-drawer-scrim) .ui-undo-toast {
+    bottom: calc(64px + var(--s-3));
+  }
+
+  .ui-undo-toast-text {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+    font-size: var(--fs-ui);
+  }
+
+  .ui-undo-toast-text > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ui-undo-toast-effect {
+    color: var(--line-strong);
+    font-size: var(--fs-small);
+  }
+
+  .ui-undo-toast .ui-undo-toast-close {
+    color: inherit;
+  }
+}

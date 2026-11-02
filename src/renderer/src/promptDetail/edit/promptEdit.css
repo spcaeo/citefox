@@ -1,0 +1,158 @@
+/* Prompt detail: Edit question, Re-check now, and the re-check in line. Tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  /* The Edit question / Re-check drawer (ui/Drawer); its actions are the drawer footer. */
+  .pd2-edit-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .pd2-edit-textarea {
+    height: auto;
+    min-height: 112px;
+    padding: var(--s-2) 12px;
+    resize: vertical;
+  }
+
+  .pd2-edit-hint,
+  .pd2-edit-cost {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .pd2-edit-cost {
+    color: var(--ink-2);
+  }
+
+  .pd2-edit-error {
+    margin: 0;
+    color: var(--bad);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .pd2-edit-note,
+  .pd2-edit-quote {
+    margin: 0;
+    padding: var(--s-3) var(--s-4);
+    border-left: 3px solid var(--line-strong);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+
+  .pd2-edit-markets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-4);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+
+  .pd2-edit-check {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+  }
+
+  .pd2-edit-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .pd2-edit-list strong {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+  }
+
+  .pd2-edit-version-text {
+    display: block;
+    color: var(--ink-3);
+  }
+
+  /* The re-check in line, under the header. */
+  .pd2-recheck {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--s-3);
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--info);
+    border-radius: var(--r-m);
+    background: var(--info-tint);
+    font-size: var(--fs-ui);
+  }
+
+  .pd2-recheck p {
+    margin: 0;
+  }
+
+  .pd2-recheck-error {
+    border-color: var(--bad);
+    background: var(--bad-tint);
+  }
+
+  .pd2-recheck-text {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .pd2-recheck-bar {
+    height: 6px;
+    overflow: hidden;
+    border-radius: var(--r-pill);
+    background: var(--chart-track);
+  }
+
+  .pd2-recheck-bar > span {
+    display: block;
+    height: 100%;
+    border-radius: var(--r-pill);
+    background: var(--chart-2);
+    transition: width 200ms ease;
+  }
+
+  /* "Wording changed on 23 Oct" in Over time. */
+  .pd2-wording {
+    margin: 0 0 var(--s-3);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pd2-recheck-bar > span {
+      transition: none;
+    }
+  }
+
+  /* Facts in the 4-column rail: a narrow label column, values wrap. */
+  .pd2-edit-facts .ui-drawer-fact {
+    grid-template-columns: minmax(64px, 96px) minmax(0, 1fr);
+    gap: var(--s-3);
+  }
+
+  .pd2-edit-facts .ui-drawer-fact dd {
+    overflow-wrap: anywhere;
+  }
+}

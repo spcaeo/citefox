@@ -1,0 +1,323 @@
+/* Page results, v2 layout (Topic-Overview.png): source strip, KPI row, summary line, tabs. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .m3-results {
+    gap: var(--card-gap);
+  }
+
+  .m3-results-top {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  /* The scope line: one 20px line above the KPI row; the rest is behind "About this check". */
+  .m3-scope-strip {
+    min-width: 0;
+  }
+
+  .m3-scope-strip .m3-scope {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0;
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: 20px;
+    white-space: pre;
+  }
+
+  .m3-scope-strip .m3-scope > span {
+    white-space: normal;
+  }
+
+  .m3-scope-strip .m3-scope a,
+  .m3-scope-pop a {
+    color: inherit;
+    text-decoration: underline solid transparent;
+    text-underline-offset: 3px;
+  }
+
+  .m3-scope-strip .m3-scope a:hover,
+  .m3-scope-strip .m3-scope a:focus-visible,
+  .m3-scope-pop a:hover,
+  .m3-scope-pop a:focus-visible {
+    text-decoration-color: currentcolor;
+  }
+
+  .m3-scope-strip .m3-scope a:hover,
+  .m3-scope-pop a:hover {
+    color: var(--action-ink);
+  }
+
+  .m3-scope-strip .m3-ok {
+    color: var(--ok);
+  }
+
+  .m3-scope-strip .m3-down {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+  }
+
+  .m3-scope-strip .m3-fresh-act {
+    font-weight: var(--fw-semibold);
+  }
+
+  .m3-scope-about {
+    margin-left: var(--s-4);
+  }
+
+  .m3-scope-about-btn {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink-2);
+    font: inherit;
+    font-weight: var(--fw-medium);
+    text-decoration: underline solid transparent;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .m3-scope-about-btn:hover,
+  .m3-scope-about-btn:focus-visible {
+    color: var(--action-ink);
+    text-decoration-color: currentcolor;
+  }
+
+  .m3-scope-about-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-radius: var(--r-s);
+  }
+
+  .m3-scope-pop {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .m3-scope-facts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+  }
+
+  .m3-scope-facts dt {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .m3-scope-facts dd {
+    margin: 0;
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+  }
+
+  .m3-scope-note {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .m3-results .ui-kpi-sub {
+    color: var(--ink-3);
+  }
+
+  .m3-results .ui-kpi-sub .drill-num {
+    text-decoration: underline solid transparent;
+    text-underline-offset: 3px;
+  }
+
+  .m3-results .ui-kpi-sub .drill-num:hover,
+  .m3-results .ui-kpi-sub .drill-num:focus-visible {
+    text-decoration-color: currentcolor;
+  }
+
+  .m3-kpi-delta {
+    color: var(--ink-3);
+    text-decoration: underline solid transparent;
+    text-underline-offset: 3px;
+  }
+
+  .m3-kpi-delta:hover,
+  .m3-kpi-delta:focus-visible {
+    text-decoration-color: currentcolor;
+  }
+
+  .m3-kpi-delta.m3-up {
+    color: var(--ink);
+  }
+
+  .m3-kpi-delta.m3-down {
+    color: var(--ink);
+  }
+
+  /* The summary line (Topic-Overview "Since Oct 12: …"). */
+  .m3-summary-line {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+    align-items: start;
+    gap: var(--s-3) var(--s-4);
+    padding: var(--s-4) var(--s-5);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .m3-summary-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--r-s);
+    background: var(--fox-tint);
+    color: var(--fox);
+  }
+
+  .m3-summary-line.ui-tint .m3-summary-mark {
+    background: var(--surface);
+  }
+
+  .m3-summary-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .m3-summary-body .m3-headline {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    font-weight: var(--fw-regular);
+  }
+
+  .m3-summary-claude {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+
+  .m3-summary-claude :where(p, h2, h3) {
+    margin: 0;
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+
+  .m3-summary-ai {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .m3-summary-card {
+    grid-column: 1 / -1;
+  }
+
+  /* Tabs, then the open tab's content. */
+  .m3-results-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    min-width: 0;
+  }
+
+  .m3-results-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    min-width: 0;
+  }
+
+  .m3-results-panel:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-radius: var(--r-m);
+  }
+
+  .m3-results .m3-pair {
+    grid-template-columns: repeat(auto-fit, minmax(min(520px, 100%), 1fr));
+    gap: var(--card-gap);
+    overflow: visible;
+  }
+
+  .m3-results .card {
+    padding: var(--card-pad);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .m3-results .card h2 {
+    margin: 0;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-h2);
+  }
+
+  .m3-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  .m3-section-sub {
+    margin: 0;
+    max-width: 80ch;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  /* Top actions: secondary actions, the one primary stays Check now in the header. */
+  .m3-results .m3-summary {
+    background: var(--surface);
+    border-color: var(--line);
+  }
+
+  .m3-pinned {
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--fox-line);
+    border-radius: var(--r-m);
+    background: var(--fox-tint);
+  }
+
+  /* A list grid inside a card (a chart's table view): the card draws the frame. */
+  .m3-results .ui-lg.m3-inner-grid {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .m3-action-link {
+    font-weight: var(--fw-semibold);
+  }
+
+  .m3-cannibal-url {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s-1) var(--s-3);
+    min-width: 0;
+  }
+}
+
+@layer screens {
+  /* Until ui.css hides it: the 40px tabs overflow the strip by 1px and draw a scrollbar. */
+  .m3-results .ui-tabs {
+    overflow-y: hidden;
+  }
+}

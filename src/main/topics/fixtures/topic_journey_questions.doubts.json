@@ -1,0 +1,34 @@
+{
+  "questions": [
+    {
+      "stage": "doubts",
+      "text": "Do I need 10DLC registration just to text alerts to my own employees, and can a service handle that paperwork for us?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "doubts",
+      "text": "Will texts sent from an email-to-SMS service get filtered as spam by carriers, and how do we keep alerts from being blocked?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "doubts",
+      "text": "If an employee replies to an automated text alert, can that reply come back to my email inbox instead of a separate app?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "doubts",
+      "text": "Is it legal to text employees on their personal phones for work alerts, and what consent do we need first?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "doubts",
+      "text": "What happens to our text alerts if the email-to-SMS service goes down? Is there a fallback so nobody misses an urgent message?",
+      "namedTool": null,
+      "competitorNamed": null
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+/* Report branding (Settings › Reports): the Reports home strip, the report header line, the form. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .rb-strip,
+  .rb-line {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin: 0;
+    color: var(--ink-2);
+    font-family: var(--font-ui);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .rb-strip {
+    align-self: flex-end;
+    padding: var(--s-1) var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  .rb-strip-quiet {
+    border-style: dashed;
+    background: none;
+  }
+
+  .rb-mark {
+    display: inline-grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    flex: none;
+    border-radius: var(--r-s);
+    background: var(--ink);
+    color: var(--on-ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .rb-mark-img {
+    max-width: 72px;
+    max-height: 22px;
+    flex: none;
+    object-fit: contain;
+  }
+
+  .rb-form,
+  .rb-fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+}
+
+/* Reports home: the last check left, the branding strip right, above the view tabs. */
+@layer screens {
+  .rb-home-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2) var(--s-4);
+  }
+
+  .rb-home-top > p {
+    margin: 0;
+  }
+}

@@ -1,0 +1,116 @@
+name: CI
+
+on:
+  # Every push runs the secret scan; the full test matrix runs on main and on PRs.
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  secrets:
+    name: Secret scan (gitleaks)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GITLEAKS_VERSION: 8.28.0
+      GITLEAKS_SHA256: a65b5253807a68ac0cafa4414031fd740aeb55f54fb7e55f386acb52e6a840eb
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # The release binary, checked against its known hash (gitleaks-action needs a
+      # paid licence for organisations). Scans every commit, with .gitleaks.toml.
+      - name: Install gitleaks
+        run: |
+          curl -sSfL -o /tmp/gitleaks.tgz \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  /tmp/gitleaks.tgz" | sha256sum -c -
+          tar -xzf /tmp/gitleaks.tgz -C /tmp gitleaks
+
+      - name: Scan history and files
+        run: /tmp/gitleaks detect --source . --config .gitleaks.toml --redact --no-banner --verbose
+
+  test:
+    name: ${{ matrix.os }}
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Format
+        run: npm run format:check
+
+      # Before the unit tests: real-data-guard.test.ts checks the built main
+      # bundle in out/, which a fresh checkout does not have.
+      - name: Build
+        run: npm run build
+
+      - name: Unit tests
+        run: npm run test:unit
+
+      # report-html, visibility and m3-running render in Playwright's own
+      # headless Chromium, which npm ci does not download.
+      - name: Playwright Chromium
+        shell: bash
+        run: npx playwright install --only-shell ${{ runner.os == 'Linux' && '--with-deps' || '' }} chromium
+
+      # Electron's Chromium sandbox needs unprivileged user namespaces, which
+      # Ubuntu 24.04 restricts through AppArmor. The Secret Service (used by
+      # @napi-rs/keyring) comes from gnome-keyring on a private D-Bus session;
+      # tests/e2e/keychain.ts makes its in-memory "session" collection the
+      # default and checks items with secret-tool. run-e2e.mjs wraps
+      # Playwright in xvfb-run when there is no display.
+      - name: Linux e2e prerequisites
+        if: runner.os == 'Linux'
+        run: |
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            xvfb dbus-x11 gnome-keyring libsecret-tools systemd
+
+      - name: E2E (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          dbus-run-session -- bash -euo pipefail -c '
+            echo -n "" | gnome-keyring-daemon --unlock --components=secrets >/dev/null
+            npm run test:e2e
+          '
+
+      - name: E2E (macOS, Windows)
+        if: runner.os != 'Linux'
+        run: npm run test:e2e
+
+      - name: Upload e2e results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-results-${{ matrix.os }}
+          path: test-results/
+          retention-days: 7
+          if-no-files-found: ignore

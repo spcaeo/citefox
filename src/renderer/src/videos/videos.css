@@ -1,0 +1,642 @@
+@layer shared, results, screens, utilities;
+
+/* YouTube (SRS §4.18), v2: KPI strip, tabs, list grids with the scope filters, the flow side panel. */
+@layer screens {
+  .yt-screen {
+    gap: var(--card-gap);
+  }
+
+  .yt-muted {
+    color: var(--ink-3);
+  }
+
+  .yt-small {
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .yt-strong {
+    font-weight: var(--fw-medium);
+  }
+
+  .yt-label {
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  .yt-error {
+    margin: 0;
+    color: var(--bad);
+  }
+
+  .yt-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2) var(--s-3);
+  }
+
+  .yt-row-end {
+    align-items: flex-end;
+  }
+
+  /* A label above its control in a row (Channel settings). */
+  .yt-field {
+    display: flex;
+    flex: 1 1 280px;
+    flex-direction: column;
+    gap: var(--s-1);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  /* A label and its value stacked (the flow's fields). */
+  .yt-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-width: 0;
+  }
+
+  .yt-intro {
+    max-width: 640px;
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+
+  /* ---- KPI strip ---- */
+  .yt-numbers {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  /* ---- Tabs ---- */
+  .yt-tabs,
+  .yt-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+
+  .yt-panel:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 4px;
+    border-radius: var(--r-s);
+  }
+
+  /* ---- Cells in the grids ---- */
+  .yt-clip {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .yt-stack,
+  .yt-idea-cell {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 18px;
+  }
+
+  .yt-stack .yt-muted,
+  .yt-idea-cell .yt-muted {
+    font-size: var(--fs-small);
+    line-height: 16px;
+  }
+
+  .yt-row-link {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    font-weight: var(--fw-medium);
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .yt-row-link:hover,
+  .yt-link:hover {
+    color: var(--action-ink);
+    text-decoration: underline;
+  }
+
+  .yt-row-link[aria-pressed='true'] {
+    color: var(--action-ink);
+  }
+
+  /* Links inside a line of text carry an underline, not only a colour. */
+  a.yt-link {
+    text-decoration: underline;
+    text-decoration-color: var(--ink-4);
+    text-underline-offset: 2px;
+  }
+
+  .yt-link {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .yt-evidence {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--s-1);
+  }
+
+  .yt-evidence .yt-muted {
+    font-size: var(--fs-small);
+  }
+
+  .yt-tags {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: var(--s-1);
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .yt-tags .yt-tag-btn {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .yt-tag-btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 0 6px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--ink-2);
+    font: inherit;
+    font-size: var(--fs-small);
+    cursor: pointer;
+  }
+
+  .yt-tag-btn:hover {
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+
+  .yt-status-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .yt-status-btn {
+    display: inline-flex;
+    min-height: 24px;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: none;
+    cursor: pointer;
+  }
+
+  .yt-status-btn[aria-pressed='true'] .ui-chip {
+    box-shadow: 0 0 0 1px var(--fox);
+  }
+
+  .yt-deadline {
+    font-size: var(--fs-small);
+  }
+
+  .yt-row-link:focus-visible,
+  .yt-link:focus-visible,
+  .yt-tag-btn:focus-visible,
+  .yt-status-btn:focus-visible,
+  .yt-flag-link:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .yt-flag-link {
+    display: inline-flex;
+    border-radius: var(--r-pill);
+    text-decoration: underline solid transparent;
+    text-underline-offset: 3px;
+  }
+
+  .yt-flag-link:hover,
+  .yt-flag-link:focus-visible {
+    text-decoration-color: currentcolor;
+  }
+
+  .yt-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1);
+  }
+
+  /* ---- Five-step flow (FR-18.3), in the side panel ---- */
+  /* The idea drawer: a stepper on the left, the step on the right. */
+  .yt-flow {
+    display: grid;
+    grid-template-columns: 184px minmax(0, 1fr);
+    gap: var(--s-6);
+    align-items: start;
+  }
+
+  /* A narrow drawer: the steps become a wrapping row above the step. */
+  @container drawer (max-width: 720px) {
+    .yt-flow {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .yt-flow-nav {
+      position: static;
+    }
+
+    .yt-flow-nav .yt-stepper {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .yt-stepper button {
+      width: auto;
+    }
+  }
+
+  .yt-flow p {
+    margin: 0;
+  }
+
+  .yt-flow-nav {
+    position: sticky;
+    top: 0;
+  }
+
+  .yt-flow-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+    min-width: 0;
+  }
+
+  .yt-stepper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .yt-stepper button {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    width: 100%;
+    min-height: 36px;
+    padding: 0 var(--s-3);
+    border: 1px solid transparent;
+    border-radius: var(--r-s);
+    background: transparent;
+    color: var(--ink-2);
+    font: inherit;
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .yt-stepper button:hover {
+    background: var(--inset);
+  }
+
+  .yt-stepper button:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .yt-stepper li.done .yt-step-n {
+    background: var(--ok-tint);
+    color: var(--ok);
+  }
+
+  .yt-stepper li.now button {
+    border-color: var(--fox-line);
+    background: var(--fox-tint);
+    color: var(--ink);
+  }
+
+  .yt-step-n {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    font-size: var(--fs-small);
+  }
+
+  /* One step at a time beside the stepper. */
+  .yt-step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .yt-step h3:focus {
+    outline: none;
+  }
+
+  .yt-question {
+    margin: 0;
+    padding-left: var(--s-3);
+    border-left: 3px solid var(--fox-line);
+    font-size: var(--fs-h3);
+    line-height: var(--lh-h3);
+  }
+
+  .ui-input.yt-date {
+    width: 180px;
+  }
+
+  .yt-url-input {
+    flex: 1 1 320px;
+    min-width: 0;
+  }
+
+  .yt-url-input[aria-invalid='true'] {
+    border-color: var(--bad);
+  }
+
+  .yt-brief {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .yt-brief-title {
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semibold);
+  }
+
+  .yt-plain {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--fs-ui);
+  }
+
+  .yt-fn {
+    margin-left: 2px;
+    color: var(--fox-ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .yt-sources li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .yt-sources li.yt-flag {
+    color: var(--warn);
+  }
+
+  .yt-pre {
+    margin: 0;
+    padding: var(--s-3);
+    border-radius: var(--r-s);
+    background: var(--inset);
+    font-family: var(--font-ui);
+    font-size: var(--fs-ui);
+    white-space: pre-wrap;
+  }
+
+  .yt-scenes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .yt-scene {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding: var(--s-3);
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--inset);
+    font-size: var(--fs-ui);
+  }
+
+  .yt-make {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--s-3);
+  }
+
+  .yt-make-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    align-items: flex-start;
+    padding: var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--inset);
+  }
+
+  .yt-make-card h4 {
+    margin: 0;
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .yt-make-card p {
+    color: var(--ink-2);
+  }
+
+  .yt-files {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+
+  .yt-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .yt-checklist legend {
+    margin-bottom: var(--s-2);
+    font-weight: var(--fw-semibold);
+  }
+
+  .yt-check {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    min-height: 28px;
+    font-size: var(--fs-ui);
+  }
+
+  .yt-check input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--select);
+  }
+
+  .yt-track {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--s-3);
+    margin: 0;
+  }
+
+  .yt-track div {
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-m);
+    background: var(--inset);
+  }
+
+  .yt-track dt {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .yt-track dd {
+    margin: 0;
+    font-size: var(--fs-h3);
+    line-height: var(--lh-h3);
+    font-weight: var(--fw-semibold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- Teleprompter (FR-18.5): a full-screen view with large type ---- */
+  .yt-prompter-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-drawer);
+    display: flex;
+    justify-content: center;
+    background: var(--surface);
+  }
+
+  .yt-prompter {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    width: min(960px, 100%);
+    height: 100%;
+    padding: var(--s-6);
+    overflow: hidden;
+  }
+
+  .yt-prompter-head {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-2);
+  }
+
+  .yt-prompter-titles {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .yt-prompter-titles h2 {
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+  }
+
+  .yt-prompter-eyebrow {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .yt-prompter-lines {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+    padding: 0 var(--s-2);
+    overflow: auto;
+    list-style: none;
+  }
+
+  .yt-prompter-lines li {
+    display: none;
+    color: var(--ink);
+    font-size: 32px;
+    font-weight: var(--fw-semibold);
+    line-height: 40px;
+    letter-spacing: var(--ls-display);
+  }
+
+  .yt-prompter-lines li.now {
+    display: block;
+  }
+
+  .yt-prompter-lines li.now + li {
+    display: block;
+    margin-top: var(--s-6);
+    color: var(--ink-4);
+    font-size: 22px;
+    line-height: 28px;
+  }
+
+  .yt-prompter-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    padding-top: var(--s-3);
+    border-top: 1px solid var(--line);
+  }
+
+  .yt-prompter-foot p {
+    margin: 0;
+  }
+
+  @media (max-width: 760px) {
+    .yt-prompter-lines li {
+      font-size: 24px;
+      line-height: 32px;
+    }
+  }
+}

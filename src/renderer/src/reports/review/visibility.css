@@ -1,0 +1,211 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * The Visibility report's own cards (sections/VisibilitySections.tsx and
+ * ReputationSection.tsx): the cover strip, the headline, the opportunity legend, the
+ * share bars, the tone bars and the wrong-claims list. Same calm cards as review.css.
+ */
+@layer screens {
+  .rv-facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-2) var(--s-4);
+    margin: 0;
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--inset);
+  }
+
+  .rv-fact {
+    min-width: 0;
+  }
+
+  .rv-fact dt {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .rv-fact dd {
+    margin: 0;
+    overflow: hidden;
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .rv-headline {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-h3);
+  }
+
+  .rv-legend,
+  .rv-qlist,
+  .rv-claims {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: var(--s-2) 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .rv-claims {
+    gap: var(--s-3);
+  }
+
+  .rv-claim {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding-bottom: var(--s-3);
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+  }
+
+  .rv-claim p {
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  .rv-flag {
+    display: inline-block;
+    margin-left: var(--s-2);
+    padding: 0 var(--s-2);
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    white-space: nowrap;
+  }
+
+  td > .rv-flag:first-child {
+    margin-left: 0;
+  }
+
+  .rv-flag-ok,
+  .rv-flag-positive {
+    background: var(--result-target-tint);
+    color: var(--result-target-ink);
+  }
+
+  .rv-flag-warn,
+  .rv-flag-negative {
+    background: var(--warn-tint);
+    color: var(--result-not-cited-ink);
+  }
+
+  .rv-sharebar,
+  .rv-tone {
+    display: inline-flex;
+    overflow: hidden;
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    vertical-align: middle;
+  }
+
+  .rv-sharebar {
+    width: 48px;
+    height: 6px;
+  }
+
+  .rv-tone {
+    width: 140px;
+    height: 8px;
+  }
+
+  .rv-sharebar i,
+  .rv-tone i {
+    display: block;
+    height: 100%;
+  }
+
+  .rv-sharebar i,
+  .rv-tone-pos {
+    background: var(--result-target);
+  }
+
+  .rv-tone-neu {
+    background: var(--line-strong);
+  }
+
+  .rv-tone-neg {
+    background: var(--result-not-cited);
+  }
+
+  .rv-net {
+    margin: var(--s-2) 0;
+    color: var(--ink);
+    font-size: var(--fs-h1);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-h1);
+  }
+
+  .rv-net-ok {
+    color: var(--result-target-ink);
+  }
+
+  .rv-net-warn {
+    color: var(--result-not-cited-ink);
+  }
+
+  .rv-themes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rv-theme {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+
+  .rv-theme p {
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  .rv-theme-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .rv-sentiment {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .rv-fold {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-3);
+  }
+
+  .rv-fold > .rv-tbl {
+    align-self: stretch;
+  }
+
+  @media (max-width: 900px) {
+    .rv-facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}

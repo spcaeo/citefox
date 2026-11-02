@@ -1,0 +1,138 @@
+/* Prompt grid on the results tab (v2 ListGrid). Shared result rules stay in m3.css. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .m3-pg {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  .m3-pg .m3-pg-n {
+    color: var(--ink-3);
+  }
+
+  .m3-pg-text {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* The prompt ellipsizes; the row's ✦ keeps its size at the cell's end, inside its focus ring. */
+  .m3-pg .m3-pg-prompt {
+    gap: var(--s-2);
+  }
+
+  .m3-pg-prompt > .ui-menu-wrap {
+    margin-inline-start: auto;
+    margin-inline-end: 3px;
+  }
+
+  .m3-pg-text .md-inline,
+  .m3-pg-text .m3-prompt-md {
+    display: inline;
+  }
+
+  .m3-pg-link {
+    color: inherit;
+    text-decoration: underline solid transparent;
+    text-underline-offset: 3px;
+  }
+
+  .m3-pg-link:hover,
+  .m3-pg-link:focus-visible {
+    color: var(--action-ink);
+    text-decoration-color: currentcolor;
+  }
+
+  /* "Cited instead": the first domains on one line, then "+N more". */
+  .m3-instances {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    max-width: 100%;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    white-space: nowrap;
+  }
+
+  .m3-instance-line {
+    display: flex;
+    align-items: center;
+    /* Never narrower than the site icon, so every cited site stays recognisable. */
+    min-width: 16px;
+    flex: 0 10 auto;
+    /* One text line: the 24px Copy and Open overflow it instead of pushing it down. */
+    height: var(--lh-small);
+  }
+
+  /*
+   * The first (best placed) site keeps its name; later ones give way first. Its factor
+   * stays at 1: once the others reach their minimum, flex factors that sum below 1 hand
+   * out only part of the overflow, which pushed "+N more" out of the cell.
+   */
+  .m3-instance-line:first-child {
+    flex-shrink: 1;
+  }
+
+  .m3-instance {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* A drillable domain is a button that clips and ellipsizes itself. */
+  .m3-instance > .m3-cell-btn {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .m3-instance-sep {
+    flex: 0 0 auto;
+  }
+
+  .m3-instances-more {
+    flex: 0 0 auto;
+    color: var(--ink-3);
+    white-space: nowrap;
+  }
+
+  /* Cells that open something. */
+  .m3-cell-link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .m3-cell-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .m3-cell-btn {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    text-decoration: underline solid transparent;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .m3-cell-btn:hover,
+  .m3-cell-btn:focus-visible {
+    color: var(--action-ink);
+    text-decoration-color: currentcolor;
+  }
+}

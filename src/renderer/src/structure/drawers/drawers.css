@@ -1,0 +1,98 @@
+@layer shared, results, screens, utilities;
+
+/* Page drawers: cluster, group, pick pages, move pages, rename page. Tokens only. */
+@layer screens {
+  .pd-list {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+
+  .pd-error {
+    color: var(--bad-ink);
+  }
+
+  .pd-foot {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  .pd-note-inline {
+    overflow: hidden;
+    color: var(--ink-3);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pd-note {
+    margin: 0;
+    max-width: 72ch;
+    color: var(--ink-2);
+  }
+
+  .pd-role {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .pd-themes {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--card-gap);
+    align-items: stretch;
+  }
+
+  .pd-theme-list,
+  .pd-page-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pd-theme-list li,
+  .pd-page-list li {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .pd-page-name,
+  .pd-page-path,
+  .pd-theme-list a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pd-page-path {
+    font-family: var(--font-code);
+    font-size: var(--fs-small);
+  }
+
+  .pd-filter .select {
+    min-width: 150px;
+  }
+
+  @container (max-width: 720px) {
+    .pd-themes {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* Rail facts: label and value on one line in a narrow rail. */
+  .pd-facts .ui-drawer-fact {
+    grid-template-columns: max-content minmax(0, 1fr);
+  }
+
+  .pd-facts .ui-drawer-fact dd {
+    text-align: end;
+    overflow-wrap: anywhere;
+  }
+}

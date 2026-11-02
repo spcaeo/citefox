@@ -1,0 +1,121 @@
+/* Site icons beside domains (SiteIcon.tsx). v2 tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  /*
+   * --site-icon-ring: a faint ring so a dark logo on a transparent background stays
+   * visible on dark rows (UrlStates board, state 9). None in the light theme.
+   */
+  :root {
+    --site-icon-ring: transparent;
+    /* The sixth tile's letter: spruce on light; dark spruce would vanish on dark rows. */
+    --site-icon-tone-5: var(--spruce-2);
+  }
+
+  :root[data-theme='dark'] {
+    --site-icon-ring: var(--line-strong);
+    --site-icon-tone-5: var(--spruce-ink-2);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      --site-icon-ring: var(--line-strong);
+      --site-icon-tone-5: var(--spruce-ink-2);
+    }
+  }
+
+  .site-icon {
+    display: inline-block;
+    flex: none;
+    border-radius: var(--r-s);
+    vertical-align: middle;
+    object-fit: contain;
+  }
+
+  .site-icon-img {
+    box-shadow: 0 0 0 1px var(--site-icon-ring);
+  }
+
+  .site-icon-letter,
+  .site-icon-globe {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--inset);
+    box-shadow: inset 0 0 0 1px var(--line);
+    color: var(--ink-3);
+    font-family: var(--font-ui);
+    font-size: 10px;
+    font-weight: var(--fw-semibold);
+    line-height: 1;
+    user-select: none;
+  }
+
+  /* A stable colour per domain (SiteIcon siteTone), from the token palette only. */
+  .site-icon-tone-0 {
+    background: var(--fox-tint);
+    box-shadow: inset 0 0 0 1px var(--fox-line);
+    color: var(--fox-ink);
+  }
+
+  .site-icon-tone-1 {
+    background: var(--ok-tint);
+    color: var(--ok);
+  }
+
+  .site-icon-tone-2 {
+    background: var(--info-tint);
+    color: var(--info);
+  }
+
+  .site-icon-tone-3 {
+    background: var(--warn-tint);
+    color: var(--warn);
+  }
+
+  .site-icon-tone-4 {
+    background: var(--bad-tint);
+    color: var(--bad);
+  }
+
+  .site-icon-tone-5 {
+    background: var(--chart-band);
+    color: var(--site-icon-tone-5);
+  }
+
+  .site-icon-tone-1,
+  .site-icon-tone-2,
+  .site-icon-tone-3,
+  .site-icon-tone-4,
+  .site-icon-tone-5 {
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+
+  .site-icon-letter::before {
+    content: attr(data-letter);
+  }
+
+  .site-icon-letter.site-icon-20 {
+    font-size: var(--fs-small);
+  }
+
+  .site-icon-spaced {
+    margin-inline-end: var(--s-2);
+  }
+
+  .site-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .site-label-text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

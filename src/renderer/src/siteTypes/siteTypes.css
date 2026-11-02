@@ -1,0 +1,87 @@
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  /*
+   * Types of site (SiteTypesDrawer): the colour picker draws each choice as the
+   * chip it gives; each custom type is one row. Tokens from styles/tokens.css.
+   */
+  .sty-tones {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .sty-tones-label {
+    margin-bottom: var(--s-1);
+    padding: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  .sty-tones-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+
+  .sty-tone {
+    display: inline-flex;
+    padding: 2px;
+    border: 1px solid transparent;
+    border-radius: var(--r-pill);
+    cursor: pointer;
+  }
+
+  .sty-tone:has(input:checked) {
+    border-color: var(--ink-2);
+  }
+
+  .sty-tone:has(input:focus-visible) {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .sty-preview {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .sty-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+  }
+
+  .sty-row {
+    display: grid;
+    grid-template-columns: 112px minmax(120px, 1fr) 104px 88px max-content;
+    align-items: center;
+    gap: var(--s-3);
+    padding: var(--s-2) var(--s-3);
+  }
+
+  .sty-row > .ui-chip {
+    justify-self: start;
+    max-width: 100%;
+  }
+
+  .sty-row + .sty-row {
+    border-top: 1px solid var(--line);
+  }
+
+  .sty-row-used {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    white-space: nowrap;
+  }
+}

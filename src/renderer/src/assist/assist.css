@@ -1,0 +1,238 @@
+/*
+ * AI assist button and result panel (FR-25) in the v2 look: the result is a
+ * suggestion card (Theme "Suggestion", Seed-Profile.png). v2 tokens only.
+ */
+
+@layer shared, results, screens, utilities;
+
+@layer shared {
+  .assist {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .assist-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-3);
+    align-items: center;
+  }
+
+  .assist-trigger .ui-icon {
+    color: var(--fox);
+  }
+
+  .assist-trigger[aria-expanded='true'] {
+    border-color: var(--fox-line);
+    background: var(--fox-tint);
+    color: var(--fox-ink);
+  }
+
+  .assist-label,
+  .assist-note,
+  .assist-running {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .assist-running {
+    display: inline-flex;
+    gap: var(--s-1);
+    align-items: center;
+    font-size: var(--fs-ui);
+  }
+
+  .assist-running .ui-icon {
+    color: var(--fox);
+  }
+
+  .assist-live:empty {
+    display: none;
+  }
+
+  /* ---- The result: one suggestion card ---- */
+  .assist-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    padding: var(--s-5) var(--card-pad);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .assist-panel-head {
+    display: flex;
+    gap: var(--s-2);
+    align-items: flex-start;
+  }
+
+  .assist-mark {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: var(--r-s);
+    background: var(--fox-tint);
+    color: var(--fox);
+  }
+
+  .assist-panel-titles {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .assist-panel-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-h3);
+  }
+
+  .assist-panel-meta,
+  .assist-footnote,
+  .assist-caution {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .assist-error {
+    margin: 0;
+    color: var(--bad);
+    font-size: var(--fs-ui);
+  }
+
+  .assist-summary {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+
+  .assist-items {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+    list-style: none;
+  }
+
+  .assist-item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-4);
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--h-row);
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .assist-item-body {
+    display: flex;
+    flex: 1 1 280px;
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-start;
+    min-width: 0;
+  }
+
+  .assist-item-text {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    overflow-wrap: anywhere;
+  }
+
+  .assist-item-detail {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .assist-tag {
+    margin-bottom: 2px;
+  }
+
+  .assist-sign {
+    display: inline-block;
+    min-width: 1.2em;
+    font-family: var(--font-code);
+    font-weight: var(--fw-semibold);
+  }
+
+  .assist-sign.add {
+    color: var(--ok);
+  }
+
+  .assist-sign.remove {
+    color: var(--bad);
+  }
+
+  .assist-verify {
+    display: flex;
+    gap: var(--s-1);
+    align-items: flex-start;
+    margin: 2px 0 0;
+    color: var(--warn);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .assist-verify .ui-icon {
+    flex: 0 0 auto;
+    margin-top: 1px;
+  }
+
+  .assist-recheck {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: var(--r-s);
+    background: var(--warn-tint);
+    color: var(--warn);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  .assist-item-actions,
+  .assist-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .assist-done {
+    color: var(--ok);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  .assist-instruction {
+    display: flex;
+  }
+
+  .assist-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: center;
+    justify-content: space-between;
+  }
+}

@@ -1,0 +1,917 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * v2 shared components (src/renderer/src/ui). Every class starts with `ui-` so
+ * it never meets the v1 `.btn`, `.chip`, `.seg` or `.card` rules. Values come
+ * from the v2 tokens in styles/tokens.css only.
+ */
+@layer shared {
+  .ui-icon {
+    display: block;
+    flex: 0 0 auto;
+  }
+
+  /* ---- Button ---- */
+  .ui-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-2);
+    height: var(--h-control);
+    padding: 0 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .ui-btn:hover {
+    background: var(--inset);
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .ui-btn:disabled,
+  .ui-btn[aria-disabled='true'] {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  .ui-btn[data-busy='true'] {
+    cursor: progress;
+  }
+
+  /* A busy button reads as working, not as switched off. */
+  .ui-btn[data-busy='true']:disabled {
+    opacity: 1;
+  }
+
+  /* The busy spinner, in the button's own text colour so it suits every variant. */
+  .ui-btn-spin {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    border: 2px solid color-mix(in srgb, currentColor 30%, transparent);
+    border-top-color: currentColor;
+    border-right-color: currentColor;
+    border-radius: 50%;
+  }
+
+  .ui-btn-sm .ui-btn-spin {
+    width: 12px;
+    height: 12px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .ui-btn-spin {
+      animation: ui-busy-spin 0.8s linear infinite;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-btn-spin {
+      animation: ui-busy-pulse 1.8s ease-in-out infinite;
+    }
+  }
+
+  .ui-btn-sm {
+    height: var(--h-control-sm);
+    padding: 0 10px;
+    font-size: var(--fs-ui);
+  }
+
+  /* Action yellow (FoxCue): the one main action of a screen, a header or a drawer footer. */
+  .ui-btn-primary {
+    border-color: var(--action);
+    background: var(--action);
+    color: var(--on-action);
+  }
+
+  .ui-btn-primary:hover {
+    border-color: var(--action-hover);
+    background: var(--action-hover);
+    color: var(--on-action);
+  }
+
+  .ui-btn-primary:active {
+    border-color: var(--action-press);
+    background: var(--action-press);
+  }
+
+  .ui-btn-ghost {
+    border-color: transparent;
+    background: transparent;
+    color: var(--ink-2);
+  }
+
+  .ui-btn-ghost:hover {
+    background: var(--hover);
+    color: var(--ink);
+  }
+
+  .ui-btn-text {
+    height: auto;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--action-ink);
+    font-size: var(--fs-ui);
+  }
+
+  .ui-btn-text:hover {
+    background: none;
+    color: var(--action-ink);
+    text-decoration: underline;
+  }
+
+  .ui-btn-danger {
+    border-color: var(--bad);
+    background: var(--bad);
+    color: var(--on-solid);
+  }
+
+  .ui-btn-danger:hover {
+    border-color: var(--bad-ink);
+    background: var(--bad-ink);
+    color: var(--on-solid);
+  }
+
+  /* ---- Icon button ---- */
+  .ui-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: var(--r-s);
+    background: transparent;
+    color: var(--ink-3);
+    cursor: pointer;
+  }
+
+  .ui-icon-btn-sm {
+    width: 28px;
+    height: 28px;
+  }
+
+  .ui-icon-btn:hover,
+  .ui-icon-btn[aria-expanded='true'] {
+    background: var(--hover);
+    color: var(--ink);
+  }
+
+  .ui-icon-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+
+  /* A small action as an icon (`data-tip` = its label): the tooltip under it, lined up on its right edge. */
+  .ui-icon-btn[data-tip] {
+    position: relative;
+  }
+
+  .ui-icon-btn[data-tip]:hover::after,
+  .ui-icon-btn[data-tip]:focus-visible::after {
+    content: attr(data-tip);
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: var(--z-pop);
+    padding: var(--s-1) var(--s-2);
+    border-radius: var(--r-s);
+    background: var(--ink);
+    box-shadow: var(--e2);
+    color: var(--on-ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-small);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .ui-icon-btn[data-tip][aria-expanded='true']::after {
+    display: none;
+  }
+
+  /* ---- Menu ---- */
+  .ui-menu-wrap {
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 auto;
+  }
+
+  .ui-menu {
+    position: fixed;
+    /* Above the guide's first-visit cards (also --z-pop): a menu just opened is on top. */
+    z-index: calc(var(--z-pop) + 1);
+    display: flex;
+    flex-direction: column;
+    padding: 6px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e2);
+    text-align: left;
+    /* A long menu (Filter ▾ with many sources) scrolls inside the window. */
+    max-height: calc(100vh - 2 * var(--s-2));
+    overflow-y: auto;
+  }
+
+  .ui-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    height: var(--h-control);
+    padding: 0 10px;
+    border: 0;
+    border-radius: var(--r-s);
+    background: none;
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: var(--fs-ui);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .ui-menu-item .ui-icon {
+    color: var(--ink-3);
+  }
+
+  .ui-menu-item:hover,
+  .ui-menu-item:focus {
+    background: var(--inset);
+    outline: none;
+  }
+
+  .ui-menu-item:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--fox);
+  }
+
+  .ui-menu-item[aria-disabled='true'] {
+    color: var(--ink-3);
+    cursor: not-allowed;
+  }
+
+  .ui-menu-ai .ui-icon {
+    color: var(--fox);
+  }
+
+  .ui-menu-danger,
+  .ui-menu-danger .ui-icon {
+    color: var(--bad);
+  }
+
+  .ui-menu-ok .ui-icon {
+    color: var(--ok);
+  }
+
+  .ui-menu-head {
+    margin: -6px -6px 6px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ui-menu-sep {
+    height: 1px;
+    margin: 6px -6px;
+    background: var(--line);
+  }
+
+  .ui-menu-label {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ui-menu-hint {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  /* A group's name above its items (MenuItem groupLabel), such as "Theme". */
+  .ui-menu-group {
+    margin: 0;
+    padding: var(--s-1) 10px 2px;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+  }
+
+  /* The tick on the chosen item of a set (MenuItem checked). */
+  .ui-menu-item .ui-menu-check {
+    flex: 0 0 auto;
+    color: var(--action-ink);
+  }
+
+  .ui-menu-foot {
+    margin: 6px -6px 0;
+    padding: 8px 12px 2px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  /* ---- Inputs used inside components ---- */
+  .ui-input {
+    display: block;
+    width: 100%;
+    height: var(--h-control);
+    padding: 0 12px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+
+  .ui-input-sm {
+    height: var(--h-control-sm);
+    font-size: var(--fs-ui);
+  }
+
+  .ui-input::placeholder {
+    color: var(--ink-3);
+  }
+
+  .ui-input:focus {
+    outline: none;
+    border-color: var(--fox);
+    box-shadow: var(--focus-ring);
+  }
+
+  .ui-check {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    flex: 0 0 auto;
+    accent-color: var(--select);
+  }
+
+  /* ---- Tabs ---- */
+  .ui-tabs {
+    display: flex;
+    align-items: stretch;
+    gap: var(--s-6);
+    /* The full-width rule is an inset shadow, so the selected underline paints
+       over it without overflowing the strip (no stray vertical scrollbar). */
+    box-shadow: inset 0 -1px 0 var(--line);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+  }
+
+  .ui-tab {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex: 0 0 auto;
+    height: 44px;
+    padding: 0 2px;
+    border: 0;
+    background: none;
+    color: var(--ink-2);
+    font-family: var(--font-ui);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  /* The underline: 3px fox on the selected tab, a faint line on hover. */
+  .ui-tab::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+    background: transparent;
+    content: '';
+  }
+
+  .ui-tab:hover {
+    color: var(--ink);
+  }
+
+  .ui-tab:hover::after {
+    background: var(--line-strong);
+  }
+
+  .ui-tab[aria-selected='true'] {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ui-tab[aria-selected='true']::after {
+    background: var(--select);
+  }
+
+  .ui-tab:focus-visible {
+    outline-offset: -2px;
+  }
+
+  /* Holds the semibold width, so selecting a tab never shifts the ones after it. */
+  .ui-tab-label {
+    display: inline-flex;
+    flex-direction: column;
+  }
+
+  .ui-tab-label::after {
+    height: 0;
+    overflow: hidden;
+    font-weight: var(--fw-semibold);
+    visibility: hidden;
+    content: attr(data-label) / '';
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .ui-tab-lead {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .ui-tab-tag {
+    display: inline-flex;
+    align-items: center;
+    height: 18px;
+    padding: 0 6px;
+    border-radius: var(--r-pill);
+    background: var(--ok-tint);
+    color: var(--ok);
+    font-size: var(--fs-small);
+    font-weight: 600;
+  }
+
+  .ui-tab-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: var(--r-pill);
+    background: var(--line);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    font-weight: var(--fw-medium);
+  }
+
+  .ui-tab[aria-selected='true'] .ui-tab-count {
+    background: var(--select-tint);
+    color: var(--select);
+  }
+
+  .ui-tabpanel:focus-visible {
+    outline-offset: 4px;
+  }
+
+  /* Page tabs (PageTabs): one row; a fade on an edge that hides tabs says there is more. */
+  .ui-tabs-scroll {
+    position: relative;
+    overscroll-behavior-x: contain;
+  }
+
+  .ui-tabs-scroll[data-more-end='true'] {
+    mask-image: linear-gradient(to right, var(--ink) calc(100% - var(--s-8)), transparent);
+  }
+
+  .ui-tabs-scroll[data-more-start='true'] {
+    mask-image: linear-gradient(to left, var(--ink) calc(100% - var(--s-8)), transparent);
+  }
+
+  .ui-tabs-scroll[data-more-start='true'][data-more-end='true'] {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      var(--ink) var(--s-8),
+      var(--ink) calc(100% - var(--s-8)),
+      transparent
+    );
+  }
+
+  /* Sub-tabs (Tabs size="sm"): shorter, smaller, a 2px ink underline and
+     plain counts, so they never read as a second row of page tabs. */
+  .ui-tabs-sm {
+    gap: var(--s-5);
+  }
+
+  .ui-tabs-sm .ui-tab {
+    gap: var(--s-1);
+    height: var(--h-control);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .ui-tabs-sm .ui-tab::after {
+    height: 2px;
+    border-radius: 2px 2px 0 0;
+  }
+
+  .ui-tabs-sm .ui-tab[aria-selected='true']::after {
+    background: var(--ink-2);
+  }
+
+  .ui-tabs-sm .ui-tab-count,
+  .ui-tabs-sm .ui-tab[aria-selected='true'] .ui-tab-count {
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    background: transparent;
+    color: var(--ink-3);
+  }
+
+  /* ---- Page nav: back link, path and pager above a drill-down title ---- */
+  .ui-pagenav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    min-width: 0;
+    min-height: var(--h-pagenav);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .ui-pagenav-path {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  /* Flush with the content edge: the arrow starts where the title starts. */
+  .ui-pagenav-back {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 6px;
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+    text-decoration: none;
+  }
+
+  .ui-pagenav-back:hover {
+    color: var(--action-ink-hover);
+    text-decoration: none;
+  }
+
+  /* The path: a thin divider after the back link, then steps split by "/". */
+  .ui-pagenav-crumbs {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    margin: 0;
+    padding: 0 0 0 var(--s-3);
+    border-left: 1px solid var(--line-strong);
+    color: var(--ink-3);
+    list-style: none;
+  }
+
+  .ui-pagenav-crumbs li {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  /* The first and last steps keep their width; the middle ones give way. */
+  .ui-pagenav-crumbs li:first-child,
+  .ui-pagenav-crumbs li:last-child {
+    flex-shrink: 0;
+  }
+
+  .ui-pagenav-crumbs li:not(:first-child)::before {
+    padding: 0 6px;
+    color: var(--ink-4);
+    content: '/';
+  }
+
+  .ui-pagenav-crumbs a {
+    color: var(--ink-3);
+    text-decoration: none;
+  }
+
+  .ui-pagenav-crumbs a:hover {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+
+  .ui-pagenav-crumbs [aria-current='page'] {
+    color: var(--ink-2);
+    font-weight: var(--fw-medium);
+  }
+
+  /* What follows the path, such as the page's URL: past the same thin divider. */
+  .ui-pagenav-detail {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    padding-left: var(--s-3);
+    border-left: 1px solid var(--line-strong);
+    color: var(--ink-2);
+  }
+
+  /* The right end, before the pager: such as the page's settings as chips. */
+  .ui-pagenav-end {
+    display: flex;
+    flex: 0 1 auto;
+    align-items: center;
+    min-width: 0;
+    margin-left: auto;
+  }
+
+  .ui-pagenav-pager {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--s-3);
+    color: var(--ink-3);
+  }
+
+  /* Previous and next as one bordered pair. */
+  .ui-pagenav-steps {
+    display: inline-flex;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+  }
+
+  .ui-pagenav-step {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ink-2);
+    cursor: pointer;
+  }
+
+  .ui-pagenav-step + .ui-pagenav-step {
+    border-left: 1px solid var(--line);
+  }
+
+  .ui-pagenav-step:first-child {
+    border-radius: var(--r-s) 0 0 var(--r-s);
+  }
+
+  .ui-pagenav-step:last-child {
+    border-radius: 0 var(--r-s) var(--r-s) 0;
+  }
+
+  .ui-pagenav-step:hover {
+    background: var(--hover);
+    color: var(--ink);
+  }
+
+  .ui-pagenav-step:disabled {
+    color: var(--ink-4);
+    cursor: not-allowed;
+  }
+
+  .ui-pagenav-step:disabled:hover {
+    background: transparent;
+  }
+
+  /* ---- Chip and badge ---- */
+  /* A grey outline with grey text in every tone but bad (owner, 2026-10-30: few colours). */
+  .ui-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 24px;
+    padding: 0 9px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-chip);
+    background: transparent;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+  }
+
+  .ui-chip-sm {
+    height: 20px;
+    padding: 0 7px;
+  }
+
+  /* A failure keeps its red text; the other tones read by their words. */
+  .ui-chip-bad {
+    color: var(--bad);
+  }
+
+  /* ResultChip: Named is a plain outlined chip (the other results: ui/views.css). */
+  .ui-result-named {
+    color: var(--ink-2);
+  }
+
+  .ui-result-quiet {
+    white-space: nowrap;
+  }
+
+  /* ChangeCell: a change is coloured text, never a pill. */
+  .ui-change {
+    font-weight: var(--fw-semibold);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ui-change.faint {
+    font-weight: var(--fw-regular);
+  }
+
+  /* Gained, Lost, New overview: ink words, no colour (owner, 2026-10-30: few colours). */
+  .ui-change-good,
+  .ui-change-bad,
+  .ui-change-info,
+  .ui-change-warn {
+    color: var(--ink);
+  }
+
+  .ui-change-neutral {
+    color: var(--ink-3);
+    font-weight: var(--fw-medium);
+  }
+
+  .ui-dot {
+    width: 6px;
+    height: 6px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: currentcolor;
+  }
+
+  /* A chip's dot is the one place its tone shows. */
+  .ui-chip-ok > .ui-dot {
+    background: var(--ok);
+  }
+
+  .ui-chip-warn > .ui-dot {
+    background: var(--warn);
+  }
+
+  .ui-chip-info > .ui-dot {
+    background: var(--info);
+  }
+
+  .ui-chip-fox > .ui-dot {
+    background: var(--select);
+  }
+
+  .ui-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 7px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    font-weight: var(--fw-medium);
+  }
+
+  /* ---- AI menu button ---- */
+  .ui-ai-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: var(--h-control-sm);
+    padding: 0 8px 0 10px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink-2);
+    font-family: var(--font-ui);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .ui-ai-btn:hover {
+    background: var(--inset);
+    color: var(--ink);
+  }
+
+  .ui-ai-btn-sm {
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-color: transparent;
+    background: transparent;
+  }
+
+  .ui-ai-spark {
+    display: inline-flex;
+    color: var(--fox);
+  }
+
+  .ui-ai-on,
+  .ui-ai-on:hover {
+    border-color: var(--fox-line);
+    background: var(--fox-tint);
+    color: var(--fox-ink);
+  }
+
+  /* ---- Standard tools (ui/Tools.tsx, Docs/DESIGN-GUIDELINES.md) ---- */
+  .ui-tools {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--s-1);
+  }
+
+  .ui-search {
+    position: relative;
+    display: flex;
+    flex: 1 1 200px;
+    align-items: center;
+    min-width: 200px;
+    max-width: 280px;
+  }
+
+  .ui-search-icon {
+    position: absolute;
+    left: 10px;
+    display: flex;
+    color: var(--ink-3);
+    pointer-events: none;
+  }
+
+  .ui-search-input {
+    width: 100%;
+    height: var(--h-control-sm);
+    padding: 0 12px 0 32px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: var(--fs-ui);
+  }
+
+  .ui-search-input::placeholder {
+    color: var(--ink-3);
+  }
+
+  .ui-search-input:focus {
+    border-color: var(--focus, var(--fox));
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .ui-filterbar {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .ui-filterbar-start {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2) var(--s-3);
+    min-width: 0;
+  }
+
+  .ui-filterbar-end {
+    display: flex;
+    flex: 0 1 auto;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+}

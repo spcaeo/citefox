@@ -1,0 +1,778 @@
+@layer shared, results, screens, utilities;
+
+/* v2 wizard and panel components: Stepper, WizardFooter, Panel/RightRail, SuggestionCard. */
+@layer shared {
+  /* ---- Stepper ---- */
+  .ui-stepper {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ui-step {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .ui-step:last-child {
+    flex: 0 0 auto;
+  }
+
+  .ui-step-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex: 0 0 auto;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink-2);
+    font-family: var(--font-ui);
+    font-size: var(--fs-body);
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+  }
+
+  button.ui-step-btn {
+    border-radius: var(--r-s);
+    cursor: pointer;
+  }
+
+  button.ui-step-btn:hover .ui-step-label {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+
+  .ui-step-is-current .ui-step-btn {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ui-step-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ui-step-done {
+    background: var(--chart-2);
+    color: var(--on-solid);
+  }
+
+  .ui-step-current {
+    background: var(--action);
+    color: var(--on-action);
+  }
+
+  .ui-step-todo {
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    color: var(--ink-2);
+  }
+
+  .ui-step-incomplete {
+    border: 1px solid var(--warn);
+    background: var(--warn-tint);
+    color: var(--warn);
+  }
+
+  .ui-step-line {
+    flex: 1 1 auto;
+    min-width: 16px;
+    height: 1px;
+    background: var(--line-strong);
+  }
+
+  .ui-step-line-done {
+    background: var(--ink-2);
+  }
+
+  /* ---- Wizard footer ---- */
+  .ui-wizard-foot {
+    position: sticky;
+    bottom: 0;
+    z-index: var(--z-sticky);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    min-height: 72px;
+    padding: var(--s-4) var(--page-pad);
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .ui-wizard-end {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+
+  .ui-wizard-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .ui-wizard-note span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ui-wizard-note-warn .ui-icon {
+    color: var(--bad);
+  }
+
+  /* ---- Panel, rail, side panel ---- */
+  .ui-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .ui-panel-inset {
+    background: var(--inset);
+  }
+
+  .ui-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2);
+    min-height: 32px;
+  }
+
+  .ui-panel-title {
+    margin: 0;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-h2);
+  }
+
+  h3.ui-panel-title {
+    font-size: var(--fs-h3);
+    line-height: var(--lh-h3);
+    letter-spacing: 0;
+  }
+
+  .ui-panel-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .ui-rail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    min-width: 0;
+  }
+
+  /* ---- Suggestion card ---- */
+  .ui-suggest {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    padding: var(--card-pad);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .ui-suggest-head {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-2);
+  }
+
+  .ui-suggest-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex: 0 0 auto;
+    border-radius: var(--r-s);
+    background: var(--fox-tint);
+    color: var(--fox);
+  }
+
+  /* On the card's AI tint, the mark and the re-check row are plain (no tint inside a tint). */
+  .ui-suggest.ui-tint .ui-suggest-mark,
+  .ui-suggest.ui-tint .ui-suggest-recheck {
+    background: var(--surface);
+  }
+
+  .ui-suggest-titles {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ui-suggest-titles h3 {
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+  }
+
+  .ui-suggest-meta,
+  .ui-suggest-note,
+  .ui-suggest-status,
+  .ui-suggest-label {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ui-suggest-error {
+    margin: 0;
+    color: var(--bad);
+    font-size: var(--fs-ui);
+  }
+
+  .ui-suggest-body {
+    color: var(--ink);
+  }
+
+  .ui-suggest-items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ui-suggest-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+  }
+
+  .ui-suggest-item .ui-check {
+    margin-top: 2px;
+  }
+
+  .ui-suggest-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .ui-suggest-text {
+    color: var(--ink);
+  }
+
+  .ui-suggest-detail {
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  .ui-suggest-recheck {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: var(--r-s);
+    background: var(--warn-tint);
+    color: var(--warn);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  .ui-suggest-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+  }
+
+  .ui-suggest-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  /* ---- Assist progress (owner feedback #1): the live step list of an AI call ---- */
+  .ui-progress {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--inset);
+  }
+
+  .ui-progress.is-folded {
+    gap: 0;
+    padding: 0;
+    background: var(--surface);
+  }
+
+  .ui-progress-head {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .ui-progress-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex: 0 0 auto;
+    border-radius: var(--r-s);
+    background: var(--select-tint);
+    color: var(--select);
+  }
+
+  .ui-progress-title {
+    flex: 1;
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: var(--lh-h3);
+  }
+
+  .ui-progress-time {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ui-progress-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ui-progress.is-folded .ui-progress-steps {
+    padding: var(--s-3) var(--s-4) var(--s-2);
+    border-top: 1px solid var(--line);
+  }
+
+  .ui-progress-step {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 10px;
+  }
+
+  .ui-progress-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+    border-radius: var(--r-pill);
+  }
+
+  .ui-progress-icon.is-done {
+    background: var(--ok-tint);
+    color: var(--ok);
+  }
+
+  .ui-progress-icon.is-failed {
+    background: var(--bad-tint);
+    color: var(--bad);
+  }
+
+  .ui-progress-icon.is-skipped {
+    background: var(--surface);
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+  }
+
+  .ui-progress-icon.is-skipped .dash {
+    width: 8px;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--ink-4);
+  }
+
+  .ui-progress-icon.is-running {
+    background: var(--select-tint);
+    color: var(--select);
+    box-shadow: inset 0 0 0 1px var(--select-line);
+  }
+
+  .ui-progress-icon.is-running .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--r-pill);
+    background: var(--select);
+  }
+
+  .ui-progress-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+    padding-top: 1px;
+  }
+
+  .ui-progress-label {
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-h3);
+    overflow-wrap: anywhere;
+  }
+
+  .ui-progress-step[data-state='running'] .ui-progress-label {
+    font-weight: 600;
+  }
+
+  .ui-progress-step[data-state='skipped'] .ui-progress-label {
+    color: var(--ink-3);
+  }
+
+  .ui-progress-detail {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    overflow-wrap: anywhere;
+  }
+
+  .ui-progress-step[data-state='failed'] .ui-progress-detail {
+    color: var(--bad);
+  }
+
+  .ui-progress-secs {
+    padding-top: 2px;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ui-progress-step[data-state='running'] .ui-progress-secs {
+    color: var(--fox-ink);
+    font-weight: 600;
+  }
+
+  .ui-progress-foot-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    padding-top: var(--s-2);
+    border-top: 1px dashed var(--line);
+  }
+
+  .ui-progress-foot {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ui-progress.is-folded .ui-progress-foot {
+    padding: 0 var(--s-4) var(--s-3) 46px;
+  }
+
+  .ui-progress-fold {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px var(--s-4);
+    border: 0;
+    border-radius: var(--r-m);
+    background: transparent;
+    color: var(--ink-2);
+    font: inherit;
+    font-size: var(--fs-ui);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .ui-progress-fold:hover {
+    background: var(--inset);
+  }
+
+  .ui-progress-fold:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .ui-progress-fold-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ui-progress-fold-cta {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  /* Motion: a soft pulse on the running icon and a shimmer over the running label. */
+  @media (prefers-reduced-motion: no-preference) {
+    .ui-progress[data-motion='full'] .ui-progress-icon.is-running {
+      animation: ui-progress-pulse 1.4s ease-in-out infinite;
+    }
+
+    .ui-progress[data-motion='full'] .ui-progress-mark {
+      animation: ui-progress-glow 2.4s ease-in-out infinite;
+    }
+
+    .ui-progress[data-motion='full'] .ui-progress-step[data-state='running'] .ui-progress-label {
+      background: linear-gradient(
+          90deg,
+          var(--ink) 0%,
+          var(--ink) 40%,
+          var(--fox) 50%,
+          var(--ink) 60%,
+          var(--ink) 100%
+        )
+        0 0 / 250% 100%;
+      background-clip: text;
+      color: transparent;
+      animation: ui-progress-shimmer 2.2s linear infinite;
+    }
+
+    /* New live rows slide in; the folded list opens still. */
+    .ui-progress[data-motion='full']:not(.is-folded) .ui-progress-step {
+      animation: ui-progress-in 220ms ease-out both;
+    }
+  }
+
+  @keyframes ui-progress-pulse {
+    0%,
+    100% {
+      box-shadow:
+        inset 0 0 0 1px var(--fox-line),
+        0 0 0 0 color-mix(in srgb, var(--fox) 28%, transparent);
+    }
+
+    50% {
+      box-shadow:
+        inset 0 0 0 1px var(--fox-line),
+        0 0 0 5px color-mix(in srgb, var(--fox) 0%, transparent);
+    }
+  }
+
+  @keyframes ui-progress-glow {
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.65;
+    }
+  }
+
+  @keyframes ui-progress-shimmer {
+    from {
+      background-position: 100% 0;
+    }
+
+    to {
+      background-position: -150% 0;
+    }
+  }
+
+  @keyframes ui-progress-in {
+    from {
+      opacity: 0;
+      transform: translateY(-3px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  /* ---- Busy (ui/Busy.tsx): one working look for every wait over a second ---- */
+  .ui-busy-mark.is-sm {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* The spinning ring: a clear track with a solid fox arc turning round it (owner: easy to see). */
+  .ui-busy-mark.is-running {
+    position: relative;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .ui-busy-mark.is-running::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-sizing: border-box;
+    border: 2.5px solid var(--line-strong);
+    border-top-color: var(--fox);
+    border-right-color: var(--fox);
+    border-radius: 50%;
+  }
+
+  .ui-busy-mark.is-waiting {
+    background: transparent;
+    box-shadow: inset 0 0 0 1.5px var(--line-strong);
+  }
+
+  .ui-busy-mark.is-warning {
+    background: var(--warn-tint);
+    color: var(--warn);
+  }
+
+  .ui-busy {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .ui-busy-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 6px;
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ui-busy-label {
+    min-width: 0;
+    color: var(--fox-ink);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  /* "· 4 s · usually 5–10 s" beside the words. */
+  .ui-busy-time {
+    color: var(--ink-3);
+    white-space: nowrap;
+  }
+
+  .ui-busy-note {
+    color: var(--ink-3);
+  }
+
+  .ui-busy-slow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ui-busy:has(.ui-busy-mark) .ui-busy-slow {
+    padding-left: calc(16px + var(--s-2));
+  }
+
+  /* The thin moving bar along the top edge of the working card. */
+  .ui-busy-host {
+    position: relative;
+  }
+
+  .ui-busy-bar {
+    position: absolute;
+    z-index: 1;
+    inset: 0 0 auto;
+    height: 3px;
+    overflow: hidden;
+    border-radius: calc(var(--r-m) - 1px) calc(var(--r-m) - 1px) 0 0;
+    background: var(--select-tint);
+    pointer-events: none;
+  }
+
+  .ui-busy-bar::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 36%;
+    border-radius: var(--r-pill);
+    background: var(--select);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .ui-busy-mark.is-running::before {
+      animation: ui-busy-spin 0.9s linear infinite;
+    }
+
+    .ui-busy-bar::before {
+      animation: ui-busy-slide 1.5s cubic-bezier(0.45, 0, 0.4, 1) infinite;
+    }
+  }
+
+  /* Less motion: nothing turns or slides; the ring and the bar breathe slowly. */
+  @media (prefers-reduced-motion: reduce) {
+    .ui-busy-mark.is-running::before {
+      border-color: var(--fox);
+      animation: ui-busy-pulse 1.8s ease-in-out infinite;
+    }
+
+    .ui-busy-bar::before {
+      width: 100%;
+      animation: ui-busy-pulse 1.8s ease-in-out infinite;
+    }
+  }
+
+  @keyframes ui-busy-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes ui-busy-slide {
+    from {
+      transform: translateX(-100%);
+    }
+
+    to {
+      transform: translateX(280%);
+    }
+  }
+
+  @keyframes ui-busy-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.35;
+    }
+  }
+}

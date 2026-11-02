@@ -1,0 +1,361 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * Small v2 controls used by ListGrid and screens: SegmentedControl, RowMenu,
+ * EmptyState, ChipInput.
+ */
+@layer shared {
+  /* ---- ChipInput: names as removable chips in one input-looking box ---- */
+  .ui-chipbox {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1);
+    align-items: center;
+    min-height: var(--h-control);
+    padding: 3px var(--s-1);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    cursor: text;
+  }
+
+  .ui-chipbox:focus-within {
+    border-color: var(--fox);
+    box-shadow: var(--focus-ring);
+  }
+
+  .ui-chipbox-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1);
+    padding: 2px 2px 2px 10px;
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    font-size: var(--fs-ui);
+  }
+
+  /* A chip that is not valid (an address without @): marked, and says why in its title. */
+  .ui-chipbox-chip-bad {
+    box-shadow: inset 0 0 0 1px var(--bad);
+    background: var(--bad-tint);
+    color: var(--bad-ink);
+  }
+
+  .ui-chipbox-chip > button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: var(--ink-3);
+    cursor: pointer;
+  }
+
+  .ui-chipbox-chip > button:hover {
+    color: var(--ink);
+  }
+
+  .ui-chipbox-chip > button:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+
+  .ui-chipbox-input {
+    flex: 1 1 120px;
+    min-width: 0;
+    height: 28px;
+    padding: 0 var(--s-2);
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--fs-body);
+  }
+
+  .ui-chipbox-input:focus {
+    outline: none;
+  }
+
+  .ui-chipbox-input::placeholder {
+    color: var(--ink-3);
+  }
+
+  /* ---- TimeZoneSelect: a searchable zone combobox with each zone's offset ---- */
+  .ui-tz {
+    position: relative;
+    min-width: 0;
+  }
+
+  .ui-tz-field {
+    position: relative;
+  }
+
+  .ui-tz-input {
+    width: 100%;
+    padding-right: 32px;
+    text-overflow: ellipsis;
+  }
+
+  .ui-tz-chevron {
+    position: absolute;
+    top: 50%;
+    right: var(--s-2);
+    color: var(--ink-3);
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .ui-tz-pop {
+    position: absolute;
+    z-index: 30;
+    top: calc(100% + 4px);
+    right: 0;
+    left: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    box-shadow: var(--e2);
+  }
+
+  .ui-tz-list {
+    max-height: 280px;
+    margin: 0;
+    padding: var(--s-1) 0;
+    overflow-y: auto;
+    list-style: none;
+  }
+
+  .ui-tz-option {
+    display: flex;
+    gap: var(--s-3);
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px var(--s-3);
+    font-size: var(--fs-ui);
+    cursor: pointer;
+  }
+
+  .ui-tz-option.active {
+    background: var(--hover);
+  }
+
+  .ui-tz-option[aria-selected='true'] .ui-tz-zone {
+    font-weight: 600;
+  }
+
+  .ui-tz-offset {
+    flex: none;
+    color: var(--ink-3);
+  }
+
+  .ui-tz-note {
+    margin: 0;
+    padding: 6px var(--s-3);
+    border-top: 1px solid var(--line);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  /* ---- Segmented control (Theme.dc.html .seg) ---- */
+  .ui-seg {
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 2px;
+    padding: 2px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--inset);
+  }
+
+  .ui-seg-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 30px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: var(--r-s);
+    background: transparent;
+    color: var(--ink-3);
+    font-family: var(--font-ui);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .ui-seg-sm .ui-seg-btn {
+    height: 26px;
+    padding: 0 10px;
+  }
+
+  .ui-seg-btn:hover {
+    color: var(--ink);
+  }
+
+  .ui-seg-btn.on {
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow:
+      var(--e-control),
+      0 0 0 1px var(--line);
+  }
+
+  .ui-seg-count {
+    color: var(--ink-3);
+    font-weight: var(--fw-regular);
+  }
+
+  /*
+   * ---- Row menu ----
+   * Faint until its row is hovered or focused. A row outside ListGrid opts in
+   * with `.ui-row-host`; `.ui-row-menu-always` keeps the button visible.
+   */
+  .ui-row-menu {
+    opacity: 0;
+  }
+
+  .ui-row-menu:focus-visible,
+  .ui-row-menu[aria-expanded='true'],
+  .ui-row-host:hover .ui-row-menu,
+  .ui-row-host:focus-within .ui-row-menu,
+  .ui-row-menu-always .ui-row-menu {
+    opacity: 1;
+  }
+
+  /* ---- Empty state ---- */
+  .ui-empty {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-2);
+    padding: var(--s-8) var(--s-4);
+    text-align: center;
+  }
+
+  .ui-empty-compact {
+    padding: var(--s-4);
+  }
+
+  .ui-empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--r-m);
+    background: var(--inset);
+    color: var(--ink-3);
+  }
+
+  .ui-empty-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-h3);
+    line-height: var(--lh-h3);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0;
+  }
+
+  .ui-empty-body {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ui-empty-action {
+    display: flex;
+    gap: var(--s-2);
+    margin-top: var(--s-1);
+  }
+
+  /* ---- Claude status chip (owner feedback #2) ---- */
+  .ui-claude {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-width: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ui-claude-name {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+  }
+
+  .ui-claude-text {
+    min-width: 0;
+  }
+
+  .ui-claude-dot {
+    width: 8px;
+    height: 8px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--ink-4);
+  }
+
+  .ui-claude-ok .ui-claude-dot {
+    background: var(--ok);
+  }
+
+  .ui-claude-warn .ui-claude-dot {
+    background: var(--warn);
+  }
+
+  .ui-claude-warn .ui-claude-text {
+    color: var(--warn);
+  }
+
+  .ui-claude-busy .ui-claude-dot {
+    background: var(--info);
+    animation: ui-claude-pulse 1.2s ease-in-out infinite;
+  }
+
+  .ui-claude-sm .ui-claude-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .ui-claude-link {
+    color: var(--fox-ink);
+    font-weight: var(--fw-medium);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .ui-menu-foot .ui-ai-claude {
+    display: flex;
+    margin-top: 6px;
+  }
+
+  .ui-suggest-note:has(.ui-claude) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px var(--s-3);
+  }
+
+  @keyframes ui-claude-pulse {
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-claude-busy .ui-claude-dot {
+      animation: none;
+    }
+  }
+}

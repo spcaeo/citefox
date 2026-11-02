@@ -1,0 +1,55 @@
+/*
+ * Cascade layers (lowest first). A rule in a later layer always beats a rule
+ * in an earlier one, whatever the specificity or the order the bundle loads
+ * the files in:
+ *   shared  - shared components, tokens, base, shell and the older app-wide
+ *             styles. Imported only from here, in this order: components
+ *             first, so base and app rules win ties as they always have.
+ *   results - the result screens' shared rules (m3/m3.css).
+ *   screens - one stylesheet per screen, loaded with the screen.
+ *   utilities - .sr-only, .muted, .faint and .mono's font family (end of
+ *             styles/base.css): a class the markup adds on purpose always
+ *             applies.
+ * Every stylesheet starts with the same statement so the order holds even
+ * when a lazy chunk's CSS is the first to load. styles/layers.test.ts checks it.
+ */
+@layer shared, results, screens, utilities;
+
+@import './components/Markdown.css';
+@import './drill/drill.css';
+@import './usage/usage.css';
+@import './status/popover.css';
+@import './projects/projectsScreen/drillPopover.css';
+@import './assist/assist.css';
+@import './buildMenu/buildMenu.css';
+@import './ui/ui.css';
+@import './ui/kpi.css';
+@import './ui/chart/chart.css';
+@import '../../shared/charts/charts.css';
+@import './ui/chart/report-charts.css';
+@import './ui/layout.css';
+@import './ui/panels.css';
+@import './ui/controls.css';
+@import './ui/way-list.css';
+@import './ui/HelpFill/helpfill.css';
+@import './ui/list-grid.css';
+@import './ui/list-grid-tools.css';
+@import './ui/list-grid-tree.css';
+@import './ui/list-grid-pin.css';
+@import './ui/views.css';
+@import './ui/dropdown.css';
+@import './ui/Drawer/drawer.css';
+@import './styles/fonts.css';
+@import './styles/tokens.css';
+@import './styles/theme.css';
+@import './styles/base.css';
+@import './styles/shell.css';
+@import './styles/sidebar.css';
+@import './styles/sponsors.css';
+@import './styles/onboarding.css';
+@import './styles/app-pages.css';
+@import './styles/m2.css';
+@import './styles/projects.css';
+@import './styles/page-setup.css';
+@import './styles/project-settings.css';
+@import './styles/connections.css';

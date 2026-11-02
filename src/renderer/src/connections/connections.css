@@ -1,0 +1,10 @@
+/* Connections: form footers end with their one main button on the right. Tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .conn-editor-actions {
+    align-items: center;
+    justify-content: flex-end;
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": { "status": "Success", "id": "fixture-site-overview-token" },
+    "ai_overview": { "page_token": "fixture-site-page-token" },
+    "organic_results": [
+      {
+        "position": 1,
+        "title": "Pricing",
+        "link": "https://textbolt.com/pricing",
+        "displayed_link": "https://textbolt.com › pricing"
+      }
+    ]
+  }
+}

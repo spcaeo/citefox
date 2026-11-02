@@ -1,0 +1,317 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * The report charts (src/shared/charts), drawn the same in the app and in the
+ * downloaded report. This file is the one set of rules: the app imports it from
+ * styles.css, the report inlines it (main/export/html/style.ts). Colours come
+ * only from the --cfc-* names, which each side maps to its own colours
+ * (ui/chart/report-charts.css, and the report's :root). No colour is written here.
+ */
+@layer shared {
+  .cfc {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    overflow: visible;
+    font-family: var(--cfc-font);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cfc-text {
+    fill: var(--cfc-ink-2);
+    font-size: 12px;
+  }
+
+  .cfc-label {
+    fill: var(--cfc-ink);
+    font-weight: 500;
+  }
+
+  .cfc-label-me {
+    fill: var(--cfc-target-ink);
+    font-weight: 700;
+  }
+
+  .cfc-sub,
+  .cfc-legend {
+    fill: var(--cfc-ink-3);
+    font-size: 11px;
+  }
+
+  .cfc-title {
+    fill: var(--cfc-ink);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .cfc-empty {
+    fill: var(--cfc-ink-3);
+    font-size: 12px;
+  }
+
+  .cfc-value {
+    fill: var(--cfc-ink);
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+
+  .cfc-value-quiet {
+    fill: var(--cfc-ink-3);
+    font-weight: 500;
+  }
+
+  .cfc-value-strong {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .cfc-drop {
+    fill: var(--cfc-down);
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  /* Bars and their furniture. */
+  .cfc-track {
+    fill: var(--cfc-track);
+  }
+
+  .cfc-base {
+    fill: var(--cfc-line);
+  }
+
+  .cfc-before {
+    fill: var(--cfc-before);
+  }
+
+  .cfc-zero {
+    fill: var(--cfc-line);
+  }
+
+  .cfc-t-target {
+    fill: var(--cfc-target);
+  }
+
+  /* A lower spot that still cites you (#4–5): the target colour, lighter. */
+  .cfc-t-target-soft {
+    fill: var(--cfc-target);
+    fill-opacity: 0.55;
+  }
+
+  .cfc-t-other {
+    fill: var(--cfc-other);
+  }
+
+  .cfc-t-not-cited {
+    fill: var(--cfc-not-cited);
+  }
+
+  .cfc-t-none {
+    fill: var(--cfc-none);
+  }
+
+  .cfc-t-ink {
+    fill: var(--cfc-bar-ink);
+  }
+
+  .cfc-t-muted {
+    fill: var(--cfc-muted);
+  }
+
+  .cfc-t-up {
+    fill: var(--cfc-up);
+  }
+
+  .cfc-t-down {
+    fill: var(--cfc-down);
+  }
+
+  /* A part that pulled a total down: faded with a dashed edge. */
+  .cfc-neg {
+    fill-opacity: 0.45;
+    stroke: var(--cfc-ink-2);
+    stroke-width: 1;
+    stroke-dasharray: 4 3;
+  }
+
+  .cfc-split-edge {
+    fill: none;
+    stroke: var(--cfc-line);
+    stroke-width: 1;
+    pointer-events: none;
+  }
+
+  .cfc-on {
+    fill: var(--cfc-on);
+    font-size: 12px;
+    font-weight: 600;
+    pointer-events: none;
+  }
+
+  .cfc-on-quiet {
+    fill: var(--cfc-on-quiet);
+  }
+
+  /* The share-of-voice ring's total. */
+  .cfc-donut-total {
+    fill: var(--cfc-ink);
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  /* History squares, one per check. */
+  .cfc-sq-target {
+    fill: var(--cfc-target);
+  }
+
+  .cfc-sq-other {
+    fill: var(--cfc-other);
+  }
+
+  .cfc-sq-not-cited {
+    fill: var(--cfc-not-cited);
+  }
+
+  .cfc-sq-named {
+    fill: var(--cfc-down-tint);
+    stroke: var(--cfc-not-cited);
+    stroke-width: 1.5;
+  }
+
+  .cfc-sq-none {
+    fill: var(--cfc-none);
+  }
+
+  .cfc-sq-missing {
+    fill: none;
+    stroke: var(--cfc-before);
+    stroke-width: 1;
+  }
+
+  /* Change chips. */
+  .cfc-chip-up {
+    fill: var(--cfc-up-tint);
+  }
+
+  .cfc-chip-down {
+    fill: var(--cfc-down-tint);
+  }
+
+  .cfc-chip-flat {
+    fill: var(--cfc-flat-tint);
+  }
+
+  .cfc-chip-text {
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .cfc-chip-text-up {
+    fill: var(--cfc-up);
+  }
+
+  .cfc-chip-text-down {
+    fill: var(--cfc-down);
+  }
+
+  .cfc-chip-text-flat {
+    fill: var(--cfc-ink-3);
+  }
+
+  .cfc-swatch {
+    stroke: none;
+  }
+
+  /* Marks: a row ground that lights on hover and focus, a hit area, a focus ring. */
+  .cfc-row,
+  .cfc-hit {
+    fill: transparent;
+  }
+
+  .cfc-drill {
+    cursor: pointer;
+    outline: none;
+  }
+
+  .cfc-drill:hover .cfc-row,
+  .cfc-drill:focus-visible .cfc-row,
+  .cfc-drill:hover .cfc-hit,
+  .cfc-drill:focus-visible .cfc-hit {
+    fill: var(--cfc-hover);
+  }
+
+  .cfc-drill:hover .cfc-label,
+  .cfc-drill:focus-visible .cfc-label {
+    text-decoration: underline;
+  }
+
+  .cfc-drill:focus-visible .cfc-row,
+  .cfc-drill:focus-visible .cfc-hit,
+  .cfc-drill:focus-visible .cfc-seg,
+  .cfc-drill:focus-visible .cfc-sq-target,
+  .cfc-drill:focus-visible .cfc-sq-other,
+  .cfc-drill:focus-visible .cfc-sq-not-cited,
+  .cfc-drill:focus-visible .cfc-sq-named,
+  .cfc-drill:focus-visible .cfc-sq-none,
+  .cfc-drill:focus-visible .cfc-sq-missing {
+    stroke: var(--cfc-focus);
+    stroke-width: 2;
+  }
+
+  .cfc-drill:hover .cfc-bar,
+  .cfc-drill:hover .cfc-seg {
+    opacity: 0.85;
+  }
+
+  /* Bars grow in once; columns rise. Off for reduced motion and print. */
+  .cfc-bar,
+  .cfc-seg {
+    transform-box: fill-box;
+    transform-origin: left center;
+    animation: cfc-grow 420ms ease-out both;
+  }
+
+  .cfc-col {
+    transform-origin: center bottom;
+    animation-name: cfc-rise;
+  }
+
+  @keyframes cfc-grow {
+    from {
+      transform: scaleX(0);
+    }
+  }
+
+  @keyframes cfc-rise {
+    from {
+      transform: scaleY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cfc-bar,
+    .cfc-seg,
+    .cfc-col {
+      animation: none;
+    }
+
+    .cfc-drill:hover .cfc-bar,
+    .cfc-drill:hover .cfc-seg {
+      opacity: 1;
+    }
+  }
+
+  @media print {
+    .cfc-bar,
+    .cfc-seg,
+    .cfc-col {
+      animation: none;
+    }
+
+    .cfc {
+      print-color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+      break-inside: avoid;
+    }
+  }
+}

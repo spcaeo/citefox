@@ -1,0 +1,25 @@
+name: Question
+description: Ask how to do something in CiteFox.
+title: '[Question]: '
+labels: ['question']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The docs may already have the answer: https://spcaeo.github.io/citefox/docs/
+        Open-ended questions and show-and-tell fit best in Discussions.
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+    validations:
+      required: true
+  - type: textarea
+    id: tried
+    attributes:
+      label: What have you tried?
+  - type: input
+    id: version
+    attributes:
+      label: CiteFox version and operating system
+      placeholder: v0.12.0 on macOS

@@ -1,0 +1,20 @@
+{
+  "summary": "1 wrong, 1 outdated.",
+  "items": [
+    {
+      "text": "Each SMS holds 155 GSM characters.",
+      "detail": "A single SMS holds up to 160 GSM-7 characters (70 with Unicode); longer messages split into 153-character parts.",
+      "tag": "wrong",
+      "verify": "https://en.wikipedia.org/wiki/SMS https://www.twilio.com/docs/glossary/what-sms-character-limit",
+      "sign": null
+    },
+    {
+      "text": "Verizon is shutting down vtext.com.",
+      "detail": "Verizon has announced the end of its vtext.com email-to-text gateway; the page should give the date from the notice.",
+      "tag": "outdated",
+      "verify": "https://www.verizon.com/support/",
+      "sign": null
+    }
+  ],
+  "caution": "Web results change. Open each source before you edit the page."
+}

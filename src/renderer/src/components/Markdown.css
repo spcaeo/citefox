@@ -1,0 +1,132 @@
+/*
+ * Narrative markdown. Colours, type, and space come from the app tokens.
+ * Links are underlined so they are not identified by colour alone (WCAG 1.4.1).
+ * --fox-deep on the ground colour clears WCAG 2.2 AA for 14px text.
+ */
+
+@layer shared, results, screens, utilities;
+
+@layer shared {
+  .md {
+    color: inherit;
+    font-size: inherit;
+    line-height: 1.43;
+  }
+
+  .md-inline {
+    display: inline;
+  }
+
+  .md-block > :first-child {
+    margin-top: 0;
+  }
+
+  .md-block p,
+  .md-block ul,
+  .md-block ol,
+  .md-block pre,
+  .md-block blockquote,
+  .md-block table {
+    margin: 0;
+  }
+
+  .md-block p + p,
+  .md-block :is(ul, ol, pre, blockquote, table, h1, h2, h3, h4, h5, h6) {
+    margin-top: var(--s-2);
+  }
+
+  .md-block :is(h1, h2, h3, h4, h5, h6) {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-h2);
+    line-height: 1.25;
+  }
+
+  .md-block h1 {
+    font-size: var(--fs-h1);
+    line-height: 1.27;
+  }
+
+  .md-block h2 {
+    font-size: var(--fs-h2);
+  }
+
+  .md-block h3 {
+    font-size: var(--fs-h3);
+  }
+
+  .md-block :is(h4, h5, h6) {
+    font-size: var(--fs-ui);
+  }
+
+  .md a {
+    color: var(--fox-deep);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
+  }
+
+  .md a:hover {
+    color: var(--fox-ink);
+  }
+
+  .md :is(code, pre) {
+    font-family: var(--font-code);
+    font-size: var(--fs-small);
+    color: var(--ink);
+  }
+
+  .md code {
+    background: var(--hover);
+    padding: 0 var(--s-1);
+    border-radius: var(--r-s);
+  }
+
+  .md pre {
+    padding: var(--s-3);
+    overflow: auto;
+    background: var(--hover);
+    border-radius: var(--r-s);
+  }
+
+  .md pre code {
+    padding: 0;
+    background: transparent;
+  }
+
+  .md-block ul,
+  .md-block ol {
+    padding-inline-start: var(--s-5);
+  }
+
+  .md-block li + li {
+    margin-top: var(--s-1);
+  }
+
+  .md-block blockquote {
+    padding-inline-start: var(--s-3);
+    border-inline-start: 3px solid var(--line-strong);
+    color: var(--ink-2);
+  }
+
+  .md-block table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .md-block th,
+  .md-block td {
+    border: 1px solid var(--line);
+    padding: var(--s-1) var(--s-2);
+    text-align: start;
+    vertical-align: top;
+  }
+
+  .md-block th {
+    font-weight: var(--fw-semibold);
+  }
+
+  .md-alt {
+    color: var(--ink-2);
+  }
+}

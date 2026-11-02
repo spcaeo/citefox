@@ -1,0 +1,97 @@
+/* Drill-downs on Results (REPORT-SPEC "Interaction model"). */
+
+@layer shared, results, screens, utilities;
+
+@layer results {
+  .m3-kpi-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-width: 0;
+  }
+
+  .m3-kpi-wrap > .m3-kpi {
+    flex: 1 1 auto;
+  }
+
+  .m3-kpi-delta {
+    margin: 0;
+    padding: 0 var(--s-1);
+    font-size: var(--fs-small);
+  }
+
+  a.m3-kpi-delta {
+    text-decoration: underline solid transparent;
+    text-underline-offset: 3px;
+  }
+
+  a.m3-kpi-delta:hover,
+  a.m3-kpi-delta:focus-visible {
+    text-decoration-color: currentcolor;
+  }
+
+  .m3-stack .m3-seg-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    border: 0;
+    font-family: var(--font-code);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    text-decoration: none;
+  }
+
+  .m3-stack .m3-seg-btn.m3-b-win {
+    color: var(--on-fox);
+  }
+
+  .m3-stack .m3-seg-btn.m3-b-wrong {
+    color: var(--info);
+  }
+
+  .m3-stack .m3-seg-btn.m3-b-named {
+    color: var(--warn);
+  }
+
+  .m3-stack .m3-seg-btn.m3-b-invisible {
+    color: var(--ink-2);
+  }
+
+  .m3-stack .m3-seg-btn:hover {
+    filter: brightness(0.92);
+  }
+
+  .m3-stack .m3-seg-btn:focus-visible {
+    outline-offset: -3px;
+  }
+
+  .m3-bucket-n {
+    font-size: 26px;
+    font-weight: 600;
+  }
+
+  .m3-kind-btn {
+    border: 0;
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  .m3-kind-btn.m3-kind-observed {
+    border: 1px dashed var(--ink-4);
+  }
+
+  .m3-kind-btn[aria-pressed='true'] {
+    box-shadow: 0 0 0 2px var(--select);
+  }
+
+  /* Running: market pills switch the table; finished rows open Prompt detail. */
+  button.m3-pill {
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .m3-pill.m3-pill-shown {
+    box-shadow: 0 0 0 2px var(--select-line);
+  }
+}

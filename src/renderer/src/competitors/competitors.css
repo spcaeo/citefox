@@ -1,0 +1,228 @@
+/* Competitors (project level). Tokens from styles/tokens.css only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .cmp-screen {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+
+  /* No competitor saved yet (HelpFill.dc.html panel 6): a dashed card with its pair. */
+  .cmp-empty {
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  .cmp-field .select {
+    min-height: var(--h-control-sm);
+  }
+
+  .cmp-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--action-ink);
+    font: inherit;
+    font-weight: var(--fw-semibold);
+    text-decoration: underline solid transparent;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  /* Text links are action green; fox stays for the logo and ✦ AI marks. */
+  .cmp-link:hover {
+    color: var(--action-ink);
+    text-decoration: underline;
+  }
+
+  /* Site cell: the name with its chips, the host under it. */
+  .cmp-site {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .cmp-site-top {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .cmp-name {
+    overflow: hidden;
+    font-weight: var(--fw-medium);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* "Not sorted yet (N)" and its Sort now: a to-do row, not a site type. */
+  .cmp-pending {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .cmp-pending .cmp-name {
+    font-weight: var(--fw-regular);
+  }
+
+  .cmp-needs-ai {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-2);
+    align-items: center;
+    margin: 0 0 var(--s-2);
+    font-size: var(--fs-small);
+  }
+
+  /* The project's own row: the highlighter, as where an overview names the brand. */
+  .cmp-you {
+    padding: 0 var(--s-1);
+    border-radius: var(--r-s);
+    background: var(--mark);
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .cmp-domain {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  /* Share bar: the track, the fill scaled to the largest share, and the number. */
+  .cmp-share {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 44px;
+    gap: var(--s-2);
+    align-items: center;
+    width: 100%;
+  }
+
+  .cmp-bar {
+    display: block;
+    height: 8px;
+    border-radius: var(--r-pill);
+    background: var(--chart-track);
+  }
+
+  .cmp-bar-fill {
+    display: block;
+    height: 8px;
+    border-radius: var(--r-pill);
+    background: var(--ink-3);
+  }
+
+  .cmp-bar-you {
+    background: var(--result-target);
+  }
+
+  .cmp-share-text {
+    text-align: right;
+  }
+
+  /* "Cited, not you": ink, after the not cited square (ui/resultTones.ts). */
+  .cmp-not-cited {
+    display: inline-flex;
+    gap: var(--s-1);
+    align-items: center;
+    color: var(--ink);
+  }
+
+  /* A change is ink text: its sign says which way (owner, 2026-10-30: few colours). */
+  .cmp-change-ok {
+    color: var(--ink);
+  }
+
+  .cmp-change-bad {
+    color: var(--ink);
+  }
+
+  /* Drawer: "Where X is cited and you're not". */
+  .cmp-drawer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  /* The products it is cited for: one quiet line each. */
+  .cmp-products {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cmp-product {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-3);
+    padding: var(--s-1) 0;
+    font-size: var(--fs-ui);
+  }
+
+  .cmp-product a {
+    min-width: 0;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+  }
+
+  .cmp-product .num {
+    flex: 0 0 auto;
+  }
+
+  /* A rail count that opens its view of the grid. */
+  .cmp-fact-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--line-strong);
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .cmp-fact-link:hover {
+    text-decoration-color: currentColor;
+  }
+
+  /* The searches grid. */
+  .cmp-rs-q {
+    color: var(--ink);
+  }
+
+  .cmp-rs-clip {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cmp-rs-group {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  .cmp-rs-group > :first-child {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .cmp-rs-group .muted {
+    flex: none;
+    font-weight: var(--fw-regular);
+  }
+}

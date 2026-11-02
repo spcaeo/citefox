@@ -1,0 +1,27 @@
+{
+  "summary": "Between the Oct 5 and Oct 19 checks, this page stayed cited for prompt 1 and moved from #3 to #2. Prompt 2 still shows another own page. The page text did not change between the two checks.",
+  "items": [
+    {
+      "text": "Prompt 1 is still cited and moved up one place.",
+      "detail": "Was cited #3 on Oct 5, cited #2 on Oct 19.",
+      "tag": "moved",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Prompt 2 still cites a different TextBolt page instead of this one.",
+      "detail": "Other own page on both checks; simpletexting.com is cited first.",
+      "tag": "lost",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "No content change was saved between the two checks.",
+      "detail": "Same page fingerprint on Oct 5 and Oct 19. Overviews also change on their own.",
+      "tag": "content",
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": null
+}

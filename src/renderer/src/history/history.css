@@ -1,0 +1,366 @@
+/* History and notes tab (Mockups/History.dc.html). Tokens from styles/tokens.css. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  /* v2: lead line, KPI row, then the 8 + 4 layout (tabs and grid, note rail). */
+  .hist-screen {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-6);
+    min-width: 0;
+  }
+
+  .hist-lead {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-6);
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  .hist-lead > p {
+    margin: 0;
+  }
+
+  .hist-lead-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    align-items: center;
+  }
+
+  .hist-main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+
+  .hist-panel-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+
+  .hist-panel-body > p {
+    margin: 0;
+  }
+
+  .hist-kpi-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-decoration: underline solid transparent;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 4px;
+    cursor: pointer;
+  }
+
+  .hist-kpi-link:hover,
+  .hist-kpi-link:focus-visible {
+    text-decoration-color: currentcolor;
+  }
+
+  .hist-kpi-link:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .hist-cell-line {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: center;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .hist-cell-title {
+    overflow: hidden;
+    color: var(--ink);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .hist-cell-title p {
+    display: inline;
+    margin: 0;
+  }
+
+  .hist-drawer-body {
+    gap: var(--s-3);
+  }
+
+  /* The checks before and after an event or a new note (drawer rail). */
+  .hist-nearby {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .hist-nearby-row {
+    display: grid;
+    grid-template-columns: 52px 1fr auto;
+    gap: 2px var(--s-2);
+    align-items: baseline;
+  }
+
+  .hist-nearby-label {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .hist-nearby-score {
+    justify-self: end;
+  }
+
+  .hist-date-input {
+    max-width: 200px;
+  }
+
+  /* A nav link in action green, not fox: fox is for the brand and ✦ AI. */
+  .hist-link {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    color: var(--action-ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+    text-decoration: none;
+  }
+
+  .hist-link:hover {
+    color: var(--action-ink);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .hist-timeline {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  .hist-item {
+    display: grid;
+    grid-template-columns: 72px 28px minmax(0, 1fr);
+    gap: var(--s-3);
+    padding: 14px var(--s-5);
+    border-top: 1px solid var(--line);
+  }
+
+  .hist-item:first-child {
+    border-top: 0;
+  }
+
+  .hist-date {
+    padding-top: 2px;
+    color: var(--ink-3);
+    white-space: nowrap;
+  }
+
+  .hist-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--r-pill);
+    background: var(--hover);
+    color: var(--ink-2);
+  }
+
+  .hist-icon-check {
+    background: var(--info-tint);
+    color: var(--info);
+  }
+
+  .hist-icon-note,
+  .hist-icon-fix {
+    background: var(--fox-tint);
+    color: var(--fox-deep);
+  }
+
+  .hist-body {
+    min-width: 0;
+  }
+
+  .hist-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .hist-title {
+    margin: 0;
+    font-size: var(--fs-h3);
+  }
+
+  .hist-score {
+    background: var(--hover);
+    color: var(--ink-2);
+  }
+
+  .hist-change.hist-up,
+  .ui-lg .hist-up {
+    color: var(--ink);
+  }
+
+  .hist-change.hist-down,
+  .ui-lg .hist-down {
+    color: var(--ink);
+  }
+
+  .hist-change.hist-up {
+    background: var(--ok-tint);
+  }
+
+  .hist-change.hist-down {
+    background: var(--warn-tint);
+  }
+
+  /* No change still reads as a chip, not a stray bold digit. */
+  .hist-change.hist-flat {
+    background: var(--hover);
+    color: var(--ink-2);
+  }
+
+  .hist-tag-fix,
+  .hist-tag-changed {
+    background: var(--fox-tint);
+    color: var(--fox-deep);
+  }
+
+  .hist-note-text {
+    white-space: pre-wrap;
+  }
+
+  .hist-note-form {
+    gap: 6px;
+  }
+
+  .hist-textarea {
+    min-height: 96px;
+    resize: vertical;
+  }
+
+  .hist-error {
+    color: var(--warn);
+    font-weight: var(--fw-semibold);
+  }
+
+  /* Before and after per field: one row each, field name, then the two reads. */
+  .hist-fields {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+  }
+
+  .hist-field {
+    display: grid;
+    grid-template-columns: minmax(140px, 1fr) 2fr 2fr;
+    gap: var(--s-3);
+    padding: var(--s-2) var(--s-3);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-body);
+  }
+
+  .hist-field + .hist-field {
+    border-top: 1px solid var(--line);
+  }
+
+  .hist-field dt {
+    font-weight: var(--fw-semibold);
+  }
+
+  .hist-field dd {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .hist-field-side {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .hist-diff {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+    font-family: var(--font-code);
+    font-size: var(--fs-small);
+  }
+
+  .hist-diff li {
+    display: flex;
+    gap: var(--s-2);
+    padding: 2px var(--s-3);
+  }
+
+  .hist-diff-sign {
+    flex: 0 0 1ch;
+    font-weight: var(--fw-semibold);
+  }
+
+  .hist-diff-text {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .hist-diff-added {
+    background: var(--ok-tint);
+    color: var(--ok);
+  }
+
+  .hist-diff-removed {
+    background: var(--warn-tint);
+    color: var(--fox-deep);
+    text-decoration: line-through;
+  }
+
+  .hist-diff-fold {
+    background: var(--inset);
+    color: var(--ink-3);
+    font-family: var(--font-ui);
+  }
+
+  /* Drillable chips: a score links to that check's results, a fix tag to its card. */
+  .hist-chip-link {
+    text-decoration: none;
+  }
+
+  .hist-chip-link:hover {
+    text-decoration: underline;
+  }
+
+  .hist-chip-link:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .hist-change-parts {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+}

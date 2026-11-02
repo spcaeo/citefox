@@ -1,0 +1,11 @@
+/* Topic settings drawer. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  /* The rail is narrow: a short label column, so values keep their words together. */
+  .ts-facts .ui-drawer-fact {
+    grid-template-columns: minmax(72px, 96px) minmax(0, 1fr);
+    gap: var(--s-3);
+  }
+}

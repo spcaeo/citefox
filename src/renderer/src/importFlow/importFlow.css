@@ -1,0 +1,549 @@
+/* The shared import step (ImportMap.dc.html) inside the stacked Drawer. Tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .ifl-drawer .ui-drawer-status {
+    overflow: visible;
+  }
+
+  .ifl-drawer .ui-drawer-status .ui-stepper {
+    flex-wrap: nowrap;
+  }
+
+  .ifl-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-height: 100%;
+  }
+
+  .ifl-error {
+    margin: 0;
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-s);
+    background: var(--bad-tint);
+    color: var(--bad-ink);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .ifl-hint {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ifl-label {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  /* ---- Choose file ---- */
+  .ifl-choose {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: var(--s-5);
+    align-items: stretch;
+  }
+
+  .ifl-drop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-3);
+    min-height: 320px;
+    padding: var(--s-8);
+    border: 1.5px dashed var(--line-strong);
+    border-radius: var(--r-l);
+    background: var(--inset);
+    color: var(--ink-3);
+    text-align: center;
+  }
+
+  .ifl-drop-over {
+    border-color: var(--fox);
+    background: var(--fox-tint);
+  }
+
+  .ifl-drop-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-h3);
+    line-height: var(--lh-h3);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ifl-drop .ifl-hint {
+    max-width: 420px;
+  }
+
+  .ifl-side {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  /* ✦ Help me find them, open in place of Choose (a list with a helper kind). */
+  .ifl-help-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-3);
+    min-width: 0;
+    max-width: 52rem;
+  }
+
+  .ifl-help-panel > .hf {
+    align-self: stretch;
+  }
+
+  .ifl-help,
+  .ifl-paste,
+  .ifl-template {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-2);
+    padding: var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  .ifl-paste-box {
+    width: 100%;
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-code);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    resize: vertical;
+  }
+
+  .ifl-paste-box:focus {
+    outline: none;
+    border-color: var(--fox);
+    box-shadow: var(--focus-ring);
+  }
+
+  .ifl-template-actions {
+    display: flex;
+    gap: var(--s-2);
+  }
+
+  /* ---- The file bar ---- */
+  .ifl-file {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2) var(--s-3);
+    padding: var(--s-2) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .ifl-file > .ui-icon {
+    color: var(--spruce);
+  }
+
+  .ifl-file-name {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ifl-file-sheet,
+  .ifl-file-header {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .ifl-file-sheet .ui-input {
+    width: auto;
+    min-width: 140px;
+  }
+
+  .ifl-file-end {
+    margin-left: auto;
+  }
+
+  .ifl-warnings {
+    flex: 1 0 100%;
+    margin: 0;
+    padding-left: var(--s-5);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  /* ---- Two cards: match and preview ---- */
+  .ifl-grid {
+    display: grid;
+    grid-template-columns: 380px minmax(0, 1fr);
+    gap: var(--s-5);
+    align-items: start;
+  }
+
+  .ifl-grid-check {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ifl-card {
+    min-width: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    overflow: hidden;
+  }
+
+  .ifl-card-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-3);
+    padding: var(--s-3) var(--s-4);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ifl-card-head h3 {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ifl-card-head .ifl-hint {
+    margin-left: auto;
+  }
+
+  .ifl-map {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 14px minmax(0, 1fr);
+    align-items: center;
+    gap: var(--s-2) var(--s-3);
+    padding: var(--s-3) var(--s-4);
+  }
+
+  .ifl-map-head {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ifl-map-row {
+    display: contents;
+  }
+
+  .ifl-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    padding: 6px var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+    background: var(--inset);
+    font-size: var(--fs-ui);
+  }
+
+  .ifl-col strong {
+    overflow: hidden;
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ifl-col span {
+    overflow: hidden;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ifl-arrow {
+    color: var(--ink-4);
+    text-align: center;
+  }
+
+  .ifl-to.ifl-to-auto {
+    border-color: var(--spruce-line);
+    background: var(--ok-tint);
+  }
+
+  .ifl-to.ifl-to-skip {
+    color: var(--ink-3);
+  }
+
+  .ifl-opt {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding: var(--s-3) var(--s-4);
+    border-top: 1px solid var(--line);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .ifl-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+
+  .ifl-word {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .ifl-word-bad {
+    border-color: var(--bad);
+    background: var(--bad-tint);
+  }
+
+  .ifl-word-stage {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+  }
+
+  .ifl-word-stage:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-radius: var(--r-s);
+  }
+
+  .ifl-check {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    color: var(--ink);
+  }
+
+  .ifl-page-pick {
+    width: auto;
+    min-width: 160px;
+    font-family: var(--font-code);
+  }
+
+  /* ---- Preview ---- */
+  .ifl-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: var(--s-3) var(--s-4);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ifl-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 28px;
+    padding: 0 var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--ink-2);
+    font: inherit;
+    font-size: var(--fs-ui);
+    cursor: pointer;
+  }
+
+  .ifl-chip b {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ifl-chip-new span {
+    color: var(--ok);
+  }
+
+  .ifl-chip-keyword span {
+    color: var(--info);
+  }
+
+  .ifl-chip-similar span {
+    color: var(--warn);
+  }
+
+  .ifl-chip-duplicate span,
+  .ifl-chip-fix span {
+    color: var(--bad);
+  }
+
+  .ifl-chip.on {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: var(--surface);
+  }
+
+  .ifl-chip.on span,
+  .ifl-chip.on b {
+    color: var(--surface);
+  }
+
+  .ifl-chip:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .ifl-table-wrap {
+    overflow-x: auto;
+  }
+
+  .ifl-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-ui);
+    table-layout: fixed;
+  }
+
+  .ifl-table th {
+    padding: 7px var(--s-2);
+    border-bottom: 1px solid var(--line);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .ifl-table td {
+    overflow: hidden;
+    padding: 7px var(--s-2);
+    border-bottom: 1px solid var(--line);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ifl-c-row {
+    width: 40px;
+    color: var(--ink-3);
+  }
+
+  .ifl-c-stage {
+    width: 88px;
+  }
+
+  .ifl-c-market {
+    width: 64px;
+  }
+
+  .ifl-c-page {
+    width: 136px;
+  }
+
+  .ifl-c-topic {
+    width: 168px;
+  }
+
+  .ifl-c-url {
+    width: 40%;
+  }
+
+  .ifl-c-result {
+    width: 112px;
+  }
+
+  .ifl-row-bad td {
+    background: var(--bad-tint);
+  }
+
+  .ifl-row-dup td:not(.ifl-c-result) {
+    color: var(--ink-3);
+  }
+
+  .ifl-raw {
+    color: var(--bad-ink);
+  }
+
+  .ifl-empty {
+    color: var(--ink-3);
+  }
+
+  .ifl-more {
+    padding: var(--s-3) var(--s-4);
+  }
+
+  .ifl-fixes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding: var(--s-3) var(--s-4);
+    border-top: 1px solid var(--line);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .ifl-fixes p {
+    margin: 0;
+  }
+
+  .ifl-fix-stage + .ifl-fix-stage::before {
+    content: ' · ';
+    color: var(--ink-4);
+  }
+
+  .ifl-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--action-ink);
+    font: inherit;
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+  }
+
+  .ifl-link:hover {
+    text-decoration: underline;
+  }
+
+  .ifl-link:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-radius: var(--r-s);
+  }
+
+  .ifl-sum {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-5);
+  }
+
+  @media (width < 1200px) {
+    .ifl-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ifl-choose {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

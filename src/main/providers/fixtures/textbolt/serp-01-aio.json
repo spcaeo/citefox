@@ -1,0 +1,34 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": {
+      "status": "Success",
+      "id": "textbolt-p1-aio"
+    },
+    "ai_overview": {
+      "text_blocks": [
+        {
+          "type": "paragraph",
+          "snippet": "TextBolt lets a team send employee alerts from email without a new app."
+        }
+      ],
+      "references": [
+        {
+          "title": "Crew thread",
+          "link": "https://www.reddit.com/r/smallbusiness/comments/alerts",
+          "source": "Reddit"
+        },
+        {
+          "title": "How to Set Up Text Alerts",
+          "link": "https://textbolt.com/blog/how-to-set-up-text-alerts-for-business/?utm_source=aio",
+          "source": "TextBolt"
+        },
+        {
+          "title": "Text employees",
+          "link": "https://www.simpletexting.com/blog/alerts",
+          "source": "SimpleTexting"
+        }
+      ]
+    }
+  }
+}

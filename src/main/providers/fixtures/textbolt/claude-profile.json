@@ -1,0 +1,20 @@
+{
+  "status": 200,
+  "body": {
+    "id": "msg_textbolt_fixture",
+    "type": "message",
+    "role": "assistant",
+    "model": "claude-sonnet-5-5",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"who\":\"Operations managers, office managers, IT leads, and owner-operators at US and Canadian businesses with about 10 to 250 employees. They are not developers, and they live in Gmail or Outlook.\",\"environment\":\"Systems that already send email: scheduling software, monitoring tools such as Datadog or Grafana, help desks, web forms, and equipment that emails alarms. Recipients are away from their desks when those emails arrive.\",\"segments\":[{\"name\":\"Field service and facilities\",\"reason\":\"Weekend rotations and early crews who are not at a desk when the alert email lands.\"},{\"name\":\"IT teams and MSPs\",\"reason\":\"Downtime and monitoring alerts, without an API project or a paging tool.\"},{\"name\":\"Multi-site and regulated operations\",\"reason\":\"Bank branches, healthcare offices, schools, and churches that must reach every site the same way.\"},{\"name\":\"Broken carrier gateways\",\"reason\":\"txt.att.net, tmomail.net, and vtext.com, including a Verizon shutdown in March 2027.\"}],\"triggers\":[\"A missed alert caused real damage over a weekend.\",\"Their carrier email-to-text address stopped delivering.\",\"They hit a 10DLC or registration wall.\",\"A developer quote for an SMS API came back too expensive or too slow.\"],\"values\":[\"Setup in about 30 minutes\",\"Nothing new for staff to learn\",\"Replies land back in the inbox\",\"Compliance handled for them\",\"Predictable pricing at $29 to $49 a month\"],\"poorFit\":[{\"name\":\"SMS marketers\",\"reason\":\"The page is about operational alerts, not promotional campaigns.\"},{\"name\":\"Developers building SMS into a product\",\"reason\":\"They want an API, not an email gateway.\"},{\"name\":\"Teams that need acknowledgment and escalation\",\"reason\":\"That work stays in a paging tool such as PagerDuty or Opsgenie.\"}]}"
+      }
+    ],
+    "stop_reason": "end_turn",
+    "usage": {
+      "input_tokens": 120,
+      "output_tokens": 80
+    }
+  }
+}

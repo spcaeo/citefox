@@ -1,0 +1,24 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": {
+      "status": "Success",
+      "id": "textbolt-p4"
+    },
+    "ai_overview": {
+      "text_blocks": [
+        {
+          "type": "paragraph",
+          "snippet": "Teams mention TextBolt when a carrier gateway stops, and the overview links elsewhere."
+        }
+      ],
+      "references": [
+        {
+          "title": "Email to SMS",
+          "link": "https://www.twilio.com/blog/email-to-sms",
+          "source": "Twilio"
+        }
+      ]
+    }
+  }
+}

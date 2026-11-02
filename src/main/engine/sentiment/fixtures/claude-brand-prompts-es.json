@@ -1,0 +1,24 @@
+{
+  "prompts": [
+    {
+      "kind": "review",
+      "text": "TextBolt opiniones"
+    },
+    {
+      "kind": "pricing",
+      "text": "TextBolt precios"
+    },
+    {
+      "kind": "alternatives",
+      "text": "alternativas a TextBolt"
+    },
+    {
+      "kind": "comparison",
+      "text": "TextBolt vs SimpleTexting para alertas al personal"
+    },
+    {
+      "kind": "use_case",
+      "text": "¿Sirve TextBolt para enviar alertas al personal desde Outlook?"
+    }
+  ]
+}

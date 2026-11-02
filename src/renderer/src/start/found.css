@@ -1,0 +1,157 @@
+/* "Your site is ready" (journey A3) and "Your starting plan" (A4): cell contents and rail details. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .fd-note {
+    border-color: var(--warn-tint);
+    background: var(--warn-tint);
+    color: var(--warn);
+  }
+
+  .fd-section {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .fd-section-name {
+    flex: 0 0 auto;
+    font-weight: var(--fw-medium);
+  }
+
+  .fd-paths {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .fd-likely {
+    display: grid;
+    grid-template-columns: 56px auto;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .fd-who {
+    margin: 0;
+  }
+
+  .fd-triggers {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding: var(--s-3) 0 0;
+    border-top: 1px solid var(--line);
+    list-style: none;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .fd-triggers li {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .fd-rivals {
+    padding: var(--s-3) var(--s-5);
+    border-top: 1px solid var(--line);
+  }
+
+  .fd-rivals-title {
+    margin: 0 0 var(--s-2);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .fd-empty,
+  .pl-empty {
+    margin: 0;
+    padding: var(--s-6);
+  }
+
+  /* Plan */
+  .pl-topic {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .pl-topic-icon {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+    background: var(--surface);
+  }
+
+  .pl-topic-text {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .pl-topic-name {
+    margin: 0;
+    font-weight: var(--fw-semibold);
+  }
+
+  .pl-topic-meta {
+    margin: 2px 0 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .pl-check {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--select);
+  }
+
+  .pl-why {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ink-2);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pl-big {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-2);
+    margin: 0;
+  }
+
+  .pl-big strong {
+    font-size: var(--fs-display);
+    line-height: var(--lh-display);
+    font-weight: var(--fw-semibold);
+  }
+
+  .pl-warn {
+    display: flex;
+    gap: var(--s-2);
+    margin: 0;
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-m);
+    background: var(--warn-tint);
+    color: var(--warn);
+    font-size: var(--fs-ui);
+  }
+
+  .pl-quote {
+    margin: 0;
+    padding: 0 var(--s-5);
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+  }
+}

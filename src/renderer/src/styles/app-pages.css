@@ -1,0 +1,440 @@
+@layer shared, results, screens, utilities;
+
+@layer shared {
+  .page-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+    min-width: 0;
+  }
+
+  .card,
+  .page-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: var(--s-5);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  .label {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .sec-head,
+  .split,
+  .inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* A row of controls that stays together at the start instead of spreading. */
+  .inline.inline-start {
+    justify-content: flex-start;
+  }
+
+  .stack-tight {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .optional {
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-ui);
+  }
+
+  .anchors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-3);
+  }
+
+  .anchors a {
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-ui);
+  }
+
+  .sub {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding-top: var(--s-3);
+    border-top: 1px solid var(--line);
+  }
+
+  .note {
+    display: flex;
+    gap: var(--s-2);
+    align-items: flex-start;
+    padding: var(--s-3) var(--s-3);
+    border-radius: var(--r-s);
+    background: var(--inset);
+  }
+
+  .note-warn {
+    background: var(--warn-tint);
+  }
+
+  .key-editor,
+  .key-saved,
+  .conn-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .key-name {
+    font-weight: var(--fw-semibold);
+  }
+
+  .conn {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: center;
+    padding: var(--s-3) 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .conn-icon,
+  .sp-ico {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 30px;
+    width: 30px;
+    height: 30px;
+    border-radius: var(--r-s);
+    background: var(--inset);
+    color: var(--ink-3);
+  }
+
+  /* Status chips (.st) and the legacy .chip: history scores and the status popover use it. */
+  .st,
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1);
+    min-height: 24px;
+    padding: 1px var(--s-2);
+    border-radius: var(--r-pill);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    white-space: nowrap;
+  }
+
+  .st-ok,
+  .c-ok {
+    background: var(--ok-tint);
+    color: var(--ok);
+  }
+
+  .st-warning,
+  .c-warning {
+    background: var(--warn-tint);
+    color: var(--warn);
+  }
+
+  .st-off,
+  .c-off,
+  .st-unchecked,
+  .c-unchecked {
+    background: var(--inset);
+    color: var(--ink-3);
+  }
+
+  .usage {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .bar {
+    display: block;
+    flex: 0 0 auto;
+    align-self: stretch;
+    width: 100%;
+    height: 8px;
+    min-height: 8px;
+    max-height: 8px;
+    border-radius: 4px;
+    background: var(--line);
+    overflow: hidden;
+  }
+
+  .bar > span {
+    display: block;
+    height: 100%;
+    max-height: 100%;
+    background: var(--select);
+    border-radius: 4px;
+  }
+
+  .kpi-row .bar,
+  .mini .bar {
+    height: 6px;
+    min-height: 6px;
+    max-height: 6px;
+  }
+
+  .mini .bar {
+    width: 80px;
+    flex: 0 0 80px;
+  }
+
+  .switch {
+    display: inline-flex;
+    align-items: center;
+    width: 44px;
+    height: 26px;
+    padding: 2px;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: var(--line-strong);
+    cursor: pointer;
+  }
+
+  .switch.on {
+    background: var(--ok);
+  }
+
+  .switch .knob {
+    width: 22px;
+    height: 22px;
+    border-radius: var(--r-pill);
+    background: var(--surface);
+  }
+
+  .switch.on .knob {
+    margin-left: auto;
+  }
+
+  .switch:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  /* A radio card (settings, onboarding): the whole card is the label. */
+  .radio {
+    display: flex;
+    gap: var(--s-2);
+    align-items: flex-start;
+    min-height: 44px;
+    padding: var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    cursor: pointer;
+  }
+
+  .radio:hover {
+    border-color: var(--line-strong);
+  }
+
+  .radio:has(input:checked) {
+    border-color: var(--select);
+    background: var(--select-tint);
+  }
+
+  .radio input {
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+    margin: 3px 0 0;
+    accent-color: var(--select);
+  }
+
+  /* Label and hint stack inside a radio card. */
+  .radio > input + span {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .radio.on {
+    border-color: var(--select);
+    background: var(--select-tint);
+  }
+
+  /* A sub-section already draws the line above its first row. */
+  .sub > .switch-row:first-child {
+    border-top: 0;
+  }
+
+  .switch-row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-3);
+    min-height: var(--h-control);
+    align-items: center;
+    padding: var(--s-2) 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .break {
+    word-break: break-all;
+  }
+
+  .select:disabled,
+  .ob-input:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  /* Key and budget fields: the input grows, its eye button and unit stay beside it. */
+  .key-row {
+    justify-content: flex-start;
+  }
+
+  .key-row > .ob-input {
+    flex: 1 1 220px;
+    width: auto;
+    min-width: 0;
+  }
+
+  .key-row > .ob-input[inputmode='numeric'] {
+    flex: 0 1 140px;
+  }
+
+  .key-row > .field-error,
+  .key-row > p:not(.sr-only) {
+    flex-basis: 100%;
+  }
+
+  .status-wrap {
+    position: relative;
+  }
+
+  .status-pill {
+    font-family: inherit;
+    text-align: left;
+  }
+
+  .status-pop {
+    position: absolute;
+    top: 0;
+    left: calc(100% + 16px);
+    z-index: 30;
+    width: min(420px, calc(100vw - 280px));
+    max-height: min(640px, calc(100vh - 48px));
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    box-shadow: var(--e2);
+  }
+
+  .pop-head,
+  .pop-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2);
+    padding: var(--s-2) var(--s-3);
+  }
+
+  .pop-head {
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .pop-foot {
+    position: sticky;
+    bottom: 0;
+    background: var(--inset);
+    border-top: 1px solid var(--line);
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  .pop-body {
+    display: flex;
+    flex-direction: column;
+    padding: var(--s-1) var(--s-4) var(--s-2);
+  }
+
+  .sp-sec {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding: var(--s-3) 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .sp-sec:first-child {
+    border-top: 0;
+  }
+
+  .sp-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .sp-head h3 {
+    font-size: var(--fs-body);
+  }
+
+  .sp-act {
+    margin-left: auto;
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+    text-decoration: none;
+  }
+
+  .sp-lines {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding-left: 40px;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .main.dim {
+    position: relative;
+  }
+
+  .main.dim::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--ground) 60%, transparent);
+    pointer-events: none;
+  }
+
+  .side {
+    overflow: visible;
+  }
+
+  @media (max-width: 760px) {
+    .status-pop {
+      position: static;
+      width: 100%;
+      max-height: none;
+      margin-bottom: var(--s-2);
+    }
+
+    .main.dim::after {
+      display: none;
+    }
+  }
+}

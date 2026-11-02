@@ -1,0 +1,299 @@
+/* Status (Mockups/Status.dc.html) in the v2 look: KPI row, decisions grid, tabs of panels. v2 tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .sts-screen {
+    gap: var(--card-gap);
+  }
+
+  /* KPI row: one strip (ui `KpiStrip`). */
+  .sts-kpi .ui-kpi-sub .m3-link,
+  .sts-kpi .ui-kpi-sub .drill-num {
+    font-size: inherit;
+  }
+
+  .sts-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  .sts-tabs {
+    margin-bottom: calc(var(--s-2) * -1);
+  }
+
+  /* The strip scrolls sideways only: the selected tab's -1px underline must not add a vertical scrollbar. */
+  .sts-tabs .ui-tabs {
+    overflow-y: hidden;
+  }
+
+  .sts-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    outline-offset: 4px;
+  }
+
+  /* Connections summary (a list grid): the name opens Connections, one line per service. */
+  .sts-conn-name {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+    text-decoration: none;
+  }
+
+  .sts-conn-name:hover,
+  .sts-conn-name:focus-visible {
+    text-decoration: underline;
+  }
+
+  .sts-conn-line {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  /* The summary grid and the Claude usage card share a height. */
+  .sts-conn-layout {
+    align-items: stretch;
+  }
+
+  .sts-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+    padding: var(--card-pad);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .sts-card-head {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 32px;
+  }
+
+  .sts-ico {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--r-s);
+    background: var(--inset);
+    color: var(--ink-2);
+  }
+
+  .sts-act {
+    margin-left: auto;
+    color: var(--action-ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+    text-decoration: none;
+  }
+
+  .sts-act:hover {
+    text-decoration: underline;
+  }
+
+  .st-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    font-weight: var(--fw-semibold);
+  }
+
+  .st-lines {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    color: var(--ink-2);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+
+  .st-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-4);
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .st-num {
+    font-family: var(--font-ui);
+    font-size: var(--fs-ui);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sts-strong {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .sts-small {
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .sts-clip {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sts-project {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .sts-project a {
+    overflow: hidden;
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Usage bars: spruce on the chart track (fox is only for the brand and ✦ AI). */
+  .st-bar {
+    position: relative;
+    flex: none;
+    width: 100%;
+    height: 8px;
+    overflow: hidden;
+    border-radius: var(--r-pill);
+    background: var(--chart-track);
+  }
+
+  .st-bar > span {
+    display: block;
+    height: 100%;
+    border-radius: var(--r-pill);
+    background: var(--chart-2);
+  }
+
+  .st-keys {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .st-key {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding-top: var(--s-3);
+    border-top: 1px solid var(--line);
+  }
+
+  .st-problem {
+    color: var(--warn);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .st-issue {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+    background: var(--warn-tint);
+  }
+
+  .st-issue a {
+    font-weight: var(--fw-semibold);
+  }
+
+  .sts-warn {
+    color: var(--warn);
+    font-weight: var(--fw-semibold);
+  }
+
+  .st-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3) var(--s-4);
+    align-items: center;
+  }
+
+  .st-bar-btn {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  .st-bar-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-radius: var(--r-s);
+  }
+
+  /* Background page setup (FR-20.6). */
+  .st-notice-title {
+    margin: 0;
+    font-size: var(--fs-body);
+  }
+
+  .st-notices {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .st-setup-counts {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-3);
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-s);
+    background: var(--inset);
+  }
+
+  .st-setup-count {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+
+  .st-setup-num,
+  .drill-num.st-setup-num {
+    align-self: flex-start;
+    color: var(--ink);
+    font-size: var(--fs-h1);
+    line-height: var(--lh-h1);
+    font-weight: var(--fw-semibold);
+    font-variant-numeric: tabular-nums;
+    text-align: start;
+  }
+
+  .st-setup-rate {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2) var(--s-3);
+  }
+
+  .st-setup-rate .st-rate-input {
+    width: 80px;
+  }
+}

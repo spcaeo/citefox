@@ -1,0 +1,73 @@
+/* The help drawer (help/HelpDrawer.tsx): one topic as calm reading text, a list of more topics. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .help-body {
+    max-width: 68ch;
+    color: var(--ink);
+    font-size: var(--fs-body);
+    line-height: 1.6;
+  }
+
+  .help-body h3 {
+    margin: var(--s-6) 0 var(--s-2);
+    font-size: var(--fs-body);
+    font-weight: 600;
+  }
+
+  .help-body h3:first-child {
+    margin-top: 0;
+  }
+
+  .help-body h4 {
+    margin: var(--s-4) 0 var(--s-1);
+    font-size: var(--fs-ui);
+    font-weight: 600;
+    color: var(--ink-2);
+  }
+
+  .help-list {
+    display: grid;
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .help-list li {
+    display: grid;
+    gap: 2px;
+  }
+
+  .help-link {
+    justify-self: start;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--fs-ui);
+    font-weight: 600;
+    text-align: start;
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .help-link:hover,
+  .help-link:focus-visible {
+    text-decoration-color: var(--ink-3);
+  }
+
+  .help-line {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .help-missing {
+    margin: 0 0 var(--s-4);
+    color: var(--ink-2);
+  }
+}

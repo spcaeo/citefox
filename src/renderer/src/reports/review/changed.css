@@ -1,0 +1,146 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * Reports › What changed: the cover strip, the four movement lists, the one-check panel
+ * and the Brand named note on a KPI tile.
+ */
+@layer screens {
+  .rv-cover {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .rv-cover-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--s-3);
+    margin: 0;
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--inset);
+  }
+
+  .rv-cover-grid dt {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .rv-cover-grid dd {
+    margin: 0;
+    color: var(--ink);
+  }
+
+  .rv-cover-line {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .rv-kpi-note {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  /* Five tiles in a two-column grid: the last one spans the row, so the grid stays even. */
+  .rv-kpis > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .rv-moves {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-3);
+  }
+
+  .rv-move {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+    padding: var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  .rv-move-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-2);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .rv-move-n {
+    font-size: var(--fs-h2);
+    font-weight: var(--fw-semibold);
+  }
+
+  .rv-move-ok .rv-move-n {
+    color: var(--result-target-ink);
+  }
+
+  .rv-move-warn .rv-move-n {
+    color: var(--result-not-cited-ink);
+  }
+
+  .rv-move-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rv-move-list li {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .rv-move-q {
+    overflow: hidden;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .rv-move-q:hover {
+    text-decoration: underline;
+  }
+
+  .rv-claim-moves {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding-left: var(--s-5);
+    color: var(--ink-2);
+  }
+
+  .rv-waiting p {
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  .rv-waiting-next {
+    padding-top: var(--s-2);
+  }
+
+  @media (max-width: 1180px) {
+    .rv-moves,
+    .rv-cover-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}

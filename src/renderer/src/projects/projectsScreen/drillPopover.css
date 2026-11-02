@@ -1,0 +1,156 @@
+/* Drill popovers on project-level screens (Projects, Project settings, sidebar). */
+
+@layer shared, results, screens, utilities;
+
+@layer shared {
+  .dpop-wrap {
+    position: relative;
+    display: inline-flex;
+    max-width: 100%;
+  }
+
+  .dpop {
+    position: fixed;
+    z-index: 40;
+    width: min(380px, calc(100vw - 48px));
+    max-height: min(480px, calc(100vh - 96px));
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    box-shadow: var(--e2);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    font-weight: normal;
+    text-align: left;
+    white-space: normal;
+  }
+
+  .dpop-title {
+    font-size: var(--fs-body);
+  }
+
+  .dpop-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: var(--s-2) 14px;
+  }
+
+  .dpop-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .dpop-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2);
+    width: 100%;
+    margin: 0;
+    padding: 6px var(--s-1);
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+  }
+
+  button.dpop-row {
+    cursor: pointer;
+  }
+
+  button.dpop-row:hover {
+    background: var(--inset);
+  }
+
+  button.dpop-row:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: calc(2px * -1);
+  }
+
+  .dpop-row-main {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .dpop-row-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .dpop-row-detail {
+    font-size: var(--fs-ui);
+  }
+
+  .dpop-row-value {
+    flex: none;
+  }
+
+  .dpop-total {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-2);
+    padding: var(--s-1);
+    font-weight: var(--fw-semibold);
+  }
+
+  /* A drill opener that is a bar or a whole block, not a bare number. */
+  .dpop-block {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .dpop-block:hover .bar {
+    outline: 1px solid var(--line-strong);
+  }
+
+  .dpop-block:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .dpop-link {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--action-ink);
+    font: inherit;
+    text-align: left;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .dpop-link:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .dpop-wrap:has(> .dpop-block) {
+    display: flex;
+    width: 100%;
+  }
+}

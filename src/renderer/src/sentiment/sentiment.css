@@ -1,0 +1,752 @@
+/*
+ * Sentiment tab, v2 "Spruce & Fox" (TOPICS-SPEC §1, Theme.dc.html): KPI tiles,
+ * tabs, list grids and small panels. Tones use the semantic colours (positive
+ * = success, negative = danger); fox stays for your own brand.
+ */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .st-screen {
+    --st-pos: var(--ok);
+    --st-pos-soft: var(--ok-tint);
+    --st-neu: var(--ink-4);
+    --st-neu-soft: var(--inset);
+    --st-neg: var(--bad);
+    --st-neg-soft: var(--bad-tint);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-6);
+    min-width: 0;
+  }
+
+  .st-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-6);
+    min-width: 0;
+  }
+
+  /* ---- Intro: one line and the source picker ---- */
+  .st-intro {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3) var(--s-6);
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .st-lead {
+    flex: 1 1 420px;
+    max-width: 720px;
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+
+  .st-status,
+  .st-note {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .st-status {
+    font-size: var(--fs-ui);
+  }
+
+  /* ---- KPI row: one strip of four (ui `KpiStrip`) ---- */
+  .st-kpi-none {
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h1);
+    letter-spacing: 0;
+  }
+
+  /* The tone bar and its counts share the tile's one sub line. */
+  .st-tone-sub {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .st-tone-bar {
+    display: flex;
+    flex: 0 0 40px;
+    height: 6px;
+    overflow: hidden;
+    border-radius: var(--r-pill);
+    background: var(--chart-track);
+  }
+
+  .st-tone-bar .mark-btn {
+    min-width: 0;
+    height: 100%;
+  }
+
+  .st-bar-positive {
+    background: var(--st-pos);
+  }
+
+  .st-bar-neutral {
+    background: var(--st-neu);
+  }
+
+  .st-bar-negative {
+    background: var(--st-neg);
+  }
+
+  .st-tone-counts {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    gap: 0 var(--s-2);
+  }
+
+  /* The tone counts sit on the tile's 16px sub line (the tile stays 88px): they
+     are far enough apart, and 4px below the number, to pass WCAG 2.5.8 by spacing. */
+  .st-tone-counts .st-drill {
+    display: inline-flex;
+    gap: 0.25em;
+    align-items: center;
+  }
+
+  /* WCAG 2.5.8: drill buttons side by side get a 24px target. */
+  .st-trend-foot .st-drill {
+    display: inline-flex;
+    gap: 0.25em;
+    align-items: center;
+    min-height: 24px;
+  }
+
+  .st-tone {
+    font-weight: var(--fw-medium);
+  }
+
+  .st-tone-positive {
+    color: var(--st-pos);
+  }
+
+  .st-tone-neutral {
+    color: var(--ink-2);
+  }
+
+  .st-tone-negative {
+    color: var(--st-neg);
+  }
+
+  /* ---- Panels (small context cards) and sections around grids ---- */
+  .st-panel {
+    min-width: 0;
+  }
+
+  .st-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+    padding: var(--card-pad);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .st-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  .st-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .st-two {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--card-gap);
+  }
+
+  /* Text that opens a drill: dotted underline means drillable. */
+  .st-drill {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    text-decoration: underline solid transparent;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .st-drill:hover,
+  .st-drill:focus-visible {
+    color: var(--action-ink);
+    text-decoration-color: currentcolor;
+  }
+
+  .st-drill:focus-visible {
+    border-radius: 2px;
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .st-strong {
+    font-weight: var(--fw-medium);
+  }
+
+  /* ---- Grid cells ---- */
+  .st-cell-prompt {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .st-cell-prompt > :last-child {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .st-cell-prompt a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .st-cell-prompt a:hover {
+    text-decoration: underline;
+  }
+
+  .st-muted-cell {
+    overflow: hidden;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* WCAG 2.5.8: a bare count in a grid cell is still a 24px target. */
+  .st-section .ui-lg-td .drill-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 24px;
+    min-height: 24px;
+  }
+
+  .st-attrs {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .st-clamp2 {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    white-space: normal;
+  }
+
+  .st-basis {
+    display: block;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .st-mark-neg {
+    overflow: hidden;
+    padding: 1px 4px;
+    border-radius: 4px;
+    background: var(--st-neg-soft);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .st-tone-parts {
+    color: var(--ink-3);
+  }
+
+  /* ---- Tone split donut and share bars ---- */
+  .st-donut-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-6);
+    align-items: center;
+  }
+
+  .st-donut-row svg {
+    flex: none;
+  }
+
+  .st-donut-track {
+    fill: none;
+    stroke: var(--chart-track);
+    stroke-width: 18;
+  }
+
+  .st-donut-positive,
+  .st-donut-neutral,
+  .st-donut-negative {
+    fill: none;
+    stroke-width: 18;
+  }
+
+  .st-donut-positive {
+    stroke: var(--st-pos);
+  }
+
+  .st-donut-neutral {
+    stroke: var(--st-neu);
+  }
+
+  .st-donut-negative {
+    stroke: var(--st-neg);
+  }
+
+  .st-donut-net {
+    fill: var(--ink);
+    font-size: 26px;
+    font-weight: var(--fw-semibold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .st-donut-label {
+    fill: var(--ink-3);
+    font-size: 12px;
+  }
+
+  .st-legend {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    font-size: var(--fs-ui);
+    font-variant-numeric: tabular-nums;
+    list-style: none;
+  }
+
+  .st-legend li {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .st-swatch {
+    display: inline-block;
+    flex: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+  }
+
+  .st-swatch-positive {
+    background: var(--st-pos);
+  }
+
+  .st-swatch-neutral {
+    background: var(--st-neu);
+  }
+
+  .st-swatch-negative {
+    background: var(--st-neg);
+  }
+
+  .st-shares {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    font-size: var(--fs-ui);
+    font-variant-numeric: tabular-nums;
+    list-style: none;
+  }
+
+  .st-share {
+    display: grid;
+    grid-template-columns: minmax(90px, 140px) 1fr auto 44px;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .st-share-name {
+    justify-self: start;
+  }
+
+  .st-share-own .st-share-name {
+    font-weight: var(--fw-semibold);
+  }
+
+  /* The same calm bar as ui/chart's BarFill: a soft track, a rounded grey fill, yours green. */
+  .st-share-bar {
+    height: 8px;
+    overflow: hidden;
+    border-radius: var(--r-pill);
+    background: var(--inset);
+  }
+
+  .st-share-bar > * {
+    display: block;
+    height: 100%;
+    border-radius: var(--r-pill);
+    background: var(--chart-past);
+  }
+
+  .st-share-own .st-share-bar > * {
+    background: var(--chart-cited);
+  }
+
+  .st-share-pct {
+    color: var(--ink-3);
+    text-align: right;
+  }
+
+  /* ---- Trend chart (ui/chart's TrendChart): the control over each check's dot ---- */
+  .st-point {
+    position: absolute;
+    z-index: 1;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+  }
+
+  .st-point:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+
+  .st-trend-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-4);
+    margin: 0;
+    padding: 0;
+    font-size: var(--fs-small);
+    font-variant-numeric: tabular-nums;
+    list-style: none;
+  }
+
+  .st-donut-hit {
+    cursor: pointer;
+  }
+
+  .st-donut-hit:hover {
+    opacity: 0.85;
+  }
+
+  .st-donut-core {
+    fill: transparent;
+  }
+
+  .st-net {
+    display: inline-flex;
+    gap: var(--s-1);
+    align-items: baseline;
+    justify-content: center;
+    min-width: 48px;
+    min-height: 24px;
+    padding: 2px 6px;
+    border-radius: var(--r-s);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    font-variant-numeric: tabular-nums;
+    text-decoration: none;
+  }
+
+  .st-net-count {
+    font-size: 11px;
+    font-weight: var(--fw-medium);
+    opacity: 0.85;
+  }
+
+  .st-n-pos2 {
+    background: var(--st-pos);
+    color: var(--on-solid);
+  }
+
+  .st-n-pos1 {
+    background: var(--st-pos-soft);
+    color: var(--st-pos);
+  }
+
+  .st-n-zero {
+    background: var(--inset);
+    color: var(--ink);
+  }
+
+  .st-n-neg1 {
+    background: var(--st-neg-soft);
+    color: var(--st-neg);
+  }
+
+  .st-n-neg2 {
+    background: var(--st-neg);
+    color: var(--on-solid);
+  }
+
+  .st-n-none {
+    border: 1px dashed var(--line-strong);
+  }
+
+  .st-net-few {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .st-matrix-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2) var(--s-4);
+  }
+
+  .st-legend-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-4);
+    margin: 0;
+    padding: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    list-style: none;
+  }
+
+  .st-legend-row li {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  /* ---- Side panels: sentences and the full answer ---- */
+  .st-sentences {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .st-sentences li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding-bottom: var(--s-3);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .st-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+    margin: 0;
+    font-size: var(--fs-small);
+  }
+
+  .st-quote {
+    margin: 0;
+    font-size: var(--fs-ui);
+    line-height: var(--lh-body);
+  }
+
+  /* Source cards in the answer drawer's rail: the address, then its kind. */
+  .st-sources {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .st-source-card {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+  }
+
+  .st-small {
+    margin: 0;
+    font-size: var(--fs-ui);
+  }
+
+  .st-ranked {
+    margin: 0;
+    padding-left: var(--s-5);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-body);
+  }
+
+  .st-ranked-own {
+    color: var(--fox-ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  /* ---- Brand facts and brand prompts ---- */
+  .st-facts {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    list-style: none;
+  }
+
+  .st-facts li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: center;
+    min-height: var(--h-row);
+    padding: var(--s-1) var(--s-2) var(--s-1) var(--s-4);
+    border-bottom: 1px solid var(--line);
+    font-size: var(--fs-ui);
+  }
+
+  .st-facts li:last-child {
+    border-bottom: 0;
+  }
+
+  .st-fact-text {
+    flex: 1 1 280px;
+  }
+
+  .st-fact-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: flex-end;
+  }
+
+  .st-field {
+    display: flex;
+    flex: 0 1 240px;
+    flex-direction: column;
+    gap: var(--s-1);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+  }
+
+  .st-field-grow {
+    flex: 1 1 320px;
+  }
+
+  .st-reread {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .st-reread > p {
+    flex: 1 1 320px;
+  }
+
+  .st-tag {
+    margin-left: var(--s-1);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-regular);
+  }
+
+  .st-message {
+    margin: 0;
+    color: var(--ok);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  .st-prompt-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .st-prompt-chip {
+    padding: 4px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    font-size: var(--fs-ui);
+  }
+
+  .st-prompt-tag {
+    display: inline;
+    text-decoration: none;
+  }
+
+  .st-prompt-tag:hover {
+    text-decoration: underline;
+  }
+
+  .st-editor {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .st-editor-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .st-editor-text {
+    flex: 1 1 320px;
+    width: auto;
+  }
+
+  .st-select {
+    width: auto;
+  }
+
+  .st-how {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding-left: var(--s-5);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  @media (max-width: 1100px) {
+    .st-two {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

@@ -1,0 +1,94 @@
+/* Add a page in the shared Drawer. Market rows reuse projects/AddPageScreen.css (ap2-*). Tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .adp-status {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: var(--s-2) 0 var(--s-3);
+  }
+
+  .adp-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-1);
+    margin: 0;
+    min-width: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .adp-label {
+    color: var(--ink-3);
+  }
+
+  .adp-faint {
+    color: var(--ink-3);
+  }
+
+  .adp-warn {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .adp-error {
+    color: var(--bad);
+  }
+
+  .adp-ways {
+    margin-bottom: var(--s-3);
+  }
+
+  .adp-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .adp-narrow {
+    max-width: 120px;
+  }
+
+  .adp-text {
+    width: 100%;
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    resize: vertical;
+  }
+
+  .adp-text:focus {
+    outline: none;
+    border-color: var(--fox);
+    box-shadow: var(--focus-ring);
+  }
+
+  .adp-expert {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-4);
+    align-items: start;
+  }
+
+  /* The market rows sit in the narrow rail: country and language get the full
+     width (so "US · United States" is never cut), the city shares its line
+     with Default and remove. */
+  .adp-drawer .ap2-market {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .adp-drawer .ap2-market > .ap2-field:nth-child(-n + 2),
+  .adp-drawer .ap2-market > .ap2-check {
+    grid-column: 1 / -1;
+  }
+}

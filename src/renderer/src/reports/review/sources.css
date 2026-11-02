@@ -1,0 +1,24 @@
+@layer shared, results, screens, utilities;
+
+/* Visibility report → Sources and Answer shape. */
+@layer screens {
+  .rv-journey {
+    text-align: left;
+  }
+
+  .rv-shape-legend {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--s-3) var(--s-5);
+  }
+
+  .rv-journey-outline {
+    margin: 0 0 var(--s-3);
+    padding-left: var(--s-5);
+    color: var(--ink-2);
+  }
+
+  .rv-journey-outline li + li {
+    margin-top: var(--s-1);
+  }
+}

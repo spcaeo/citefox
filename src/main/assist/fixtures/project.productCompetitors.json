@@ -1,0 +1,57 @@
+{
+  "direct": [
+    {
+      "name": "TXTImpact",
+      "domain": "txtimpact.com",
+      "why": "Sells email-to-SMS for businesses: an email to a number goes out as a text, with replies by email.",
+      "startingPrice": "$29/mo",
+      "sources": [
+        {
+          "url": "https://www.softwareadvice.com/sms-marketing/txtimpact-profile/",
+          "biased": false
+        },
+        { "url": "https://txtimpact.com/email-to-sms", "biased": true }
+      ]
+    },
+    {
+      "name": "Notifyre",
+      "domain": "notifyre.com",
+      "why": "Has a named email-to-SMS gateway for US businesses that works from Gmail and Outlook.",
+      "startingPrice": "$0.02/text",
+      "sources": [{ "url": "https://notifyre.com/us/email-to-sms", "biased": true }]
+    },
+    {
+      "name": "Textmagic",
+      "domain": "textmagic.com",
+      "why": "Its email-to-SMS service sends a text when you email a number, and replies come back as email.",
+      "startingPrice": "$0.049/text",
+      "sources": [
+        { "url": "https://www.textmagic.com/email-to-sms/", "biased": true },
+        { "url": "https://textbolt.com/compare", "biased": true }
+      ]
+    },
+    {
+      "name": "ClickSend",
+      "domain": "clicksend.com",
+      "why": "A messaging platform with a named email-to-SMS feature and replies forwarded to email.",
+      "startingPrice": "$0.02/text",
+      "sources": [{ "url": "https://www.clicksend.com/us/email-sms/", "biased": true }]
+    }
+  ],
+  "partial": [
+    {
+      "name": "SimpleTexting",
+      "domain": "simpletexting.com",
+      "why": "An SMS marketing platform: it can text staff, but it is built for campaigns, not email alerts.",
+      "startingPrice": "$39/mo",
+      "sources": [{ "url": "https://textbolt.com/compare", "biased": true }]
+    },
+    {
+      "name": "Twilio",
+      "domain": "twilio.com",
+      "why": "A developer SMS API: it can do the same job, but only with code.",
+      "startingPrice": null,
+      "sources": [{ "url": "https://www.twilio.com/en-us/sms/pricing/us", "biased": true }]
+    }
+  ]
+}

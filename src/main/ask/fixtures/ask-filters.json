@@ -1,0 +1,12 @@
+{
+  "filters": {
+    "pageIds": null,
+    "marketIds": ["mkt-uk"],
+    "statuses": ["not_cited", "brand_mentioned", "other_own_page"],
+    "movements": null,
+    "intentStages": null,
+    "citedDomain": null,
+    "text": null
+  },
+  "notCovered": null
+}

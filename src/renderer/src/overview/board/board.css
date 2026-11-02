@@ -1,0 +1,606 @@
+/* Summary as widgets (owner-approved mock-up, 2026-10-30). Tokens from styles/tokens.css. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .wb {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+    container-type: inline-size;
+  }
+
+  .wb-hint,
+  .wb-override {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .wb-empty {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    align-items: center;
+    padding: var(--s-8) var(--s-4);
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--r-m);
+    color: var(--ink-2);
+  }
+
+  .wb-empty p {
+    margin: 0;
+  }
+
+  /* The grid: 4 columns, 2 on a narrower window, 1 on a narrow one. */
+  .wb-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-4);
+    align-items: stretch;
+  }
+
+  .wb-cell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-radius: var(--r-m);
+  }
+
+  .wb-cell[data-size='s'] {
+    grid-column: span 1;
+  }
+
+  .wb-cell[data-size='m'] {
+    grid-column: span 2;
+  }
+
+  .wb-cell[data-size='l'] {
+    grid-row: span 2;
+    grid-column: span 2;
+  }
+
+  .wb-cell[data-size='w'] {
+    grid-column: 1 / -1;
+  }
+
+  @container (max-width: 860px) {
+    .wb-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .wb-cell[data-size='l'] {
+      grid-row: span 1;
+    }
+  }
+
+  @container (max-width: 520px) {
+    .wb-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .wb-cell[data-size] {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .wb-content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .wb-content > * {
+    flex: 1 1 auto;
+  }
+
+  /* Edit mode: the content wiggles gently and rests under the edit bar, which stays
+     still so its buttons are easy to hit. */
+  .wb-editing .wb-cell {
+    outline: 1px dashed var(--line-strong);
+    outline-offset: 3px;
+  }
+
+  .wb-editing .wb-content {
+    opacity: 0.62;
+    user-select: none;
+    animation: wb-wiggle 0.34s ease-in-out infinite alternate;
+    animation-delay: inherit;
+  }
+
+  /* The edit bar names the widget: a strip's own head would peek out beside it. */
+  .wb-editing .wb-strip-head {
+    visibility: hidden;
+  }
+
+  .wb-editing .wb-cell.wb-dragging {
+    z-index: 3;
+    outline: 2px solid var(--focus);
+    box-shadow: var(--e3);
+  }
+
+  .wb-editing .wb-dragging .wb-content {
+    animation: none;
+  }
+
+  @keyframes wb-wiggle {
+    from {
+      transform: rotate(-0.22deg);
+    }
+
+    to {
+      transform: rotate(0.22deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wb-editing .wb-content {
+      animation: none;
+    }
+  }
+
+  .wb-edit {
+    position: absolute;
+    inset: var(--s-2) var(--s-2) auto;
+    z-index: 2;
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    min-width: 0;
+    padding: var(--s-1);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e2);
+  }
+
+  .wb-handle {
+    display: inline-flex;
+    flex: 1 1 auto;
+    gap: var(--s-2);
+    align-items: center;
+    min-width: 0;
+    height: var(--h-control-sm);
+    padding: 0 var(--s-2);
+    border: 0;
+    border-radius: var(--r-s);
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .wb-handle:hover {
+    background: var(--hover);
+  }
+
+  .wb-handle:active {
+    cursor: grabbing;
+  }
+
+  .wb-handle:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .wb-handle-text {
+    overflow: hidden;
+    min-width: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .wb-cell[data-size='s'] .wb-handle-text {
+    display: none;
+  }
+
+  .wb-size .ui-seg-btn {
+    min-width: 30px;
+    padding: 0 var(--s-2);
+  }
+
+  .wb-size-letter {
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  /* Widget heads: the engine filter sits with the card's own head links. */
+  .wb-panel {
+    height: 100%;
+  }
+
+  .wb-panel .ui-panel-actions,
+  .wb-content .ui-panel-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-3);
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .wb-strip {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .wb-strip-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-3);
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--h-control-sm);
+  }
+
+  .wb-strip-title {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-ui);
+  }
+
+  .wb-strip-tools {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    margin-left: auto;
+  }
+
+  .wb-engine .ui-seg-btn {
+    padding: 0 6px;
+  }
+
+  .wb-engine-btn {
+    position: relative;
+    display: inline-flex;
+    gap: var(--s-1);
+    align-items: center;
+    height: var(--h-control-sm);
+    padding: 0 var(--s-2);
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink-2);
+    font: inherit;
+    font-size: var(--fs-small);
+    cursor: pointer;
+  }
+
+  .wb-engine-btn:hover {
+    background: var(--hover);
+  }
+
+  .wb-engine-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .wb-engine-all {
+    font-weight: var(--fw-semibold);
+  }
+
+  /* A big number with its line. */
+  .wb-stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+
+  .wb-stat-value {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: var(--fs-display);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-display);
+    letter-spacing: var(--ls-display);
+  }
+
+  .wb-stat-line,
+  .wb-line,
+  .wb-sub {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .wb-sub {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .wb-delta {
+    align-self: flex-start;
+    margin: var(--s-1) 0 0;
+    padding: 2px var(--s-2);
+    border-radius: var(--r-pill);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+  }
+
+  .wb-delta[data-tone='up'] {
+    background: var(--ok-tint);
+    color: var(--ok);
+  }
+
+  .wb-delta[data-tone='down'] {
+    background: var(--bad-tint);
+    color: var(--bad-ink);
+  }
+
+  .wb-question {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-body);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-body);
+  }
+
+  /* Short lists inside a widget. */
+  .wb-list,
+  .wb-engines,
+  .wb-updates {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .wb-list-row {
+    display: flex;
+    gap: var(--s-2);
+    align-items: baseline;
+    min-width: 0;
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .wb-list-two {
+    justify-content: space-between;
+  }
+
+  .wb-list-text {
+    overflow: hidden;
+    min-width: 0;
+    color: var(--ink);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .wb-list-link {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .wb-list-link:hover {
+    color: var(--spruce-ink);
+    text-decoration: underline;
+  }
+
+  .wb-list-meta {
+    flex: none;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .wb-chip {
+    flex: none;
+    padding: 1px var(--s-2);
+    border-radius: var(--r-pill);
+    background: var(--result-none-tint);
+    color: var(--result-none-ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-small);
+  }
+
+  .wb-chip[data-tone='gained'] {
+    background: var(--result-target-tint);
+    color: var(--result-target-ink);
+  }
+
+  .wb-chip[data-tone='lost'] {
+    background: var(--result-not-cited-tint);
+    color: var(--result-not-cited-ink);
+  }
+
+  .wb-engine-row,
+  .wb-answer-row {
+    display: grid;
+    grid-template-columns: minmax(96px, 0.8fr) minmax(60px, 1fr) auto;
+    gap: var(--s-3);
+    align-items: center;
+    font-size: var(--fs-ui);
+  }
+
+  .wb-answer-row {
+    grid-template-columns: minmax(96px, auto) auto minmax(0, 1fr);
+  }
+
+  .wb-engine-name {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: center;
+    min-width: 0;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .wb-engine-count {
+    color: var(--ink-2);
+    white-space: nowrap;
+  }
+
+  .wb-answer-url {
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  .wb-verdicts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-3);
+  }
+
+  .wb-verdicts-stack {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-2);
+  }
+
+  .wb-verdict {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--s-3);
+    border-radius: var(--r-s);
+    background: var(--inset);
+  }
+
+  .wb-verdicts-stack .wb-verdict {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: var(--s-2);
+    align-items: baseline;
+    padding: var(--s-2) var(--s-3);
+  }
+
+  .wb-verdict[data-tone='worked'] {
+    background: var(--result-target-tint);
+  }
+
+  .wb-verdict-num {
+    color: var(--ink);
+    font-size: var(--fs-h2);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-h2);
+  }
+
+  .wb-verdict-label {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .wb-update {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-bottom: var(--s-2);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .wb-update:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .wb-update-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-3);
+    align-items: baseline;
+    justify-content: space-between;
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  .wb-update-when,
+  .wb-update-effect {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .wb-update-effect {
+    color: var(--ink-2);
+  }
+
+  .ov-first-report {
+    max-width: 560px;
+  }
+
+  /* Pin to Summary. */
+  .wb-pin {
+    flex: none;
+  }
+
+  /* The gallery drawer. */
+  .wb-gallery-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin-bottom: var(--s-6);
+  }
+
+  .wb-gallery-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-h3);
+  }
+
+  .wb-gallery-sub {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .wb-presets,
+  .wb-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .wb-preset,
+  .wb-gallery-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    align-items: flex-start;
+    padding: var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  .wb-preset-title,
+  .wb-gallery-name {
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .wb-preset-text,
+  .wb-gallery-text {
+    flex: 1 1 auto;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .wb-gallery-sizes {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .wb-gallery-pick,
+  .wb-gallery-pick .select {
+    width: 100%;
+  }
+}

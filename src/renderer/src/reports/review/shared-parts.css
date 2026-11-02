@@ -1,0 +1,153 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * The parts every ready report shares (Docs/REPORT-SPEC.md "Competitors",
+ * "Questions", "Drawers", "Search"): sortable headers, the position pill, the
+ * "Not compared" chip, engine columns, the report-wide search and the history
+ * legend's extra states. v2 tokens only.
+ */
+@layer screens {
+  .rv-sort {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .rv-sort:hover {
+    color: var(--ink);
+  }
+
+  .rv-posc {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1);
+    white-space: nowrap;
+  }
+
+  .rv-nc {
+    margin-left: var(--s-2);
+    color: var(--ink-3);
+  }
+
+  .rv-eng-col {
+    width: 32px;
+    text-align: center;
+  }
+
+  .rv-tbl td.rv-eng-col .rv-res {
+    justify-content: center;
+  }
+
+  .rv-own td {
+    background: var(--inset);
+  }
+
+  .rv-on td {
+    background: var(--hover);
+  }
+
+  .rv-toolbar-right {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--s-3);
+  }
+
+  .rv-sw-named {
+    border: 1.5px solid var(--result-not-cited);
+    background: var(--result-not-cited-tint);
+  }
+
+  .rv-sw-missing {
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+  }
+
+  /* ---- Report-wide search ---- */
+  .rv-find {
+    position: relative;
+  }
+
+  .rv-find-box {
+    width: 260px;
+    min-width: 0;
+  }
+
+  /* The search icon shows only on a narrow window, where it opens the box. */
+  .rv-find-toggle {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    .rv-find-toggle {
+      display: inline-grid;
+    }
+
+    .rv-find:not(.rv-find-open) .rv-find-box {
+      display: none;
+    }
+
+    .rv-find-open .rv-find-toggle {
+      display: none;
+    }
+
+    .rv-find-box {
+      width: 200px;
+    }
+  }
+
+  .rv-find-pop {
+    position: absolute;
+    top: calc(100% + var(--s-1));
+    right: 0;
+    z-index: var(--z-pop);
+    width: 380px;
+    max-height: 420px;
+    overflow-y: auto;
+    padding: var(--s-2);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e2);
+  }
+
+  .rv-find-group {
+    margin: var(--s-2) var(--s-2) var(--s-1);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .rv-find-hit {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
+    padding: var(--s-2);
+    border: 0;
+    border-radius: var(--r-s);
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .rv-find-hit:hover,
+  .rv-find-hit.on {
+    background: var(--hover);
+  }
+
+  .rv-find-sub {
+    font-size: var(--fs-small);
+  }
+
+  .rv-find-empty {
+    margin: var(--s-2);
+    font-size: var(--fs-small);
+  }
+}

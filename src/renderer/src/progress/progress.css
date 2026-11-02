@@ -1,0 +1,230 @@
+/* Progress → fixes (Mockups/Progress.dc.html). Tokens from styles/tokens.css. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .fx-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .fx-card-top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .fx-num {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--select-tint);
+    color: var(--select);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .fx-verdict {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1);
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--hover);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  /* A verdict that opens its prompts. */
+  .fx-verdict-btn {
+    border: 0;
+    font-family: inherit;
+    text-decoration: underline solid transparent;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .fx-verdict-btn:hover,
+  .fx-verdict-btn:focus-visible {
+    text-decoration-color: currentcolor;
+  }
+
+  .fx-verdict-btn:focus-visible,
+  .fx-mark-btn:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .fx-card:focus {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .fx-verdict-worked,
+  .fx-verdict-partly {
+    background: var(--ok-tint);
+    color: var(--ok);
+  }
+
+  .fx-verdict-got_worse {
+    background: var(--warn-tint);
+    color: var(--ink);
+  }
+
+  .fx-result-worked {
+    color: var(--ok);
+    font-weight: var(--fw-semibold);
+  }
+
+  .fx-result-got_worse {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .fx-desc {
+    color: var(--ink);
+  }
+
+  .fx-markets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .fx-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .fx-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .fx-form fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .fx-form legend {
+    margin-bottom: 6px;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .fx-option {
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+  }
+
+  .fx-option input {
+    margin-top: 4px;
+  }
+
+  .fx-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .fx-row > label {
+    flex: 1 1 220px;
+  }
+
+  .fx-cost {
+    padding: var(--s-2) 10px;
+    border-radius: var(--r-s);
+    background: var(--inset);
+    color: var(--ink-2);
+  }
+
+  .fx-mark {
+    display: inline-flex;
+    margin: 0 4px 4px 0;
+    padding: 1px 8px;
+    border-radius: 6px;
+    background: var(--select-tint);
+    color: var(--select);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+    white-space: nowrap;
+  }
+
+  .fx-mark-planned {
+    border: 1px dashed var(--line-strong);
+    background: var(--surface);
+    color: var(--ink-2);
+  }
+
+  /* A "Fix N" mark that jumps to its card. */
+  .fx-mark-btn {
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  .fx-mark-btn:not(.fx-mark-planned) {
+    border: 0;
+  }
+
+  /* Rate chart: "8 of 10" under a check's date, opening the questions that check measured. */
+  .vis-tick {
+    position: absolute;
+    z-index: 1;
+    box-sizing: border-box;
+    min-height: 24px;
+    margin: 0;
+    padding: 0 6px;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: var(--ink-3);
+    font: inherit;
+    font-size: 11px;
+    line-height: 24px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    transform: translateX(-50%);
+    cursor: pointer;
+  }
+
+  .vis-tick:hover {
+    background: var(--inset);
+    color: var(--ink);
+  }
+
+  .vis-tick-plain {
+    cursor: default;
+  }
+
+  .vis-tick-plain:hover {
+    background: transparent;
+    color: var(--ink-3);
+  }
+
+  .vis-tick-noaio {
+    color: var(--ink-4);
+  }
+
+  .vis-tick:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+}

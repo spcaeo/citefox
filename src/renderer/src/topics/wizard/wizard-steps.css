@@ -1,0 +1,560 @@
+/* Add wizard, per-step styles: seed, editors, keywords depth, page brief,
+ * estimate, import and competitor (frame and shared pieces are in wizard.css). */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  /* ---- Shared step pieces (the chooser is in components/chooser.css) ---- */
+  .tw-suggest-head {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .tw-rail-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3);
+    margin-top: var(--s-2);
+  }
+
+  .tw-rail-foot .tw-note {
+    margin-left: auto;
+  }
+
+  .tw-claim-list,
+  .tw-radio-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* ---- Seed ---- */
+  .tw-row-seed {
+    align-items: flex-end;
+  }
+
+  .tw-per-stage {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-2) var(--s-4);
+    margin-top: var(--s-2);
+  }
+
+  .tw-per-stage-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2);
+    font-size: var(--fs-ui);
+  }
+
+  .tw-per-stage-item .ui-input {
+    width: 64px;
+  }
+
+  .tw-per-stage .tw-help {
+    grid-column: 1 / -1;
+  }
+
+  .tw-brand-row {
+    display: flex;
+    align-items: center;
+    gap: var(--s-6);
+  }
+
+  .tw-brand-title {
+    flex: 0 0 auto;
+    margin: 0;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    font-weight: var(--fw-semibold);
+  }
+
+  .tw-brand-facts {
+    display: flex;
+    flex: 1 1 auto;
+    gap: var(--s-8);
+    margin: 0;
+  }
+
+  .tw-brand-facts dt {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .tw-brand-facts dd {
+    margin: 0;
+    font-weight: var(--fw-medium);
+  }
+
+  .tw-brand-edit {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-6);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--line);
+  }
+
+  .tw-brand-edit p {
+    margin: 0;
+  }
+
+  .tw-radio-list {
+    gap: 2px;
+  }
+
+  .tw-radio-row {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 38px;
+    padding: 0 var(--s-3);
+    border-radius: var(--r-s);
+    cursor: pointer;
+  }
+
+  .tw-radio-row input {
+    flex: 0 0 auto;
+    margin: 0;
+    accent-color: var(--select);
+  }
+
+  .tw-radio-row.on {
+    background: var(--select-tint);
+  }
+
+  .tw-warn-mark {
+    display: inline-flex;
+    margin-left: auto;
+    color: var(--warn);
+  }
+
+  /* ---- Lines (one-line suggestion and notices) ---- */
+  .tw-line {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 48px;
+    padding: var(--s-2) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  .tw-line p {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .tw-depth {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  /* ---- Editors and panels above grids ---- */
+  .tw-editor {
+    gap: var(--s-3);
+    padding: var(--s-4) var(--s-5);
+  }
+
+  .tw-editor-row {
+    display: flex;
+    gap: var(--s-4);
+    align-items: flex-start;
+  }
+
+  .tw-editor-row .tw-field:not(.tw-grow) {
+    width: 200px;
+  }
+
+  /* The chosen page's full address, with Copy and Open, beside the select. */
+  .tw-editor-row > .ui-url {
+    align-self: flex-end;
+    height: var(--h-control);
+  }
+
+  .tw-editor-actions {
+    display: flex;
+    gap: var(--s-2);
+  }
+
+  .tw-gmeta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .tw-profile .ui-lg-meta {
+    flex: 1 1 auto;
+  }
+
+  .tw-profile .tw-gmeta {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .tw-kv {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin: 0;
+  }
+
+  .tw-kv div {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: var(--s-3);
+  }
+
+  .tw-kv dt {
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  .tw-kv dd {
+    margin: 0;
+    font-size: var(--fs-ui);
+  }
+
+  .tw .ui-panel > .ui-btn {
+    align-self: flex-start;
+  }
+
+  .tw-rail-links {
+    display: flex;
+    gap: var(--s-4);
+  }
+
+  /* ---- Keywords depth ---- */
+  .tw-depth-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--card-gap);
+    align-items: start;
+  }
+
+  @media (max-width: 1200px) {
+    .tw-depth-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .tw-estimate {
+    margin: 0;
+    font-weight: var(--fw-medium);
+  }
+
+  .tw-custom {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .tw-custom .ui-input {
+    width: 96px;
+  }
+
+  .tw-add-row {
+    display: flex;
+    gap: var(--s-2);
+  }
+
+  /* ---- Page brief ---- */
+  .tw-brief {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 0.9fr);
+    gap: var(--s-6);
+    padding: var(--s-5) var(--s-12) var(--s-5) var(--s-5);
+    background: var(--inset);
+  }
+
+  .tw-brief-main p,
+  .tw-brief-actions p {
+    margin: 0 0 var(--s-2);
+  }
+
+  .tw-brief-title {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-weight: var(--fw-semibold);
+  }
+
+  .tw-brief-outline {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--ink-2);
+  }
+
+  .tw-brief-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-3);
+  }
+
+  .tw-brief-close {
+    position: absolute;
+    top: var(--s-3);
+    right: var(--s-3);
+  }
+
+  /* Text links are action green; fox stays for the logo and ✦ AI marks. */
+  .tw-external,
+  .tw-text-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--action-ink);
+    font-weight: var(--fw-medium);
+  }
+
+  /* ---- Estimate ---- */
+  .tw-kpi-low .ui-kpi-value {
+    color: var(--bad);
+  }
+
+  .tw-plans-panel .ui-panel-head {
+    padding: var(--s-4) var(--card-pad);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .tw-plans {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding: var(--s-2) var(--s-3);
+    border: 0;
+  }
+
+  .tw-plan {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    min-height: 60px;
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-s);
+    cursor: pointer;
+  }
+
+  .tw-plan input {
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--select);
+  }
+
+  .tw-plan.on {
+    background: var(--select-tint);
+  }
+
+  .tw-plan-copy {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .tw-plan-title {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    font-weight: var(--fw-semibold);
+  }
+
+  .tw-plan-suggested {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--fox-ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+  }
+
+  .tw-recheck {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    padding: var(--s-4) var(--card-pad);
+    border-top: 1px solid var(--line);
+  }
+
+  .tw-recheck-label {
+    font-weight: var(--fw-semibold);
+  }
+
+  .tw-recheck .tw-help {
+    margin-left: auto;
+  }
+
+  .tw-budget {
+    position: relative;
+    display: flex;
+    height: 10px;
+    overflow: hidden;
+    border-radius: var(--r-pill);
+    background: var(--chart-track);
+  }
+
+  .tw-budget-left {
+    flex: 0 0 auto;
+    background: var(--chart-2);
+  }
+
+  .tw-budget-need {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: repeating-linear-gradient(
+      135deg,
+      var(--chart-not-cited) 0 3px,
+      transparent 3px 6px
+    );
+    opacity: 0.8;
+  }
+
+  .tw-budget-legend {
+    display: flex;
+    justify-content: space-between;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .tw-swatch {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 6px;
+    border-radius: 2px;
+  }
+
+  .tw-swatch-left {
+    background: var(--chart-2);
+  }
+
+  .tw-swatch-need {
+    background: var(--chart-not-cited);
+  }
+
+  .tw-warn-box {
+    display: flex;
+    gap: var(--s-2);
+    margin: 0;
+    padding: var(--s-3);
+    border-radius: var(--r-s);
+    background: var(--warn-tint);
+    color: var(--warn);
+    font-size: var(--fs-ui);
+  }
+
+  /* ---- Import ---- */
+  .tw-columns {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  /* The CSV preview's question column. */
+  .tw-sample .tw-sample-on {
+    background: var(--fox-tint);
+  }
+
+  .tw-source-row {
+    display: flex;
+    align-items: center;
+    gap: var(--s-6);
+  }
+
+  .tw-source {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    color: var(--ink-2);
+  }
+
+  .tw-source strong {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+  }
+
+  .tw-spacer {
+    flex: 1 1 auto;
+  }
+
+  /* ---- Competitor ---- */
+  .tw-url-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--s-3);
+  }
+
+  .tw-url-read {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tw-url-bar .ui-chip {
+    height: var(--h-control);
+  }
+
+  .tw-outline,
+  .tw-steps-list {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .tw-steps-list li + li,
+  .tw-outline li + li {
+    margin-top: 6px;
+  }
+
+  .tw-claims {
+    gap: var(--s-3);
+  }
+
+  .tw-claim-list li {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--s-3);
+    font-size: var(--fs-ui);
+  }
+
+  .tw-preview {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+  }
+
+  .tw-preview > span:last-child {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tw-preview-n {
+    font-size: var(--fs-display);
+    line-height: var(--lh-display);
+    font-weight: var(--fw-semibold);
+  }
+
+  .tw-empty h1 {
+    margin: 0;
+    font-size: var(--fs-h1);
+  }
+}

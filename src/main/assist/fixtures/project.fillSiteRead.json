@@ -1,0 +1,62 @@
+{
+  "summary": "TextBolt sells an email-to-SMS gateway to US and Canadian businesses. An email sent to a phone number goes out as a text, and replies come back to the inbox, with no app or code. Teams use it for staff alerts and to replace carrier email-to-text gateways that shut down.",
+  "brands": [
+    {
+      "name": "TextBolt",
+      "reason": "The homepage title and every heading name it."
+    },
+    {
+      "name": "Text Bolt",
+      "reason": "The pricing page spells it as two words once."
+    }
+  ],
+  "products": [
+    {
+      "name": "Email-to-SMS gateway",
+      "job": "Turns emails into text messages and sends replies back to the inbox, with no app or code.",
+      "buyer": "Small businesses and IT teams in the US and Canada",
+      "evidence": {
+        "path": "/",
+        "quote": "TextBolt turns any email into a normal text message."
+      }
+    },
+    {
+      "name": "Email-to-SMS alerting",
+      "job": "Sends alerts from monitoring tools, alarm panels and web forms to on-call phones as texts, with no code.",
+      "buyer": "IT and operations teams that run monitoring tools",
+      "evidence": null
+    },
+    {
+      "name": "Carrier email-to-text gateway replacement",
+      "job": "Replaces retired AT&T, Verizon and T-Mobile email-to-text gateways so existing email alerts keep reaching phones.",
+      "buyer": "Teams whose carrier gateway shut down",
+      "evidence": null
+    }
+  ],
+  "comparedWith": [
+    "SimpleTexting",
+    "Text-Em-All"
+  ],
+  "audiences": [
+    {
+      "name": "Field service",
+      "evidence": {
+        "path": "/use-cases",
+        "quote": "Field service"
+      }
+    },
+    {
+      "name": "Multi-location clinics and schools",
+      "evidence": {
+        "path": "/use-cases",
+        "quote": "Multi-location clinics and schools"
+      }
+    }
+  ],
+  "suggestedMarket": {
+    "country": "US",
+    "language": "en",
+    "location": null,
+    "reason": "Prices are in US dollars and the copy is US English."
+  }
+}

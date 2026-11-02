@@ -1,0 +1,259 @@
+@layer shared, results, screens, utilities;
+
+@layer shared {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: var(--fs-body);
+    /* FoxCue's body leading, as a ratio so text in other sizes inherits a matching one. */
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /*
+   * Numbers line up in every table cell, grid cell and figure (v2: tabular
+   * numbers on numeric UI). Cells only, not whole grids: header labels keep the
+   * plain font (and a serialisable font shorthand for the layout guards).
+   */
+  td,
+  [role='gridcell'],
+  [role='cell'],
+  [data-nfr-figure] {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Titles in FoxCue's display face. */
+  h1,
+  h2,
+  h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-h2);
+  }
+
+  h1 {
+    font-size: var(--fs-h1);
+    /* --lh-h1 over --fs-h1 (a ratio, for screens that resize their title). */
+    line-height: 1.27;
+    letter-spacing: var(--ls-h1);
+  }
+
+  h2 {
+    font-size: var(--fs-h2);
+  }
+
+  h3 {
+    font-size: var(--fs-h3);
+  }
+
+  p {
+    margin: 0;
+  }
+
+  /* Links are action green (Docs/HEADER.md): orange is only for the logo and the ✦ AI marks. */
+  a {
+    color: var(--action-ink);
+  }
+
+  a:hover {
+    color: var(--action-ink-hover);
+  }
+
+  button,
+  input,
+  select {
+    font: inherit;
+  }
+
+  /* Fieldsets group controls for screen readers; the look comes from the screen's own classes. */
+  fieldset {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  legend {
+    padding: 0;
+  }
+
+  input[type='checkbox'],
+  input[type='radio'] {
+    accent-color: var(--select);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: var(--s-2);
+    top: var(--s-2);
+    z-index: var(--z-skip);
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--h-control);
+    padding: 0 var(--s-4);
+    border: 0;
+    border-radius: var(--r-s);
+    background: var(--action);
+    color: var(--on-action);
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+  }
+
+  .skip-link:not(:focus) {
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  /* The family is a utility (below); the size is a default that components may change. */
+  .mono {
+    font-size: var(--fs-small);
+  }
+
+  .icon {
+    display: block;
+    flex: 0 0 auto;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: var(--stroke);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .icon-sm {
+    width: var(--icon-m);
+    height: var(--icon-m);
+  }
+
+  .icon-nav {
+    width: var(--icon-m);
+    height: var(--icon-m);
+  }
+
+  .icon-chev {
+    width: var(--icon-s);
+    height: var(--icon-s);
+  }
+
+  .icon-strong {
+    stroke-width: var(--stroke-strong);
+  }
+
+  .icon-faint {
+    /* The sidebar re-points --ink-quiet (styles/sidebar.css) so this stays legible on spruce. */
+    color: var(--ink-quiet);
+  }
+
+  .fox {
+    display: block;
+    width: var(--icon-l);
+    height: var(--icon-l);
+    flex: 0 0 auto;
+  }
+
+  .fox-tile {
+    fill: var(--ink);
+  }
+
+  .fox-body {
+    fill: var(--fox);
+  }
+
+  .fox-ear {
+    fill: var(--fox-deep);
+  }
+
+  .fox-chest {
+    fill: var(--on-fox);
+  }
+
+  .fox-eye {
+    fill: var(--ink);
+  }
+
+  /* A failed load (components/LoadError): an EmptyState in a card, the icon in warning colours. */
+  .load-error {
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  .load-error .ui-empty-icon {
+    background: var(--warn-tint);
+    color: var(--warn);
+  }
+
+  .load-error .ui-empty-action {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Single-purpose classes the markup adds on purpose. They beat every screen rule. */
+@layer utilities {
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .mono {
+    font-family: var(--font-code);
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .muted {
+    /* The sidebar re-points --ink-quiet (styles/sidebar.css) so this stays legible on spruce. */
+    color: var(--ink-quiet);
+  }
+
+  .faint {
+    /* The sidebar re-points --ink-quiet (styles/sidebar.css) so this stays legible on spruce. */
+    color: var(--ink-quiet);
+  }
+}

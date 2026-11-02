@@ -1,0 +1,27 @@
+{
+  "summary": "Four questions no longer cite this page; the missing setup and carrier sections most likely matter most.",
+  "items": [
+    {
+      "text": "Restore a step-by-step setup section that answers how to set up text alerts without a developer.",
+      "detail": "Targets the setup questions that now cite no own page.",
+      "tag": null,
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Bring back a short section on what to do when carrier email-to-text stops working.",
+      "detail": "Targets the carrier question that now cites the features page.",
+      "tag": null,
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Let the pricing page own the two plan questions and link to it from the platform list.",
+      "detail": "The plan questions now cite the pricing page.",
+      "tag": null,
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": "One check before and one after: the saved data cannot show a trend."
+}

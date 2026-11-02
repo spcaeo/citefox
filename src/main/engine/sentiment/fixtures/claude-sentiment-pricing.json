@@ -1,0 +1,30 @@
+{
+  "brandsNamed": ["SimpleTexting", "TextBolt"],
+  "reason": "Listed after SimpleTexting, with a lower starting price.",
+  "claims": [
+    {
+      "brand": "TextBolt",
+      "theme": "Pricing",
+      "attribute": "starts at $19 a month",
+      "tone": "neutral",
+      "sentence": "TextBolt pricing starts at $19 a month for 500 texts.",
+      "url": "https://www.textbolt.com/pricing/"
+    },
+    {
+      "brand": "simpletexting.com",
+      "theme": "Pricing",
+      "attribute": "starts at $29 a month",
+      "tone": "neutral",
+      "sentence": "SimpleTexting starts at $29 a month.",
+      "url": "https://simpletexting.com/pricing/"
+    },
+    {
+      "brand": "TextBolt",
+      "theme": "Support",
+      "attribute": "slow email replies",
+      "tone": "negative",
+      "sentence": "A Reddit thread says TextBolt support can be slow to reply by email.",
+      "url": "https://www.reddit.com/r/smallbusiness/comments/abc123/textbolt_support/"
+    }
+  ]
+}

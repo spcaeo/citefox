@@ -1,0 +1,72 @@
+/* Join CiteFox and Settings › Your CiteFox account (Docs/PRIVACY.md). */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .acct-join {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    max-width: 640px;
+    margin: 0 auto;
+    padding: var(--s-8) 0;
+  }
+
+  .acct-join h1 {
+    margin: 0;
+    font-size: var(--fs-h1);
+    line-height: var(--lh-h1);
+  }
+
+  .acct-fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .acct-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--s-4);
+  }
+
+  .acct-roles {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+
+  .acct-role-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--s-2);
+    margin-top: var(--s-2);
+  }
+
+  .acct-role-name {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+  }
+
+  .acct-consents {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--s-2);
+  }
+
+  .acct-note {
+    margin: var(--s-4) 0 0;
+  }
+
+  .acct-foot {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    margin-top: var(--s-4);
+  }
+
+  .acct-foot p {
+    margin: 0;
+  }
+}

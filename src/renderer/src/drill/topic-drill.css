@@ -1,0 +1,124 @@
+/* The topic drawer (Mockups/v2/Topic-Drill.dc.html). */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .tdr {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-height: 100%;
+  }
+
+  .tdr-desc {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .tdr-tiles {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-3);
+    margin: 0;
+  }
+
+  .tdr-tile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding: var(--s-3) var(--s-3);
+    border-radius: var(--r-s);
+    background: var(--inset);
+  }
+
+  .tdr-tile dt {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .tdr-tile dd {
+    margin: 0;
+    color: var(--ink);
+    font-size: 20px;
+    font-weight: var(--fw-semibold);
+    line-height: 28px;
+  }
+
+  .tdr-insight {
+    display: flex;
+    gap: var(--s-3);
+    align-items: center;
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    color: var(--fox);
+  }
+
+  .tdr-insight p {
+    flex: 1;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  .tdr-n,
+  .tdr-none {
+    color: var(--ink-3);
+  }
+
+  .tdr-text {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-height: 18px;
+  }
+
+  .tdr-page,
+  .tdr-domains {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tdr-other {
+    color: var(--info);
+  }
+
+  .tdr-odds {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .tdr-odds .num {
+    min-width: 22px;
+    font-weight: var(--fw-semibold);
+    text-align: right;
+  }
+
+  .tdr-empty,
+  .tdr-note {
+    margin: 0;
+    color: var(--ink-3);
+  }
+
+  /* The legend in the drawer's footer summary: the swatch beside its words. */
+  .tdr-legend {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .tdr-swatch {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--info);
+  }
+}

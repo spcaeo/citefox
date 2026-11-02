@@ -1,0 +1,77 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * The pinned first column of the shared ListGrid (audit2 #6, a frozen
+ * column): the tick boxes and the main text column stay in place while a wide
+ * row scrolls sideways (ui/listGrid/pin.ts sets each cell's `left`).
+ *
+ * A pinned cell takes its row's own ground (`inherit`, so hover, selected,
+ * current, tree levels and the total row all match, in both themes) and
+ * paints it over a transparent border that reaches into the row's padding and
+ * half the gap, so nothing that scrolls under it shows at its sides (the
+ * border is outside the padding box, so content and the drag edge stay put). The soft
+ * edge shadow shows only while the box is scrolled (`data-scrolled-x`).
+ */
+@layer shared {
+  .ui-lg {
+    --lg-pin-edge: color-mix(in srgb, var(--e-color) 16%, transparent);
+  }
+
+  [data-theme='dark'] .ui-lg {
+    --lg-pin-edge: color-mix(in srgb, var(--e-color) 55%, transparent);
+  }
+
+  .ui-lg-pin {
+    position: sticky;
+    z-index: 1;
+    align-self: stretch;
+    margin-right: calc(var(--lg-gap, var(--s-4)) / -2);
+    margin-left: calc(var(--lg-gap, var(--s-4)) / -2);
+    border-right: calc(var(--lg-gap, var(--s-4)) / 2) solid transparent;
+    border-left: calc(var(--lg-gap, var(--s-4)) / 2) solid transparent;
+    background: inherit;
+  }
+
+  .ui-lg-pin-first {
+    margin-left: calc(-1 * var(--s-4));
+    border-left-width: var(--s-4);
+  }
+
+  /* A wrapping row pads top and bottom: the ground covers that too. */
+  .ui-lg-row.wrap > .ui-lg-pin {
+    margin-block: calc(-1 * var(--s-2));
+    border-block: var(--s-2) solid transparent;
+  }
+
+  .ui-lg-scroll[data-scrolled-x] .ui-lg-pin-last {
+    box-shadow:
+      1px 0 0 var(--line),
+      6px 0 8px -4px var(--lg-pin-edge);
+  }
+
+  /*
+   * A row's keyboard ring sits above the pinned cells, which would cover it
+   * (the row's own ring is painted under its cells).
+   */
+  .ui-lg-pins .ui-lg-row:focus-visible::after {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    box-shadow: inset 0 0 0 2px var(--focus, var(--fox));
+    content: '';
+    pointer-events: none;
+  }
+
+  /* Group rows and "Show N more" keep their label in view too. */
+  .ui-lg-pins .ui-lg-group-cell {
+    position: sticky;
+    left: 0;
+    width: max-content;
+    max-width: 100%;
+  }
+
+  .ui-lg-pins .ui-lg-tree-more > [role='gridcell'] {
+    position: sticky;
+    left: 0;
+  }
+}

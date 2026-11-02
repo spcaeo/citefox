@@ -1,0 +1,198 @@
+/* Fixes · Next round. Tokens from styles/tokens.css only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .rnd-lead {
+    gap: var(--s-3);
+    padding: var(--card-pad);
+    background: linear-gradient(180deg, var(--select-tint), var(--surface) 120px);
+  }
+
+  .rnd-lead-title {
+    margin: 0;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+  }
+
+  .rnd-lead-line {
+    max-width: 80ch;
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  /* Five equal step cards in one row; they wrap two or three per row on narrow windows. */
+  .rnd-steps {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--s-3);
+    margin: var(--s-2) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rnd-step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-width: 0;
+    padding: var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  .rnd-step-n {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: var(--r-pill);
+    background: var(--spruce);
+    color: var(--on-solid);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .rnd-step-name {
+    margin: var(--s-1) 0 0;
+    font-size: var(--fs-h3);
+    line-height: var(--lh-h3);
+  }
+
+  .rnd-step-line {
+    flex: 1 1 auto;
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .rnd-step-count {
+    margin: var(--s-2) 0 0;
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semibold);
+  }
+
+  .rnd-step-count .faint {
+    font-size: var(--fs-small);
+    font-weight: var(--fw-regular);
+  }
+
+  .rnd-owner {
+    align-self: flex-start;
+    max-width: 100%;
+    margin-top: var(--s-2);
+    padding: 2px var(--s-2);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink-2);
+    font: inherit;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-small);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .rnd-owner:hover {
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+
+  .rnd-owner:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .rnd-owner-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin-top: var(--s-2);
+  }
+
+  .rnd-owner-input {
+    min-width: 0;
+    height: var(--h-control-sm);
+    padding: 0 var(--s-2);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--fs-ui);
+  }
+
+  .rnd-owner-actions {
+    display: flex;
+    gap: var(--s-1);
+  }
+
+  .rnd-owner-error {
+    color: var(--bad-ink);
+    font-size: var(--fs-small);
+  }
+
+  .rnd-next {
+    margin: 0;
+    font-size: var(--fs-small);
+  }
+
+  .rnd-index,
+  .rnd-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  .rnd-notindexed {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rnd-notindexed li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-4);
+    align-items: center;
+  }
+
+  .rnd-draft {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .rnd-draft > :last-child {
+    align-self: flex-start;
+  }
+
+  .rnd-draft-ai {
+    display: flex;
+    gap: var(--s-3);
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  @media (width < 1100px) {
+    .rnd-steps {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (width < 700px) {
+    .rnd-steps {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

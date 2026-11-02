@@ -1,0 +1,23 @@
+{
+  "summary": "The overview leans on simpletexting.com for a step-by-step setup and on a forum thread for real-world experience. Your page is not among its sources for this question.",
+  "reasons": [
+    {
+      "text": "The cited guide answers the clinic case with numbered setup steps, and the target page has no heading for it.",
+      "evidence": null
+    },
+    {
+      "text": "The overview lists what to send and when, which the target page does not cover.",
+      "evidence": null
+    }
+  ],
+  "citedInstead": [
+    {
+      "source": 1,
+      "whyItWins": "A step-by-step answer for this exact case, with the setup from email."
+    }
+  ],
+  "facts": [
+    "Recommends sending alerts from the inbox staff already use",
+    "Lists consent as the first thing to check"
+  ]
+}

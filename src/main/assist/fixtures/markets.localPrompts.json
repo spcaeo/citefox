@@ -1,0 +1,20 @@
+{
+  "summary": null,
+  "items": [
+    {
+      "text": "How do I send text alerts to my staff in the UK without hiring a developer or getting everyone onto a new app?",
+      "detail": "Adds the UK and keeps \"staff\", which is more common there than \"employees\".",
+      "tag": "Prompt 1",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Which plan lets a small UK business schedule text messages to the whole team from Outlook ahead of time?",
+      "detail": "Names Outlook and the UK; \"text messages\" instead of \"texts\".",
+      "tag": "Prompt 2",
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": null
+}

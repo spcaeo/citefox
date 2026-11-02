@@ -1,0 +1,85 @@
+name: Bug report
+description: Something in CiteFox does not work as it should.
+title: '[Bug]: '
+labels: ['bug', 'triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. Please **never paste API keys, passwords or webhook links**.
+        Security problems go to SECURITY.md, not here.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you see? A screenshot helps (blur any client names you do not want public).
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open Questions
+        2. Click Check now on one question
+        3. ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: CiteFox version
+      description: The release line in the footer, or ⚙ › About.
+      placeholder: v0.12.0 · build 1424
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - macOS (Apple chip)
+        - macOS (Intel)
+        - Windows
+        - Linux (AppImage)
+        - Linux (deb)
+        - Built from source
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where in the app?
+      multiple: true
+      options:
+        - Setup / onboarding
+        - Summary
+        - Questions or topics
+        - Competitors or citations
+        - Fixes
+        - Reports or downloads
+        - Alerts, schedules or email
+        - Settings or connections
+        - Install or update
+        - Other
+  - type: textarea
+    id: log
+    attributes:
+      label: Log lines
+      description: From `logs/citefox.log` in the CiteFox data folder. Keys and prompt text are already redacted.
+      render: text
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you send
+      options:
+        - label: I searched the existing issues.
+          required: true
+        - label: I removed keys, passwords and private client data from this report.
+          required: true

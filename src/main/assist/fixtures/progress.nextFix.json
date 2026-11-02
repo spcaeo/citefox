@@ -1,0 +1,20 @@
+{
+  "summary": "The best next fix covers the plan question for prompt 2, which has no logged fix yet.",
+  "items": [
+    {
+      "text": "Add an FAQ that names the plan with scheduled texts and links to pricing.",
+      "detail": "Covers prompt 2. Gap: the page never says which plan includes scheduling.",
+      "tag": "high",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Say in the At a Glance box that staff do not install anything.",
+      "detail": "Covers prompt 1. The source cited above the page says this first.",
+      "tag": "medium",
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": null
+}

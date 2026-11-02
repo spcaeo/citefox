@@ -1,0 +1,771 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://citefox.app/schema/citefox-report-sections.v2.json",
+  "title": "CiteFox report model v2: cover to trends",
+  "definitions": {
+    "cover": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "domain",
+        "projectName",
+        "clientName",
+        "scope",
+        "scopeLabel",
+        "scopeSlug",
+        "builtAt",
+        "windowFrom",
+        "windowTo",
+        "timeZone",
+        "promptsTracked",
+        "brands",
+        "competitors",
+        "trackedPages",
+        "templates",
+        "brandColor"
+      ],
+      "properties": {
+        "title": { "type": "string" },
+        "domain": { "type": "string" },
+        "projectName": { "type": "string" },
+        "clientName": { "type": ["string", "null"] },
+        "scope": { "enum": ["page", "project"] },
+        "scopeLabel": { "type": "string" },
+        "scopeSlug": { "type": "string" },
+        "builtAt": { "$ref": "citefox-report-common.v2.json#/definitions/instant" },
+        "windowFrom": { "$ref": "citefox-report-common.v2.json#/definitions/nullableInstant" },
+        "windowTo": { "$ref": "citefox-report-common.v2.json#/definitions/nullableInstant" },
+        "timeZone": { "type": "string" },
+        "promptsTracked": { "type": "integer", "minimum": 0 },
+        "brands": { "type": "array", "items": { "type": "string" } },
+        "competitors": { "type": "array", "items": { "type": "string" } },
+        "trackedPages": { "type": "integer", "minimum": 0 },
+        "templates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["kind", "name", "hash"],
+            "properties": {
+              "kind": { "type": "string" },
+              "name": { "type": "string" },
+              "hash": { "type": "string" }
+            }
+          }
+        },
+        "brandColor": { "type": "string" }
+      }
+    },
+    "overview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "headline",
+        "tracked",
+        "aio",
+        "aioPct",
+        "failed",
+        "cited",
+        "citedPct",
+        "pageCited",
+        "named",
+        "winning",
+        "notVisible",
+        "wrongPage",
+        "score",
+        "scoreChange",
+        "previousCheckAt",
+        "funnel",
+        "opportunityByStage",
+        "opportunityByPage",
+        "coverageLine",
+        "measured",
+        "topActions"
+      ],
+      "properties": {
+        "headline": { "type": "string" },
+        "tracked": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "aio": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "aioPct": { "$ref": "citefox-report-common.v2.json#/definitions/pct" },
+        "failed": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "cited": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "citedPct": { "$ref": "citefox-report-common.v2.json#/definitions/pct" },
+        "pageCited": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "named": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "winning": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "notVisible": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "wrongPage": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "score": { "type": ["integer", "null"] },
+        "scoreChange": { "type": ["integer", "null"] },
+        "previousCheckAt": { "$ref": "citefox-report-common.v2.json#/definitions/nullableInstant" },
+        "funnel": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "label", "count", "dropReason"],
+            "properties": {
+              "id": { "enum": ["tracked", "aio", "cited", "page_cited", "named"] },
+              "label": { "type": "string" },
+              "count": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+              "dropReason": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "opportunityByStage": {
+          "type": "array",
+          "items": { "$ref": "citefox-report-common.v2.json#/definitions/opportunityBar" }
+        },
+        "opportunityByPage": {
+          "type": "array",
+          "items": { "$ref": "citefox-report-common.v2.json#/definitions/opportunityBar" }
+        },
+        "coverageLine": { "type": "string" },
+        "measured": { "type": "integer", "minimum": 0 },
+        "topActions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["rank", "text", "reason", "rowId"],
+            "properties": {
+              "rank": { "type": "integer", "minimum": 0 },
+              "text": { "type": "string" },
+              "reason": { "type": "string" },
+              "rowId": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "pagesSection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "empty",
+        "pagesTracked",
+        "pagesCited",
+        "pagesNeverCited",
+        "otherOwnCited",
+        "mostCited",
+        "tracked",
+        "otherOwn",
+        "wrongPage"
+      ],
+      "properties": {
+        "empty": { "$ref": "citefox-report-common.v2.json#/definitions/empty" },
+        "pagesTracked": { "type": "integer", "minimum": 0 },
+        "pagesCited": { "type": "integer", "minimum": 0 },
+        "pagesNeverCited": { "type": "integer", "minimum": 0 },
+        "otherOwnCited": { "type": "integer", "minimum": 0 },
+        "mostCited": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["url", "path", "tracked", "prompts", "citations"],
+            "properties": {
+              "url": { "type": "string" },
+              "path": { "type": "string" },
+              "tracked": { "type": "boolean" },
+              "prompts": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+              "citations": { "type": "integer", "minimum": 0 }
+            }
+          }
+        },
+        "tracked": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "pageId",
+              "url",
+              "path",
+              "title",
+              "score",
+              "prompts",
+              "aio",
+              "pageCited",
+              "ownCited",
+              "named",
+              "citationsTarget",
+              "citationsOtherOwn",
+              "lastChecked"
+            ],
+            "properties": {
+              "pageId": { "type": "string" },
+              "url": { "type": "string" },
+              "path": { "type": "string" },
+              "title": { "type": ["string", "null"] },
+              "score": { "type": ["integer", "null"] },
+              "prompts": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+              "aio": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+              "pageCited": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+              "ownCited": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+              "named": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+              "citationsTarget": { "type": "integer", "minimum": 0 },
+              "citationsOtherOwn": { "type": "integer", "minimum": 0 },
+              "lastChecked": {
+                "$ref": "citefox-report-common.v2.json#/definitions/nullableInstant"
+              }
+            }
+          }
+        },
+        "otherOwn": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["url", "path", "prompts", "citations", "likelyNoise"],
+            "properties": {
+              "url": { "type": "string" },
+              "path": { "type": "string" },
+              "prompts": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+              "citations": { "type": "integer", "minimum": 0 },
+              "likelyNoise": { "type": "boolean" }
+            }
+          }
+        },
+        "wrongPage": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["rowId", "prompt", "citedUrl", "trackedUrl", "marketId"],
+            "properties": {
+              "rowId": { "type": "string" },
+              "prompt": { "type": "string" },
+              "citedUrl": { "type": "string" },
+              "trackedUrl": { "type": "string" },
+              "marketId": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "competition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "empty",
+        "domainsCited",
+        "reach",
+        "reachPct",
+        "rival",
+        "rivalLead",
+        "gapPrompts",
+        "sov",
+        "mostCited",
+        "leaderboard",
+        "byKind",
+        "authorityNote"
+      ],
+      "properties": {
+        "empty": { "$ref": "citefox-report-common.v2.json#/definitions/empty" },
+        "domainsCited": { "type": "integer", "minimum": 0 },
+        "reach": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "reachPct": { "$ref": "citefox-report-common.v2.json#/definitions/pct" },
+        "rival": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["domain", "prompts"],
+              "properties": {
+                "domain": { "type": "string" },
+                "prompts": { "$ref": "citefox-report-common.v2.json#/definitions/count" }
+              }
+            },
+            { "type": "null" }
+          ]
+        },
+        "rivalLead": { "type": ["integer", "null"] },
+        "gapPrompts": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "sov": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["total", "you", "competitor", "others", "none"],
+          "properties": {
+            "total": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+            "you": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+            "competitor": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+            "others": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+            "none": { "$ref": "citefox-report-common.v2.json#/definitions/count" }
+          }
+        },
+        "mostCited": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["domain", "who", "prompts", "before"],
+            "properties": {
+              "domain": { "type": "string" },
+              "who": { "enum": ["you", "competitor", "observed"] },
+              "prompts": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+              "before": { "type": ["integer", "null"], "minimum": 0 }
+            }
+          }
+        },
+        "leaderboard": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "domain",
+              "who",
+              "kind",
+              "prompts",
+              "overlap",
+              "gap",
+              "avgPosition",
+              "authority",
+              "reach",
+              "prominence",
+              "marketCoverage"
+            ],
+            "properties": {
+              "domain": { "type": "string" },
+              "who": { "enum": ["you", "competitor", "observed"] },
+              "kind": {
+                "enum": [
+                  "video_social",
+                  "competitors",
+                  "analysts_media",
+                  "big_tech",
+                  "services",
+                  "other",
+                  null
+                ]
+              },
+              "prompts": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+              "overlap": {
+                "anyOf": [
+                  { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+                  { "type": "null" }
+                ]
+              },
+              "gap": {
+                "anyOf": [
+                  { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+                  { "type": "null" }
+                ]
+              },
+              "avgPosition": { "type": ["number", "null"] },
+              "authority": { "type": "integer", "minimum": 0, "maximum": 100 },
+              "reach": { "type": "number" },
+              "prominence": { "type": "number" },
+              "marketCoverage": { "type": "number" }
+            }
+          }
+        },
+        "byKind": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["kind", "label", "sites", "before", "now", "change", "prompts"],
+            "properties": {
+              "kind": {
+                "enum": [
+                  "video_social",
+                  "competitors",
+                  "analysts_media",
+                  "big_tech",
+                  "services",
+                  "other"
+                ]
+              },
+              "label": { "type": "string" },
+              "sites": { "type": "integer", "minimum": 0 },
+              "before": { "type": ["integer", "null"], "minimum": 0 },
+              "now": { "type": "integer", "minimum": 0 },
+              "change": { "type": ["integer", "null"] },
+              "prompts": { "$ref": "citefox-report-common.v2.json#/definitions/count" }
+            }
+          }
+        },
+        "authorityNote": { "type": "string" }
+      }
+    },
+    "reputation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "empty",
+        "positive",
+        "neutral",
+        "negative",
+        "analysed",
+        "net",
+        "trend",
+        "issues",
+        "answers"
+      ],
+      "properties": {
+        "empty": { "$ref": "citefox-report-common.v2.json#/definitions/empty" },
+        "positive": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "neutral": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "negative": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "analysed": { "type": "integer", "minimum": 0 },
+        "net": { "type": ["number", "null"] },
+        "trend": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["at", "positive", "neutral", "negative"],
+            "properties": {
+              "at": { "$ref": "citefox-report-common.v2.json#/definitions/instant" },
+              "positive": { "type": "integer", "minimum": 0 },
+              "neutral": { "type": "integer", "minimum": 0 },
+              "negative": { "type": "integer", "minimum": 0 }
+            }
+          }
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["rowId", "prompt", "claim", "whyWrong", "correction", "sourceToFix"],
+            "properties": {
+              "rowId": { "type": ["string", "null"] },
+              "prompt": { "type": "string" },
+              "claim": { "type": "string" },
+              "whyWrong": { "type": "string" },
+              "correction": { "type": "string" },
+              "sourceToFix": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "answers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["rowId", "prompt", "tone", "theme", "rank", "why"],
+            "properties": {
+              "rowId": { "type": ["string", "null"] },
+              "prompt": { "type": "string" },
+              "tone": { "enum": ["positive", "neutral", "negative"] },
+              "theme": { "type": "string" },
+              "rank": { "type": ["string", "null"] },
+              "why": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "trends": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "empty",
+        "series",
+        "fixes",
+        "previousAt",
+        "currentAt",
+        "gained",
+        "lost",
+        "newlyNamed",
+        "noLongerNamed",
+        "verdicts"
+      ],
+      "properties": {
+        "empty": { "$ref": "citefox-report-common.v2.json#/definitions/empty" },
+        "series": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "at",
+              "checked",
+              "aio",
+              "ownCited",
+              "pageCited",
+              "named",
+              "score",
+              "partial"
+            ],
+            "properties": {
+              "at": { "$ref": "citefox-report-common.v2.json#/definitions/instant" },
+              "checked": { "type": "integer", "minimum": 0 },
+              "aio": { "type": "integer", "minimum": 0 },
+              "ownCited": { "type": "integer", "minimum": 0 },
+              "pageCited": { "type": "integer", "minimum": 0 },
+              "named": { "type": "integer", "minimum": 0 },
+              "score": { "type": ["integer", "null"] },
+              "partial": { "type": "boolean" }
+            }
+          }
+        },
+        "fixes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["number", "at", "description", "pageId"],
+            "properties": {
+              "number": { "type": "integer", "minimum": 0 },
+              "at": { "$ref": "citefox-report-common.v2.json#/definitions/instant" },
+              "description": { "type": "string" },
+              "pageId": { "type": "string" }
+            }
+          }
+        },
+        "previousAt": { "$ref": "citefox-report-common.v2.json#/definitions/nullableInstant" },
+        "currentAt": { "$ref": "citefox-report-common.v2.json#/definitions/nullableInstant" },
+        "gained": { "$ref": "citefox-report-common.v2.json#/definitions/deltaList" },
+        "lost": { "$ref": "citefox-report-common.v2.json#/definitions/deltaList" },
+        "newlyNamed": { "$ref": "citefox-report-common.v2.json#/definitions/deltaList" },
+        "noLongerNamed": { "$ref": "citefox-report-common.v2.json#/definitions/deltaList" },
+        "verdicts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "number",
+              "pageId",
+              "description",
+              "goLiveAt",
+              "verdict",
+              "label",
+              "prompts"
+            ],
+            "properties": {
+              "number": { "type": "integer", "minimum": 0 },
+              "pageId": { "type": "string" },
+              "description": { "type": "string" },
+              "goLiveAt": { "$ref": "citefox-report-common.v2.json#/definitions/instant" },
+              "verdict": { "enum": ["worked", "partly", "no_change", "pending"] },
+              "label": { "type": "string" },
+              "prompts": { "$ref": "citefox-report-common.v2.json#/definitions/count" }
+            }
+          }
+        }
+      }
+    },
+    "verdict": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "label",
+        "tone",
+        "compareLabel",
+        "previousAt",
+        "currentAt",
+        "findings"
+      ],
+      "properties": {
+        "status": { "enum": ["strong", "working", "mixed", "slipping", "flat", "early"] },
+        "label": { "type": "string" },
+        "tone": { "enum": ["ok", "warn", "bad", "neutral"] },
+        "compareLabel": { "type": ["string", "null"] },
+        "previousAt": { "$ref": "citefox-report-common.v2.json#/definitions/nullableInstant" },
+        "currentAt": { "$ref": "citefox-report-common.v2.json#/definitions/nullableInstant" },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "tone", "lead", "parts"],
+            "properties": {
+              "id": {
+                "enum": ["movement", "holding", "named", "opportunity", "competition", "first"]
+              },
+              "tone": { "enum": ["ok", "warn", "bad", "neutral"] },
+              "lead": { "type": "string" },
+              "parts": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    { "type": "string" },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": ["set", "label", "n", "drill"],
+                      "properties": {
+                        "set": {
+                          "enum": [
+                            "tracked",
+                            "aio",
+                            "cited",
+                            "named",
+                            "not_visible",
+                            "cited_before",
+                            "cited_after",
+                            "named_before",
+                            "named_after",
+                            "gained",
+                            "kept",
+                            "lost",
+                            "top_site"
+                          ]
+                        },
+                        "label": { "type": "string" },
+                        "n": { "type": "integer", "minimum": 0 },
+                        "drill": { "type": ["string", "null"] }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "whatChanged": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "empty",
+        "previousAt",
+        "currentAt",
+        "gained",
+        "kept",
+        "lost",
+        "never",
+        "noEarlier",
+        "rows"
+      ],
+      "properties": {
+        "empty": { "$ref": "citefox-report-common.v2.json#/definitions/empty" },
+        "previousAt": { "$ref": "citefox-report-common.v2.json#/definitions/nullableInstant" },
+        "currentAt": { "$ref": "citefox-report-common.v2.json#/definitions/nullableInstant" },
+        "gained": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "kept": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "lost": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "never": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "noEarlier": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "rowId",
+              "prompt",
+              "pagePath",
+              "marketId",
+              "change",
+              "positionBefore",
+              "positionNow",
+              "citedThrough",
+              "ownPageCited"
+            ],
+            "properties": {
+              "rowId": { "type": "string" },
+              "prompt": { "type": "string" },
+              "pagePath": { "type": "string" },
+              "marketId": { "type": "string" },
+              "change": { "enum": ["gained", "kept", "lost", "never", null] },
+              "positionBefore": { "type": ["number", "null"] },
+              "positionNow": { "type": ["number", "null"] },
+              "citedThrough": { "type": ["string", "null"] },
+              "ownPageCited": { "type": ["boolean", "null"] }
+            }
+          }
+        }
+      }
+    },
+    "method": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "questions",
+        "marketIds",
+        "trackedPages",
+        "windowFrom",
+        "windowTo",
+        "previousAt",
+        "currentAt",
+        "copy",
+        "agreement"
+      ],
+      "properties": {
+        "scopeLabel": { "type": "string" },
+        "sampleWarning": { "type": ["string", "null"] },
+        "questions": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+        "marketIds": { "type": "array", "items": { "type": "string" } },
+        "trackedPages": { "type": "integer", "minimum": 0 },
+        "windowFrom": { "$ref": "citefox-report-common.v2.json#/definitions/nullableInstant" },
+        "windowTo": { "$ref": "citefox-report-common.v2.json#/definitions/nullableInstant" },
+        "previousAt": { "$ref": "citefox-report-common.v2.json#/definitions/nullableInstant" },
+        "currentAt": { "$ref": "citefox-report-common.v2.json#/definitions/nullableInstant" },
+        "copy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["cited", "vary", "partial", "change"],
+          "properties": {
+            "cited": { "type": "string" },
+            "vary": { "type": "string" },
+            "partial": { "type": "string" },
+            "change": { "type": "string" }
+          }
+        },
+        "agreement": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["total", "agree", "percent"],
+              "properties": {
+                "total": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+                "agree": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+                "percent": { "type": "integer", "minimum": 0, "maximum": 100 }
+              }
+            },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "doThis", "why", "questions", "evidence"],
+        "properties": {
+          "kind": { "enum": ["competitor_gap", "wrong_page", "content_gap", "not_visible"] },
+          "doThis": { "type": "string" },
+          "why": { "type": "string" },
+          "questions": { "$ref": "citefox-report-common.v2.json#/definitions/count" },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "rowId",
+                "question",
+                "pagePath",
+                "marketId",
+                "competitor",
+                "citedUrl",
+                "citedTitle"
+              ],
+              "properties": {
+                "rowId": { "type": "string" },
+                "question": { "type": "string" },
+                "pagePath": { "type": "string" },
+                "marketId": { "type": "string" },
+                "competitor": { "type": ["string", "null"] },
+                "citedUrl": { "type": ["string", "null"] },
+                "citedTitle": { "type": ["string", "null"] }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

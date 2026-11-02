@@ -1,0 +1,9 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": {
+      "status": "Success",
+      "id": "textbolt-p6-no-aio"
+    }
+  }
+}

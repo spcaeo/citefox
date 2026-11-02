@@ -1,0 +1,27 @@
+{
+  "summary": "Three actions cover both prompts. Start with the plan question, which another own page answers today.",
+  "items": [
+    {
+      "text": "Add an FAQ that says which plan includes scheduled texts, with the price in [brackets] until confirmed.",
+      "detail": "Prompt 2 cites the pricing page instead of this one. The overview names the plan; this page does not.",
+      "tag": "Prompt 2",
+      "verify": "Check the current plan names and prices.",
+      "sign": null
+    },
+    {
+      "text": "Add a short \"No app for your staff\" line to the At a Glance box.",
+      "detail": "Prompt 1 is cited at #2. The overview cited first stresses that recipients need nothing installed.",
+      "tag": "Prompt 1",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Link this page from the pricing page's scheduling section.",
+      "detail": "Both pages compete for prompt 2; a link tells readers which page explains setup.",
+      "tag": "Prompt 2",
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": null
+}

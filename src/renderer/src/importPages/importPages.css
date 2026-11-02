@@ -1,0 +1,367 @@
+/* Import pages (FR-20.6) as a v2 wizard (Mockups/v2 Theme "Layouts"). v2 tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .imp {
+    gap: var(--card-gap);
+  }
+
+  /* The stepper sits under the title, on the content edges. */
+  .imp-stepper {
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+  }
+
+  /* The sticky footer runs edge to edge at the bottom of the scroll area. */
+  .imp > .ui-wizard-foot {
+    bottom: calc(-1 * var(--s-12));
+    margin: auto calc(-1 * var(--page-pad)) calc(-1 * var(--s-12));
+  }
+
+  .imp-card,
+  .imp-step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+    min-width: 0;
+  }
+
+  .imp-card {
+    padding: var(--card-pad);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .imp-step-flat {
+    gap: var(--s-3);
+  }
+
+  .imp-plain {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .imp-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-3);
+    align-items: center;
+  }
+
+  .imp-inline .ob-input {
+    flex: 1 1 260px;
+    min-width: 0;
+  }
+
+  .imp-paste {
+    min-height: 120px;
+    padding: var(--s-3) var(--s-4);
+    resize: vertical;
+  }
+
+  .imp-found {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-2);
+    align-items: baseline;
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-s);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .imp-parse {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .imp-rejects {
+    margin: 0;
+    padding-left: var(--s-6);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .imp-choose {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--s-6) var(--card-gap);
+  }
+
+  .imp-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  /* Group labels in sentence case (no uppercase labels). */
+  .imp-label {
+    margin: 0;
+    padding: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .imp-group > .imp-label {
+    margin: 0 0 var(--s-1);
+  }
+
+  .imp-folder {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: var(--h-row);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .imp-folder:last-of-type {
+    border-bottom: 0;
+  }
+
+  .imp-folder-name {
+    flex: 1 1 auto;
+    font-family: var(--font-code);
+    font-size: var(--fs-small);
+  }
+
+  .imp-folder-label {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: var(--h-row);
+  }
+
+  .imp-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+
+  .imp-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: var(--h-control-sm);
+    padding: 0 var(--s-3);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink-2);
+    font: inherit;
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+    cursor: pointer;
+  }
+
+  .imp-chip:hover:not(:disabled) {
+    background: var(--hover);
+  }
+
+  .imp-chip.on {
+    border-color: var(--spruce-2);
+    background: var(--chart-band);
+    color: var(--ink);
+  }
+
+  .imp-chip:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .imp-chip:focus-visible,
+  .imp-drill:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .imp-chip-pair {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1);
+  }
+
+  .imp-drill {
+    border: 0;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .imp-rule {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .imp-rule .ob-input {
+    flex: 1 1 200px;
+    min-width: 0;
+  }
+
+  .imp-rule-count {
+    min-width: 96px;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .imp-ai-btn .icon {
+    color: var(--fox);
+  }
+
+  .imp-ai {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding: var(--s-4) var(--s-5);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--fox);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .imp-ai-tag {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .imp-ai-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding-left: var(--s-6);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .imp-ai-applied {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  /* ---- Preview list ---- */
+  .imp-preview {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .imp-preview > .hint {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .imp-page {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 16px;
+  }
+
+  .imp-title,
+  .imp-path {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .imp-title {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+    text-decoration: none;
+  }
+
+  a.imp-title:hover {
+    color: var(--action-ink);
+    text-decoration: underline;
+  }
+
+  .imp-path {
+    color: var(--ink-3);
+    font-family: var(--font-code);
+    font-size: 11px;
+  }
+
+  .imp-cluster {
+    overflow: hidden;
+    color: var(--ink-2);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .imp-tracked-link {
+    border-radius: var(--r-pill);
+    text-decoration: none;
+  }
+
+  .imp-empty {
+    margin: 0;
+    padding: var(--s-8) var(--s-6);
+    color: var(--ink-3);
+    text-align: center;
+  }
+
+  /* ---- How to track and the cost ---- */
+  .imp-stagger {
+    align-items: flex-start;
+  }
+
+  .imp-block {
+    display: block;
+  }
+
+  .imp-est {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding: var(--s-5);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .imp-est p {
+    margin: 0;
+  }
+
+  .imp-est.over {
+    border-color: var(--warn);
+    background: var(--warn-tint);
+  }
+
+  .imp-over {
+    color: var(--warn);
+  }
+
+  .imp-done {
+    margin: 0;
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--ok);
+    border-radius: var(--r-s);
+    background: var(--ok-tint);
+    color: var(--ok);
+    font-size: var(--fs-ui);
+  }
+}

@@ -1,0 +1,87 @@
+/*
+ * The top bar search's grouped results (TopBarSearch.tsx). The popup frame,
+ * `.topbar-results` and `.topbar-result-text`, lives in styles/shell.css; this
+ * adds the group headings, the options and the active (arrow-key) option.
+ * Tokens from styles/tokens.css Part 1. In `screens`, as layers.test.ts asks of a
+ * stylesheet imported by its component, so it also wins over shell.css.
+ */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .topbar-group + .topbar-group {
+    margin-top: var(--s-1);
+    padding-top: var(--s-1);
+    border-top: 1px solid var(--line);
+  }
+
+  .topbar-group-head {
+    padding: var(--s-1) var(--s-2);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: 600;
+  }
+
+  .topbar-results .topbar-option {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+  }
+
+  /* "Create …" and "Switch theme" options are not links: the same row look, opened by click or Enter. */
+  .topbar-results div.topbar-option {
+    display: flex;
+    padding: var(--s-1) var(--s-2);
+    border-radius: var(--r-s);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    cursor: pointer;
+  }
+
+  .topbar-results div.topbar-option:hover {
+    background: var(--select-tint);
+  }
+
+  .topbar-results .topbar-option[data-active='true'] {
+    background: var(--select-tint);
+    box-shadow: inset 2px 0 0 var(--select);
+  }
+
+  /* A question is a sentence: two lines before it clips, so it can be told apart. */
+  .topbar-group[data-group='questions'] .topbar-result-text {
+    display: -webkit-box;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  /* The empty box: what to type, and the keys. */
+  .topbar-tips {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding: var(--s-2) var(--s-3);
+  }
+
+  .topbar-tip {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-small);
+  }
+
+  .topbar-tips .faint {
+    margin: 0;
+    font-size: var(--fs-small);
+  }
+
+  .topbar-option-detail {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

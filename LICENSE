@@ -1,0 +1,126 @@
+CiteFox Source-Available License, version 1.0
+
+Copyright (c) 2026 Space-O Technologies (https://www.spaceo.ca). All rights reserved
+except as granted below.
+
+CiteFox is source-available software: its code is public so you can read it, run it,
+learn from it, improve it and send us fixes. It is not "open source" under the Open
+Source Initiative's definition, because the limits below protect the authors' work,
+name and sponsors.
+
+1. Definitions
+
+"Software" means CiteFox: the source code, compiled programs, installers, documentation
+and other files made available by Space-O Technologies under this License, and any
+version of them.
+
+"Licensor" means Space-O Technologies.
+
+"You" means the person or organization using the Software under this License.
+
+"Your Company" means the organization You work for or act on behalf of, and the
+organizations it controls, is controlled by or is under common control with.
+
+"Distribute" means to give, publish, sell, rent, host or otherwise make the Software
+(or any work containing a substantial part of it) available to anyone other than You
+and Your Company, as a download, an installer, a repository, a hosted or managed
+service, or in any other form.
+
+"Attribution Elements" means, as they appear in the Software:
+  (a) the CiteFox name, logo and the "Made with CiteFox" line;
+  (b) the copyright notice and this License;
+  (c) the sponsor placements (for example the FoxCue and FreshlyCited spots) and their
+      links;
+  (d) the referral and affiliate links, codes and partner offers the Software shows or
+      uses; and
+  (e) the version, update and registration notices that tell users about official
+      releases.
+
+2. What You may do
+
+Subject to this License, the Licensor grants You a worldwide, royalty-free,
+non-exclusive, non-transferable licence to:
+  (a) use, copy and run the Software for Yourself and for Your Company, including for
+      Your Company's clients as part of services You provide yourself;
+  (b) read, study and change the Software, and run Your changed version for Yourself
+      and Your Company; and
+  (c) Distribute the Software, changed or unchanged, only if You meet every condition
+      in section 3.
+
+3. Conditions when You Distribute
+
+If You Distribute the Software, in any form, You must:
+  (a) keep every Attribution Element present, visible, working and unchanged in
+      position and behaviour, as in the official release You started from. You may not
+      remove, hide, disable, redirect, replace or weaken any of them, including by
+      changing a sponsor's or partner's link, referral code or placement;
+  (b) include this License and the copyright notice with every copy;
+  (c) state clearly, where You publish it, that Your version is based on CiteFox by
+      Space-O Technologies and link to the official project;
+  (d) mark Your changes clearly and not present Your version as the official CiteFox
+      release; and
+  (e) Distribute it free of charge, unless You have the Licensor's written permission.
+
+4. What You may not do
+
+You may not, without the Licensor's prior written permission:
+  (a) rebrand the Software, or publish, sell or offer it (or a substantial part of its
+      code, design or logic) under another name, logo or brand, or as Your own product;
+  (b) offer the Software, or a product built on a substantial part of it, to third
+      parties as a hosted, managed or software-as-a-service product;
+  (c) remove, disable or work around any licence, registration, update-check or
+      integrity feature of the Software in a copy You Distribute;
+  (d) use the CiteFox name or logo, or the Licensor's names, except as section 3
+      requires to give credit; or
+  (e) remove or change any copyright, patent, trademark or attribution notice.
+
+5. Contributions
+
+We welcome issues, ideas and pull requests. By sending a contribution (code,
+documentation, designs or other material) to the official CiteFox project, You:
+  (a) confirm You have the right to send it; and
+  (b) grant the Licensor a perpetual, worldwide, royalty-free, irrevocable licence to
+      use, change, relicense and distribute Your contribution as part of the Software
+      or any other product, under this License or any other terms.
+You keep the copyright in Your contribution. See CONTRIBUTING.md.
+
+6. Trademarks
+
+"CiteFox", the CiteFox logo, "Space-O Technologies" and related names and logos are
+trademarks of Space-O Technologies. This License grants no right to use them, except
+the attribution section 3 requires. See TRADEMARKS.md.
+
+7. Third-party components
+
+The Software includes components owned by others under their own licences (listed in
+the package files and in the application's About information). Those licences apply to
+those components, and nothing in this License limits them.
+
+8. Termination
+
+If You break this License, Your rights under it end automatically. If You stop the
+breach and fix its effects within 30 days of first learning of it (from the Licensor or
+otherwise), Your rights are restored, unless You have broken this License before. When
+Your rights end, You must stop using and Distributing the Software and delete the
+copies You control.
+
+9. No warranty
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NON-INFRINGEMENT.
+
+10. Limitation of liability
+
+TO THE EXTENT THE LAW ALLOWS, IN NO EVENT WILL THE LICENSOR OR ANY CONTRIBUTOR BE LIABLE
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OF OR OTHER DEALINGS
+IN THE SOFTWARE, INCLUDING LOST DATA, LOST PROFITS OR BUSINESS INTERRUPTION.
+
+11. General
+
+This License is governed by the laws of the Province of Ontario and the federal laws of
+Canada that apply there. If a court finds part of it unenforceable, the rest stays in
+effect. The Licensor may publish new versions of this License; a release stays under
+the version it was published with. For other licensing (for example a commercial or
+white-label licence), contact Space-O Technologies at https://www.spaceo.ca.

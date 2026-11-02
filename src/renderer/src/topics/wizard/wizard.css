@@ -1,0 +1,340 @@
+/* Add wizard (Docs/TOPICS-SPEC.md §3, Mockups/v2/Main, Seed-*, Keywords-Groups, Questions-Import, Competitor-Page). */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  /* ---- Frame: stepper strip, body, sticky footer ---- */
+  .tw {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100% + var(--main-top) + var(--main-bottom));
+    margin: calc(var(--main-top) * -1) calc(var(--main-x) * -1) calc(var(--main-bottom) * -1);
+  }
+
+  .main > .tw {
+    flex: 1 0 auto;
+  }
+
+  /* The scroll container's padding insets sticky edges; reach past it. */
+  .tw > .ui-wizard-foot {
+    bottom: calc(var(--main-bottom) * -1);
+  }
+
+  .tw-steps {
+    position: sticky;
+    top: calc(var(--main-top) * -1);
+    z-index: var(--z-sticky);
+    display: flex;
+    align-items: center;
+    min-height: 64px;
+    padding: 0 var(--page-pad);
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .tw-steps .ui-stepper {
+    width: 100%;
+  }
+
+  .tw-body {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    gap: var(--s-4);
+    padding: var(--s-6) var(--page-pad);
+  }
+
+  /* The primary action's live Claude steps (owner feedback #1). */
+  .tw-progress {
+    max-width: 640px;
+  }
+
+  .tw-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-6);
+    min-height: 40px;
+  }
+
+  .tw-titles h1 {
+    margin: 0;
+    font-size: var(--fs-h1);
+    line-height: var(--lh-h1);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-h1);
+  }
+
+  .tw-aside {
+    margin: 4px 0 0;
+    color: var(--ink-3);
+  }
+
+  .tw-head-end {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  .tw .ui-tabs {
+    overflow-y: hidden;
+  }
+
+  /* ---- 8 + 4 grid ---- */
+  .tw-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
+    gap: var(--card-gap);
+    align-items: start;
+  }
+
+  .tw-main,
+  .tw-rail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    min-width: 0;
+  }
+
+  .tw-pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--card-gap);
+    align-items: stretch;
+  }
+
+  @media (max-width: 1100px) {
+    .tw-grid,
+    .tw-pair {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* ---- Text ---- */
+  .tw-help,
+  .tw-note {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .tw-note {
+    font-size: var(--fs-small);
+  }
+
+  .tw-muted {
+    color: var(--ink-3);
+  }
+
+  .tw-strong {
+    margin: 0;
+    font-weight: var(--fw-semibold);
+  }
+
+  .tw-warn,
+  .tw-warn-text {
+    color: var(--warn);
+  }
+
+  .tw-info {
+    color: var(--ink-3);
+  }
+
+  .tw-error,
+  .tw-save-error {
+    margin: 0;
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-s);
+    background: var(--bad-tint);
+    color: var(--bad);
+  }
+
+  .tw-save-error {
+    margin: 0 var(--page-pad) var(--s-4);
+  }
+
+  .tw-clamp {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tw-out {
+    color: var(--ink-3);
+  }
+
+  .tw-qnum {
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  /* ---- Fields ---- */
+  .tw-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .tw-label {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  .tw-row {
+    display: flex;
+    gap: var(--s-4);
+    align-items: flex-end;
+  }
+
+  .tw-grow {
+    flex: 1 1 auto;
+  }
+
+  .tw-name {
+    flex: 0 0 34%;
+  }
+
+  .tw-narrow {
+    max-width: 240px;
+  }
+
+  .tw-input-lg {
+    height: 44px;
+    font-size: 16px;
+  }
+
+  .tw-textarea {
+    height: auto;
+    min-height: 72px;
+    padding: 10px 12px;
+    resize: vertical;
+  }
+
+  .tw-paste {
+    min-height: 240px;
+  }
+
+  .tw-select {
+    padding-right: 28px;
+  }
+
+  .tw-inline-field {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .tw-inline-field .ui-input {
+    width: 300px;
+    height: var(--h-control-sm);
+    font-size: var(--fs-ui);
+  }
+
+  .tw-fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .tw-checks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-4);
+  }
+
+  .tw-checks-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tw-check {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: var(--fs-ui);
+  }
+
+  .tw-file {
+    font-size: var(--fs-ui);
+  }
+
+  /* ---- Chips and chip buttons ---- */
+  .tw-chips,
+  .tw-inline-chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .tw-chip-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 28px;
+    padding: 0 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink-2);
+    font: inherit;
+    font-size: var(--fs-ui);
+    cursor: pointer;
+  }
+
+  .tw-chip-btn:hover {
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+
+  .tw-chip-btn.on {
+    border-color: var(--fox-line);
+    background: var(--fox-tint);
+    color: var(--fox-ink);
+  }
+
+  .tw-chip-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .tw-flags {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    gap: 4px;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .tw-cell-text {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .tw-toolbar-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 28px;
+    padding: 0 10px;
+    border-radius: var(--r-s);
+    background: var(--fox-tint);
+    color: var(--fox-ink);
+    font-size: var(--fs-ui);
+  }
+}

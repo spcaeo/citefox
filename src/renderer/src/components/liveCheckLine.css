@@ -1,0 +1,71 @@
+/* LiveCheckLine: one calm status line while a check runs. v2 tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .live-line {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    margin: 0;
+    padding: var(--s-2) var(--s-4);
+    border-radius: var(--r-s);
+    background: var(--info-tint);
+    color: var(--info);
+  }
+
+  .live-line[data-tone='done'] {
+    background: transparent;
+    color: var(--ink-3);
+    padding-inline: 0;
+  }
+
+  .live-line[data-tone='stopped'] {
+    background: var(--inset);
+    color: var(--ink-2);
+  }
+
+  /* A running question's number: shows its row. */
+  .live-line-pick {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-weight: var(--fw-medium);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+
+  .live-line-pick:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  .live-line-pick:focus-visible {
+    border-radius: var(--r-s);
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+
+  .live-line-spin {
+    flex: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 2.4;
+    animation: live-line-spin 0.9s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .live-line-spin {
+      animation: none;
+    }
+  }
+
+  @keyframes live-line-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

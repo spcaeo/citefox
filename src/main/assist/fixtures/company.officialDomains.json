@@ -1,0 +1,6 @@
+{
+  "domains": [
+    { "name": "Text-Em-All", "candidates": ["text-em-all.com"] },
+    { "name": "SimpleTexting", "candidates": ["simpletexting.com"] }
+  ]
+}

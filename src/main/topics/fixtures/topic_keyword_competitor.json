@@ -1,0 +1,26 @@
+{
+  "groups": [
+    {
+      "name": "Alternatives & vs",
+      "kind": "intent",
+      "family": "alternatives_vs",
+      "intent": "commercial",
+      "funnel": "bofu",
+      "pageType": "comparison page",
+      "keywords": [
+        "simpletexting alternative for staff alerts",
+        "twilio alternative without a developer",
+        "simpletexting alternatives"
+      ]
+    },
+    {
+      "name": "Competitor vs",
+      "kind": "intent",
+      "family": "competitor_vs",
+      "intent": "commercial",
+      "funnel": "bofu",
+      "pageType": "comparison page",
+      "keywords": ["simpletexting vs twilio", "twilio vs email to sms service"]
+    }
+  ]
+}

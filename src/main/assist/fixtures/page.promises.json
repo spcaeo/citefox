@@ -1,0 +1,27 @@
+{
+  "summary": "The title and H1 promise scheduled alerts from email with no developer. The meta promises a 5-step setup without code.",
+  "items": [
+    {
+      "text": "A reader learns how to set up business text alerts, including alerts scheduled from email, without a developer.",
+      "detail": "\"How to Set Up Text Alerts for Business, Including Scheduled Alerts From Email (No Developer Required)\"",
+      "tag": "title",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "A reader can set up business text alerts in 5 steps without code, by turning emails from tools they already use into SMS.",
+      "detail": "\"Learn how to set up business text alerts in 5 steps without coding. Turn emails from your existing tools into SMS notifications with TextBolt.\"",
+      "tag": "meta",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "The heading repeats the title's promise: setup plus scheduled alerts from email, no developer.",
+      "detail": "\"How to Set Up Text Alerts for Business, Including Scheduled Alerts From Email (No Developer Required)\"",
+      "tag": "h1",
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": null
+}

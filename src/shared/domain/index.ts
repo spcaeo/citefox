@@ -1,0 +1,37 @@
+/**
+ * Domain types shared across IPC. Property names are camelCase.
+ * Database columns stay as written in the SRS (`db_path`, `keychain_ref`, and so on).
+ * Secrets are never fields on these types (FR-11.11, section 9.2, NFR-5).
+ */
+
+export * from './projects'
+export * from './connections'
+export * from './settings'
+export * from './pages'
+export * from './prompts'
+export * from './coverage'
+export * from './templates'
+export * from './template-kinds'
+export * from './template-variables'
+export * from './checks'
+export * from './results'
+export * from './schedule'
+export * from './queue'
+export * from './email'
+export * from './reports'
+export * from './exports'
+export * from './fixes'
+export * from './history'
+export * from './communities'
+export * from './structure'
+export * from './project-settings'
+export * from './sentiment'
+export * from './grid'
+export * from './notices'
+export * from './serp-allowance'
+export * from './topics'
+export * from './topic-templates'
+export * from './assistant-templates'
+export * from './products'
+export * from './eligibility'
+export * from './engines'

@@ -1,0 +1,63 @@
+/* Prompts tab drill-downs: tag and chip buttons, links, the coverage check line. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .ps-linkbtn {
+    /* WCAG 2.2 target size: at least 24 × 24 even inside a line of text. */
+    display: inline-flex;
+    align-items: center;
+    min-width: 24px;
+    min-height: 24px;
+    padding: 0 2px;
+    vertical-align: middle;
+    border: 0;
+    background: none;
+    color: var(--action-ink);
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+
+  .ps-linkbtn:hover {
+    color: var(--action-ink);
+  }
+
+  .ps-linkbtn:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  /* Inside a grey tag the link keeps the tag's ink until hover. */
+  .ps-prov a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--line-strong);
+    text-underline-offset: 2px;
+  }
+
+  .ps-prov a:hover {
+    color: var(--action-ink);
+  }
+
+  .ps-prov-more {
+    font-size: var(--fs-ui);
+  }
+
+  .ps-prov-ids {
+    margin-left: var(--s-1);
+  }
+
+  .ps-checks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) 10px;
+    align-items: center;
+    margin: 0;
+  }
+
+  .ps-checks .drill-num {
+    margin-right: 2px;
+  }
+}

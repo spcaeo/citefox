@@ -1,0 +1,44 @@
+{
+  "status": 200,
+  "body": {
+    "kind": "youtube#videoListResponse",
+    "items": [
+      {
+        "kind": "youtube#video",
+        "id": "Gr4fanaSMS1",
+        "snippet": {
+          "publishedAt": "2026-03-04T15:00:00Z",
+          "channelId": "UCopsShortcuts0000000001",
+          "title": "Send SMS Alerts from Grafana in 5 Minutes",
+          "channelTitle": "Ops Shortcuts"
+        },
+        "contentDetails": {
+          "duration": "PT5M12S"
+        },
+        "statistics": {
+          "viewCount": "48210"
+        }
+      },
+      {
+        "kind": "youtube#video",
+        "id": "Emai1ToSMS2",
+        "snippet": {
+          "publishedAt": "2025-11-20T12:00:00Z",
+          "channelId": "UCsmallBizTechHelp000001",
+          "title": "Email to SMS for Business: Setup Walkthrough",
+          "channelTitle": "SmallBiz Tech Help"
+        },
+        "contentDetails": {
+          "duration": "PT11M40S"
+        },
+        "statistics": {
+          "viewCount": "112400"
+        }
+      }
+    ],
+    "pageInfo": {
+      "totalResults": 2,
+      "resultsPerPage": 2
+    }
+  }
+}

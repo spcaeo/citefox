@@ -1,0 +1,305 @@
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .vis-stack {
+    display: flex;
+    min-height: 36px;
+    overflow: hidden;
+    border-radius: var(--r-s);
+  }
+
+  .vis-stack button {
+    min-width: 0;
+    border: 0;
+    color: var(--on-solid);
+    font: inherit;
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+  }
+
+  .vis-stack button:focus-visible,
+  .vis-point:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .m3-screen h1,
+  .m3-screen h2,
+  .m3-screen h3 {
+    white-space: normal;
+  }
+
+  .vis-kpi {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+  }
+
+  .vis-kpi-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .vis-kpi-val {
+    font-size: 32px;
+    font-weight: var(--fw-semibold);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .vis-kpi-val .faint {
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .vis-chg {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .vis-chg-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+  }
+
+  .vis-chg-col h3 {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .vis-chg-count {
+    margin-left: auto;
+    min-width: 24px;
+    padding: 1px 8px;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: var(--hover);
+    color: var(--ink-2);
+    font-family: var(--font-code);
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  span.vis-chg-count {
+    cursor: default;
+  }
+
+  .vis-ico {
+    flex: 0 0 auto;
+  }
+
+  .vis-ico-up {
+    color: var(--info);
+  }
+
+  .vis-ico-down {
+    color: var(--warn);
+  }
+
+  .vis-ico-named {
+    color: var(--warn);
+  }
+
+  .vis-ico-flat {
+    color: var(--ink-3);
+  }
+
+  .vis-same {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    align-items: center;
+  }
+
+  .vis-chg-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Page cited is the target green and not page cited the not-cited orange (audit #1). */
+  .vis-this {
+    background: var(--result-target);
+  }
+
+  .vis-other {
+    background: var(--result-not-cited);
+  }
+
+  .vis-chart {
+    position: relative;
+  }
+
+  .vis-point {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+  }
+
+  .vis-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  .vis-detail {
+    display: flex;
+    flex: 1 1 220px;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+    padding: 14px;
+    border-radius: var(--r-s);
+    background: var(--inset);
+  }
+
+  .vis-split {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: stretch;
+  }
+
+  .vis-plot {
+    flex: 999 1 520px;
+    min-width: 0;
+  }
+
+  .vis-chg-list li {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: var(--fs-ui);
+  }
+
+  .vis-legend li {
+    display: inline-flex;
+    gap: var(--s-1);
+    align-items: center;
+  }
+
+  .vis-legend svg {
+    flex: 0 0 auto;
+  }
+
+  .vis-stack-key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  .vis-stack-key li {
+    display: inline-flex;
+    gap: var(--s-1);
+    align-items: center;
+  }
+
+  .vis-swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+  }
+
+  /*
+ * Positioned so the clip also holds the link's absolute .sr-only suffix; without
+ * it that 1px span escapes every overflow box and widens the whole page.
+ */
+  .vis-clip {
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .vis-rate {
+    font-weight: var(--fw-semibold);
+  }
+
+  /* Ink links (prompts, markets, fix results): fox is kept for the own brand and the ✦ AI marks. */
+  .vis-link,
+  .vis-link-btn {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    font-weight: var(--fw-medium);
+    text-align: left;
+    text-decoration: underline;
+    text-decoration-color: var(--line-strong);
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .vis-link:hover,
+  .vis-link-btn:hover {
+    text-decoration-color: currentcolor;
+  }
+
+  .vis-link-btn:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* The picked point beside the rate chart: kind, day, then the rate. */
+  .vis-detail-kind {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+  }
+
+  .vis-detail-day {
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    font-weight: var(--fw-semibold);
+  }
+
+  .vis-detail-rate {
+    font-size: var(--fs-h1);
+    line-height: var(--lh-h1);
+    font-weight: var(--fw-semibold);
+  }
+}

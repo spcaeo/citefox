@@ -1,0 +1,183 @@
+/* Engine filter, dots and per-engine answers (Engines.dc.html panels 2 and 3). Tokens from styles/tokens.css. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .eng-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-3);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .eng-filter-logo {
+    flex: none;
+    border-radius: 4px;
+  }
+
+  /* Logos alone (owner 2026-10-30): square-ish buttons, the name in a tooltip under it. */
+  .eng-filter .ui-seg-btn {
+    padding: 0 8px;
+  }
+
+  .eng-filter .ui-seg-btn[data-tip],
+  .eng-fixed[data-tip] {
+    position: relative;
+  }
+
+  .eng-filter .ui-seg-btn[data-tip]:hover::after,
+  .eng-filter .ui-seg-btn[data-tip]:focus-visible::after,
+  .eng-fixed[data-tip]:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 50%;
+    z-index: var(--z-pop);
+    padding: var(--s-1) var(--s-2);
+    border-radius: var(--r-s);
+    background: var(--ink);
+    box-shadow: var(--e2);
+    color: var(--on-ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-small);
+    white-space: nowrap;
+    pointer-events: none;
+    transform: translateX(-50%);
+  }
+
+  /* A row of engine logos in a grid cell (Check history's Engines). */
+  .eng-logos {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    vertical-align: middle;
+  }
+
+  /* One engine: its logo alone, fixed in the filter's spot. */
+  .eng-fixed {
+    display: inline-flex;
+    flex: none;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    padding: 0 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    white-space: nowrap;
+  }
+
+  /* A dot: 10 px, its shape says the state without the colour. */
+  .eng-dot {
+    display: inline-block;
+    flex: none;
+    box-sizing: border-box;
+    width: 10px;
+    height: 10px;
+    border: 2px solid transparent;
+    border-radius: 50%;
+  }
+
+  .eng-dot-cited {
+    border-color: var(--ok);
+    background: var(--ok);
+  }
+
+  .eng-dot-named {
+    border-color: var(--warn);
+    background: linear-gradient(90deg, var(--warn) 50%, transparent 50%);
+  }
+
+  .eng-dot-not_cited {
+    border-color: var(--bad);
+    background: transparent;
+  }
+
+  .eng-dot-none {
+    border-color: var(--line-strong);
+    background: var(--line-strong);
+  }
+
+  .eng-dots {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  .eng-dots-row {
+    display: inline-flex;
+    gap: 5px;
+    align-items: center;
+  }
+
+  .eng-dots-count {
+    font-size: var(--fs-small);
+  }
+
+  .eng-status {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: center;
+    white-space: nowrap;
+    font-size: var(--fs-small);
+  }
+
+  .eng-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-4);
+    margin: 0;
+    padding: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    list-style: none;
+  }
+
+  .eng-legend li {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .eng-note {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  /* Summary: one tile per engine under the headline numbers, each a link to its view. */
+  .eng-strip-link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .eng-strip-link:hover .ui-kpi-label,
+  .eng-strip-link:focus-visible .ui-kpi-label {
+    text-decoration: underline;
+  }
+
+  /* Question detail: an engine's answer and its sources. */
+  .eng-answer-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-3);
+    align-items: center;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  /* AnswerView folds a long answer itself, so no scroll box here */
+  .eng-answer-body {
+    color: var(--ink);
+  }
+
+  .eng-answer-empty {
+    margin: 0;
+    color: var(--ink-3);
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "_fixture": "Recorded-shape fixture for a claude -p --json-schema call that ended in error_max_turns: the model answered in text instead of calling the structured output tool, and --max-turns 1 left no turn to ask again. Shape copied from Claude Code 2.1.306 (exit code 1, empty stderr). No account data, credentials, or session.",
+  "type": "result",
+  "subtype": "error_max_turns",
+  "is_error": true,
+  "num_turns": 2,
+  "stop_reason": "end_turn",
+  "terminal_reason": "max_turns",
+  "errors": ["Reached maximum number of turns (1)"],
+  "session_id": "00000000-0000-4000-8000-000000000003",
+  "duration_ms": 57309,
+  "duration_api_ms": 57233,
+  "total_cost_usd": 0,
+  "usage": {
+    "input_tokens": 2,
+    "output_tokens": 8535,
+    "cache_creation_input_tokens": 365,
+    "cache_read_input_tokens": 14645
+  },
+  "modelUsage": {
+    "claude-sonnet-5-5": {
+      "inputTokens": 2,
+      "outputTokens": 8535,
+      "cacheCreationInputTokens": 365,
+      "cacheReadInputTokens": 14645,
+      "costUSD": 0
+    }
+  }
+}

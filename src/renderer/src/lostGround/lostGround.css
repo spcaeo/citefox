@@ -1,0 +1,173 @@
+/* Fixes · Lost ground, and the Results callout. Tokens from styles/tokens.css only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .lg-view > .ui-btn:first-child {
+    align-self: flex-start;
+  }
+
+  .lg-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3) var(--s-6);
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .lg-head-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    min-width: 0;
+  }
+
+  .lg-title {
+    margin: 0;
+    font-size: var(--fs-h1);
+    line-height: var(--lh-h1);
+  }
+
+  .lg-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-3);
+    align-items: center;
+    margin: 0;
+  }
+
+  .lg-compare {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .lg-compare .select {
+    min-height: var(--h-control-sm);
+    max-width: 280px;
+  }
+
+  .lg-lead {
+    margin: 0;
+    font-size: var(--fs-h3);
+    line-height: var(--lh-h3);
+  }
+
+  .lg-kpi-bad .ui-kpi-value {
+    color: var(--bad-ink);
+  }
+
+  .lg-outline-line {
+    max-width: 80ch;
+    margin: 0 0 var(--s-4);
+  }
+
+  .lg-outline-cols {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-6);
+  }
+
+  .lg-outline-col {
+    min-width: 0;
+  }
+
+  .lg-outline-h {
+    margin: 0 0 var(--s-2);
+    font-size: var(--fs-h3);
+    line-height: var(--lh-h3);
+  }
+
+  .lg-headings {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding-left: var(--s-6);
+  }
+
+  .lg-headings .lg-h3 {
+    margin-left: var(--s-4);
+    color: var(--ink-2);
+  }
+
+  .lg-gone,
+  .lg-legend-gone {
+    color: var(--bad-ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .lg-new-tag {
+    display: inline-flex;
+    margin-left: var(--s-2);
+    padding: 0 var(--s-2);
+    border-radius: var(--r-pill);
+    background: var(--info-tint);
+    color: var(--info);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    vertical-align: middle;
+  }
+
+  .lg-legend {
+    margin: var(--s-4) 0 0;
+    font-size: var(--fs-small);
+  }
+
+  .lg-pair {
+    align-items: start;
+  }
+
+  .lg-stages {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  .lg-section-title {
+    margin: 0;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+  }
+
+  .lg-empty {
+    padding: var(--s-4);
+  }
+
+  .lg-plan .md-block {
+    color: var(--ink);
+  }
+
+  .lg-plan-edit {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  /* Results: one line when the latest check lost ground. */
+  .lg-callout {
+    display: flex;
+    gap: var(--s-2);
+    align-items: flex-start;
+    margin: 0;
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid var(--bad-tint);
+    border-radius: var(--r-m);
+    background: var(--bad-tint);
+    color: var(--bad-ink);
+  }
+
+  .lg-callout a {
+    color: inherit;
+    font-weight: var(--fw-semibold);
+  }
+
+  @media (width < 900px) {
+    .lg-outline-cols {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

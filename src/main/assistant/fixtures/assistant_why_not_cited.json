@@ -1,0 +1,8 @@
+{
+  "text": "For this question the overview cites simpletexting.com instead of your page. It likely answers the buyer's situation head on, while your page talks about text alerts in general. The overview text is not in front of me, so treat this as likely, not certain.",
+  "sources": ["R1"],
+  "unknowns": ["The overview's own words for this question"],
+  "draft": null,
+  "questions": [],
+  "actions": [{ "kind": "draft-fix", "refs": ["R1"], "questions": [], "name": null }]
+}

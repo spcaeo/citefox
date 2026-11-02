@@ -1,0 +1,29 @@
+{
+  "summary": "The overview leans on a forum thread and a competitor guide that answer the clinic case directly.",
+  "reasons": [
+    {
+      "text": "The target page never names clinics or closures in a heading.",
+      "evidence": "Headings cover offices and branches only."
+    },
+    {
+      "text": "The cited sources give a step-by-step answer.",
+      "evidence": "simpletexting.com lists setup steps."
+    }
+  ],
+  "citedInstead": [
+    {
+      "domain": "simpletexting.com",
+      "url": "https://simpletexting.com/alerts",
+      "whyItWins": "A step-by-step answer for this exact case"
+    }
+  ],
+  "fix": {
+    "where": "target",
+    "steps": [
+      "Add an H2 for clinic closures",
+      "Answer in the first two sentences",
+      "Add a three-step setup from Outlook"
+    ],
+    "draft": "Clinics can send closure alerts from the shared Outlook inbox: write the email, address it to the staff group, and every phone gets a normal text. Replies come back to the inbox. [Check the per-message price.]"
+  }
+}

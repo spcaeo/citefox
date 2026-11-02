@@ -1,0 +1,137 @@
+/*
+ * The ✦ Ask CiteFox menus (Assistant.dc.html). Tokens only. The ✦ is quiet
+ * until the thing it sits in is hovered or holds focus; it stays focusable
+ * (keyboard users reach it with Tab) and is always shown on touch screens.
+ */
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .ai-spark {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: var(--r-s);
+    background: transparent;
+    color: var(--fox);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 120ms ease;
+  }
+
+  .ai-spark-xs {
+    width: 20px;
+    height: 20px;
+  }
+
+  .ai-spark:hover {
+    border-color: var(--fox-line);
+    background: var(--fox-tint);
+  }
+
+  .ai-spark:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+
+  .ai-spark:focus-visible,
+  .ai-spark-on,
+  .ui-kpi:hover .ai-spark,
+  .ui-kpi:focus-within .ai-spark,
+  .ui-sechead:hover .ai-spark,
+  .ui-sechead:focus-within .ai-spark,
+  .ui-lg-row:hover .ai-spark,
+  .ui-lg-row:focus-within .ai-spark,
+  .ui-lg-row.cur .ai-spark,
+  .ai-spark-host:hover .ai-spark,
+  .ai-spark-host:focus-within .ai-spark {
+    opacity: 1;
+  }
+
+  .ai-spark-on {
+    border-color: var(--fox-line);
+    background: var(--fox-tint);
+    color: var(--fox-ink);
+  }
+
+  @media (hover: none) {
+    .ai-spark {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ai-spark {
+      transition: none;
+    }
+  }
+
+  .ai-spark-head {
+    display: block;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .ai-spark-foot {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  /*
+   * A KPI tile's ✦ sits at the end of its label row. Until the tile is hovered or
+   * holds focus it takes no room (no width, and its flex gap is cancelled), so a
+   * narrow tile's label is never cut for a button nobody sees.
+   */
+  .ui-kpi-head .ai-spark {
+    width: 0;
+    margin-block: -4px;
+    margin-inline-start: calc(-1 * var(--s-2));
+    overflow: hidden;
+    border-width: 0;
+  }
+
+  .ui-kpi:hover .ui-kpi-head .ai-spark,
+  .ui-kpi:focus-within .ui-kpi-head .ai-spark,
+  .ui-kpi-head .ai-spark-on {
+    width: 24px;
+    margin-inline-start: auto;
+    border-width: 1px;
+  }
+
+  @media (hover: none) {
+    .ui-kpi-head .ai-spark {
+      width: 24px;
+      margin-inline-start: auto;
+      border-width: 1px;
+    }
+  }
+
+  .ui-kpi-head:has(.ai-spark) .ui-kpi-trend {
+    margin-inline-start: auto;
+  }
+
+  .ui-kpi:hover .ui-kpi-head .ui-kpi-trend + .ai-spark,
+  .ui-kpi:focus-within .ui-kpi-head .ui-kpi-trend + .ai-spark,
+  .ui-kpi-head .ui-kpi-trend + .ai-spark-on {
+    margin-inline-start: 0;
+  }
+
+  @media (hover: none) {
+    .ui-kpi-head .ui-kpi-trend + .ai-spark {
+      margin-inline-start: 0;
+    }
+  }
+
+  .ai-spark-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

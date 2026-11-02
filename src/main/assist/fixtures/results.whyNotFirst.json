@@ -1,0 +1,27 @@
+{
+  "summary": "The page is cited at #2 for this prompt. The source above it answers the \"no app for employees\" part in its first paragraph.",
+  "items": [
+    {
+      "text": "simpletexting.com is cited first and says in its opening lines that employees get texts without installing anything.",
+      "detail": "Overview: \"Employees receive alerts as normal SMS, with no app to download.\"",
+      "tag": "simpletexting.com",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "The overview lists a price per month; the page does not show one.",
+      "detail": "Saved gap fact: \"Plans start at [$29/month]\" (likely from simpletexting.com).",
+      "tag": "page",
+      "verify": "Check your own current price before adding one.",
+      "sign": null
+    },
+    {
+      "text": "The page's no-code answer sits in an FAQ near the end, not in the first section.",
+      "detail": "The H1 says \"(No Developer Required)\", but the first paragraph talks about scheduling.",
+      "tag": "page",
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": null
+}

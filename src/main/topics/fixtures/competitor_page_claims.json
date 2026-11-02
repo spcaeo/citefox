@@ -1,0 +1,16 @@
+{
+  "claims": [
+    {
+      "claim": "Delivery reports show who got each alert",
+      "section": "Delivery reports",
+      "onYourSite": "no",
+      "yourEvidence": null
+    },
+    {
+      "claim": "Works with thousands of apps via Zapier",
+      "section": "Integrations",
+      "onYourSite": "partly",
+      "yourEvidence": "/"
+    }
+  ]
+}

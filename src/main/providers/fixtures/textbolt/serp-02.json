@@ -1,0 +1,24 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": {
+      "status": "Success",
+      "id": "textbolt-p2"
+    },
+    "ai_overview": {
+      "text_blocks": [
+        {
+          "type": "paragraph",
+          "snippet": "Schedule the message in Gmail. TextBolt is one gateway that does this."
+        }
+      ],
+      "references": [
+        {
+          "title": "How to Set Up Text Alerts",
+          "link": "https://textbolt.com/blog/how-to-set-up-text-alerts-for-business/",
+          "source": "TextBolt"
+        }
+      ]
+    }
+  }
+}

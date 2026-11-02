@@ -1,0 +1,27 @@
+{
+  "summary": null,
+  "items": [
+    {
+      "text": "I need to text my employees about schedule changes, but we have no developer and nobody wants another app. What are my options?",
+      "detail": "Leads with the situation, then the two limits.",
+      "tag": "problem",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Is there a way for a small office to send text alerts to staff straight from email, without paying a developer or installing a new app?",
+      "detail": "Names email as the tool they already use.",
+      "tag": "solution",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Our crew ignores emails. How can I start sending them text alerts this week without hiring someone to build it?",
+      "detail": "Adds urgency and the crew's habit.",
+      "tag": "problem",
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": null
+}

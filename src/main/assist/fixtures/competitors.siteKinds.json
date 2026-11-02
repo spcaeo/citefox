@@ -1,0 +1,7 @@
+{
+  "sites": [
+    { "domain": "twilio.com", "kind": "big_tech" },
+    { "domain": "textmagic-reviews.com", "kind": "analysts_media" },
+    { "domain": "smsagency.co", "kind": "services" }
+  ]
+}

@@ -1,0 +1,381 @@
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .alerts .switch-label {
+    font-weight: var(--fw-medium);
+  }
+
+  .alerts .switch-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    flex: 1 1 280px;
+  }
+
+  /* Undo the pill look of the shared .choice (projects.css): here it is a label and hint stack. */
+  .alerts .choice {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+  }
+
+  .alerts .choice:has(input:checked) {
+    background: none;
+  }
+
+  .alerts .choice strong {
+    font-weight: var(--fw-semibold);
+  }
+
+  .alerts .warn-ink {
+    color: var(--warn);
+  }
+
+  .alerts .prov-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+  }
+
+  .alerts .prov {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-start;
+    min-height: var(--h-control);
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .alerts .prov[aria-pressed='true'] {
+    border-color: var(--select-line);
+    background: var(--select-tint);
+  }
+
+  .alerts .guide {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    border-radius: var(--r-s);
+    background: var(--inset);
+  }
+
+  /* A numbered list; the shared .steps (onboarding, projects) is a centred step bar. */
+  .alerts .steps {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: var(--s-2);
+    max-width: none;
+    margin: 0;
+    padding-left: 1.2rem;
+    list-style: decimal;
+  }
+
+  .alerts .steps > li {
+    display: list-item;
+  }
+
+  .alerts .pw {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .alerts .pw .ob-input {
+    flex: 1 1 auto;
+  }
+
+  .alerts .server {
+    display: grid;
+    grid-template-columns: minmax(180px, 2fr) minmax(100px, 1fr) minmax(140px, 1fr);
+    gap: 10px 14px;
+  }
+
+  .alerts .server .span-2 {
+    grid-column: span 2;
+  }
+
+  .alerts .tips {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0 0 0 1.1rem;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: 18px;
+  }
+
+  .alerts .result {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: var(--s-3) 14px;
+    border-radius: var(--r-s);
+  }
+
+  .alerts .result.ok {
+    background: var(--ok-tint);
+  }
+
+  .alerts .result.fail {
+    background: var(--bad-tint);
+  }
+
+  .alerts .acct-test-btn {
+    border: 0;
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  .alerts .acct-test-btn:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .alerts .acct-uses {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-1);
+    min-width: 0;
+  }
+
+  .alerts .acct-uses-names {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  @media (max-width: 720px) {
+    .alerts .server {
+      grid-template-columns: 1fr;
+    }
+
+    .alerts .server .span-2 {
+      grid-column: auto;
+    }
+  }
+
+  /* The daily time is a short field beside its label, not a full-width input. */
+  .alerts .switch-row > input[type='time'] {
+    flex: 0 0 160px;
+    width: 160px;
+  }
+}
+
+/* Schedule & alerts, v2: one header, tabs, an 8 + 4 grid and v2 cards. */
+@layer screens {
+  .alerts.page-stack {
+    gap: var(--card-gap);
+  }
+
+  .alerts .screen-header {
+    margin-bottom: 0;
+  }
+
+  .alerts .al-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    gap: var(--card-gap);
+    align-items: start;
+  }
+
+  /* Side by side cards end on the same line (Check timing tab). */
+  .alerts .al-grid-even {
+    align-items: stretch;
+  }
+
+  .alerts .al-grid-even > .al-main > * {
+    flex: 1;
+  }
+
+  .alerts .ui-tabpanel > .al-main {
+    max-width: calc((100% - var(--card-gap)) * 2 / 3);
+  }
+
+  @media (width < 1100px) {
+    .alerts .al-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .alerts .ui-tabpanel > .al-main {
+      max-width: none;
+    }
+  }
+
+  .alerts .al-main,
+  .alerts .al-rail,
+  .alerts .al-accounts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    min-width: 0;
+  }
+
+  .alerts .al-accounts {
+    gap: var(--s-3);
+  }
+
+  .alerts .al-main > p {
+    margin: 0;
+  }
+
+  .alerts .al-accounts > .hint {
+    margin: 0;
+  }
+
+  .alerts .card,
+  .alerts .page-card {
+    gap: var(--s-4);
+    padding: var(--card-pad);
+    border-color: var(--line);
+    border-radius: var(--r-m);
+    box-shadow: var(--e1);
+  }
+
+  .alerts .card h2,
+  .alerts .page-card h2 {
+    margin: 0;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    font-weight: var(--fw-semibold);
+  }
+}
+
+/* Email tab: mode and the accounts grid full width, then the editor beside the tips. */
+@layer screens {
+  .alerts .al-email {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    min-width: 0;
+  }
+
+  .alerts .al-email > p {
+    margin: 0;
+  }
+
+  .alerts .al-grid-flush {
+    padding-top: 0;
+  }
+}
+
+/* Notifications and Re-check: the right column, the email chips and the Slack test. */
+@layer screens {
+  .alerts .al-rail > .ui-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .alerts .al-rail .hint {
+    margin: 0;
+  }
+
+  .alerts .nt-chips {
+    display: block;
+    min-width: 0;
+  }
+
+  .alerts .nt-slack-test {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+    margin-top: var(--s-1);
+  }
+
+  .alerts .nt-slack-result {
+    padding: var(--s-1) var(--s-3);
+    font-size: var(--fs-small);
+  }
+
+  .alerts .nt-sample-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding: var(--s-3) 14px;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--fox);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .alerts .nt-sample-card p {
+    margin: 0;
+  }
+
+  .alerts .nt-sample-from {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-2);
+    font-size: var(--fs-small);
+  }
+
+  .alerts .nt-sample-title {
+    font-weight: var(--fw-semibold);
+  }
+
+  .alerts .nt-sample-body {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .alerts .nt-next-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .alerts .nt-next-list > li {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    padding: var(--s-2) 0;
+    border-top: 1px solid var(--line);
+    /* UrlText parks its hidden Copy and Open past its end; keep them inside the panel. */
+    overflow-x: clip;
+  }
+
+  .alerts .nt-next-list > li:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .alerts .nt-next-top {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .alerts .nt-next-name {
+    overflow: hidden;
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

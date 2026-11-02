@@ -1,0 +1,267 @@
+/* Check history (project level). Tokens from styles/tokens.css only. Compare content uses history.css. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .hp-screen {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+
+  /* The lead line reads as the title's subtitle: 8px under it, not the frame's 24px. */
+  .hp-lead-row {
+    display: flex;
+    gap: var(--s-4);
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-top: calc(var(--s-2) - var(--s-6));
+  }
+
+  .hp-lead {
+    max-width: 72ch;
+  }
+
+  /* "What changed": the AI answer, read-only. */
+  .hp-changed {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .hp-changed-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .hp-changed-list li {
+    display: flex;
+    gap: var(--s-2);
+    align-items: baseline;
+  }
+
+  .hp-changed-tag {
+    flex: 0 0 auto;
+    padding: 0 var(--s-2);
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    text-transform: capitalize;
+  }
+
+  /* Below the wide window the toolbar sits a little closer. Filters that still do not
+     fit move into Filter ▾ by themselves (audit2 #7); the search keeps its 200px. */
+  @media (max-width: 1379px) {
+    .hp-screen .ui-lg-bar {
+      gap: var(--s-2);
+    }
+
+    .hp-screen .ui-lg-tree-expand {
+      gap: var(--s-1);
+    }
+  }
+
+  /* Kind chip, name, then the page's path (copy and open at its end), on one line. */
+  .hp-subject {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .hp-subject > .ui-chip {
+    flex: none;
+  }
+
+  .hp-subject-name {
+    flex: 0 1 auto;
+    overflow: hidden;
+    min-width: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Name and path share the cell; the path keeps a few characters before the name gives way. */
+  .hp-subject-path {
+    flex: 1 1 0;
+    min-width: 4em;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .hp-compare-why {
+    font-size: var(--fs-small);
+  }
+
+  .hp-kind {
+    color: var(--ink-2);
+  }
+
+  .hp-state {
+    display: inline-flex;
+  }
+
+  .hp-empty-actions {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    justify-content: center;
+  }
+
+  /* ---- Compare checks drawer ---- */
+  .hp-cmp-diff-line {
+    margin: 0 0 var(--s-3);
+    font-size: var(--fs-small);
+  }
+
+  .hp-cmp-totals {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-ui);
+  }
+
+  .hp-cmp-totals th,
+  .hp-cmp-totals td {
+    padding: var(--s-2) var(--s-3);
+    border-bottom: 1px solid var(--line);
+    text-align: end;
+  }
+
+  .hp-cmp-totals th[scope='row'],
+  .hp-cmp-totals thead th:first-child {
+    text-align: start;
+    font-weight: var(--fw-medium);
+  }
+
+  .hp-cmp-totals thead th {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .hp-cmp-totals tbody tr:last-child > * {
+    border-bottom: 0;
+  }
+
+  .hp-cmp-totals .hist-up {
+    color: var(--ink);
+  }
+
+  .hp-cmp-totals .hist-down {
+    color: var(--ink);
+  }
+
+  .hp-cmp-totals .hist-flat {
+    color: var(--ink-3);
+  }
+
+  .hp-cmp-q {
+    font-size: var(--fs-small);
+  }
+
+  .hp-cmp-pair {
+    white-space: nowrap;
+  }
+
+  .hp-cmp-changed .hp-cmp-after {
+    font-weight: var(--fw-semibold);
+  }
+
+  /* Who was cited, older check left, newer right. */
+  .hp-cmp-sources {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-4);
+    padding: var(--s-2) 0 var(--s-3);
+  }
+
+  .hp-cmp-side {
+    min-width: 0;
+  }
+
+  .hp-cmp-side-title {
+    margin: 0 0 var(--s-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .hp-cmp-refs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .hp-cmp-refs > li {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .hp-cmp-pos {
+    flex: none;
+    width: 2.5em;
+    font-size: var(--fs-small);
+  }
+}
+
+/* Engines and the This month box (Engines board, panel 4). */
+@layer screens {
+  .hp-month {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .hp-month-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-h3);
+  }
+
+  .hp-month-engines {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--s-1) var(--s-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .hp-month-engine {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto 64px;
+    gap: var(--s-3);
+    align-items: center;
+    padding: var(--s-1) 0;
+    border-bottom: 1px solid var(--line);
+    font-size: var(--fs-small);
+  }
+
+  .hp-month-engine > .num:last-child {
+    text-align: right;
+  }
+
+  .hp-month-name {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: center;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ink);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

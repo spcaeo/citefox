@@ -1,0 +1,69 @@
+/* Status popover drill-downs: state chips and key lines that open more. Tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer shared {
+  .sp-chip {
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .sp-chip:hover {
+    box-shadow: inset 0 0 0 1px currentcolor;
+  }
+
+  .sp-chip:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .sp-keys {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sp-issues {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--action-ink);
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .sp-issues:hover {
+    color: var(--action-ink);
+  }
+
+  .sp-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 2px;
+    border-radius: var(--r-pill);
+    background: var(--warn);
+    color: var(--ground);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .sp-setup {
+    margin: 0;
+    padding: 6px 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .sp-sec .st-notices {
+    padding-left: 40px;
+    font-size: var(--fs-ui);
+  }
+}

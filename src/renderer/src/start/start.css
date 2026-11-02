@@ -1,0 +1,307 @@
+/*
+ * First-run journey: the focus-mode frame and the few pieces its screens share
+ * (Mockups/v2/journey-a). Cards, chips, tables and the footer come from the
+ * kit (Panel, Chip, ListGrid, the wizard footer); the width is onboarding's
+ * `.setup-width` (styles/onboarding.css).
+ */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .sf {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: var(--ground);
+  }
+
+  .sf-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+  }
+
+  .sf-top {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--s-4);
+    min-height: var(--shell-topbar);
+    padding: 0 var(--page-pad);
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .sf-brand-group {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .sf-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    color: var(--ink);
+    font-size: var(--fs-h2);
+    font-weight: var(--fw-semibold);
+    text-decoration: none;
+  }
+
+  .sf-project {
+    padding-left: var(--s-4);
+    border-left: 1px solid var(--line);
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+    white-space: nowrap;
+  }
+
+  .sf-steps {
+    padding: var(--s-4) var(--page-pad);
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .sf-end {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .sf-capsule {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 6px var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    white-space: nowrap;
+  }
+
+  .sf-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--ok);
+  }
+
+  /* Width and side padding come from .setup-width. */
+  .sf-main {
+    flex: 1 0 auto;
+    padding-top: var(--s-6);
+    padding-bottom: var(--s-6);
+    outline: none;
+  }
+
+  .sf-head {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    margin-bottom: var(--s-6);
+  }
+
+  .sf-titles {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .sf-titles h1 {
+    margin: 0;
+    font-size: var(--fs-h1);
+    line-height: var(--lh-h1);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-h1);
+  }
+
+  .sf-sub {
+    margin: var(--s-1) 0 0;
+    color: var(--ink-2);
+  }
+
+  .sf-aside {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .sf-clock {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-right: var(--s-4);
+    border-right: 1px solid var(--line);
+  }
+
+  .sf-clock-time {
+    font-family: var(--font-code);
+    font-size: var(--fs-h1);
+    line-height: var(--lh-h1);
+  }
+
+  .sf-clock-note {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .sf-lead-check {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--spruce);
+    color: var(--on-spruce);
+  }
+
+  /* Work on the left (8 of 12), context on the right (4): ui-layout-main-rail. */
+  .sf-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    min-width: 0;
+  }
+
+  /* A section: its head (SectionHead) over its grid or panel. */
+  .sf-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+
+  .sf-kpis {
+    margin-bottom: var(--card-gap);
+  }
+
+  .sf-bar {
+    position: relative;
+    display: block;
+    height: 6px;
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    overflow: hidden;
+  }
+
+  .sf-bar > span {
+    position: absolute;
+    inset: 0 auto 0 0;
+    border-radius: var(--r-pill);
+    background: var(--spruce);
+  }
+
+  .sf-bar-fox > span {
+    background: var(--fox);
+  }
+
+  .sf-mono {
+    font-family: var(--font-code);
+    font-size: var(--fs-small);
+  }
+
+  .sf-faint {
+    color: var(--ink-3);
+  }
+
+  /* A short list inside a Panel: label left, value right, thin rules between. */
+  .sf-rows {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sf-rows > li,
+  .sf-rows > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    min-height: 36px;
+    border-top: 1px solid var(--line);
+    font-size: var(--fs-ui);
+  }
+
+  .sf-rows > :first-child {
+    border-top: 0;
+  }
+
+  .sf-rows dt,
+  .sf-rows dd {
+    margin: 0;
+  }
+
+  .sf-rows dt {
+    color: var(--ink-2);
+  }
+
+  .sf-panel-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  /* A Panel whose rows run edge to edge (editable rows, rivals): the head keeps the inset. */
+  .sf-flush {
+    gap: var(--s-3);
+    overflow: hidden;
+  }
+
+  .sf-flush > .ui-panel-head {
+    padding: var(--s-4) var(--s-5) 0;
+  }
+
+  .sf-flush-foot {
+    padding: var(--s-2) var(--s-5);
+    border-top: 1px solid var(--line);
+  }
+
+  .sf-created {
+    margin: 0 0 var(--card-gap);
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--ok);
+    border-radius: var(--r-m);
+    background: var(--ok-tint);
+    color: var(--ink);
+  }
+
+  /* An inline text link: action green, never fox (Docs/HEADER.md). */
+  .sf-link,
+  .sf-link:hover {
+    color: var(--action-ink);
+  }
+
+  .sf-error {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    margin: 0 0 var(--card-gap);
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--bad);
+    border-radius: var(--r-m);
+    background: var(--bad-tint);
+    color: var(--bad);
+  }
+
+  /* The kit footer reaches the window edges; the Undo toast takes the note's place. */
+  .sf:has(.ed-toast) .sf-foot .ui-wizard-note {
+    visibility: hidden;
+  }
+
+  @media (max-width: 1320px) {
+    .sf-top,
+    .sf-steps {
+      padding-left: var(--s-6);
+      padding-right: var(--s-6);
+    }
+  }
+}

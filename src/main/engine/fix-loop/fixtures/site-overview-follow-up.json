@@ -1,0 +1,19 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": { "status": "Success", "id": "fixture-site-overview-follow-up" },
+    "ai_overview": {
+      "text_blocks": [
+        { "type": "paragraph", "snippet": "TextBolt lists its plans on its pricing page." }
+      ],
+      "references": [
+        {
+          "title": "Pricing",
+          "link": "https://textbolt.com/pricing/",
+          "source": "TextBolt",
+          "index": 0
+        }
+      ]
+    }
+  }
+}

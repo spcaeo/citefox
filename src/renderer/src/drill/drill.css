@@ -1,0 +1,419 @@
+/*
+ * The one drill drawer and drillable numbers (REPORT-SPEC "Interaction model").
+ * The frame is the shared Drawer (ui/Drawer/drawer.css); this file adds the
+ * drill's own parts: the filter tiles, the search, the list grid rows.
+ */
+
+@layer shared, results, screens, utilities;
+
+@layer shared {
+  /* ---- Drawer body: the list on the left, the rail on the right ---- */
+  .drill-body {
+    min-height: 100%;
+  }
+
+  .drill-desc,
+  .drill-small {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .drill-desc p {
+    margin: 0;
+  }
+
+  .drill-desc p + p {
+    margin-top: var(--s-1);
+  }
+
+  .drill-small {
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  /* One line that stands out in the rows (stored data only). */
+  .drill-insight {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  /* ---- Summary tiles: each one filters the list ---- */
+  .drill-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+    gap: var(--s-2);
+  }
+
+  .drill-stat {
+    display: flex;
+    /* The DOM keeps "value label" for the accessible name; the label shows first. */
+    flex-direction: column-reverse;
+    gap: 2px;
+    justify-content: flex-end;
+    align-items: flex-start;
+    min-height: 64px;
+    margin: 0;
+    padding: var(--s-3) var(--s-3);
+    border: 1px solid transparent;
+    border-radius: var(--r-m);
+    background: var(--inset);
+    color: var(--ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .drill-stat:hover:not(:disabled) {
+    border-color: var(--line-strong);
+  }
+
+  .drill-stat[aria-pressed='true'] {
+    border-color: var(--select-line);
+    background: var(--select-tint);
+  }
+
+  .drill-stat:disabled {
+    cursor: default;
+  }
+
+  .drill-stat:disabled .drill-stat-value {
+    color: var(--ink-3);
+  }
+
+  .drill-stat:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-color: var(--fox);
+  }
+
+  .drill-stat-value {
+    font-size: 20px;
+    font-weight: var(--fw-semibold);
+    line-height: 26px;
+  }
+
+  .drill-stat-label {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  /* ---- List area: search, grid, notes ---- */
+  /* The list runs to the box's bottom edge: its last row closes the box. */
+  .ui-drawer-section.drill-list {
+    padding-bottom: 0;
+    overflow: hidden;
+  }
+
+  .drill-list > .drill-empty:last-child,
+  .drill-list > .drill-filtered:last-child {
+    padding-bottom: var(--s-4);
+  }
+  .drill-search.ui-search {
+    flex: 0 1 260px;
+    max-width: 100%;
+  }
+
+  .drill-filtered {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  /* Text links are action green; fox stays for the logo, ✦ AI marks and your cited page. */
+  .drill-link {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--action-ink);
+    font: inherit;
+    font-weight: var(--fw-medium);
+    cursor: pointer;
+  }
+
+  .drill-link:hover {
+    text-decoration: underline;
+  }
+
+  .drill-link:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /*
+   * The drawer's list is the kit ListGrid, edge to edge inside its box: no
+   * card frame of its own, the box's side padding inside each row.
+   */
+  .drill-scroll {
+    min-width: 0;
+    margin: 0 calc(var(--s-4) * -1);
+  }
+
+  /*
+   * A drawer list keeps its first column in the flow: stuck, it was pushed right by
+   * the drawer's padding and covered the start of the next column ("sked by").
+   */
+  .drill-lg .ui-lg-pin {
+    position: relative;
+  }
+
+  .ui-lg.drill-lg {
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .drill-lg .ui-lg-head,
+  .drill-lg .ui-lg-row {
+    --lg-gap: var(--s-3);
+    padding-right: var(--s-4);
+    padding-left: var(--s-4);
+  }
+
+  .drill-lg .ui-lg-row {
+    font-size: var(--fs-ui);
+    line-height: 18px;
+  }
+
+  .drill-lg .ui-lg-row:last-child {
+    border-bottom: 0;
+  }
+
+  .drill-lg .ui-lg-row a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .drill-lg .ui-lg-row a:hover {
+    text-decoration: underline;
+  }
+
+  .drill-empty {
+    margin: 0;
+    padding: var(--s-4) 0;
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+    text-align: center;
+  }
+
+  .drill-q {
+    color: var(--ink-3);
+  }
+
+  .drill-prompt {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .drill-cited,
+  .drill-lg .ui-lg-row a.drill-cited {
+    color: var(--ink);
+  }
+
+  .drill-other-own,
+  .drill-lg .ui-lg-row a.drill-other-own {
+    color: var(--info);
+  }
+
+  .drill-muted,
+  .drill-none {
+    color: var(--ink-3);
+  }
+
+  .drill-none {
+    font-family: var(--font-ui);
+  }
+
+  /* WCAG 2.5.8: links alone in a cell get a 24px target. */
+  .drill-lg .ui-lg-td > a,
+  .drill-lg .drill-cell-stack > a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+  }
+
+  .drill-clip {
+    font-size: var(--fs-small);
+  }
+
+  /* A clipped link stays one box so it can end in an ellipsis. */
+  .drill-lg .drill-clip > a {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 24px;
+  }
+
+  .drill-cell-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .drill-primary {
+    overflow-wrap: anywhere;
+  }
+
+  .drill-primary.mono {
+    font-size: var(--fs-small);
+  }
+
+  .drill-secondary {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .drill-overview {
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--inset);
+  }
+
+  .drill-facts {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .drill-overview-text {
+    font-size: var(--fs-ui);
+    line-height: var(--lh-body);
+  }
+
+  .drill-sources {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--fs-small);
+  }
+
+  .drill-sources li {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr) auto;
+    gap: var(--s-2);
+    align-items: baseline;
+  }
+
+  .drill-sources .ui-url {
+    min-width: 0;
+  }
+
+  .drill-sources .drill-cited {
+    color: var(--fox-ink);
+    font-weight: var(--fw-medium);
+  }
+
+  .drill-open-full {
+    display: inline-flex;
+    gap: var(--s-1);
+    align-items: center;
+    color: var(--action-ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+  }
+
+  .drill-more {
+    align-self: flex-start;
+    margin-top: var(--s-2);
+  }
+
+  .drill-foot-notes {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .drill-csv-note {
+    color: var(--ink-2);
+  }
+
+  /*
+   * A number that opens a drawer (DrillNumber): plain text at rest, so a screen
+   * full of numbers stays calm (owner, 2026-10-30); the pointer and an underline
+   * on hover or keyboard focus say it opens.
+   */
+  .drill-num {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-variant-numeric: tabular-nums;
+    text-decoration: underline solid transparent;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 4px;
+    cursor: pointer;
+  }
+
+  /* A count of zero: nothing to open, so plain text. */
+  .drill-num-zero {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .drill-num:hover,
+  .drill-num:focus-visible {
+    color: var(--action-ink);
+    text-decoration-color: currentcolor;
+  }
+
+  .drill-num:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* DrillPopover: short detail that is not a list (Theme E2 menu/popover). */
+  .drill-pop {
+    position: fixed;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    max-width: calc(100vw - 16px);
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e2);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    line-height: 18px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .drill-pop .label {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .drill-pop-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+}

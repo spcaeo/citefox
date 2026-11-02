@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
+  <!-- CiteFox share image. Made by scripts/site/render-social.mjs; edit there. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2a221b"/>
+      <stop offset="1" stop-color="#17130f"/>
+    </linearGradient>
+    <linearGradient id="fur" x1="0" y1="226" x2="0" y2="812" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f26a1b"/>
+      <stop offset="1" stop-color="#c2410c"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.82" cy="0.3" r="0.5">
+      <stop offset="0" stop-color="#e0763f" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#e0763f" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <rect width="1280" height="640" fill="url(#glow)"/>
+  <g font-family="Inter, 'Noto Sans', sans-serif">
+  <g transform="translate(889.2 60.2) scale(0.2976)">
+  <polygon points="262 226 424 360 600 360 762 226 790 500 824 600 512 812 200 600 234 500" fill="url(#fur)"/>
+  <polygon points="278 276 396 372 262 444" fill="#7c2d12"/>
+  <polygon points="746 276 628 372 762 444" fill="#7c2d12"/>
+  <polygon points="200 600 384 556 512 768 512 812" fill="#ffffff"/>
+  <polygon points="824 600 640 556 512 768 512 812" fill="#ffffff"/>
+  <polygon points="466 752 558 752 512 812" fill="#16181d"/>
+  <g fill="#16181d">
+    <rect x="-38" y="-17" width="76" height="34" rx="17" transform="translate(410 520) rotate(24)"/>
+    <rect x="-38" y="-17" width="76" height="34" rx="17" transform="translate(614 520) rotate(-24)"/>
+  </g>
+  </g>
+  <text x="86" y="157.1" font-size="85.3" font-weight="800" fill="#f3e9d8" letter-spacing="-1.5">CiteFox</text>
+  <text x="86" y="228.2" font-size="44.7" font-weight="700" fill="#f0915f">Free AI visibility tracker</text>
+  <text x="86" y="289.2" font-size="28.4" font-weight="500" fill="#dccdb6">Is your website cited in AI answers?</text>
+  <text x="86" y="329.8" font-size="28.4" font-weight="500" fill="#dccdb6">Track it, fix it, report it. GEO and AEO for agencies.</text>
+  <text x="86" y="487.0" font-size="19.3" font-weight="600" fill="#c4b49c">Free desktop app · Mac, Windows, Linux · Source-available</text>
+  <g transform="translate(86.0 509.3)"><rect width="219.8" height="40.6" rx="20.3" fill="#3a2f25" stroke="#5a4a3a"/><text x="109.9" y="26.4" text-anchor="middle" font-size="17.3" font-weight="600" fill="#f3e9d8">Google AI Overviews</text></g>
+  <g transform="translate(316.0 509.3)"><rect width="102.8" height="40.6" rx="20.3" fill="#3a2f25" stroke="#5a4a3a"/><text x="51.4" y="26.4" text-anchor="middle" font-size="17.3" font-weight="600" fill="#f3e9d8">ChatGPT</text></g>
+  <g transform="translate(429.0 509.3)"><rect width="132.1" height="40.6" rx="20.3" fill="#3a2f25" stroke="#5a4a3a"/><text x="66.0" y="26.4" text-anchor="middle" font-size="17.3" font-weight="600" fill="#f3e9d8">Perplexity</text></g>
+  <g transform="translate(571.2 509.3)"><rect width="93.1" height="40.6" rx="20.3" fill="#3a2f25" stroke="#5a4a3a"/><text x="46.5" y="26.4" text-anchor="middle" font-size="17.3" font-weight="600" fill="#f3e9d8">Gemini</text></g>
+  <g transform="translate(674.4 509.3)"><rect width="102.8" height="40.6" rx="20.3" fill="#3a2f25" stroke="#5a4a3a"/><text x="51.4" y="26.4" text-anchor="middle" font-size="17.3" font-weight="600" fill="#f3e9d8">Copilot</text></g>
+  <g transform="translate(787.4 509.3)"><rect width="102.8" height="40.6" rx="20.3" fill="#3a2f25" stroke="#5a4a3a"/><text x="51.4" y="26.4" text-anchor="middle" font-size="17.3" font-weight="600" fill="#f3e9d8">AI Mode</text></g>
+  </g>
+</svg>

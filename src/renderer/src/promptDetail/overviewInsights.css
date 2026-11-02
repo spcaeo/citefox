@@ -1,0 +1,180 @@
+/* "What this overview says about you" (components/insights). Tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .ins-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .ins-observed {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+    min-width: 0;
+  }
+
+  .ins-verdict {
+    margin: 0;
+    padding: var(--s-3) var(--s-4);
+    border-left: 4px solid var(--mark-line);
+    border-radius: var(--r-s);
+    background: var(--inset);
+    color: var(--ink);
+    font-size: var(--fs-body);
+    font-weight: var(--fw-semibold);
+    line-height: 1.5;
+  }
+
+  /* Two balanced columns; one below 1100px, like the gap and coverage pair */
+  .ins-cols {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-6);
+    align-items: start;
+  }
+
+  @media (max-width: 1100px) {
+    .ins-cols {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .ins-part {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .ins-h {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ins-stat,
+  .ins-none,
+  .ins-hint {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: 1.5;
+  }
+
+  .ins-none,
+  .ins-hint {
+    color: var(--ink-3);
+  }
+
+  .ins-quotes,
+  .ins-own {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ins-quotes > li,
+  .ins-own-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    font-size: var(--fs-small);
+    line-height: 1.5;
+  }
+
+  .ins-where {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .ins-quote {
+    color: var(--ink);
+    quotes: '“' '”';
+  }
+
+  .ins-more {
+    color: var(--ink-3);
+  }
+
+  .ins-own-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .ins-url {
+    overflow: hidden;
+    min-width: 0;
+    color: var(--ink);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ins-own-head .ui-url.ins-url {
+    overflow: visible;
+  }
+
+  .ins-place {
+    color: var(--ink-3);
+  }
+
+  .ins-for {
+    color: var(--ink-2);
+  }
+
+  .ins-link {
+    display: inline;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--info);
+    font: inherit;
+    text-align: start;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+
+  .ins-link:hover {
+    color: var(--ink);
+  }
+
+  .ins-link:focus-visible {
+    border-radius: 2px;
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+
+  .ins-grid {
+    max-width: 880px;
+  }
+
+  .ins-gap {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-2);
+    margin: 0;
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-m);
+    background: var(--warn-tint);
+    color: var(--ink);
+    font-size: var(--fs-small);
+    line-height: 1.5;
+  }
+
+  .ins-gap > svg {
+    flex: 0 0 auto;
+    margin-top: 2px;
+    color: var(--warn);
+  }
+}

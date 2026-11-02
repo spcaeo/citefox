@@ -1,0 +1,18 @@
+{
+  "switchingFrom": [
+    {
+      "name": "AT&T email-to-text",
+      "domain": null,
+      "reason": "The gateway shut down, so teams that emailed alerts to txt.att.net need a new way.",
+      "evidence": { "path": "/", "quote": "AT&T shut down its email-to-text gateway." }
+    }
+  ],
+  "integrations": [
+    {
+      "name": "Gmail",
+      "domain": null,
+      "reason": "Users write a normal email in Gmail and it goes out as a text.",
+      "evidence": { "path": "/", "quote": "Send alerts from Gmail or Outlook" }
+    }
+  ]
+}

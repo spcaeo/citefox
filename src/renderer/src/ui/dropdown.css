@@ -1,0 +1,224 @@
+@layer shared, results, screens, utilities;
+
+/* Dropdown (ui/Dropdown.tsx): the one dropdown for toolbars and page headers. */
+@layer shared {
+  .ui-dd {
+    position: relative;
+    display: inline-flex;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .ui-dd-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    width: 100%;
+    min-width: 0;
+    height: var(--h-control);
+    padding: 0 10px 0 12px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .ui-dd-sm .ui-dd-button {
+    height: var(--h-control-sm);
+    font-size: var(--fs-ui);
+  }
+
+  .ui-dd-button:hover {
+    border-color: var(--ink-4);
+  }
+
+  .ui-dd-button:focus-visible,
+  .ui-dd-button[aria-expanded='true'] {
+    border-color: var(--fox);
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .ui-dd-button:disabled {
+    background: var(--inset);
+    color: var(--ink-3);
+    cursor: not-allowed;
+  }
+
+  .ui-dd-prefix {
+    flex: none;
+    color: var(--ink-3);
+  }
+
+  .ui-dd-value {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ui-dd-empty {
+    color: var(--ink-3);
+  }
+
+  .ui-dd-caret {
+    flex: none;
+    color: var(--ink-3);
+    transition: transform var(--shell-speed) ease;
+  }
+
+  .ui-dd-button[aria-expanded='true'] .ui-dd-caret {
+    transform: rotate(180deg);
+  }
+
+  .ui-dd-icon {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    color: var(--ink-3);
+  }
+
+  /* ---- The list: fixed under the button so a scrolling grid never clips it ---- */
+  .ui-dd-pop {
+    position: fixed;
+    z-index: var(--z-pop);
+    display: flex;
+    flex-direction: column;
+    max-width: min(360px, calc(100vw - 16px));
+    padding: 6px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e2);
+  }
+
+  .ui-dd-search {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    height: var(--h-control-sm);
+    margin-bottom: 6px;
+    padding: 0 10px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    color: var(--ink-3);
+  }
+
+  .ui-dd-search:focus-within {
+    border-color: var(--fox);
+    box-shadow: var(--focus-ring);
+  }
+
+  .ui-dd-search input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: var(--fs-ui);
+    outline: none;
+  }
+
+  .ui-dd-search input::placeholder {
+    color: var(--ink-3);
+  }
+
+  .ui-dd-list {
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+  }
+
+  .ui-dd-list:focus {
+    outline: none;
+  }
+
+  .ui-dd-group {
+    padding: var(--s-2) 10px var(--s-1);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ui-dd-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: var(--h-control);
+    padding: 0 10px;
+    border-radius: var(--r-s);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    cursor: pointer;
+  }
+
+  .ui-dd-option.on {
+    background: var(--inset);
+  }
+
+  .ui-dd-option[aria-selected='true'] {
+    background: var(--ok-tint);
+    font-weight: var(--fw-medium);
+  }
+
+  .ui-dd-option[aria-disabled='true'] {
+    color: var(--ink-4);
+    cursor: not-allowed;
+  }
+
+  .ui-dd-list:focus-visible .ui-dd-option.on {
+    box-shadow: inset 0 0 0 2px var(--fox);
+  }
+
+  .ui-dd-option.on[aria-selected='true'] {
+    box-shadow: inset 0 0 0 1px var(--ok);
+  }
+
+  .ui-dd-label {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ui-dd-hint {
+    flex: none;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .ui-dd-tick {
+    flex: none;
+    color: var(--ok);
+  }
+
+  .ui-dd-create {
+    margin-top: 4px;
+    border-top: 1px solid var(--line);
+    border-radius: 0 0 var(--r-s) var(--r-s);
+    color: var(--action-ink);
+    font-weight: var(--fw-medium);
+  }
+
+  .ui-dd-create .ui-dd-icon {
+    color: var(--action-ink);
+  }
+
+  .ui-dd-none {
+    padding: var(--s-2) 10px;
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+}

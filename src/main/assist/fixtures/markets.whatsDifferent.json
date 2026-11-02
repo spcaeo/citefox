@@ -1,0 +1,20 @@
+{
+  "summary": "In UK the page is not cited for prompt 1, while in US it is cited #2. Prompt 2 behaves the same in both markets.",
+  "items": [
+    {
+      "text": "Prompt 1 cites a competitor in UK but this page in US.",
+      "detail": "UK: not cited, simpletexting.com first. US: page cited #2. UK wording adds \"in the UK\".",
+      "tag": "Prompt 1",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "Prompt 2 shows another TextBolt page in both markets.",
+      "detail": "Other own page in UK and US.",
+      "tag": "Prompt 2",
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": null
+}

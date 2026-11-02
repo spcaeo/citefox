@@ -1,0 +1,113 @@
+/* Page settings drawer and the Add market drawer. Tokens from styles/tokens.css only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .pset-cost {
+    margin: var(--s-3) 0 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .pset-markets {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0 0 var(--s-3);
+    padding: 0;
+    border: 0;
+  }
+
+  .pset-market {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: 32px;
+    padding: 0 var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    cursor: pointer;
+  }
+
+  .pset-market:has(input:checked) {
+    border-color: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--ink);
+  }
+
+  .pset-tag {
+    margin-left: auto;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .pset-note {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .pset-error {
+    color: var(--bad);
+  }
+
+  .am-pages {
+    display: flex;
+    flex-direction: column;
+    max-height: 280px;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    list-style: none;
+  }
+
+  .am-pages li + li {
+    border-top: 1px solid var(--line);
+  }
+
+  .am-page {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: 36px;
+    padding: 0 var(--s-3);
+    cursor: pointer;
+  }
+
+  .am-page-name {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .am-page-meta {
+    flex: 0 0 auto;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .pmk {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin-bottom: var(--s-5);
+  }
+
+  .pmk-name {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .pmk-also {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-2);
+    margin-top: var(--s-3);
+  }
+}

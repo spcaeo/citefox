@@ -1,0 +1,630 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * The v2 app frame: sidebar (styles/sidebar.css) | content column with the
+ * 48px spruce top bar and the scrolling main, which ends with the gold sponsor
+ * card (styles/sponsors.css).
+ */
+@layer shared {
+  /*
+   * Positioned, so absolutely placed descendants (measuring samples, popovers
+   * without a positioned parent) stay inside the frame instead of growing the
+   * document and giving the window its own scrollbar.
+   */
+  .app {
+    /* The main column's padding and row gap; full-bleed screens step past them.
+       The top is small, so a screen header's band stays about 64px tall. */
+    --main-top: 12px;
+    --main-x: var(--page-pad);
+    --main-bottom: 48px;
+    --main-row-gap: 24px;
+
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100%;
+    min-height: 100%;
+    overflow: hidden;
+    background: var(--ground);
+    color: var(--ink);
+  }
+
+  /* Named container: the top bar folds by the width it really has (sidebar open or not). */
+  .app-col {
+    container: app-col / inline-size;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .main {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--main-row-gap);
+    padding: var(--main-top) var(--main-x) var(--main-bottom);
+  }
+
+  .main > * {
+    flex: 0 0 auto;
+    min-height: min-content;
+  }
+
+  .main:focus {
+    outline: none;
+  }
+
+  .main:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: calc(2px * -1);
+  }
+
+  /* ---- Top bar: spruce like the sidebar, one 48px frame with its brand row ---- */
+  .topbar {
+    position: relative;
+    /* Above a list's sticky header, so search results and menus open over it. */
+    z-index: calc(var(--z-sticky) + 2);
+    display: flex;
+    flex: 0 0 var(--shell-topbar);
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    height: var(--shell-topbar);
+    padding: 0 var(--s-4) 0 var(--page-pad);
+    border-bottom: 1px solid var(--spruce-line);
+    background: var(--spruce);
+    color: var(--spruce-ink-2);
+  }
+
+  /*
+   * The trail keeps room for the project and section names plus a short last crumb;
+   * the search box gives way first.
+   */
+  .topbar-crumbs {
+    flex: 1 1 auto;
+    min-width: 14em;
+    overflow: hidden;
+  }
+
+  .topbar-crumbs ol {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--spruce-ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  /*
+   * The project and section crumbs stay readable (whole, up to 16 characters); the
+   * last crumb takes the rest and is the one that truncates. Deeper middle crumbs
+   * shorten first. Each cut crumb ends in an ellipsis and keeps a title tooltip.
+   */
+  .topbar-crumbs li {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .topbar-crumbs li:not(:last-child) > a,
+  .topbar-crumbs li:not(:last-child) > .topbar-crumb {
+    max-width: 16ch;
+  }
+
+  .topbar-crumbs li:nth-child(n + 3):not(:last-child) {
+    flex: 0 4 auto;
+    min-width: 3em;
+  }
+
+  .topbar-crumbs li:last-child {
+    flex: 0 1 auto;
+    min-width: 4em;
+  }
+
+  .topbar-crumbs li > a,
+  .topbar-crumb {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .topbar-crumbs a {
+    border-radius: var(--r-s);
+    color: var(--spruce-ink-2);
+    text-decoration: none;
+  }
+
+  .topbar-crumbs a:hover {
+    color: var(--on-spruce);
+    text-decoration: underline;
+  }
+
+  .topbar-crumbs a:focus-visible {
+    outline: 2px solid var(--spruce-ink);
+    outline-offset: 1px;
+  }
+
+  .topbar-crumbs [aria-current='page'] {
+    color: var(--on-spruce);
+    font-weight: var(--fw-semibold);
+  }
+
+  .topbar-sep {
+    display: inline-flex;
+    flex: 0 0 auto;
+    color: var(--spruce-ink-2);
+  }
+
+  /* The controls keep their size; the breadcrumb is what gives way. */
+  .topbar-end {
+    display: flex;
+    flex: 0 0 auto;
+    min-width: 0;
+    align-items: center;
+    gap: var(--s-1);
+  }
+
+  .topbar-end > .topbar-search-wrap {
+    margin-right: var(--s-2);
+  }
+
+  /* An icon button on spruce: Activity, searches left, the ⚙ menu. */
+  .topbar-icon {
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: var(--h-control-sm);
+    height: var(--h-control-sm);
+    padding: 0;
+    border: 0;
+    border-radius: var(--r-s);
+    background: transparent;
+    color: var(--spruce-ink-2);
+    cursor: pointer;
+  }
+
+  .topbar-icon:hover,
+  .topbar-icon[aria-expanded='true'],
+  .topbar-icon[aria-current='page'] {
+    background: var(--spruce-press);
+    color: var(--on-spruce);
+  }
+
+  .topbar-icon:focus-visible,
+  .topbar-ask:focus-visible {
+    outline: 2px solid var(--spruce-ink);
+    outline-offset: 1px;
+  }
+
+  /* A small count on an icon button's corner: jobs running, setup steps left. */
+  .topbar-badge {
+    position: absolute;
+    top: 1px;
+    right: 0;
+    min-width: 15px;
+    height: 15px;
+    padding: 0 4px;
+    border-radius: var(--r-pill);
+    background: var(--action);
+    color: var(--on-action);
+    font-size: 10px;
+    font-weight: var(--fw-semibold);
+    font-variant-numeric: tabular-nums;
+    line-height: 15px;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .status-pill .topbar-badge {
+    background: var(--spruce-warn);
+  }
+
+  /* Something needs a look (an issue or a decision): the gauge turns amber. */
+  .status-pill[data-tone='warn'] {
+    color: var(--spruce-warn);
+  }
+
+  /*
+   * The top bar's tooltips (`data-tip`): under the control, lined up with its
+   * right edge so the last ones never leave the window.
+   */
+  .topbar [data-tip]:hover::after,
+  .topbar [data-tip]:focus-visible::after {
+    content: attr(data-tip);
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: var(--z-pop);
+    padding: var(--s-1) var(--s-2);
+    border-radius: var(--r-s);
+    background: var(--ink);
+    box-shadow: var(--e2);
+    color: var(--on-ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-small);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  /* An open menu or popover covers its own tooltip; open Ctrl+K results hide them all. */
+  .topbar:has(.topbar-results) [data-tip]::after,
+  .topbar [data-tip][aria-expanded='true']::after {
+    display: none;
+  }
+
+  /* ✦ Ask: a small grey-outlined button (no orange); the label folds to ✦ when the column is narrow. */
+  .topbar-ask {
+    position: relative;
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 6px;
+    height: var(--h-control-sm);
+    margin: 0 var(--s-1);
+    padding: 0 var(--s-3);
+    border: 1px solid var(--spruce-line-strong);
+    border-radius: var(--r-s);
+    background: transparent;
+    color: var(--on-spruce);
+    font: inherit;
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .topbar-ask .ui-icon {
+    color: var(--spruce-ink-2);
+  }
+
+  .topbar-ask:hover,
+  .topbar-ask[aria-expanded='true'] {
+    background: var(--spruce-press);
+  }
+
+  /*
+   * Narrow columns, at the bar's two folding points. Under 1220px (a 1440px
+   * window with the sidebar open) the search folds to its icon; under 1060px
+   * Ask folds to its ✦ too. Each keeps its name and tooltip, and the bar never
+   * scrolls sideways.
+   */
+  @container app-col (max-width: 1059.98px) {
+    .topbar-ask {
+      justify-content: center;
+      width: var(--h-control-sm);
+      padding: 0;
+    }
+
+    .topbar-ask-text {
+      display: none;
+    }
+  }
+
+  /* ---- ⌘K search (top bar): a dark field on spruce ---- */
+  .topbar-search-wrap {
+    position: relative;
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .topbar-search {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    width: clamp(180px, 18vw, 280px);
+    max-width: 100%;
+    height: var(--h-control-sm);
+    padding: 0 var(--s-2) 0 var(--s-3);
+    border: 1px solid var(--spruce-line-strong);
+    border-radius: var(--r-s);
+    background: var(--spruce-fill);
+    color: var(--spruce-ink-2);
+    cursor: text;
+  }
+
+  .topbar-search:hover {
+    background: var(--spruce-fill-hover);
+  }
+
+  .topbar-search:focus-within {
+    outline: 2px solid var(--spruce-ink);
+    outline-offset: 1px;
+  }
+
+  .topbar-search input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--on-spruce);
+    font: inherit;
+    font-size: var(--fs-ui);
+  }
+
+  .topbar-search input::placeholder {
+    color: var(--spruce-ink-2);
+  }
+
+  .topbar-search-key {
+    flex: 0 0 auto;
+    padding: 1px 6px;
+    border: 1px solid var(--spruce-line-strong);
+    border-radius: 5px;
+    color: var(--spruce-ink-2);
+    font-family: inherit;
+    font-size: 11px;
+  }
+
+  /*
+   * The first fold: the box becomes its icon and key hint, and opens to a
+   * typing width while it has focus (click, Tab or ⌘K).
+   */
+  @container app-col (max-width: 1219.98px) {
+    /* Folded to its icon, it never shrinks away. */
+    .topbar-search-wrap {
+      flex-shrink: 0;
+    }
+
+    .topbar-search {
+      width: auto;
+    }
+
+    .topbar-search input {
+      flex: 0 0 0;
+      width: 0;
+    }
+
+    .topbar-search:focus-within input {
+      flex-basis: 160px;
+      width: 160px;
+    }
+  }
+
+  .topbar-results {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: var(--z-pop);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    width: max(100%, 340px);
+    max-height: 60vh;
+    padding: 6px;
+    overflow: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e2);
+    color: var(--ink);
+    font-size: var(--fs-small);
+  }
+
+  .topbar-results ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .topbar-results a {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-2);
+    padding: var(--s-1) var(--s-2);
+    border-radius: var(--r-s);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    text-decoration: none;
+  }
+
+  .topbar-results a:hover,
+  .topbar-results a:focus-visible {
+    background: var(--select-tint);
+  }
+
+  .topbar-result-kind {
+    flex: 0 0 3.5em;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .topbar-result-text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .topbar-results > p {
+    padding: var(--s-1) var(--s-2);
+  }
+
+  /* ---- Searches left (top bar): the popover under its icon button ---- */
+  .status-wrap {
+    position: relative;
+  }
+
+  .topbar .status-pop {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    left: auto;
+    width: min(420px, calc(100vw - 48px));
+    max-height: min(640px, calc(100vh - 96px));
+    color: var(--ink);
+  }
+
+  /* A connection's state dot in the status popover. */
+  .sd {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    flex: 0 0 6px;
+    border-radius: var(--r-pill);
+    background: var(--ink-4);
+  }
+
+  .sd-ok {
+    background: var(--ok);
+  }
+
+  .sd-warn {
+    background: var(--mark-line);
+  }
+
+  .dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    flex: 0 0 6px;
+    border-radius: var(--r-pill);
+  }
+
+  .dot-on {
+    background: var(--ok);
+  }
+
+  .dot-off {
+    background: var(--ink-4);
+  }
+
+  .screen-header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  /* The title takes the row and its lead wraps, so the actions stay at its right. */
+  .screen-title {
+    display: flex;
+    flex: 1 1 420px;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  /* Compact: a 19px title and one 13px line under it (Header.dc.html, about 64px). */
+  .screen-header h1 {
+    font-size: var(--fs-screen-title);
+    line-height: var(--lh-screen-title);
+  }
+
+  .screen-title > p,
+  .screen-title > .section-subtitle {
+    font-size: var(--fs-ui);
+    line-height: var(--lh-screen-sub);
+  }
+
+  .screen-title.page {
+    gap: var(--s-2);
+  }
+
+  .header-actions {
+    position: relative;
+    /* Above a lead line's band that runs up under the header (theme.css). */
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .header-actions.end {
+    align-items: flex-end;
+  }
+
+  /* The one standard section header (shell/SectionFrame): the title, a line
+     under it, then the screen, spaced like every other screen in main. */
+  .section-frame {
+    display: flex;
+    flex-direction: column;
+    gap: var(--main-row-gap);
+    min-width: 0;
+  }
+
+  .section-subtitle {
+    margin: 0;
+    color: var(--ink-3);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 2px;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: var(--r-s);
+    background: var(--hover);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+  }
+
+  .market-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .select {
+    min-height: var(--h-control);
+    max-width: 100%;
+    padding: 0 10px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+  }
+
+  .route-body {
+    min-height: var(--h-control);
+  }
+
+  .bridge-alert {
+    margin: 0;
+  }
+
+  /* The release line closes every screen, under the sponsor card (owner rule, 2026-11-02). */
+  .release-line {
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+    padding: var(--s-2) 0 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-body);
+    white-space: nowrap;
+  }
+}

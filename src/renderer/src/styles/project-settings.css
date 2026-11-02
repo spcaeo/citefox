@@ -1,0 +1,266 @@
+/* Project settings (FR-10.8). */
+
+@layer shared, results, screens, utilities;
+
+@layer shared {
+  .ps-tabs {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ps-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    padding-top: var(--s-6);
+  }
+
+  .ps-panel:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .ps-sec {
+    scroll-margin-top: 72px;
+  }
+
+  .ps-sec h2:focus {
+    outline: none;
+  }
+
+  /* Project rules: one line per rule (on/off, the words, Edit, Delete), then + Add. */
+  .ps-rules {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ps-rule {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: 40px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ps-rule:last-child {
+    border-bottom: 0;
+  }
+
+  .ps-rule-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .ps-rule[data-off] .ps-rule-text {
+    color: var(--ink-3);
+  }
+
+  .ps-rule-add {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .ps-rule-add > .ui-input {
+    flex: 1 1 240px;
+    width: auto;
+  }
+
+  .ps-fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .ps-fieldset > legend {
+    margin-bottom: var(--s-2);
+    padding: 0;
+  }
+
+  .ps-radios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+  }
+
+  .ps-grid2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    align-items: end;
+  }
+
+  .ps-grid3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    align-items: start;
+  }
+
+  .ps-grid4 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--s-3);
+    align-items: start;
+  }
+
+  .ps-indent {
+    padding-left: var(--s-5);
+  }
+
+  .ps-narrow {
+    max-width: 420px;
+  }
+
+  .ps-add {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    max-width: 520px;
+  }
+
+  .ps-add .ob-input {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .ps-grow {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .ps-status:empty {
+    display: none;
+  }
+
+  .ps-default {
+    font-weight: var(--fw-semibold);
+  }
+
+  .ps-found {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+    background: var(--inset);
+  }
+
+  .ps-found-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ps-found-list li {
+    display: grid;
+    grid-template-columns: minmax(120px, 200px) 90px minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    padding: var(--s-2) 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .ps-found-list li:first-child {
+    border-top: 0;
+  }
+
+  .ps-found-domain {
+    overflow-wrap: anywhere;
+  }
+
+  .ps-unlikely .ps-found-domain {
+    color: var(--ink-3);
+  }
+
+  .ps-db {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-3);
+    align-items: baseline;
+    min-width: 0;
+  }
+
+  .ps-danger {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: 14px;
+    border: 1px solid var(--bad-tint);
+    border-radius: var(--r-s);
+  }
+
+  .ps-btn-danger {
+    border-color: var(--bad);
+    color: var(--bad);
+  }
+
+  .ps-btn-danger:hover {
+    background: var(--bad-tint);
+    color: var(--bad-ink);
+  }
+
+  .ps-btn-danger-solid {
+    border-color: var(--bad);
+    background: var(--bad);
+    color: var(--on-solid);
+  }
+
+  .ps-btn-danger-solid:hover {
+    border-color: var(--bad-ink);
+    background: var(--bad-ink);
+    color: var(--on-solid);
+  }
+
+  @media (max-width: 760px) {
+    .ps-found-list li {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .ps-found-why {
+      grid-column: 1 / -1;
+    }
+
+    .ps-indent {
+      padding-left: 0;
+    }
+  }
+}
+
+/* Project settings › Reports: the "Prepared for" logo */
+@layer shared {
+  .ps-logo-row {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    flex-wrap: wrap;
+  }
+  .ps-logo {
+    max-height: 36px;
+    max-width: 160px;
+    object-fit: contain;
+  }
+  .ps-logo-pick {
+    cursor: pointer;
+  }
+  .ps-prepared-preview {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    margin: 0;
+    padding: var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    color: var(--ink-2);
+  }
+}

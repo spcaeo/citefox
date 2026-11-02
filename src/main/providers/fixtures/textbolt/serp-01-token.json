@@ -1,0 +1,12 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": {
+      "status": "Success",
+      "id": "textbolt-p1-google"
+    },
+    "ai_overview": {
+      "page_token": "textbolt-p1-token"
+    }
+  }
+}

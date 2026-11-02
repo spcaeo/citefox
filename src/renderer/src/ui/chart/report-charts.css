@@ -1,0 +1,66 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * The report charts in the app: maps the --cfc-* names that
+ * src/shared/charts/charts.css draws with onto the app's tokens, so the charts
+ * follow light, dark and sepia (and any scope with its own data-theme). The
+ * downloaded report maps the same names in main/export/html/style.ts. Also the
+ * frame around a chart and its hover card.
+ */
+@layer shared {
+  .cfc {
+    --cfc-font: var(--font-ui);
+    --cfc-ink: var(--ink);
+    --cfc-ink-2: var(--ink-2);
+    --cfc-ink-3: var(--ink-3);
+    --cfc-line: var(--line);
+    --cfc-track: var(--inset);
+    --cfc-before: var(--line-strong);
+    --cfc-hover: var(--hover);
+    --cfc-focus: var(--focus);
+    --cfc-target: var(--result-target);
+    --cfc-target-ink: var(--result-target-ink);
+    --cfc-other: var(--result-other);
+    --cfc-not-cited: var(--result-not-cited);
+    --cfc-none: var(--result-none);
+    --cfc-muted: var(--chart-past);
+    --cfc-bar-ink: var(--ink-3);
+    --cfc-up: var(--result-target-ink);
+    --cfc-up-tint: var(--result-target-tint);
+    --cfc-down: var(--result-not-cited-ink);
+    --cfc-down-tint: var(--result-not-cited-tint);
+    --cfc-flat-tint: var(--inset);
+    --cfc-on: var(--surface);
+    --cfc-on-quiet: var(--surface);
+  }
+
+  .ui-rchart {
+    position: relative;
+    min-width: 0;
+  }
+
+  .ui-rchart-plot {
+    min-width: 0;
+  }
+
+  /* A history strip sits inline in a table cell. */
+  .ui-rchart-inline {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  /* The hover card: over the mark, kept inside on the chart's two edges. */
+  .ui-rchart-card {
+    width: max-content;
+    max-width: 260px;
+    transform: translate(-50%, -100%);
+  }
+
+  .ui-rchart-card-start {
+    transform: translate(-24px, -100%);
+  }
+
+  .ui-rchart-card-end {
+    transform: translate(calc(-100% + 24px), -100%);
+  }
+}

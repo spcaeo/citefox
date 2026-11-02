@@ -1,0 +1,49 @@
+{
+  "seeds": [
+    {
+      "text": "Monitoring alerts that never reach on-call phones",
+      "productId": null,
+      "evidence": "/use-cases/ IT alerts",
+      "caution": null
+    },
+    {
+      "text": "Carrier email-to-text gateways shutting down",
+      "productId": null,
+      "evidence": "FAQ: What happens when a carrier gateway shuts down?",
+      "caution": "Check which carriers have announced a shutdown date"
+    },
+    {
+      "text": "Getting alarm panel alerts as text messages",
+      "productId": null,
+      "evidence": "/features WIN-911 alarm software sends its alarms through TextBolt",
+      "caution": null
+    },
+    {
+      "text": "Sending texts to staff from Outlook or Gmail",
+      "productId": null,
+      "evidence": "Homepage heading: Send alerts from Gmail or Outlook",
+      "caution": null
+    },
+    {
+      "text": "Text alerts for teams without a developer",
+      "productId": null,
+      "evidence": "/pricing No code, set up in minutes",
+      "caution": null
+    }
+  ],
+  "segments": [
+    {
+      "name": "Clinics and multi-site offices",
+      "reason": "The multi-location use case page"
+    },
+    {
+      "name": "Property maintenance crews",
+      "reason": "After-hours alerts on the field service page"
+    },
+    {
+      "name": "MSPs with client alerts",
+      "reason": "The IT alerts use case page"
+    }
+  ],
+  "why": "Your tracked pages and checks point most to teams whose monitoring alerts must reach phones."
+}

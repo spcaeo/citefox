@@ -1,0 +1,34 @@
+{
+  "summary": "Four things to re-check before the next edit: one limit, one shutdown, one promise the page does not keep, and one typo.",
+  "items": [
+    {
+      "text": "Each SMS holds 155 GSM characters.",
+      "detail": "A single SMS holds 160 GSM-7 characters; 155 looks like a typo [unless it allows for a sender prefix].",
+      "tag": "limit",
+      "verify": "Check the GSM-7 single-segment limit (160) and your sending settings before publishing.",
+      "sign": null
+    },
+    {
+      "text": "Verizon is shutting down vtext.com.",
+      "detail": "No date is given, and the shutdown may already have happened.",
+      "tag": "date",
+      "verify": "Check Verizon's current notice for the vtext.com shutdown date.",
+      "sign": null
+    },
+    {
+      "text": "We will also cover what to do when carrier email-to-text stops working.",
+      "detail": "No heading or section on the page delivers this.",
+      "tag": "promise",
+      "verify": "Read the page from top to bottom for a carrier gateway section before you publish.",
+      "sign": null
+    },
+    {
+      "text": "Can employees reply to a text alert??",
+      "detail": "The FAQ question ends in two question marks.",
+      "tag": "typo",
+      "verify": "Fix the question mark in the FAQ question.",
+      "sign": null
+    }
+  ],
+  "caution": "Re-check the limit and the shutdown at their source, or run Check the claims online."
+}

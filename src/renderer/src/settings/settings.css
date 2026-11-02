@@ -1,0 +1,206 @@
+/* Settings drill-downs: the SerpApi badge and the Default tag open what they summarize. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .st-btn,
+  .tag-btn {
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .st-btn:hover,
+  .tag-btn:hover {
+    box-shadow: inset 0 0 0 1px currentcolor;
+  }
+
+  .st-btn:focus-visible,
+  .tag-btn:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+}
+
+/* Settings → Data: the result line under Export all data. */
+@layer screens {
+  .data-note:empty {
+    display: none;
+  }
+
+  .data-note-error {
+    color: var(--warn);
+  }
+}
+
+/* Settings, v2 (Docs/TOPICS-SPEC.md §1): tabs, 12-column panels of equal height, one Save bar under the form. */
+@layer screens {
+  .stg-page {
+    gap: var(--card-gap);
+  }
+
+  /* The one Save: a bar under the form that stays in view while the form scrolls. */
+  .stg-save {
+    position: sticky;
+    bottom: 0;
+    z-index: var(--z-sticky);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--s-3);
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .stg-save[hidden] {
+    display: none;
+  }
+
+  .stg-save-note {
+    margin: 0 auto 0 0;
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  .stg-save-note:empty {
+    visibility: hidden;
+  }
+
+  /* Cards in one row share a height. */
+  .stg-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--card-gap);
+    align-items: stretch;
+  }
+
+  .stg-grid-title {
+    margin: 0;
+    color: var(--ink);
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    font-weight: var(--fw-semibold);
+  }
+
+  .stg-service {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .stg-service a {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+    text-decoration: none;
+  }
+
+  .stg-service a:hover,
+  .stg-service a:focus-visible {
+    text-decoration: underline;
+  }
+
+  .stg-service .hint {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .stg-span-4 {
+    grid-column: span 4;
+  }
+
+  .stg-span-6 {
+    grid-column: span 6;
+  }
+
+  .stg-span-8 {
+    grid-column: span 8;
+  }
+
+  .stg-span-12 {
+    grid-column: 1 / -1;
+  }
+
+  /* Panels stacked in one grid column, 24 apart. */
+  .stg-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    min-width: 0;
+  }
+
+  @media (width < 1100px) {
+    .stg-span-4,
+    .stg-span-6,
+    .stg-span-8 {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .stg-tab-stack {
+    gap: var(--s-4);
+  }
+
+  /* Rare and technical settings, folded at the bottom of a tab. */
+  .stg-more > summary {
+    width: fit-content;
+    color: var(--ink-2);
+    font-weight: var(--fw-medium);
+    cursor: pointer;
+  }
+
+  .stg-more[open] > summary {
+    margin-bottom: var(--s-4);
+  }
+
+  .stg-facts {
+    display: grid;
+    gap: var(--s-3);
+    margin: 0;
+  }
+
+  .stg-facts > div {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: var(--s-4);
+  }
+
+  .stg-facts dt {
+    color: var(--ink-3);
+  }
+
+  .stg-facts dd {
+    margin: 0;
+  }
+
+  .stg-tpl-name {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--s-2);
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+@layer screens {
+  .stg-tpl-name a {
+    color: var(--ink);
+    font-weight: var(--fw-medium);
+    text-decoration: none;
+  }
+
+  .stg-tpl-name a:hover {
+    text-decoration: underline;
+  }
+
+  /* A card's tool icons sit at the right end of its action row (DESIGN-GUIDELINES §2). */
+  .stg-card-tools,
+  .actions-tools {
+    margin-left: auto;
+  }
+}

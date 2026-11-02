@@ -1,0 +1,98 @@
+{
+  "note": "Recorded TextBolt content gaps, split from the recorded matrix (TEXTBOLT_COVERAGE in src/main/pipeline/textbolt-fixture.ts). The e2e stand-in returns the rows whose positions the prompt lists.",
+  "rows": [
+    {
+      "position": 1,
+      "coverage": "partial",
+      "whereCovered": [
+        "How to Set Up Text Alerts for Business, Including Scheduled Alerts From Email (No Developer Required)"
+      ],
+      "mainGap": "The H1 promises no developer, but it never says employees need no new app.",
+      "priority": "medium",
+      "actions": ["update_existing", "new_faq"]
+    },
+    {
+      "position": 2,
+      "coverage": "strong",
+      "whereCovered": [
+        "How to Schedule a Text Alert From Gmail or Outlook",
+        "How Do You Send One Scheduled Alert to the Whole Team?"
+      ],
+      "mainGap": "Scheduling steps are present. Outlook is less specific than Gmail.",
+      "priority": "medium",
+      "actions": ["update_existing"]
+    },
+    {
+      "position": 3,
+      "coverage": "strong",
+      "whereCovered": [
+        "5. Connect Your Existing Business Systems",
+        "Can text alerts be triggered automatically from monitoring tools or web forms?"
+      ],
+      "mainGap": "Monitoring is covered, without an example of where to paste the address.",
+      "priority": "medium",
+      "actions": ["small_update"]
+    },
+    {
+      "position": 4,
+      "coverage": "partial",
+      "whereCovered": [
+        "Why did free carrier email-to-SMS gateways like txt.att.net stop working??"
+      ],
+      "mainGap": "The FAQ explains why the gateway stopped, not how to switch.",
+      "priority": "medium",
+      "actions": ["update_existing", "new_faq"]
+    },
+    {
+      "position": 5,
+      "coverage": "weak",
+      "whereCovered": ["@vtext.com"],
+      "mainGap": "vtext.com appears in one note and has no dedicated answer.",
+      "priority": "high",
+      "actions": ["new_faq"]
+    },
+    {
+      "position": 6,
+      "coverage": "partial",
+      "whereCovered": ["What About Recurring Alerts?", "5. Connect Your Existing Business Systems"],
+      "mainGap": "Recurring alerts are covered, but customer reminders are not addressed to phones.",
+      "priority": "medium",
+      "actions": ["update_existing", "new_faq"]
+    },
+    {
+      "position": 7,
+      "coverage": "strong",
+      "whereCovered": ["Does sending business text alerts require 10DLC registration?"],
+      "mainGap": "Registration is covered, but internal alerts are not answered as a yes.",
+      "priority": "medium",
+      "actions": ["update_existing"]
+    },
+    {
+      "position": 8,
+      "coverage": "partial",
+      "whereCovered": [
+        "3. SMS API or Workflow Automation Tool",
+        "How Much Does It Cost to Set Up Business Text Alerts?"
+      ],
+      "mainGap": "The API section and pricing are present, without a direct comparison.",
+      "priority": "medium",
+      "actions": ["update_existing", "new_faq"]
+    },
+    {
+      "position": 9,
+      "coverage": "strong",
+      "whereCovered": ["Who Holds the Clock: What Happens Between Schedule Send and the Text"],
+      "mainGap": "The Friday-to-Saturday case is in the clock section and has no matching FAQ.",
+      "priority": "low",
+      "actions": ["none"]
+    },
+    {
+      "position": 10,
+      "coverage": "strong",
+      "whereCovered": ["Where do replies to a text alert go once someone responds?"],
+      "mainGap": "Replies are covered. The page can say more clearly that they return to email.",
+      "priority": "medium",
+      "actions": ["update_existing"]
+    }
+  ]
+}

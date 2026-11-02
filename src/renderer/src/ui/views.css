@@ -1,0 +1,290 @@
+@layer shared, results, screens, utilities;
+
+/*
+ * The shared view parts (topic mock-ups TopicBig, TopicMatrix, TopicList,
+ * TopicPages, TopicBigDrill): the result bar and dots, the view switcher,
+ * the "What to do" line in group rows, and the drill page's filter chips.
+ * Colours come from the --result-* tokens only (ui/resultTones.ts).
+ */
+@layer shared {
+  /* ---- Result bar: 120 × 8 px in a row, full width × 10 px in a header ---- */
+  .ui-rbar-wrap {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .ui-rbar {
+    display: flex;
+    flex: 0 0 auto;
+    width: 120px;
+    max-width: 100%;
+    height: 8px;
+    overflow: hidden;
+    border-radius: var(--r-pill);
+    background: var(--chart-track);
+  }
+
+  .ui-rbar-header {
+    width: 100%;
+    height: 10px;
+  }
+
+  .ui-rbar-part {
+    display: block;
+    height: 100%;
+  }
+
+  .ui-rbar-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .ui-rbar-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+  }
+
+  .ui-rbar-legend li {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .ui-rbar-link {
+    display: inline-flex;
+    align-items: center;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .ui-rbar-link:hover {
+    color: var(--action-ink);
+    text-decoration: underline;
+  }
+
+  .ui-rdot {
+    display: inline-block;
+    flex: 0 0 auto;
+    width: 10px;
+    height: 10px;
+    margin-right: var(--s-2);
+    border-radius: 3px;
+  }
+
+  /*
+   * ResultChip: grey text after a small square in the result's colour, the
+   * same square as the List's dots (owner, 2026-10-30: colour only on result
+   * marks). The colours follow RESULT_TONES (ui/resultTones.ts).
+   */
+  .ui-result:not(.ui-result-named) {
+    gap: 6px;
+    padding: 0;
+    border-color: transparent;
+    background: none;
+    color: var(--ink-2);
+  }
+
+  .ui-result:not(.ui-result-named)::before {
+    flex: 0 0 auto;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--rdot);
+    content: '';
+  }
+
+  .ui-result.ui-chip-ok {
+    --rdot: var(--result-target);
+  }
+
+  .ui-result.ui-chip-info {
+    --rdot: var(--result-other);
+  }
+
+  .ui-result-not-cited {
+    --rdot: var(--result-not-cited);
+  }
+
+  .ui-result.ui-chip-bad {
+    --rdot: var(--bad);
+
+    color: var(--bad);
+  }
+
+  /* ---- View switcher: Tree · Grid · List · Pages | Progress, note on the right ---- */
+  .ui-viewtabs {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    min-width: 0;
+    box-shadow: inset 0 -1px 0 var(--line);
+  }
+
+  .ui-viewtabs > .ui-tabs {
+    flex: 0 1 auto;
+    min-width: 0;
+    gap: var(--s-1);
+    box-shadow: none;
+  }
+
+  .ui-viewtabs .ui-tab {
+    height: 40px;
+    padding: 0 var(--s-3);
+    gap: 7px;
+  }
+
+  .ui-viewtabs .ui-tab[aria-selected='true']::after {
+    height: 2px;
+    background: var(--action-ink);
+  }
+
+  .ui-viewtabs .ui-tab-lead {
+    color: var(--ink-3);
+  }
+
+  .ui-viewtabs .ui-tab[aria-selected='true'] .ui-tab-lead {
+    color: var(--ink);
+  }
+
+  /* The thin rule before a trailing tab such as Progress. */
+  .ui-viewtabs .ui-tab-divided {
+    margin-left: var(--s-5);
+  }
+
+  .ui-viewtabs .ui-tab-divided::before {
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: calc(-1 * var(--s-3));
+    width: 1px;
+    background: var(--line);
+    content: '';
+  }
+
+  .ui-viewtabs-note {
+    flex: 0 0 auto;
+    margin-left: auto;
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-ui);
+    white-space: nowrap;
+  }
+
+  /* ---- "What to do: …" in a group row ---- */
+  .ui-group-hint {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-regular);
+    line-height: var(--lh-ui);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .ui-group-hint b {
+    color: var(--ink-2);
+    font-weight: var(--fw-medium);
+  }
+
+  .ui-group-hint-block {
+    display: block;
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--hint-colour, var(--line-strong));
+    border-radius: var(--r-m);
+    background: var(--surface);
+    color: var(--ink-2);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    white-space: normal;
+  }
+
+  .ui-group-hint-block b {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  /* ---- Drill filter chips with ✕ (and the playground drill page's Back to all N) ---- */
+  .ui-drill-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .ui-drill-chips {
+    display: contents;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ui-fchip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 30px;
+    padding: 0 4px 0 10px;
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+    line-height: var(--lh-ui);
+    white-space: nowrap;
+  }
+
+  .ui-fchip .ui-rdot {
+    margin-right: 0;
+  }
+
+  .ui-fchip-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: none;
+    color: var(--ink-3);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .ui-fchip-remove:hover {
+    background: var(--line);
+    color: var(--ink);
+  }
+
+  .ui-drill-back {
+    margin-left: var(--s-1);
+    color: var(--action-ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+    text-decoration: none;
+  }
+
+  .ui-drill-back:hover {
+    color: var(--action-ink-hover);
+    text-decoration: underline;
+  }
+
+  .ui-drill-showing {
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+}

@@ -1,0 +1,431 @@
+/* Prompt detail in the v2 look (Mockups/PromptDetail.dc.html, Topic-Drill.png). Tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .pd2 {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+  }
+
+  .pd2-pinned {
+    margin: 0;
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--info);
+    border-radius: var(--r-m);
+    background: var(--info-tint);
+    font-size: var(--fs-ui);
+  }
+
+  /* The header is the shared ScreenHeader; this is its line under the title: source, stage and samples. */
+  .pd2-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-1) var(--s-2);
+  }
+
+  .pd2-chip-btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 0 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-family: var(--font-ui);
+    font-size: var(--fs-small);
+    cursor: pointer;
+  }
+
+  .pd2-chip-btn:hover {
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+
+  .pd2-note {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+  }
+
+  .pd2-brief,
+  .pd2-json {
+    max-height: 320px;
+    margin: 0;
+    padding: var(--s-3);
+    overflow: auto;
+    border-radius: var(--r-s);
+    background: var(--inset);
+    font-size: var(--fs-small);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  /* Section tabs: no hover underline, so only the open tab reads as picked. */
+  .pd2-tabs .ui-tab:not([aria-selected='true']):hover::after {
+    background: transparent;
+  }
+
+  /* Google's panel under the engine tabs keeps the screen's rhythm: KPIs, tabs and
+     the tab body one card gap apart, as they are without engine tabs. */
+  .pd2-engine-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    min-width: 0;
+  }
+
+  /* Tabs body: the overview full width, then gaps and coverage side by side */
+  .pd2-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    min-width: 0;
+  }
+
+  .pd2-pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--card-gap);
+    align-items: start;
+  }
+
+  @media (max-width: 1100px) {
+    .pd2-pair,
+    .pd2-paa {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .pd2-card {
+    padding: var(--card-pad);
+  }
+
+  /* Headings focused from the KPI tiles show no ring (they take focus from code only). */
+  .pd2-card h2:focus {
+    outline: none;
+  }
+
+  .pd2-aio {
+    max-width: 72ch;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .pd2-faint {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  p.pd2-faint {
+    margin: 0;
+  }
+
+  .pd2-muted {
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  .pd2-label {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-medium);
+  }
+
+  .pd2-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding-left: 18px;
+  }
+
+  /* "People also ask on Google": two even columns, each question with its Track at the end. */
+  .pd2-paa {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-1) var(--card-gap);
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .pd2-paa li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2);
+    min-width: 0;
+    padding: var(--s-1) 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .pd2-update {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-2);
+    padding-top: var(--s-3);
+    border-top: 1px solid var(--line);
+  }
+
+  .pd2-update p {
+    margin: 0;
+  }
+
+  .pd2-link-btn {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  /* Grid cells */
+  .pd2-ellipsis {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pd2-cell-btn {
+    max-width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    text-align: start;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .pd2-cell-btn:hover {
+    color: var(--action-ink);
+    text-decoration: underline;
+  }
+
+  .pd2-chip-wrap {
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  .pd2-market-cell,
+  .pd2-check-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .pd2-changed {
+    font-size: var(--fs-ui);
+  }
+
+  .pd2-raw {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .pd2-details summary {
+    cursor: pointer;
+    font-size: var(--fs-ui);
+  }
+
+  .pd2-details pre {
+    margin-top: var(--s-2);
+  }
+
+  /* ---- Sources (Google's tab and each engine's): one card, the grid inside it ---- */
+  .pd2-grid-card > .ui-lg {
+    box-shadow: none;
+  }
+
+  .pd2-src-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pd2-src-error {
+    margin: 0;
+    color: var(--bad);
+    font-size: var(--fs-ui);
+  }
+
+  /* The UrlText holds the two lines, so its icon, Copy and Open frame the whole page. */
+  .pd2-src-cell {
+    width: 100%;
+  }
+
+  .pd2-src-cell .ui-url-custom {
+    flex: 1 1 auto;
+  }
+
+  .pd2-src-page {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: var(--s-1) 0;
+  }
+
+  .pd2-src-title {
+    overflow: hidden;
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pd2-src-url {
+    overflow: hidden;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@layer screens {
+  /* A topic question's target page, in the AI Overview card's header. */
+  .pd2-aio-aside {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .pd2-target {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    padding: 4px 4px 4px 10px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--inset);
+  }
+  .pd2-target-path {
+    font-family: var(--font-code);
+    font-size: 12px;
+  }
+  .pd2-target-path.is-empty {
+    font-family: inherit;
+    color: var(--ink-3);
+  }
+  .pd2-target-label {
+    font-weight: 600;
+  }
+  .pd2-recheck-warn {
+    border: 1px solid var(--warn);
+    background: var(--warn-tint);
+    color: var(--text, inherit);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  /*
+   * Question header: the question gets the full width (it is often a long buyer
+   * question), then one row with the facts on the left and the actions on the right.
+   */
+  .screen-header.ui-head.pd2-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'nav nav'
+      'title title'
+      'sub actions';
+    align-items: center;
+    column-gap: var(--s-4);
+    row-gap: var(--s-2);
+  }
+  .pd2-head .ui-head-nav {
+    grid-area: nav;
+  }
+  .pd2-head .ui-head-row {
+    display: contents;
+  }
+  .pd2-head .ui-head-title {
+    grid-area: title;
+  }
+  .pd2-head .ui-head-title h1 {
+    font-size: 22px;
+    line-height: 1.3;
+    max-width: 90ch;
+  }
+  .pd2-head .ui-head-actions {
+    grid-area: actions;
+    justify-self: end;
+  }
+  .pd2-head .ui-head-sub {
+    grid-area: sub;
+    min-width: 0;
+  }
+  .pd2-target-row {
+    display: flex;
+  }
+
+  /* No target page yet: the pill glows softly so it is not missed. */
+  .pd2-target.is-unset {
+    border-color: var(--warn);
+    background: var(--warn-tint);
+    animation: pd2-target-glow 2.4s ease-in-out infinite;
+  }
+  @keyframes pd2-target-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--warn) 0%, transparent);
+    }
+    50% {
+      box-shadow: 0 0 0 5px color-mix(in srgb, var(--warn) 28%, transparent);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pd2-target.is-unset {
+      animation: none;
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--warn) 25%, transparent);
+    }
+  }
+  .pd2-target-cited {
+    color: var(--result-target-ink);
+    font-weight: 600;
+  }
+
+  /* Over time: your pages Google cited in each check; target pages in green. */
+  .pd2-own-pages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    min-width: 0;
+  }
+
+  .pd2-own-page {
+    font-size: 12px;
+    color: var(--ink-2);
+  }
+
+  .pd2-own-page.is-target {
+    color: var(--result-target-ink);
+    font-weight: 600;
+  }
+}

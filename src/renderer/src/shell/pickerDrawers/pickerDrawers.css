@@ -1,0 +1,34 @@
+/*
+ * The drawers pickers open to create what they pick (TrackPageDrawer,
+ * AddKeyDrawer). Tokens from styles/tokens.css Part 1. In `screens`, as
+ * layers.test.ts asks of a stylesheet imported by its component.
+ */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .pd-check {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-2);
+    margin-top: var(--s-3);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .pd-check input {
+    margin-top: 2px;
+  }
+
+  .pd-secret {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .pd-secret .ui-input {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}

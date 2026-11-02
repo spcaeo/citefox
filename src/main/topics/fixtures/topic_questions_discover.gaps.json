@@ -1,0 +1,13 @@
+{
+  "questions": [],
+  "gaps": [
+    {
+      "stage": "fit",
+      "note": "Fit has nothing for clinics"
+    },
+    {
+      "stage": "decide",
+      "note": "Decide has nothing on switching"
+    }
+  ]
+}

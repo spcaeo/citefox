@@ -1,0 +1,546 @@
+@layer shared, results, screens, utilities;
+
+/* ListGrid (ui/listGrid): the one shared v2 list grid. Theme.dc.html "List grid". */
+@layer shared {
+  .ui-lg {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+    font-family: var(--font-ui);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--ink);
+  }
+
+  .ui-lg > .ui-empty {
+    min-height: 160px;
+  }
+
+  /* ---- Toolbar and bulk bar: 56px, the bulk bar replaces the toolbar ---- */
+  .ui-lg-bar,
+  .ui-lg-bulk {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: var(--h-grid-bar);
+    padding: var(--s-2) var(--s-4);
+    border-bottom: 1px solid var(--line);
+    flex-wrap: wrap;
+  }
+
+  .ui-lg-bulk {
+    flex-wrap: nowrap;
+    gap: var(--s-2);
+    background: var(--select-tint);
+  }
+
+  .ui-lg-bulk-actions {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .ui-lg-bulk-count,
+  .ui-lg-bulk-all,
+  .ui-lg-bulk-clear {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .ui-lg-bulk .ui-btn-secondary {
+    background: var(--surface);
+  }
+
+  .ui-lg-bulk-count {
+    margin-right: var(--s-2);
+    font-weight: var(--fw-semibold);
+  }
+
+  /* The Filter icon with filters set: green, and the count beside the icon. */
+  .ui-lg-filter-btn.ui-lg-filter-on {
+    width: auto;
+    gap: 2px;
+    padding: 0 var(--s-1);
+    color: var(--select);
+  }
+
+  .ui-lg-filter-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: var(--r-pill);
+    background: var(--select-tint);
+    color: var(--select);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ui-lg-spacer {
+    flex: 1 1 0;
+  }
+
+  /* A filter that may move into Filter ▾ (audit2 #7), and the Filter ▾ button: kept whole. */
+  .ui-lg-slot {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+  }
+
+  .ui-lg-search {
+    position: relative;
+    display: flex;
+    /* 200px is the basis, so the toolbar only wraps when 200px no longer fits; it grows to 240px
+       when there is room. Never squeezed to "Se" (audit2 #7). */
+    flex: 1 1 200px;
+    align-items: center;
+    min-width: 200px;
+    max-width: 240px;
+  }
+
+  /* ---- Scroll box: header and body scroll together; the header sticks ---- */
+  .ui-lg-scroll {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    /* A focused row scrolled into view clears the sticky header. */
+    scroll-padding-top: var(--h-grid-head);
+  }
+
+  /*
+   * A list drawn in full is the screen's content (audit2 #6): no scroll box of
+   * its own, so the mouse wheel moves only the page, and the header and group
+   * rows stick to the page. `clip` keeps the rounded card without making a
+   * scroll box. Only while the row fits; a wider row keeps its sideways scroll.
+   */
+  .ui-lg.ui-lg-page {
+    overflow: clip;
+  }
+
+  .ui-lg-page > .ui-lg-scroll {
+    overflow: visible;
+  }
+
+  .ui-lg-scroll:focus {
+    outline: none;
+  }
+
+  .ui-lg-scroll:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--focus, var(--fox));
+  }
+
+  .ui-lg-headgroup {
+    position: sticky;
+    top: 0;
+    z-index: calc(var(--z-sticky) + 1);
+  }
+
+  .ui-lg-head,
+  .ui-lg-row {
+    display: grid;
+    align-items: center;
+    /* --lg-gap: a denser grid sets it (the pinned column reads it too). */
+    gap: var(--lg-gap, var(--s-4));
+    padding: 0 var(--s-4);
+  }
+
+  .ui-lg-head {
+    height: var(--h-grid-head);
+    border-bottom: 1px solid var(--line);
+    background: var(--inset);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    font-weight: var(--fw-medium);
+  }
+
+  .ui-lg-th {
+    display: flex;
+    align-items: center;
+    align-self: stretch;
+    min-width: 0;
+    white-space: nowrap;
+  }
+
+  .ui-lg-end {
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .ui-lg-sort {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1);
+    height: 28px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .ui-lg-sort:hover,
+  .ui-lg-sort.on {
+    color: var(--ink);
+  }
+
+  .ui-lg-arrow {
+    color: var(--ink-4);
+  }
+
+  .ui-lg-arrow.on {
+    color: var(--ink);
+  }
+
+  .ui-lg-check {
+    display: flex;
+    align-items: center;
+  }
+
+  .ui-lg-cb {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    flex: 0 0 auto;
+    accent-color: var(--select);
+  }
+
+  /* ---- Group header: 40px, sticky under the column header ---- */
+  .ui-lg-group {
+    position: sticky;
+    top: var(--h-grid-head);
+    z-index: var(--z-sticky);
+    height: var(--h-grid-head);
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .ui-lg-group:focus {
+    outline: none;
+  }
+
+  .ui-lg-group:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--focus, var(--fox));
+  }
+
+  .ui-lg-group-cell {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    height: 100%;
+    padding: 0 var(--s-4);
+    min-width: 0;
+  }
+
+  .ui-lg-gbtn {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    height: 32px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    font-weight: var(--fw-semibold);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .ui-lg-caret {
+    display: flex;
+    color: var(--ink-3);
+    transition: transform var(--shell-speed) ease;
+  }
+
+  .ui-lg-caret.open {
+    transform: rotate(90deg);
+  }
+
+  .ui-lg-count {
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    padding: 0 7px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    font-weight: var(--fw-medium);
+  }
+
+  .ui-lg-meta {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  /*
+   * ---- Rows: 44px, padding 16, gap 16 ----
+   * The first grid track holds the cells at the 44px line (less the 1px rule);
+   * an open detail adds a second track. Wrapping rows pad top and bottom and
+   * grow with their text; the grid measures every row it draws.
+   */
+  .ui-lg-row {
+    position: relative;
+    grid-template-rows: minmax(calc(var(--h-row) - 1px), auto);
+    min-height: var(--h-row);
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .ui-lg-row.wrap {
+    grid-template-rows: minmax(calc(var(--h-row) - 1px - 2 * var(--s-2)), auto);
+    padding-block: var(--s-2);
+  }
+
+  .ui-lg-top .ui-lg-row {
+    align-items: start;
+  }
+
+  .ui-lg-top .ui-lg-td {
+    align-items: flex-start;
+  }
+
+  .ui-lg-row:hover {
+    background: var(--inset);
+  }
+
+  .ui-lg-row.sel,
+  .ui-lg-row.cur {
+    background: var(--select-tint);
+  }
+
+  .ui-lg-opens .ui-lg-row {
+    cursor: pointer;
+  }
+
+  .ui-lg-row:focus {
+    outline: none;
+  }
+
+  .ui-lg-row:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--focus, var(--fox));
+  }
+
+  /* Relative, so the cell clips an absolute child too: a `.sr-only` note after a
+     long, cut link would otherwise widen the scroll area past the row. */
+  .ui-lg-td {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .ui-lg-td > * {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ui-lg-td.num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ui-lg-td.wrap {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .ui-lg-td.wrap > * {
+    text-overflow: clip;
+  }
+
+  .ui-lg-td.mono {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .ui-lg-menu,
+  .ui-lg-expand {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .ui-lg-toggle .ui-icon {
+    transition: transform var(--shell-speed) ease;
+  }
+
+  .ui-lg-toggle.open .ui-icon {
+    transform: rotate(90deg);
+  }
+
+  /* An open row's detail: the whole row wide, under the cells. */
+  .ui-lg-detail {
+    grid-column: 1 / -1;
+    min-width: 0;
+    padding: 0 0 var(--s-3);
+    cursor: auto;
+    white-space: normal;
+  }
+
+  .ui-lg-row.open {
+    row-gap: var(--s-1);
+  }
+
+  .ui-lg-row.open:hover {
+    background: var(--surface);
+  }
+
+  /* Row actions (`rowAction`): quiet buttons that show on hover, keyboard focus
+     or the open row, and always on touch screens. Opacity keeps them in the tab
+     order, so focusing one shows it. A plain table's cell can take the class too. */
+  .ui-lg-action {
+    justify-content: flex-end;
+  }
+
+  .ui-lg-action > * {
+    opacity: 0;
+    transition: opacity var(--shell-speed) ease;
+  }
+
+  .ui-lg-row:hover .ui-lg-action > *,
+  .ui-lg-row:focus .ui-lg-action > *,
+  .ui-lg-row:focus-within .ui-lg-action > *,
+  .ui-lg-row.cur .ui-lg-action > *,
+  tr:hover > .ui-lg-action > *,
+  tr:focus-within > .ui-lg-action > * {
+    opacity: 1;
+  }
+
+  @media (hover: none) {
+    .ui-lg-action > * {
+      opacity: 1;
+    }
+  }
+
+  .ui-lg-row:hover .ui-row-menu,
+  .ui-lg-row:focus-within .ui-row-menu,
+  .ui-lg-row:focus .ui-row-menu {
+    opacity: 1;
+  }
+
+  /* ---- Footer: 48px ---- */
+  .ui-lg-foot {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    min-height: var(--h-grid-foot);
+    padding: 0 var(--s-4);
+    border-top: 1px solid var(--line);
+  }
+
+  .ui-lg-foot-line {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .ui-lg-foot-tools,
+  .ui-lg-pager {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .ui-lg-pager {
+    gap: var(--s-1);
+  }
+
+  /*
+   * Drill cells and inline links in grid cells (CellDrill). They came from the
+   * retired DataGrid stylesheet; All pages' card lists use them too.
+   */
+  .dg-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: var(--fs-ui);
+  }
+
+  .dg-link {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--action-ink);
+    font: inherit;
+    font-weight: var(--fw-semibold);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+
+  .dg-link:hover {
+    color: var(--action-ink);
+  }
+
+  /* A long value ends in an ellipsis instead of being cut mid-letter. */
+  .dg-drill {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    text-align: inherit;
+    /* Plain until hover or focus, like the rest of the app's links. */
+    text-decoration: underline solid transparent;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .dg-drill > span,
+  .dg-drill > .stack-tight > span {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .dg-drill:hover {
+    color: var(--action-ink-hover);
+  }
+
+  .dg-drill:hover,
+  .dg-drill:focus-visible {
+    text-decoration-color: currentcolor;
+  }
+
+  .dg-drill:focus-visible {
+    outline: 2px solid var(--focus, var(--fox));
+    outline-offset: 2px;
+    border-radius: var(--r-s);
+  }
+}

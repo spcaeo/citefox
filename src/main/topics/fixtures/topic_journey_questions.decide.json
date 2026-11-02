@@ -1,0 +1,28 @@
+{
+  "questions": [
+    {
+      "stage": "decide",
+      "text": "How much should a small business expect to pay per month to send text alerts to about 50 employees?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "decide",
+      "text": "What do I need to set up on day one to start sending text alerts from Gmail to my staff?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "decide",
+      "text": "How quickly can we move our alerts off Verizon's vtext.com gateway before it shuts down, and what breaks if we wait?",
+      "namedTool": null,
+      "competitorNamed": null
+    },
+    {
+      "stage": "decide",
+      "text": "Can we trial an email-to-SMS service with a few employees before committing, and what should we test first?",
+      "namedTool": null,
+      "competitorNamed": null
+    }
+  ]
+}

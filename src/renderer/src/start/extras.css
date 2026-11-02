@@ -1,0 +1,148 @@
+/* Getting started strip and the Activity button and list (owner feedback 4). */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .gs {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    min-height: 40px;
+    padding: 0 var(--s-6);
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    font-size: var(--fs-ui);
+  }
+
+  .gs-title {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+    white-space: nowrap;
+  }
+
+  .gs-steps {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+  }
+
+  .gs-step {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    white-space: nowrap;
+  }
+
+  .gs-step + .gs-step::before {
+    content: '';
+    width: 20px;
+    height: 1px;
+    background: var(--line-strong);
+  }
+
+  .gs-step a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: var(--s-1) 6px;
+    border-radius: var(--r-s);
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+
+  .gs-step a:hover {
+    background: var(--inset);
+    color: var(--ink);
+  }
+
+  .gs-mark {
+    display: grid;
+    place-items: center;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+  }
+
+  .gs-done .gs-mark {
+    border-color: var(--ok);
+    background: var(--ok);
+    color: var(--on-solid);
+  }
+
+  .gs-done a {
+    color: var(--ink-3);
+  }
+
+  .gs-current a {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .gs-current .gs-mark {
+    border-color: var(--fox);
+    box-shadow: inset 0 0 0 3px var(--surface);
+    background: var(--fox);
+  }
+
+  /* ---- Activity: the list in its drawer (drawer=activity); the top-bar button is in shell.css ---- */
+  .act-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .act-list {
+    margin: 0 0 var(--s-3);
+    padding: 0;
+    list-style: none;
+  }
+
+  .act-item {
+    display: grid;
+    grid-template-columns: 10px minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: var(--s-2);
+    padding: var(--s-2) 0;
+    border-bottom: 1px solid var(--line);
+    font-size: var(--fs-ui);
+  }
+
+  .act-state {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ok);
+  }
+
+  .act-running .act-state {
+    background: var(--fox);
+  }
+
+  .act-warning .act-state {
+    background: var(--warn);
+  }
+
+  .act-area {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .act-time {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    white-space: nowrap;
+  }
+
+  .act-empty {
+    margin: 0 0 var(--s-3);
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+}

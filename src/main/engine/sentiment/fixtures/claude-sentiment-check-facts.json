@@ -1,0 +1,14 @@
+{
+  "checks": [
+    {
+      "claimIndex": 0,
+      "problem": {
+        "basis": "fact",
+        "why": "Brand fact: TextBolt plans start at $29 a month.",
+        "correction": "TextBolt plans start at $29 a month, with a free test alert before you pay.",
+        "sourceToFix": "https://www.textbolt.com/pricing/"
+      }
+    },
+    { "claimIndex": 1, "problem": null }
+  ]
+}

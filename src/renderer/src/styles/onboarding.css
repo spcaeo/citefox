@@ -1,0 +1,908 @@
+@layer shared, results, screens, utilities;
+
+@layer shared {
+  /* ---- Setup frame (v2): top bar, stepper bar, step page, sticky footer ---- */
+  .onboarding {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--ground);
+    color: var(--ink);
+  }
+
+  .ob-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    min-height: var(--shell-topbar);
+    padding: 0 var(--page-pad);
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    flex-wrap: wrap;
+  }
+
+  .ob-brand-group {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .ob-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    color: var(--ink);
+    font-size: var(--fs-h2);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-h2);
+    text-decoration: none;
+  }
+
+  .ob-brand:hover {
+    color: var(--ink);
+  }
+
+  .ob-brand .fox {
+    width: 24px;
+    height: 24px;
+  }
+
+  .ob-topbar-end {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .ob-version {
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .ob-stepper {
+    padding: var(--s-4) var(--page-pad);
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .ob-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .ob-screen:focus {
+    outline: none;
+  }
+
+  .ob {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  /* The side padding comes from .setup-width, shared with the first-run journey. */
+  .ob-page {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    width: 100%;
+    padding-block: var(--page-pad);
+  }
+
+  /*
+   * One content width for onboarding and the first-run journey (start/StartFrame):
+   * headings and cards start at the same x on every setup screen. The top bar, the
+   * stepper row and the sticky footer stay full width.
+   */
+  .setup-width {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1248px;
+    margin-inline: auto;
+    padding-inline: var(--page-pad);
+  }
+
+  .ob-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+
+  .ob-head h1 {
+    margin: 0;
+    font-size: var(--fs-h1);
+    line-height: var(--lh-h1);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-h1);
+  }
+
+  .ob-sub,
+  .ob-sub p {
+    margin: 0;
+    max-width: 760px;
+    color: var(--ink-2);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+
+  .ob-sub .hint {
+    margin-top: var(--s-1);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .ob-kicker {
+    color: var(--fox-ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* 12-column page: the step's cards take 8, the context rail 4. */
+  .ob-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    gap: var(--card-gap);
+    align-items: start;
+  }
+
+  .ob-grid-single {
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+  }
+
+  .ob-main,
+  .ob-rail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    min-width: 0;
+  }
+
+  .ob-card {
+    padding: var(--card-pad);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e1);
+  }
+
+  .ob-fieldset {
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .ob-legend {
+    margin-bottom: var(--s-2);
+    padding: 0;
+  }
+
+  .ob-facts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ob-facts li {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-top: var(--s-3);
+    border-top: 1px solid var(--line);
+  }
+
+  .ob-facts li:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .ob-facts strong {
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semibold);
+  }
+
+  .ob-link-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .ob-keychain {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .ob-self-start {
+    align-self: flex-start;
+  }
+
+  .ob-skip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+    padding-top: var(--s-3);
+    border-top: 1px solid var(--line);
+  }
+
+  /* The profile's one AI action: an outline button with the fox sparkle. */
+  .ob-ai .ui-icon {
+    color: var(--fox);
+  }
+
+  /* Under "Read my website": the one hint line, then the live Claude checkup. */
+  .ob-gate {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .disc-body {
+    padding: var(--s-1) 0 var(--s-1) var(--s-6);
+  }
+
+  /* ---- Form parts (shared: other screens use .field, .hint, .ob-input, .grid2…) ---- */
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .field-label {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-body);
+  }
+
+  .opt {
+    color: var(--ink-3);
+    font-weight: var(--fw-medium);
+  }
+
+  .hint {
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  .ob-input {
+    width: 100%;
+    min-height: var(--h-control);
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--fs-body);
+  }
+
+  .ob-input::placeholder,
+  .chip-input::placeholder {
+    color: var(--ink-3);
+  }
+
+  /* A key or path field: the code font one step smaller than typed text. */
+  .ob-code {
+    font-size: var(--fs-ui);
+  }
+
+  /* A field that shares its row with a button takes the free width. */
+  .ob-input-grow {
+    flex: 1 1 240px;
+    width: auto;
+    min-width: 0;
+  }
+
+  .ob-grow {
+    flex: 1 1 260px;
+    min-width: 0;
+  }
+
+  .ob-budget {
+    max-width: 280px;
+  }
+
+  .ob-input-num {
+    max-width: 140px;
+  }
+
+  /* Show or hide a key: a square button beside its field. */
+  .ob-reveal {
+    flex: 0 0 var(--h-control);
+    width: var(--h-control);
+    padding: 0;
+  }
+
+  .ob-strong {
+    font-weight: var(--fw-semibold);
+  }
+
+  .ob-em {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  /* A title line with a quieter line under it. */
+  .ob-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+
+  .ob-quiet {
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  .field.ob-tight {
+    gap: 2px;
+  }
+
+  .grid2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--s-4);
+  }
+
+  .grid3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: var(--s-3);
+  }
+
+  .chipbox {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1);
+    align-items: center;
+    padding: 5px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-s);
+    background: var(--surface);
+  }
+
+  .chipbox:focus-within {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+
+  /* A removable value in a chip field (interactive, so not a kit Chip). */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    min-height: 30px;
+    padding: 0 2px 0 var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+  }
+
+  .pill-x {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: var(--ink-3);
+    cursor: pointer;
+  }
+
+  .pill-x:hover {
+    background: var(--line);
+    color: var(--ink);
+  }
+
+  .chip-input {
+    flex: 1 1 150px;
+    min-width: 120px;
+    min-height: 30px;
+    padding: 0 var(--s-2);
+    border: 0;
+    border-radius: var(--r-s);
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--fs-body);
+  }
+
+  .chip-input.mono {
+    font-size: var(--fs-ui);
+  }
+
+  .chip-input:focus {
+    outline: none;
+  }
+
+  /* Scoped under .ob: app-pages.css also defines .inline (space-between) and loads later. */
+  .ob .inline {
+    display: flex;
+    gap: var(--s-2);
+    align-items: stretch;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  /* A field with a trailing icon button (show/hide key) stays on one line. */
+  .ob .inline .inline {
+    flex-wrap: nowrap;
+  }
+
+  .ob .inline.ob-top {
+    align-items: flex-start;
+  }
+
+  .ob .inline.ob-center {
+    align-items: center;
+  }
+
+  .tone-ok {
+    color: var(--ok);
+  }
+
+  .tone-warn {
+    color: var(--warn);
+  }
+
+  .panel-ok {
+    display: flex;
+    gap: var(--s-2);
+    align-items: flex-start;
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid transparent;
+    border-radius: var(--r-s);
+    background: var(--ok-tint);
+  }
+
+  .panel-warn {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: var(--s-4);
+    border: 1px solid var(--fox-line);
+    border-radius: var(--r-s);
+    background: var(--warn-tint);
+  }
+
+  /* A step's visible alert under the heading (StepPage `alert`). */
+  .ob-alert {
+    max-width: 760px;
+    padding: var(--s-3) var(--s-4);
+  }
+
+  .ob-alert p {
+    margin: 0;
+    color: var(--warn);
+    font-weight: var(--fw-medium);
+  }
+
+  .info {
+    display: flex;
+    gap: var(--s-3);
+    align-items: flex-start;
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--inset);
+  }
+
+  .code {
+    padding: 1px var(--s-1);
+    border-radius: var(--r-s);
+    background: var(--inset);
+    color: var(--ink);
+    font-family: var(--font-code);
+    font-size: var(--fs-small);
+  }
+
+  .field-error {
+    display: flex;
+    gap: var(--s-1);
+    align-items: center;
+    margin: 0;
+    color: var(--warn);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+  }
+
+  .market-legend {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin-bottom: var(--s-2);
+    padding: 0;
+  }
+
+  .sublabel {
+    color: var(--ink-3);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-ui);
+  }
+
+  /* ---- Claude checks: one row per check ---- */
+  .crow {
+    display: flex;
+    gap: var(--s-3);
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: var(--s-3) 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .crow:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .crow-icon {
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--r-s);
+    background: var(--inset);
+    color: var(--ink-3);
+  }
+
+  .crow-body {
+    flex: 1 1 220px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .crow-stat {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    margin-left: auto;
+  }
+
+  /* The checkup row that runs now: its icon takes the working tint. */
+  .crow[data-state='running'] .crow-icon {
+    background: var(--fox-tint);
+    color: var(--fox);
+  }
+
+  .crow-wait {
+    gap: 6px;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .ol-steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ol-steps li {
+    display: flex;
+    gap: var(--s-2);
+    align-items: flex-start;
+  }
+
+  .ol-num {
+    flex: 0 0 22px;
+    width: 22px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--fox-line);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--fox-ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .disc summary {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: var(--h-control);
+    color: var(--fox);
+    font-weight: var(--fw-semibold);
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .disc summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .disc summary:hover {
+    color: var(--fox-ink);
+  }
+
+  .disc .chev {
+    transition: transform 0.15s;
+  }
+
+  .disc[open] .chev {
+    transform: rotate(90deg);
+  }
+
+  /* ---- Setup summary (Jina step rail) ---- */
+  .sum-row {
+    display: flex;
+    gap: var(--s-3);
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: var(--s-3) 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .sum-row:first-of-type {
+    padding-top: var(--s-1);
+    border-top: 0;
+  }
+
+  .sum-name {
+    flex: 0 0 120px;
+    font-weight: var(--fw-semibold);
+  }
+
+  .sum-val {
+    flex: 1 1 220px;
+    min-width: 0;
+    display: flex;
+    gap: var(--s-2);
+    align-items: flex-start;
+  }
+
+  .sum-dash {
+    flex: 0 0 16px;
+    color: var(--ink-3);
+    text-align: center;
+  }
+
+  /* ---- Welcome ---- */
+  .welcome-wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--s-12);
+    align-items: center;
+    width: 100%;
+    margin-block: auto;
+    padding: var(--s-8) 0;
+  }
+
+  .welcome-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+    min-width: 0;
+  }
+
+  .welcome-copy h1 {
+    margin: 0;
+    font-size: var(--fs-display);
+    line-height: var(--lh-display);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-display);
+  }
+
+  .welcome-lead {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+  }
+
+  .welcome-copy .ui-panel-head {
+    padding: var(--s-4) var(--card-pad) 0;
+  }
+
+  .need-list {
+    margin: 0;
+    padding: 0 var(--card-pad) var(--s-2);
+    list-style: none;
+  }
+
+  .need {
+    display: flex;
+    gap: var(--s-3);
+    align-items: flex-start;
+    padding: var(--s-3) 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .need:first-child {
+    border-top: 0;
+  }
+
+  .need p {
+    margin: 0;
+  }
+
+  .need-title {
+    font-weight: var(--fw-semibold);
+  }
+
+  .need-num {
+    flex: 0 0 24px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--r-pill);
+    background: var(--fox-tint);
+    color: var(--fox-ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .need-num.optional {
+    background: var(--inset);
+    color: var(--ink-2);
+  }
+
+  .welcome-example {
+    min-width: 0;
+  }
+
+  .example-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .example-body p {
+    margin: 0;
+  }
+
+  .example-q {
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-h3);
+  }
+
+  .example-aio {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-s);
+    background: var(--inset);
+    color: var(--ink-2);
+  }
+
+  .example-refs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+
+  .ref {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+    padding: var(--s-2);
+    border-radius: var(--r-s);
+  }
+
+  .ref .mono {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .ref-own {
+    background: var(--fox-tint);
+    color: var(--fox-ink);
+    font-weight: var(--fw-medium);
+  }
+
+  .ref-own .ui-chip {
+    margin-left: auto;
+  }
+
+  .external-note {
+    color: var(--ink-3);
+    font-size: var(--fs-ui);
+  }
+
+  .setup-live {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .icon-gap {
+    flex: 0 0 auto;
+    margin-top: 1px;
+  }
+
+  .ob-loading {
+    display: grid;
+    justify-items: start;
+    gap: var(--s-3);
+    padding: var(--s-8);
+  }
+
+  @media (max-width: 1320px) {
+    .setup-width {
+      padding-inline: var(--s-6);
+    }
+  }
+
+  @media (max-width: 1100px) {
+    .welcome-wrap {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--s-8);
+    }
+  }
+
+  @media (max-width: 960px) {
+    .ob-grid,
+    .ob-grid-single {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .ob-topbar,
+    .ob-stepper {
+      padding-right: var(--s-4);
+      padding-left: var(--s-4);
+    }
+
+    .ob-page {
+      padding-block: var(--s-6);
+    }
+
+    .welcome-copy h1 {
+      font-size: var(--fs-h1);
+      line-height: var(--lh-h1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .disc .chev {
+      transition: none;
+    }
+  }
+}

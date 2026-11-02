@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://citefox.app/schema/citefox-report.v2.json",
+  "title": "CiteFox report model, version 2",
+  "description": "The report every CiteFox output renders (Docs/REPORT-SPEC.md). Rows are one prompt in one market on one tracked page from the latest full check. Every count with a drill names a list in drills with exactly that many row ids. Competition holds sov and leaderboard (authority, overlap, gap, avgPosition); trends holds the deltas (gained, lost, newlyNamed, noLongerNamed).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "cover",
+    "sections",
+    "markets",
+    "pages",
+    "rows",
+    "drills",
+    "overview",
+    "pagesSection",
+    "competition",
+    "reputation",
+    "trends",
+    "universe",
+    "sources",
+    "answerShape",
+    "contentGaps",
+    "prompts",
+    "verdict",
+    "whatChanged",
+    "method",
+    "references"
+  ],
+  "properties": {
+    "version": { "const": 2 },
+    "cover": { "$ref": "citefox-report-sections.v2.json#/definitions/cover" },
+    "sections": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "overview",
+          "topic_coverage",
+          "pages",
+          "competition",
+          "reputation",
+          "trends",
+          "universe",
+          "sources",
+          "answer_shape",
+          "content_gaps",
+          "prompts"
+        ]
+      }
+    },
+    "markets": {
+      "type": "array",
+      "items": { "$ref": "citefox-report-common.v2.json#/definitions/market" }
+    },
+    "pages": {
+      "type": "array",
+      "items": { "$ref": "citefox-report-common.v2.json#/definitions/page" }
+    },
+    "rows": {
+      "type": "array",
+      "items": { "$ref": "citefox-report-common.v2.json#/definitions/row" }
+    },
+    "drills": {
+      "type": "object",
+      "additionalProperties": { "type": "array", "items": { "type": "string" } }
+    },
+    "overview": { "$ref": "citefox-report-sections.v2.json#/definitions/overview" },
+    "pagesSection": { "$ref": "citefox-report-sections.v2.json#/definitions/pagesSection" },
+    "competition": { "$ref": "citefox-report-sections.v2.json#/definitions/competition" },
+    "reputation": { "$ref": "citefox-report-sections.v2.json#/definitions/reputation" },
+    "trends": { "$ref": "citefox-report-sections.v2.json#/definitions/trends" },
+    "universe": { "$ref": "citefox-report-more.v2.json#/definitions/universe" },
+    "sources": { "$ref": "citefox-report-more.v2.json#/definitions/sources" },
+    "answerShape": { "$ref": "citefox-report-more.v2.json#/definitions/answerShape" },
+    "contentGaps": { "$ref": "citefox-report-more.v2.json#/definitions/contentGaps" },
+    "prompts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["empty", "all"],
+      "properties": {
+        "empty": { "$ref": "citefox-report-common.v2.json#/definitions/empty" },
+        "all": { "$ref": "citefox-report-common.v2.json#/definitions/count" }
+      }
+    },
+    "headline": { "type": "string" },
+    "recommendations": { "$ref": "citefox-report-sections.v2.json#/definitions/recommendations" },
+    "verdict": { "$ref": "citefox-report-sections.v2.json#/definitions/verdict" },
+    "whatChanged": { "$ref": "citefox-report-sections.v2.json#/definitions/whatChanged" },
+    "method": { "$ref": "citefox-report-sections.v2.json#/definitions/method" },
+    "references": {
+      "type": "array",
+      "items": { "$ref": "citefox-report-common.v2.json#/definitions/reference" }
+    },
+    "topicCoverage": { "$ref": "citefox-report-topics.v2.json#/definitions/topicCoverage" }
+  }
+}

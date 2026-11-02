@@ -1,0 +1,10 @@
+{
+  "proposals": [
+    {
+      "id": "q1",
+      "topicId": "t1",
+      "newTopic": null,
+      "reason": "The buyer is turning monitoring emails into texts."
+    }
+  ]
+}

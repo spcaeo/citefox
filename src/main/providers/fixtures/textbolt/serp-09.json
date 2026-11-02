@@ -1,0 +1,24 @@
+{
+  "status": 200,
+  "body": {
+    "search_metadata": {
+      "status": "Success",
+      "id": "textbolt-p9"
+    },
+    "ai_overview": {
+      "text_blocks": [
+        {
+          "type": "paragraph",
+          "snippet": "Write the alert on Friday and use the email client schedule send for Saturday morning."
+        }
+      ],
+      "references": [
+        {
+          "title": "Schedule send",
+          "link": "https://support.google.com/mail/answer/schedule",
+          "source": "Google"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,43 @@
+/* Citations → Draft a pitch drawer. Tokens from styles/tokens.css only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .pitch-draft {
+    margin-top: var(--s-3);
+  }
+
+  .pitch-facts {
+    display: grid;
+    gap: var(--s-1);
+    margin: 0;
+    min-width: 0;
+  }
+
+  .pitch-facts dt {
+    margin-top: var(--s-2);
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .pitch-facts dt:first-child {
+    margin-top: 0;
+  }
+
+  /* A URL's hidden Copy and Open sit past its end until hover; clip them so a URL
+     at the row's end never makes the drawer scroll sideways. */
+  .pitch-facts dd {
+    margin: 0;
+    min-width: 0;
+    overflow-x: clip;
+    overflow-clip-margin: 4px;
+    overflow-wrap: anywhere;
+  }
+
+  .pitch-domains {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-3);
+  }
+}

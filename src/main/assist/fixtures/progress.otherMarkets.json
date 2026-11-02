@@ -1,0 +1,20 @@
+{
+  "summary": "No new searches were run. In US the fix's prompt stayed cited; UK has no check since the fix went live.",
+  "items": [
+    {
+      "text": "US: prompt 1 was cited before the fix and is still cited after it.",
+      "detail": "Before (Oct 5): page cited #3. After (Oct 19): page cited #2. Fix 1 went live Oct 10.",
+      "tag": "mkt-us",
+      "verify": null,
+      "sign": null
+    },
+    {
+      "text": "UK: no check since Fix 1 went live on Oct 10, so there is nothing to compare yet.",
+      "detail": "Before (Oct 5): not cited. Run a check in UK to see the after state.",
+      "tag": "mkt-uk",
+      "verify": null,
+      "sign": null
+    }
+  ],
+  "caution": null
+}

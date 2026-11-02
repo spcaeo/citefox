@@ -1,0 +1,418 @@
+/* The AI Overview laid out as Google shows it (components/aio). Tokens only. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .aio-g {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
+    gap: var(--s-8);
+    align-items: start;
+  }
+
+  .aio-g-solo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (max-width: 1100px) {
+    .aio-g {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .aio-g-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+    max-width: 72ch;
+    color: var(--ink);
+    font-size: var(--fs-body);
+    line-height: 1.6;
+    /* Google breaks a line inside some list items ("Setup (30 minutes)\nYou can…"). */
+    white-space: pre-line;
+  }
+
+  /* cloro's markdown (MarkdownOverview): line breaks are markdown's to make */
+  .aio-g-md {
+    white-space: normal;
+  }
+
+  .aio-g-head {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin: 0 0 var(--s-1);
+    font-size: var(--fs-body);
+    font-weight: var(--fw-semibold);
+  }
+
+  .aio-sparkle {
+    fill: var(--info);
+  }
+
+  .aio-h {
+    margin: var(--s-3) 0 0;
+    font-size: var(--fs-body);
+    line-height: 1.5;
+    font-weight: var(--fw-semibold);
+  }
+
+  .aio-p {
+    margin: 0;
+  }
+
+  .aio-ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding-left: 22px;
+    list-style: disc;
+  }
+
+  .aio-ul .aio-ul {
+    margin-top: var(--s-2);
+    list-style: circle;
+  }
+
+  .aio-label {
+    font-weight: var(--fw-semibold);
+  }
+
+  .aio-code {
+    padding: 1px 6px;
+    border-radius: var(--r-s);
+    background: var(--inset);
+    font-family: var(--font-code);
+    font-size: 0.9em;
+    overflow-wrap: anywhere;
+  }
+
+  .aio-expand {
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    padding: var(--s-2) var(--s-4);
+  }
+
+  .aio-expand > summary {
+    cursor: pointer;
+    font-weight: var(--fw-semibold);
+  }
+
+  .aio-expand[open] > summary {
+    margin-bottom: var(--s-2);
+  }
+
+  /* Tables: a header row and light rules, scrolling sideways when wide */
+  .aio-table-wrap {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .aio-cell {
+    font-size: var(--fs-ui);
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .aio-table-cite {
+    margin: var(--s-1) 0 0;
+  }
+
+  /* Citation: the chain-link button and its hover card */
+  .aio-cite {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .aio-cite-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: var(--inset);
+    color: var(--ink-2);
+    cursor: pointer;
+  }
+
+  .aio-cite-btn:hover,
+  .aio-cite-btn[aria-pressed='true'] {
+    background: var(--info-tint);
+    color: var(--info);
+  }
+
+  .aio-cite-btn:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+
+  .aio-tip {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: -8px;
+    z-index: var(--z-pop);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    width: 300px;
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e2);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-regular);
+    line-height: 1.45;
+    white-space: normal;
+  }
+
+  /* Bridges the gap to the button, so the pointer can move onto the card. */
+  .aio-tip::before {
+    position: absolute;
+    top: -8px;
+    right: 0;
+    left: 0;
+    height: 8px;
+    content: '';
+  }
+
+  .aio-tip-end {
+    right: -8px;
+    left: auto;
+  }
+
+  .aio-tip-src {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .aio-tip-site,
+  .aio-src-site {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .aio-tip-title {
+    color: var(--ink);
+    font-weight: var(--fw-semibold);
+  }
+
+  .aio-tip-snippet,
+  .aio-src-snippet {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--ink-3);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .aio-tip-more {
+    color: var(--ink-3);
+  }
+
+  /* Lettered circle in place of a favicon */
+  .aio-mark {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: var(--fw-semibold);
+    line-height: 1;
+  }
+
+  .aio-mark-0 {
+    background: var(--info-tint);
+    color: var(--info);
+  }
+
+  .aio-mark-1 {
+    background: var(--fox-tint);
+    color: var(--fox-ink);
+  }
+
+  .aio-mark-2 {
+    background: var(--ok-tint);
+    color: var(--ok);
+  }
+
+  .aio-mark-3 {
+    background: var(--warn-tint);
+    color: var(--warn);
+  }
+
+  .aio-mark-4 {
+    background: var(--inset);
+    color: var(--ink-2);
+  }
+
+  /* Sources rail */
+  .aio-rail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  .aio-src-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .aio-src {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding: var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--inset);
+    font-size: var(--fs-small);
+    line-height: 1.45;
+  }
+
+  .aio-src.is-active {
+    border-color: var(--info);
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--info);
+  }
+
+  .aio-src-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* The source's domain with Copy and Open on hover, after the site name. */
+  .aio-src-url {
+    flex: 0 1 auto;
+    color: var(--ink-3);
+  }
+
+  .aio-src-site .ui-chip {
+    margin-left: auto;
+  }
+
+  .aio-src-title {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--ink);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+    text-decoration: none;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  a.aio-src-title:hover {
+    color: var(--info);
+    text-decoration: underline;
+  }
+
+  .aio-rail-more {
+    align-self: flex-start;
+    padding: var(--s-1) var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--ink-2);
+    font: inherit;
+    font-size: var(--fs-small);
+    cursor: pointer;
+  }
+
+  .aio-rail-more:hover {
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+
+  /* The project's own brand and site, marked in yellow wherever the overview names them */
+  .aio-brand {
+    padding: 0 2px;
+    border-radius: 3px;
+    background: var(--mark);
+    color: inherit;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  .aio-src.is-own {
+    border-left: 4px solid var(--mark-line);
+    background: var(--mark-tint);
+  }
+
+  .aio-src.is-own.is-active {
+    border-color: var(--info);
+    border-left-color: var(--mark-line);
+  }
+
+  .aio-tip-src.is-own {
+    margin: 0 calc(-1 * var(--s-2));
+    padding: var(--s-1) var(--s-2);
+    border-left: 3px solid var(--mark-line);
+    border-radius: var(--r-s);
+    background: var(--mark-tint);
+  }
+
+  .aio-tip-site .ui-chip {
+    margin-left: auto;
+  }
+
+  /* "Show" in the insights card: the passage and its citation chip light up briefly */
+  .aio-g-text .is-flash {
+    border-radius: var(--r-s);
+    animation: aio-flash 1.6s ease-out;
+  }
+
+  .aio-cite-btn.is-flash {
+    animation: aio-flash-chip 1.6s ease-out;
+  }
+
+  @keyframes aio-flash {
+    0%,
+    40% {
+      background: var(--info-tint);
+      box-shadow: 0 0 0 4px var(--info-tint);
+    }
+
+    100% {
+      background: transparent;
+      box-shadow: 0 0 0 4px transparent;
+    }
+  }
+
+  @keyframes aio-flash-chip {
+    0%,
+    60% {
+      background: var(--info);
+      color: var(--surface);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .aio-g-text .is-flash,
+    .aio-cite-btn.is-flash {
+      animation: none;
+      outline: 2px solid var(--info);
+      outline-offset: 2px;
+    }
+  }
+}

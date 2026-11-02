@@ -1,0 +1,612 @@
+/* The first-run guide: top bar pill and "?", coachmark, cards and the checklist drawer. */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  /* ---- Top bar: the guide ring "3/16" and "?" (on spruce) ---- */
+  .topbar-guide {
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 4px;
+    height: var(--h-control-sm);
+    padding: 0 6px;
+    border: 0;
+    border-radius: var(--r-s);
+    background: transparent;
+    color: var(--spruce-ink-2);
+    font: inherit;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .topbar-guide:hover,
+  .topbar-guide[aria-expanded='true'] {
+    background: var(--spruce-press);
+    color: var(--on-spruce);
+  }
+
+  .topbar-guide:focus-visible,
+  .topbar-help:focus-visible {
+    outline: 2px solid var(--spruce-ink);
+    outline-offset: 1px;
+  }
+
+  .topbar-guide-ring {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke-width: 2.5;
+  }
+
+  .topbar-guide-track {
+    stroke: var(--spruce-line-strong);
+  }
+
+  .topbar-guide-arc {
+    stroke: var(--action);
+    stroke-linecap: round;
+  }
+
+  .topbar-guide-dot {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 8px;
+    height: 8px;
+    border: 2px solid var(--spruce);
+    border-radius: 50%;
+    background: var(--fox-on-spruce);
+  }
+
+  /* The "?" sits right after the breadcrumb; the controls stay on the right. */
+  .topbar-crumbs:has(+ .topbar-help) {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .topbar-help {
+    display: inline-grid;
+    margin-right: auto;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    margin-left: calc(var(--s-4) * -1 + var(--s-2));
+    padding: 0;
+    border: 1px solid var(--spruce-line-strong);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--spruce-ink-2);
+    font: inherit;
+    font-size: 12px;
+    font-weight: var(--fw-semibold);
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .topbar-help:hover {
+    background: var(--spruce-press);
+    color: var(--on-spruce);
+  }
+
+  /* ---- Coachmark: soft dim with a cut-out, a ring, and the popover ---- */
+  .gd-coach {
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-pop) + 2);
+    pointer-events: none;
+  }
+
+  /* A step inside a drawer kept in the screen's URL (Fixes' page fix): over the drawer. */
+  .gd-coach[data-layer='drawer'] {
+    z-index: calc(var(--z-drawer) + 3);
+  }
+
+  .gd-mask {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* A menu or the search results the step opened stay readable: no dim while open. */
+  .gd-coach[data-popup] .gd-mask {
+    display: none;
+  }
+
+  .gd-dim {
+    fill: var(--scrim);
+  }
+
+  .gd-ring {
+    position: absolute;
+    border: 2px solid var(--fox);
+    border-radius: 8px;
+    box-shadow: 0 0 0 4px var(--fox-tint);
+    animation: gd-pulse 1.8s ease-in-out infinite;
+  }
+
+  @keyframes gd-pulse {
+    50% {
+      box-shadow: 0 0 0 8px var(--fox-tint);
+    }
+  }
+
+  /* The spotlight holds still while the control to click inside it pulses. */
+  .gd-ring-still {
+    border-color: var(--fox-line);
+    box-shadow: none;
+    animation: none;
+  }
+
+  .gd-ring-press {
+    border-radius: var(--r-s);
+    animation-duration: 1.4s;
+  }
+
+  /* A control the guide points at shows, even one its row shows only on hover. */
+  button[data-guide-on] {
+    opacity: 1;
+  }
+
+  /* ---- A pointer inside what the step opened: no dim, a ring and a bubble ---- */
+  .gd-hint-layer {
+    position: fixed;
+    inset: 0;
+    /* Over the drawer and its footer, under a confirm and the undo toast. */
+    z-index: calc(var(--z-drawer) + 4);
+    pointer-events: none;
+  }
+
+  .gd-hint {
+    position: absolute;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-2);
+    width: max-content;
+    max-width: 260px;
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-s);
+    background: var(--fox);
+    box-shadow: var(--e2);
+    color: var(--on-fox);
+    font-size: var(--fs-ui);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-small);
+    animation: gd-rise var(--shell-speed) ease-out;
+  }
+
+  .gd-hint .ui-icon {
+    flex: 0 0 auto;
+    margin-top: 2px;
+  }
+
+  /* The arrow, on the edge that faces the control. */
+  .gd-hint::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: inherit;
+    transform: rotate(45deg);
+  }
+
+  .gd-hint[data-side='bottom']::after {
+    top: -5px;
+    left: calc(var(--gd-arrow) - 5px);
+  }
+
+  .gd-hint[data-side='top']::after {
+    bottom: -5px;
+    left: calc(var(--gd-arrow) - 5px);
+  }
+
+  .gd-hint[data-side='right']::after {
+    top: calc(var(--gd-arrow) - 5px);
+    left: -5px;
+  }
+
+  .gd-hint[data-side='left']::after {
+    top: calc(var(--gd-arrow) - 5px);
+    right: -5px;
+  }
+
+  .gd-pop {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    width: 340px;
+    max-width: calc(100vw - 32px);
+    padding: var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e2);
+    color: var(--ink);
+    pointer-events: auto;
+    transition:
+      top var(--shell-speed) ease-out,
+      left var(--shell-speed) ease-out;
+  }
+
+  .gd-pop-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2);
+    margin: calc(var(--s-1) * -1) calc(var(--s-1) * -1) 0 0;
+  }
+
+  .gd-eyebrow {
+    margin: 0;
+    color: var(--fox-ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+  }
+
+  .gd-pop-title {
+    margin: 0;
+    font-size: var(--fs-body);
+    font-weight: var(--fw-semibold);
+    outline: none;
+  }
+
+  .gd-pop-body,
+  .gd-pop-note,
+  .gd-pop-hint {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-small);
+  }
+
+  .gd-pop-hint {
+    display: flex;
+    gap: var(--s-2);
+    align-items: flex-start;
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-s);
+    background: var(--inset);
+    color: var(--ink);
+  }
+
+  .gd-pop-hint .ui-icon {
+    flex: 0 0 auto;
+    margin-top: 2px;
+    color: var(--ok);
+  }
+
+  .gd-pop-why {
+    margin: 0;
+    color: var(--fox-ink);
+    font-size: var(--fs-small);
+    font-weight: var(--fw-semibold);
+    line-height: var(--lh-small);
+  }
+
+  .gd-pop-note {
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-s);
+    background: var(--warn-tint);
+  }
+
+  .gd-pop-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin-top: var(--s-1);
+  }
+
+  .gd-spacer {
+    flex: 1 1 auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gd-ring,
+    .gd-hint {
+      animation: none;
+    }
+
+    .gd-pop {
+      transition: none;
+    }
+  }
+
+  /* ---- Cards in the lower right: kick-off, explainer, lesson done ---- */
+  .gd-float {
+    position: fixed;
+    right: var(--s-6);
+    bottom: var(--s-6);
+    /* Over the page, under menus, popovers and drawers, so an open menu is never covered. */
+    z-index: calc(var(--z-console) + 1);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    width: 360px;
+    max-width: calc(100vw - 32px);
+    padding: var(--s-4);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--ok);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: var(--e2);
+    color: var(--ink);
+    animation: gd-rise var(--shell-speed) ease-out;
+  }
+
+  /* "Lesson done" also shows over a drawer the lesson ended in (a page fix). */
+  .gd-float.gd-float-over {
+    z-index: calc(var(--z-drawer) + 2);
+  }
+
+  /* With a drawer open it sits above the drawer's footer (64px), never on its buttons. */
+  body:has(.ui-drawer-foot) .gd-float.gd-float-over {
+    bottom: calc(64px + var(--s-6));
+  }
+
+  /*
+   * The work console shares the corner. Its pill lifts the card above it, and while its
+   * window is open the card waits, so a running or failed job (and its retry) stays in reach.
+   */
+  body:has(.wc-pill) .gd-float {
+    bottom: calc(var(--s-6) + 44px + var(--s-3));
+  }
+
+  body:has(.wc[role='dialog']) .gd-float {
+    display: none;
+  }
+
+  @keyframes gd-rise {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gd-float {
+      animation: none;
+    }
+  }
+
+  .gd-float-head {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .gd-float-icon {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--inset);
+    color: var(--ok);
+  }
+
+  .gd-float-title {
+    flex: 1 1 auto;
+    margin: 0;
+    font-size: var(--fs-body);
+    font-weight: var(--fw-semibold);
+  }
+
+  .gd-float-body p {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    line-height: var(--lh-small);
+  }
+
+  .gd-float-check {
+    display: inline-flex;
+    margin-right: auto;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: 24px;
+    color: var(--ink-2);
+    font-size: var(--fs-ui);
+    cursor: pointer;
+  }
+
+  .gd-float-check input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--select);
+  }
+
+  .gd-float-hint {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .gd-float-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--s-2);
+  }
+
+  /* ---- The guide drawer: this screen's lesson, then All lessons (calm, no icons) ---- */
+  .ui-drawer.gd-drawer {
+    width: min(460px, calc(100vw - 48px));
+  }
+
+  .gd-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    padding: var(--s-4) var(--s-5);
+  }
+
+  .gd-callout {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+  }
+
+  .gd-paused {
+    border-color: var(--fox-line);
+    background: var(--fox-tint);
+  }
+
+  .gd-callout-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .gd-callout-title {
+    font-weight: var(--fw-semibold);
+  }
+
+  .gd-muted {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .gd-here {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .gd-here-head {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .gd-here-head .gd-eyebrow {
+    margin: 0;
+  }
+
+  .gd-here-title {
+    margin: 0;
+    font-size: var(--fs-h2);
+    font-weight: var(--fw-semibold);
+  }
+
+  .gd-why {
+    margin: 0;
+    color: var(--fox-ink);
+    font-size: var(--fs-small);
+  }
+
+  .gd-steps,
+  .gd-all {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+    list-style: none;
+  }
+
+  .gd-step,
+  .gd-all-row {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 36px;
+    border-bottom: 1px solid var(--line);
+    font-size: var(--fs-ui);
+  }
+
+  /* A plain ring; a done step fills it with a tick drawn in CSS. */
+  .gd-step-mark {
+    position: relative;
+    flex: 0 0 auto;
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid var(--line-strong);
+    border-radius: 50%;
+  }
+
+  .gd-step-done .gd-step-mark,
+  .gd-all-done .gd-step-mark {
+    border-color: var(--ok);
+    background: var(--ok);
+  }
+
+  .gd-step-done .gd-step-mark::after,
+  .gd-all-done .gd-step-mark::after {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 3.5px;
+    width: 3px;
+    height: 6px;
+    border: solid var(--on-solid);
+    border-width: 0 1.5px 1.5px 0;
+    transform: rotate(45deg);
+  }
+
+  .gd-step-skipped .gd-step-mark {
+    border-style: dashed;
+  }
+
+  .gd-step-title,
+  .gd-all-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .gd-step-done .gd-step-title,
+  .gd-step-skipped .gd-step-title,
+  .gd-step-unavailable .gd-step-title,
+  .gd-all-done .gd-all-title {
+    color: var(--ink-3);
+  }
+
+  .gd-all-row[aria-current='true'] .gd-all-title {
+    font-weight: var(--fw-semibold);
+  }
+
+  .gd-step-later {
+    flex: 0 0 auto;
+    padding: 0 var(--s-2);
+    color: var(--ink-3);
+    font-size: var(--fs-small);
+  }
+
+  .gd-here-actions,
+  .gd-overall {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .gd-overall {
+    justify-content: space-between;
+  }
+
+  /* ---- Settings › Guide & tips ---- */
+  .gd-settings-line {
+    margin: 0 0 var(--s-2);
+    font-weight: var(--fw-semibold);
+  }
+
+  .gd-settings-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin-top: var(--s-3);
+  }
+}

@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: 'If you refer to CiteFox in research or writing, please cite it as below.'
+type: software
+title: 'CiteFox: AI visibility tracker for Google AI Overviews, ChatGPT and Perplexity'
+abstract: >-
+  CiteFox is a free, source-available desktop app that tracks whether Google AI
+  Overviews, Google AI Mode, ChatGPT, Perplexity, Gemini and Copilot cite a
+  website for buyer questions, shows which page is cited and who is cited
+  instead, writes fix briefs, tracks fixes over time and produces reports.
+authors:
+  - name: Space-O Technologies
+    website: 'https://www.spaceo.ca'
+    email: getcitifox@gmail.com
+repository-code: 'https://github.com/spcaeo/citefox'
+url: 'https://spcaeo.github.io/citefox/'
+license-url: 'https://github.com/spcaeo/citefox/blob/main/LICENSE'
+version: 0.12.0
+keywords:
+  - generative engine optimization
+  - answer engine optimization
+  - GEO
+  - AEO
+  - LLM SEO
+  - AI Overviews
+  - AI search visibility
+  - AI citation tracking
