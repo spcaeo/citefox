@@ -22,7 +22,8 @@ import { fileURLToPath } from 'node:url'
 import { SITE_URL } from './config.mjs'
 import { comparePage } from './compare.mjs'
 import { parseFrontMatter, renderMarkdown } from './markdown.mjs'
-import { docOrder, docPage, docsIndex, glossary, home, notFound } from './pages.mjs'
+import { docOrder, docPage, docsIndex, glossary, home, notFound, samplesIndex } from './pages.mjs'
+import { SAMPLES } from './samples.mjs'
 
 const here = dirname(fileURLToPath(import.meta.url))
 export const REPO_ROOT = resolve(here, '..', '..')
@@ -66,6 +67,22 @@ export function findMedia(root = REPO_ROOT) {
   return media
 }
 
+/** Sample report thumbnails in media/samples/<slug>.jpg, by slug (Docs/DEMO.md). */
+export function findSampleThumbs(root = REPO_ROOT) {
+  const thumbs = {}
+  for (const { slug } of SAMPLES) {
+    if (existsSync(join(root, 'media', 'samples', `${slug}.jpg`))) thumbs[slug] = `${slug}.jpg`
+  }
+  return thumbs
+}
+
+/**
+ * Pages other builds make, listed in the sitemap: the live demo (`npm run
+ * demo:build`, its own SEO head in src/renderer/demo/index.html) and the sample
+ * reports (`npm run samples:build`, tests/demo/sample-page.ts).
+ */
+export const BUILT_ELSEWHERE = ['demo/', ...SAMPLES.map((s) => `samples/${s.slug}/`)]
+
 export function readDocs(root = REPO_ROOT) {
   const dir = join(root, 'Docs', 'help')
   const docs = {}
@@ -97,12 +114,13 @@ export function buildSite(root = REPO_ROOT) {
     ...docOrder().map((id) => docPage({ docs, id })),
     glossary(),
     comparePage({ readme: readFileSync(join(root, 'README.md'), 'utf8') }),
+    samplesIndex({ thumbs: findSampleThumbs(root) }),
     notFound()
   ]
   const indexed = pages.filter((p) => p.file !== '404.html')
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${indexed.map((p) => `  <url><loc>${SITE_URL}${p.path}</loc></url>`).join('\n')}
+${[...indexed.map((p) => p.path), ...BUILT_ELSEWHERE].map((path) => `  <url><loc>${SITE_URL}${path}</loc></url>`).join('\n')}
 </urlset>
 `
   const robots = `User-agent: *
@@ -146,6 +164,10 @@ function main() {
   for (const [name, info] of Object.entries(media)) {
     mkdirSync(join(site, 'media'), { recursive: true })
     copyFileSync(info.file, join(site, 'media', name))
+  }
+  for (const name of Object.values(findSampleThumbs())) {
+    mkdirSync(join(site, 'media', 'samples'), { recursive: true })
+    copyFileSync(join(REPO_ROOT, 'media', 'samples', name), join(site, 'media', 'samples', name))
   }
   const missing = MEDIA.filter((name) => !media[name])
   console.log(`Wrote ${files.length} files to site/ for ${SITE_URL}`)

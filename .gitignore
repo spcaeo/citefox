@@ -93,3 +93,6 @@ site/media/
 scripts/media/video/public/
 scripts/media/video/src/footage.json
 scripts/media/video/output/
+# The live demo and the sample reports, built by npm run site:build (Docs/DEMO.md)
+site/demo/
+site/samples/*/

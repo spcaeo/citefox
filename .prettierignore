@@ -19,3 +19,4 @@ site/compare
 site/media
 .public-export
 .claude
+src/renderer/demo/snapshot.json

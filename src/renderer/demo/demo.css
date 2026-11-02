@@ -1,0 +1,121 @@
+@layer shared, results, screens, utilities;
+
+/* The browser demo's banner and notice (src/renderer/demo/DemoChrome.tsx). */
+@layer screens {
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #demo-chrome {
+    flex: none;
+  }
+
+  #root {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+  }
+
+  .demo-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-2);
+    min-height: 30px;
+    padding: var(--s-1) var(--s-4);
+    background: var(--spruce);
+    color: var(--on-spruce);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    text-align: center;
+  }
+
+  .demo-banner a {
+    color: inherit;
+    font-weight: var(--fw-semibold);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .demo-banner-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--r-pill);
+    background: var(--fox);
+    flex: none;
+  }
+
+  .demo-notice {
+    position: fixed;
+    left: 50%;
+    bottom: var(--s-6);
+    transform: translateX(-50%);
+    z-index: var(--z-console);
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    max-width: min(640px, calc(100vw - 32px));
+    padding: var(--s-3) var(--s-3) var(--s-3) var(--s-5);
+    border: 1px solid var(--line);
+    border-radius: var(--r-l);
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: var(--e3);
+  }
+
+  .demo-notice-text {
+    margin: 0;
+    font-size: var(--fs-ui);
+  }
+
+  .demo-notice-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    flex: none;
+  }
+
+  .demo-notice-link {
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+  }
+
+  .demo-notice-main {
+    display: inline-flex;
+    align-items: center;
+    height: var(--h-control);
+    padding: 0 var(--s-4);
+    border-radius: var(--r-m);
+    background: var(--action);
+    color: var(--on-action);
+    font-weight: var(--fw-semibold);
+    text-decoration: none;
+  }
+
+  .demo-notice-main:hover {
+    background: var(--action-hover);
+  }
+
+  .demo-notice-close {
+    width: var(--h-control-sm);
+    height: var(--h-control-sm);
+    border: 0;
+    border-radius: var(--r-s);
+    background: transparent;
+    color: var(--ink-3);
+    font-size: var(--fs-h3);
+    cursor: pointer;
+  }
+
+  .demo-notice-close:hover {
+    background: var(--hover);
+  }
+
+  @media (max-width: 640px) {
+    .demo-notice {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+}

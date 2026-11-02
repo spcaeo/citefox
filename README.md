@@ -19,6 +19,8 @@
 
 [▶ Watch the 75-second video with sound](https://github.com/spcaeo/citefox/blob/main/media/demo.mp4)
 
+**[Try the live demo][demo]** (in your browser, sample data) · [Sample reports][samples]
+
 [Website][site] · [Live demo][demo] · [Sample reports][samples] · [Docs][docs] · [Compare](#how-citefox-compares) · [FAQ](#faq) · [Releases][releases]
 
 ⭐ Star this repo to get new releases in your GitHub feed.
@@ -493,6 +495,8 @@ Questions, early access to the Server edition or the managed service, or sponsor
 [demo]: https://spcaeo.github.io/citefox/demo/
 [samples]: https://spcaeo.github.io/citefox/samples/
 [docs]: https://spcaeo.github.io/citefox/docs/
+[demo]: https://spcaeo.github.io/citefox/demo/
+[samples]: https://spcaeo.github.io/citefox/samples/
 [glossary]: https://spcaeo.github.io/citefox/glossary/
 [doc-getting-started]: https://spcaeo.github.io/citefox/docs/getting-started/
 [doc-reports-branding]: https://spcaeo.github.io/citefox/docs/reports-branding/

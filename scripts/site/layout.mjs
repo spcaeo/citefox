@@ -106,6 +106,8 @@ ${data.map((d) => indent(jsonLd(d), 4)).join('\n')}
         </a>
         <nav aria-label="Main">
           ${link('#features', 'Features', 'features')}
+          ${link('demo/', 'Live demo', 'demo')}
+          ${link('samples/', 'Samples', 'samples')}
           ${link('docs/', 'Docs', 'docs')}
           ${link('glossary/', 'Glossary', 'glossary')}
           ${link('compare/', 'Compare', 'compare')}
@@ -124,6 +126,8 @@ ${body}
           <p class="muted">Contact: <a href="mailto:${CONTACT_EMAIL}" data-copy="${CONTACT_EMAIL}" data-what="email">${CONTACT_EMAIL}</a></p>
         </div>
         <nav aria-label="Footer">
+          <a href="${r}demo/">Live demo</a>
+          <a href="${r}samples/">Sample reports</a>
           <a href="${r}docs/">Docs</a>
           <a href="${r}glossary/">GEO and AEO glossary</a>
           <a href="${r}compare/">CiteFox vs other AI visibility tools</a>

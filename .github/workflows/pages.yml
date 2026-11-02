@@ -1,6 +1,7 @@
 name: Download page
 
-# Deploys site/ (the download page, docs and glossary) to GitHub Pages. The page reads the latest
+# Deploys site/ (the download page, docs, glossary, the live demo and the sample
+# reports) to GitHub Pages. The page reads the latest
 # release from the GitHub API in the browser, so a new release needs no
 # redeploy. One-time setup: Settings › Pages › Source: GitHub Actions.
 on:
@@ -11,6 +12,13 @@ on:
       - 'Docs/help/**'
       - 'media/**'
       - 'scripts/site/**'
+      - 'scripts/demo/**'
+      - 'src/**'
+      - 'tests/demo/**'
+      - 'tests/e2e/reports-seed.ts'
+      - 'vite.demo.config.ts'
+      - 'vitest.demo.config.mts'
+      - 'package.json'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -35,10 +43,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
+          cache: npm
 
-      # Rebuilds the pages from Docs/help and copies the screenshots in media
-      # to site/media (scripts/site/build-site.mjs; no npm install needed).
-      - run: node scripts/site/build-site.mjs
+      # The demo and the sample reports need the app's packages (not Electron itself).
+      - run: npm ci --no-audit --no-fund
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+
+      # Docs/DEMO.md: the live demo (site/demo, from the recorded snapshot), the
+      # sample reports (site/samples/*/, the app's offline HTML download on the demo
+      # project), then the pages from Docs/help and the screenshots in media.
+      - run: npm run site:build
 
       - uses: actions/configure-pages@v5
 

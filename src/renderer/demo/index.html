@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'"
+    />
+    <title>CiteFox live demo — try the AI visibility tracker in your browser</title>
+    <meta
+      name="description"
+      content="Click through CiteFox with sample data: see which buyer questions Google AI Overviews, ChatGPT and Perplexity cite a site for, who wins instead, the fixes and client-ready reports. No install, no sign-up."
+    />
+    <link rel="canonical" href="%SITE_URL%demo/" />
+    <meta name="theme-color" content="#2a221b" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="CiteFox" />
+    <meta
+      property="og:title"
+      content="CiteFox live demo — try the AI visibility tracker in your browser"
+    />
+    <meta
+      property="og:description"
+      content="Click through CiteFox with sample data: AI citations by question and engine, competitors, fixes and reports. No install."
+    />
+    <meta property="og:url" content="%SITE_URL%demo/" />
+    <meta property="og:image" content="%SITE_URL%og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="CiteFox: free AI visibility tracker" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="CiteFox live demo — try the AI visibility tracker in your browser"
+    />
+    <meta name="twitter:image" content="%SITE_URL%og.png" />
+    <link rel="icon" href="../icon.svg" type="image/svg+xml" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "CiteFox live demo",
+        "url": "%SITE_URL%demo/",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Any (web browser)",
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "description": "A clickable demo of CiteFox, the free AI visibility tracker, with sample data."
+      }
+    </script>
+    <script src="./theme-boot.js"></script>
+  </head>
+  <body>
+    <div id="demo-chrome"></div>
+    <div id="root"></div>
+    <noscript>
+      <main
+        style="
+          max-width: 960px;
+          margin: 0 auto;
+          padding: 24px 16px;
+          font-family: system-ui, sans-serif;
+          line-height: 1.5;
+        "
+      >
+        <h1>CiteFox live demo</h1>
+        <p>
+          The live demo needs JavaScript. Here is what it shows: which buyer questions AI answers
+          cite a site for, who they cite instead, what to fix, and client-ready reports.
+        </p>
+        <p>
+          <a href="../#download">Download the free app</a> ·
+          <a href="../samples/">See sample reports</a>
+        </p>
+        <figure>
+          <img
+            src="../media/summary.png"
+            alt="CiteFox Summary: questions cited by each AI engine"
+            width="1200"
+            style="max-width: 100%; height: auto"
+          />
+          <figcaption>Summary: how often each AI engine cites the site.</figcaption>
+        </figure>
+        <figure>
+          <img
+            src="../media/question.png"
+            alt="One question: the AI Overview and its sources"
+            width="1200"
+            style="max-width: 100%; height: auto"
+          />
+          <figcaption>
+            A question: the AI answer, its sources and the page that should be cited.
+          </figcaption>
+        </figure>
+        <figure>
+          <img
+            src="../media/report-visibility.png"
+            alt="Visibility report with the opportunity funnel"
+            width="1200"
+            style="max-width: 100%; height: auto"
+          />
+          <figcaption>Reports: a visibility report ready to send to a client.</figcaption>
+        </figure>
+      </main>
+    </noscript>
+    <script type="module" src="./main.tsx"></script>
+  </body>
+</html>

@@ -115,8 +115,15 @@ export function OverviewScreen({
     [data, engineSummary, offered]
   )
   // Next fixes: the top page fixes of What to fix, from the searches it rolls up.
+  // One source object per client: a new one each render made the hook read again forever.
+  const searchesSource = useMemo(
+    () => ({
+      'fixes:searches': (request: { projectId: string }) => searchesOf(source, request)
+    }),
+    [source]
+  )
   const fixSearches = useProjectSearches(
-    { 'fixes:searches': (request) => searchesOf(source, request) },
+    searchesSource,
     projectId,
     source['fixes:searches'] !== undefined
   )

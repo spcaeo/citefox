@@ -31,6 +31,7 @@ import {
   STEPS
 } from './content.mjs'
 import { absolute, breadcrumbData, breadcrumbs, faqData, page } from './layout.mjs'
+import { SAMPLES } from './samples.mjs'
 import { escapeHtml as e } from './markdown.mjs'
 
 /** A screenshot from media (copied to site/media), or nothing if it is not made yet. */
@@ -110,7 +111,8 @@ export function home({ media, version }) {
           CiteFox is a desktop app. Open this page on your Mac or PC to download it.
         </p>
         <p id="other-platforms" class="small"></p>
-        <p class="small"><a href="${DEMO_URL}" target="_blank" rel="noopener">Try the live demo</a> · <a href="${SAMPLES_URL}" target="_blank" rel="noopener">See sample reports</a> · <a href="${REPO_URL}" target="_blank" rel="noopener">Star CiteFox on GitHub</a></p>
+        <p class="try"><a class="button ghost" href="demo/">Try the live demo</a><a class="try-link" href="samples/">See sample reports</a></p>
+        <p class="small muted">The demo runs in your browser with sample data. No install, no sign-up.</p>
         ${heroMedia}
       </section>
 
@@ -211,6 +213,7 @@ ${REPORTS.map((x) => `            <li class="mini"><h3><a href="docs/${x.doc}/">
           <ul class="ticks">
 ${REPORT_EXTRAS.map((t) => `            <li>${e(t)}</li>`).join('\n')}
           </ul>
+          <p><a href="samples/">Open the sample reports</a>, the same offline HTML files the app downloads, or <a href="demo/#/reports">try Reports in the live demo</a>.</p>
           ${figure(media, 'report-visibility.png', 'The CiteFox Visibility report with share of voice and the questions that cite you', root)}
         </div>
       </section>
@@ -531,6 +534,62 @@ ${GEO_VS_SEO.map((t) => `        <p>${e(t)}</p>`).join('\n')}
       body,
       data: [breadcrumbData(trail), terms],
       current: 'glossary'
+    })
+  }
+}
+
+/**
+ * The sample report gallery (samples/): one card per ready report, linking to the
+ * standalone report that `npm run samples:build` writes. `thumbs` names the
+ * screenshots found in media/samples/ (made by `npm run demo:check -- --thumbs`).
+ */
+export function samplesIndex({ thumbs = {} } = {}) {
+  const root = '../'
+  const path = 'samples/'
+  const trail = [
+    { name: 'Home', path: '' },
+    { name: 'Sample reports', path }
+  ]
+  const list = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'CiteFox sample reports',
+    itemListElement: SAMPLES.map((s, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: `${s.title} (sample)`,
+      url: absolute(`${path}${s.slug}/`)
+    }))
+  }
+  const card = (s) => {
+    const thumb = thumbs[s.slug]
+    const img = thumb
+      ? `<a class="sample-thumb" href="${s.slug}/" tabindex="-1" aria-hidden="true"><img src="${root}media/samples/${thumb}" alt="" width="1440" height="900" loading="lazy" decoding="async" /></a>`
+      : ''
+    return `          <li class="mini sample">${img}<p class="eyebrow small">${e(s.goal)}</p><h2><a href="${s.slug}/">${e(s.title)}</a></h2><p>${e(s.description)}</p></li>`
+  }
+  const body = `    <main id="main" class="wrap doc wide">
+      ${breadcrumbs(trail, root)}
+      <h1>Sample AI visibility reports</h1>
+      <p class="lead left">Six client-ready reports made by CiteFox for a sample site, exactly as the app downloads them (Download › Offline HTML). Open one, click any number to see its list, and switch engines at the top.</p>
+      <ul class="cards samples">
+${SAMPLES.map(card).join('\n')}
+      </ul>
+      <p class="try"><a class="button ghost" href="../demo/#/reports">Try Reports in the live demo</a><a class="try-link" href="../#download">Download CiteFox</a></p>
+      <p class="small muted">The sample site, its questions and its results are made up for this demo. Read how each report works in the <a href="../docs/">docs</a>.</p>
+    </main>`
+  return {
+    path,
+    file: 'samples/index.html',
+    html: page({
+      path,
+      root,
+      title: 'Sample AI Visibility Reports for Clients | CiteFox',
+      description:
+        'Six sample AI visibility reports made with CiteFox: visibility, what changed, impact review, pitch audit, content plan and head-to-head. Open them in your browser.',
+      body,
+      data: [breadcrumbData(trail), list],
+      current: 'samples'
     })
   }
 }

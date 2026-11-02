@@ -128,6 +128,20 @@ function linkItem(link: CitedSiteRow['links'][number], row: CitedSiteRow): Drill
   }
 }
 
+/**
+ * The same link can sit under two rows (one answer citing a site counted twice), and
+ * the list grid needs one id per row: a repeat gets `#2`, `#3`… (a duplicate key made
+ * the links drill loop until React gave up: "Maximum update depth exceeded").
+ */
+export function uniqueIds(items: readonly DrillItem[]): DrillItem[] {
+  const seen = new Map<string, number>()
+  return items.map((item) => {
+    const count = (seen.get(item.id) ?? 0) + 1
+    seen.set(item.id, count)
+    return count === 1 ? item : { ...item, id: `${item.id}#${count}` }
+  })
+}
+
 const LINK_COLUMNS = [
   { id: 'site', label: 'Site', width: 'minmax(120px, 0.6fr)' },
   { id: 'position', label: 'Position', align: 'end' as const, width: '84px' }
@@ -153,7 +167,7 @@ export function allLinksDrill(
     noun: ['link', 'links'],
     primaryLabel: 'Link',
     columns: LINK_COLUMNS,
-    items: ordered.flatMap((row) => row.links.map((link) => linkItem(link, row))),
+    items: uniqueIds(ordered.flatMap((row) => row.links.map((link) => linkItem(link, row)))),
     summary: [
       { label: 'Your site', group: 'you' },
       { label: 'Competitors', group: 'competitor' },
@@ -243,7 +257,9 @@ export function kindLinksDrill(
     noun: ['link', 'links'],
     primaryLabel: 'Link',
     columns: LINK_COLUMNS,
-    items: kindSites(kind, rows).flatMap((row) => row.links.map((link) => linkItem(link, row))),
+    items: uniqueIds(
+      kindSites(kind, rows).flatMap((row) => row.links.map((link) => linkItem(link, row)))
+    ),
     note: 'Select a link to open its question on that check, or its address to open the page.',
     scope: scopeOf(scope)
   }

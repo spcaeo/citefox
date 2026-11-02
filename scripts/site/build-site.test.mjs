@@ -124,6 +124,8 @@ describe.each(Object.keys(docs))('%s', (file) => {
         if (path.endsWith('/') || resolved === '.') resolved = join(resolved, 'index.html')
       }
       if (resolved.startsWith('media/')) continue // screenshots, copied at build time
+      // The live demo and the sample reports: made by npm run demo:build / samples:build.
+      if (resolved.startsWith('demo/') || /^samples\/[^/]+\/index\.html$/.test(resolved)) continue
       const exists = docs[resolved] || existsSync(join(SITE, resolved))
       expect(exists, `${file}: ${target}`).toBeTruthy()
       if (hash && docs[resolved])
