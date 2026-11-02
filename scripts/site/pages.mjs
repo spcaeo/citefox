@@ -69,8 +69,8 @@ export function home({ media, version }) {
   // The product video plays silently in the hero (autoplay needs muted); the link opens
   // the same video with its music. Without it the hero shows the screenshot.
   const poster = media['demo-poster.png']
-  const heroMedia = media['demo-silent.mp4']
-    ? `<figure class="shot hero-video"><video class="shot" autoplay muted loop playsinline preload="metadata"${poster ? ` poster="${root}media/demo-poster.png" width="${poster.width}" height="${poster.height}"` : ''} aria-label="CiteFox product video: how often AI answers cite you, which page wins, who is cited instead, what to fix, and client-ready reports"><source src="${root}media/demo-silent.mp4" type="video/mp4" /></video>${media['demo.mp4'] ? `<figcaption class="small"><a href="${root}media/demo.mp4" target="_blank" rel="noopener">▶ Watch with sound</a></figcaption>` : ''}</figure>`
+  const heroMedia = media['demo.mp4']
+    ? `<figure class="shot hero-video"><video class="shot" data-hero-video autoplay muted loop playsinline preload="auto"${poster ? ` poster="${root}media/demo-poster.png" width="${poster.width}" height="${poster.height}"` : ''} aria-label="CiteFox product video: how often AI answers cite you, which page wins, who is cited instead, what to fix, and client-ready reports"><source src="${root}media/demo.mp4" type="video/mp4" /></video><button type="button" class="sound-btn" data-sound aria-pressed="false">🔊 Sound on</button><figcaption class="small">A 75-second tour with music. Browsers start videos muted: press <strong>Sound on</strong> to hear it.</figcaption></figure>`
     : figure(
         media,
         'hero.png',

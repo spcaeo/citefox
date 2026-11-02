@@ -7,7 +7,7 @@
 
 [![Latest release][badge-version]][latest]
 [![Total downloads][badge-downloads]][releases]
-[![License: source-available][badge-license]](LICENSE)
+[![License: source-available][badge-license]](https://github.com/spcaeo/citefox/blob/main/LICENSE)
 [![Platforms: macOS, Windows, Linux][badge-platforms]](#download-and-install)
 [![GitHub stars][badge-stars]][stargazers]
 
@@ -15,9 +15,9 @@
 [![Download for Windows][button-win]][site]
 [![Download for Linux][button-linux]][site]
 
-<a href="media/demo.mp4"><img src="media/demo.gif" alt="CiteFox product video: see how often AI answers cite you and the trend, then which page AI cites and where it ranks among the sources" width="900"></a>
+<a href="https://github.com/spcaeo/citefox/blob/main/media/demo.mp4"><img src="media/demo.gif" alt="CiteFox product video: see how often AI answers cite you and the trend, then which page AI cites and where it ranks among the sources" width="900"></a>
 
-[▶ Watch the 75-second video with sound](media/demo.mp4)
+[▶ Watch the 75-second video with sound](https://github.com/spcaeo/citefox/blob/main/media/demo.mp4)
 
 [Website][site] · [Live demo][demo] · [Sample reports][samples] · [Docs][docs] · [Compare](#how-citefox-compares) · [FAQ](#faq) · [Releases][releases]
 
@@ -91,7 +91,7 @@ The exact services and their terms are listed under [Build from source](#service
 - Linux: `~/.config/CiteFox`
 
 Settings and databases keep only a reference to each keychain item, never the key itself. Every
-message CiteFox sends, and how to have it deleted, is in [Docs/PRIVACY.md](Docs/PRIVACY.md).
+message CiteFox sends, and how to have it deleted, is in [Docs/PRIVACY.md](https://github.com/spcaeo/citefox/blob/main/Docs/PRIVACY.md).
 
 </details>
 
@@ -115,7 +115,7 @@ message CiteFox sends, and how to have it deleted, is in [Docs/PRIVACY.md](Docs/
 - More report sections and downloads, matched to what agencies send their clients
 - Better first-run setup: reading a sitemap during setup, and clearer help on every screen
 
-Follow [Releases][releases] and the [changelog](CHANGELOG.md) for what has shipped. Ideas are welcome
+Follow [Releases][releases] and the [changelog](https://github.com/spcaeo/citefox/blob/main/CHANGELOG.md) for what has shipped. Ideas are welcome
 in [Discussions][discussions].
 
 </details>
@@ -220,7 +220,7 @@ fixes work?") or **By report**. See them for yourself in the [sample reports][sa
 
 ![CiteFox Reports home with the six ready reports](media/reports-home.png)
 
-[Try the live demo][demo] · [Watch the demo video](media/demo.mp4) · [Getting started guide][doc-getting-started]
+[Try the live demo][demo] · [Watch the demo video](https://github.com/spcaeo/citefox/blob/main/media/demo.mp4) · [Getting started guide][doc-getting-started]
 
 ## Supported AI engines
 
@@ -270,7 +270,7 @@ More terms in the [GEO and AEO glossary][glossary].
 
 ## How CiteFox compares
 
-Facts about other tools come from each vendor's own website, pricing page and docs, checked on 2026-11-02. The full matrix, with a source for every cell and three more tools (Rankscale, Goodie AI and Similarweb), is in **[Docs/COMPARISON.md](Docs/COMPARISON.md)**.
+Facts about other tools come from each vendor's own website, pricing page and docs, checked on 2026-11-02. The full matrix, with a source for every cell and three more tools (Rankscale, Goodie AI and Similarweb), is in **[Docs/COMPARISON.md](https://github.com/spcaeo/citefox/blob/main/Docs/COMPARISON.md)**.
 
 ✓ yes · ◐ partly, as an add-on or on some plans · ✗ no, or not found in its docs · ? not confirmed on the vendor's pages
 
@@ -407,7 +407,7 @@ Not yet. A self-hosted server edition, so a team or agency can run CiteFox on it
 
 ### Is CiteFox open source?
 
-CiteFox is source-available, not open source. The full code is public on GitHub: you can read it, run it, change it for your own use and send improvements. Copies you share must keep the CiteFox name and sponsors. See [LICENSE](LICENSE).
+CiteFox is source-available, not open source. The full code is public on GitHub: you can read it, run it, change it for your own use and send improvements. Copies you share must keep the CiteFox name and sponsors. See [LICENSE](https://github.com/spcaeo/citefox/blob/main/LICENSE).
 
 ### Can agencies use CiteFox for client reports?
 
@@ -419,7 +419,7 @@ A Mac, Windows or Linux computer, a key for a search data API (CiteFox links to 
 
 ### How does CiteFox compare with Profound, Peec AI and Otterly.AI?
 
-CiteFox is a free desktop app that keeps your data on your computer, checks whether the page you want cited is the one cited, and gives each logged fix a 14-day verdict. Hosted tools such as Profound, Peec AI and Otterly.AI offer team dashboards, more engines, prompt volume data, AI crawler analytics and APIs. See [How CiteFox compares](#how-citefox-compares) and the full matrix with a source for every fact in [Docs/COMPARISON.md](Docs/COMPARISON.md).
+CiteFox is a free desktop app that keeps your data on your computer, checks whether the page you want cited is the one cited, and gives each logged fix a 14-day verdict. Hosted tools such as Profound, Peec AI and Otterly.AI offer team dashboards, more engines, prompt volume data, AI crawler analytics and APIs. See [How CiteFox compares](#how-citefox-compares) and the full matrix with a source for every fact in [Docs/COMPARISON.md](https://github.com/spcaeo/citefox/blob/main/Docs/COMPARISON.md).
 
 ### Why does my computer warn me when I open CiteFox?
 
@@ -433,8 +433,8 @@ You pick the markets: a country and language pair, such as United States · Engl
 
 - **Questions, ideas and show-and-tell:** [GitHub Discussions][discussions]
 - **Bugs and feature requests:** [GitHub Issues][issues] (please use the forms)
-- **Code:** issues, ideas and pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) for the code layout, tests and the pull request checklist, and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
-- **Security problems** go to [SECURITY.md](SECURITY.md), not to Issues. For help using CiteFox, see [SUPPORT.md](SUPPORT.md).
+- **Code:** issues, ideas and pull requests are welcome. Read [CONTRIBUTING.md](https://github.com/spcaeo/citefox/blob/main/CONTRIBUTING.md) for the code layout, tests and the pull request checklist, and [CODE_OF_CONDUCT.md](https://github.com/spcaeo/citefox/blob/main/CODE_OF_CONDUCT.md).
+- **Security problems** go to [SECURITY.md](https://github.com/spcaeo/citefox/blob/main/SECURITY.md), not to Issues. For help using CiteFox, see [SUPPORT.md](https://github.com/spcaeo/citefox/blob/main/SUPPORT.md).
 
 If CiteFox helps you, a ⭐ on GitHub helps other marketers find it.
 
@@ -449,11 +449,11 @@ sh scripts/try.sh     # opens CiteFox with live reload, on its own "CiteFox Dev"
 
 `npm run dev` does the same with the default data folder. `npm run build` compiles the app, `npm run dist` builds installers for your computer, and `npm run test:unit` runs the tests (they are offline and need no keys). Setup in a source build is the same as in an installed one.
 
-[CONTRIBUTING.md](CONTRIBUTING.md) has every script, the e2e suite in Docker, running a second copy, testing installed builds, packaging and the code layout. Releases are described in [Docs/RELEASING.md](Docs/RELEASING.md). The public site in `site/` is built by `npm run site:build` from `Docs/help/` (see [Docs/PUBLISHING.md](Docs/PUBLISHING.md)).
+[CONTRIBUTING.md](https://github.com/spcaeo/citefox/blob/main/CONTRIBUTING.md) has every script, the e2e suite in Docker, running a second copy, testing installed builds, packaging and the code layout. Releases are described in [Docs/RELEASING.md](https://github.com/spcaeo/citefox/blob/main/Docs/RELEASING.md). The public site in `site/` is built by `npm run site:build` from `Docs/help/` (see [Docs/PUBLISHING.md](https://github.com/spcaeo/citefox/blob/main/Docs/PUBLISHING.md)).
 
 ### Services you connect
 
-All of these use your own account and key. [Docs/AI-PROVIDERS.md](Docs/AI-PROVIDERS.md) explains how each AI connection is used and locked down.
+All of these use your own account and key. [Docs/AI-PROVIDERS.md](https://github.com/spcaeo/citefox/blob/main/Docs/AI-PROVIDERS.md) explains how each AI connection is used and locked down.
 
 | Kind                     | Services                                                                                                                     |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
@@ -463,7 +463,7 @@ All of these use your own account and key. [Docs/AI-PROVIDERS.md](Docs/AI-PROVID
 
 ### Terms of the services you connect
 
-CiteFox runs on your own computer, and you are responsible for the terms of the services you connect. An AI assistant signed in under your personal plan is for your own use; client projects, shared computers and work on behalf of someone else need an API key. Extra search keys must be ones you are entitled to use: your own plan or a client's. [Docs/AI-PROVIDERS.md](Docs/AI-PROVIDERS.md) links to each service's terms.
+CiteFox runs on your own computer, and you are responsible for the terms of the services you connect. An AI assistant signed in under your personal plan is for your own use; client projects, shared computers and work on behalf of someone else need an API key. Extra search keys must be ones you are entitled to use: your own plan or a client's. [Docs/AI-PROVIDERS.md](https://github.com/spcaeo/citefox/blob/main/Docs/AI-PROVIDERS.md) links to each service's terms.
 
 ## Sponsors
 
@@ -472,11 +472,11 @@ CiteFox is free and source-available. Sponsors pay for its development.
 - **Gold: [FoxCue](https://foxcue.com/)**. Get cited in AI answers, with you on camera. FoxCue turns your pages into videos AI Overviews cite.
 - **Silver: [FreshlyCited](https://freshlycited.com/)**. Help Google and Bing find your new and updated pages sooner.
 
-In the app, the gold sponsor has a card at the end of every screen and the silver sponsor a small card at the foot of the sidebar. CiteFox sends sponsors nothing: links carry only `utm_source=citefox&utm_medium=app&utm_campaign=sponsor`, and logos are bundled. See [SPONSORS.md](SPONSORS.md), including a request to forks and how to become a sponsor.
+In the app, the gold sponsor has a card at the end of every screen and the silver sponsor a small card at the foot of the sidebar. CiteFox sends sponsors nothing: links carry only `utm_source=citefox&utm_medium=app&utm_campaign=sponsor`, and logos are bundled. See [SPONSORS.md](https://github.com/spcaeo/citefox/blob/main/SPONSORS.md), including a request to forks and how to become a sponsor.
 
 ## License
 
-CiteFox is **source-available** under the [CiteFox Source-Available License](LICENSE), © 2026 Space-O Technologies. You may use it for yourself and your company, including for your company's clients, read and change the code, and share copies free of charge that keep the CiteFox name, sponsors and license. It is not open source under the OSI definition. See [LICENSE](LICENSE), [NOTICE](NOTICE) and [TRADEMARKS.md](TRADEMARKS.md).
+CiteFox is **source-available** under the [CiteFox Source-Available License](https://github.com/spcaeo/citefox/blob/main/LICENSE), © 2026 Space-O Technologies. You may use it for yourself and your company, including for your company's clients, read and change the code, and share copies free of charge that keep the CiteFox name, sponsors and license. It is not open source under the OSI definition. See [LICENSE](https://github.com/spcaeo/citefox/blob/main/LICENSE), [NOTICE](https://github.com/spcaeo/citefox/blob/main/NOTICE) and [TRADEMARKS.md](https://github.com/spcaeo/citefox/blob/main/TRADEMARKS.md).
 
 Bundled fonts (Noto, Inter, Inter Tight, JetBrains Mono) are under the SIL Open Font License (`resources/fonts/OFL.txt`, `src/renderer/src/assets/fonts/OFL-*.txt`). The citation sound is CiteFox's own, synthesised by `scripts/sounds/make_jingles.py`. Sponsor names and logos, and the AI engines' names and logos, are trademarks of their owners.
 

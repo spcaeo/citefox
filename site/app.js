@@ -197,3 +197,18 @@ async function main() {
 }
 
 main()
+
+// Hero video: browsers only autoplay muted videos, so one button turns the music on (and back off).
+const heroVideo = document.querySelector('[data-hero-video]')
+const soundButton = document.querySelector('[data-sound]')
+if (heroVideo && soundButton) {
+  soundButton.addEventListener('click', () => {
+    heroVideo.muted = !heroVideo.muted
+    if (!heroVideo.muted) {
+      heroVideo.currentTime = 0
+      void heroVideo.play()
+    }
+    soundButton.textContent = heroVideo.muted ? '🔊 Sound on' : '🔇 Sound off'
+    soundButton.setAttribute('aria-pressed', String(!heroVideo.muted))
+  })
+}

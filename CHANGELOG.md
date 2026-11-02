@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.13.0 — 2026-11-02
+
 The first public release of CiteFox: a free, local AI visibility tracker. Bring your own API keys; your data stays on your computer.
 
 ### New

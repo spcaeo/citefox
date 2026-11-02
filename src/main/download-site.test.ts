@@ -185,7 +185,9 @@ describe('download page: owner rules', () => {
 
   it('copies only through the one copyable helper', () => {
     expect(app).not.toMatch(/clipboard/)
-    expect(html).not.toMatch(/clipboard|<button/)
+    expect(html).not.toMatch(/clipboard/)
+    // The only button in the page is the hero video's Sound on toggle.
+    expect(html.replace(/<button[^>]*data-sound[^>]*>/, '')).not.toMatch(/<button/)
     expect(lib.match(/clipboard/g)).toHaveLength(1)
     // app.js builds no code elements or buttons of its own.
     expect(app).not.toMatch(/createElement\(['"](code|button)['"]\)/)

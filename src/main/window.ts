@@ -13,6 +13,7 @@ import {
 import { mainWindowWebPreferences } from './window-options'
 import { app, BrowserWindow, nativeTheme, screen, type Display } from 'electron'
 import { join } from 'node:path'
+import appIcon from '../../resources/icon.png?asset'
 import { backgroundTestMode, revealWindow } from './background-mode'
 import { windowBackground } from './theme'
 
@@ -38,6 +39,9 @@ export async function createMainWindow(options?: MainWindowOptions): Promise<Bro
     // The page's --ground in the theme on screen (main/theme.ts), so nothing flashes white.
     backgroundColor: windowBackground(nativeTheme),
     title: 'CiteFox',
+    // The fox in the title bar, task bar and dock (Linux and unpackaged runs need it set here;
+    // installers take build/icon.png).
+    icon: appIcon,
     webPreferences: mainWindowWebPreferences(join(__dirname, '../preload/index.js'), {
       devTools: !app.isPackaged
     })

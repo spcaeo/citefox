@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- CiteFox app icon: a geometric fox head on the macOS icon grid (824px tile,
+       100px margin, 185px corners). Colours come from src/renderer/src/styles/tokens.css:
+       ink #16181d / ink-soft #30343d tile, brand #c2410c fur, brand-darker #7c2d12 ears.
+       The in-app FoxMark (src/renderer/src/components/Icon.tsx) and the menu-bar mark
+       (build/tray-icon.svg) use the same geometry. Render with: npm run icon -->
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#30343d"/>
+      <stop offset="1" stop-color="#16181d"/>
+    </linearGradient>
+    <linearGradient id="fur" x1="0" y1="226" x2="0" y2="812" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f26a1b"/>
+      <stop offset="1" stop-color="#c2410c"/>
+    </linearGradient>
+    <filter id="drop" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#tile)" filter="url(#drop)"/>
+  <rect x="101" y="101" width="822" height="822" rx="184" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="2"/>
+  <polygon points="262 226 424 360 600 360 762 226 790 500 824 600 512 812 200 600 234 500" fill="url(#fur)"/>
+  <polygon points="278 276 396 372 262 444" fill="#7c2d12"/>
+  <polygon points="746 276 628 372 762 444" fill="#7c2d12"/>
+  <polygon points="200 600 384 556 512 768 512 812" fill="#ffffff"/>
+  <polygon points="824 600 640 556 512 768 512 812" fill="#ffffff"/>
+  <polygon points="466 752 558 752 512 812" fill="#16181d"/>
+  <g fill="#16181d">
+    <rect x="-38" y="-17" width="76" height="34" rx="17" transform="translate(410 520) rotate(24)"/>
+    <rect x="-38" y="-17" width="76" height="34" rx="17" transform="translate(614 520) rotate(-24)"/>
+  </g>
+</svg>
