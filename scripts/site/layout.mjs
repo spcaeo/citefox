@@ -93,6 +93,7 @@ ${noindex ? '    <meta name="robots" content="noindex" />\n' : `    <link rel="c
     <meta name="twitter:image:alt" content="${e(OG_IMAGE.alt)}" />
     <link rel="icon" href="${r}icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="${r}styles.css" />
+    <link rel="stylesheet" href="${r}download.css" />
     <script type="module" src="${r}${script}"></script>
 ${data.map((d) => indent(jsonLd(d), 4)).join('\n')}
   </head>
@@ -111,7 +112,7 @@ ${data.map((d) => indent(jsonLd(d), 4)).join('\n')}
           ${link('docs/', 'Docs', 'docs')}
           ${link('glossary/', 'Glossary', 'glossary')}
           ${link('compare/', 'Compare', 'compare')}
-          ${link('#download', 'Download', 'download')}
+          ${link('download/', 'Download', 'download')}
           <a id="nav-source" href="${REPO_URL}" target="_blank" rel="noopener">GitHub</a>
         </nav>
       </div>

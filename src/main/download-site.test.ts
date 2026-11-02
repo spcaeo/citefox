@@ -25,6 +25,13 @@ interface SiteModule {
   sha256Of(asset: Asset, sums?: Record<string, string>): string
   renderNotes(markdown: string): string
   shortHash(hex: string): string
+  assetsByKey(assets: Asset[]): Record<string, Asset>
+  pickMain(
+    assets: Asset[],
+    platform: Platform,
+    version?: string
+  ): { asset: Asset; title: string; sub: string } | null
+  releaseState(status: number, release: unknown): 'ready' | 'none' | 'error'
 }
 
 const site = resolve('site')
@@ -161,6 +168,41 @@ describe('download page: buttons and files', () => {
   })
 })
 
+describe('download page: the one big button and the OS cards', () => {
+  it('says Download for <OS> with version, file type and size', () => {
+    const mac = m.pickMain(assets, { os: 'mac', arch: 'unknown' }, '0.13.0')
+    expect(mac?.asset.name).toBe(`CiteFox-${V}-mac-universal.dmg`)
+    expect(mac?.title).toBe('Download for Mac')
+    expect(mac?.sub).toBe('v0.13.0 · Universal .dmg · 10 MB')
+    expect(m.pickMain(assets, { os: 'mac', arch: 'arm64' }, '0.13.0')?.sub).toContain(
+      'Apple chip .dmg'
+    )
+    const win = m.pickMain(assets, { os: 'win', arch: 'x64' }, '0.13.0')
+    expect(win?.title).toBe('Download for Windows')
+    expect(win?.sub).toContain('Installer .exe')
+    expect(m.pickMain(assets, { os: 'linux', arch: 'x64' })?.title).toBe('Download for Linux')
+    expect(m.pickMain(assets, { os: 'mobile', arch: 'unknown' })).toBeNull()
+  })
+
+  it('tells a missing release, a release still being built and an error apart', () => {
+    expect(m.releaseState(404, null)).toBe('none')
+    expect(m.releaseState(200, { tag_name: 'v0.13.0', assets: [] })).toBe('none')
+    expect(m.releaseState(200, { tag_name: 'v0.13.0', assets })).toBe('ready')
+    expect(m.releaseState(403, null)).toBe('error')
+    expect(m.releaseState(0, null)).toBe('error')
+  })
+
+  it('has a release file for every card link, by the CI file names', () => {
+    const byKey = m.assetsByKey(assets)
+    for (const file of ['index.html', 'download/index.html']) {
+      const html = readFileSync(resolve(site, file), 'utf8')
+      const keys = [...html.matchAll(/data-asset="([^"]+)"/g)].map((x) => x[1]!)
+      expect(keys).toHaveLength(11)
+      for (const key of keys) expect(byKey[key], key).toBeDefined()
+    }
+  })
+})
+
 describe('download page: release notes', () => {
   it('escapes HTML, keeps simple formatting and stops at the file guide', () => {
     const html = m.renderNotes(
@@ -179,22 +221,35 @@ describe('download page: release notes', () => {
 })
 
 describe('download page: owner rules', () => {
-  const html = readFileSync(resolve(site, 'index.html'), 'utf8')
+  // The download section is on the home page and on its own /download/ page.
+  const pages = ['index.html', 'download/index.html'].map((file) => ({
+    file,
+    html: readFileSync(resolve(site, file), 'utf8')
+  }))
   const app = readFileSync(resolve(site, 'app.js'), 'utf8')
   const lib = readFileSync(resolve(site, 'release.js'), 'utf8')
+  const zoom = readFileSync(resolve(site, 'lightbox.js'), 'utf8')
 
-  it('copies only through the one copyable helper', () => {
+  it.each(pages)('copies only through the one copyable helper ($file)', ({ html }) => {
     expect(app).not.toMatch(/clipboard/)
+    expect(zoom).not.toMatch(/clipboard/)
     expect(html).not.toMatch(/clipboard/)
-    // The only button in the page is the hero video's Sound on toggle.
+    // The only button written in a page is the hero video's Sound on toggle.
     expect(html.replace(/<button[^>]*data-sound[^>]*>/, '')).not.toMatch(/<button/)
     expect(lib.match(/clipboard/g)).toHaveLength(1)
     // app.js builds no code elements or buttons of its own.
     expect(app).not.toMatch(/createElement\(['"](code|button)['"]\)/)
   })
 
-  it('marks every command in the page for a copy icon', () => {
-    const codes = [...html.matchAll(/<code([^>]*)>([^<]*)<\/code>/g)]
+  it('builds buttons only for the screenshot zoom: close, previous and next', () => {
+    // lightbox.js makes its buttons in one helper, each with a label; none copies.
+    expect(zoom.match(/createElement\('button'\)/g)).toHaveLength(1)
+    const labels = [...zoom.matchAll(/iconButton\(doc, '[^']+', '([^']+)'/g)].map((x) => x[1])
+    expect(labels).toEqual(['Close', 'Previous screenshot', 'Next screenshot'])
+  })
+
+  it('marks every command in the pages for a copy icon', () => {
+    const codes = pages.flatMap(({ html }) => [...html.matchAll(/<code([^>]*)>([^<]*)<\/code>/g)])
     expect(codes.length).toBeGreaterThan(0)
     for (const [, attrs, text] of codes) {
       // A bare file extension (.dmg) is prose; anything else people would copy.
@@ -203,15 +258,37 @@ describe('download page: owner rules', () => {
     }
   })
 
-  it('opens every outside link in a new window and shows the license line', () => {
-    for (const [tag] of html.matchAll(/<a [^>]*href="https?:[^>]*>/g)) {
-      expect(tag).toContain('target="_blank"')
-      expect(tag).toContain('rel="noopener"')
+  it.each(pages)(
+    'opens every outside link in a new window and shows the license line ($file)',
+    ({ html }) => {
+      for (const [tag] of html.matchAll(/<a [^>]*href="https?:[^>]*>/g)) {
+        expect(tag).toContain('target="_blank"')
+        expect(tag).toContain('rel="noopener"')
+      }
+      expect(html).toContain('Source-available')
+      expect(html).toMatch(/© 2026 <a [^>]*>Space-O Technologies<\/a>/)
+      expect(html).toMatch(/href="[^"]*LICENSE"/)
+      // The unsigned-app tip in the install strip.
+      expect(html).toContain('Run anyway')
     }
-    expect(html).toContain('Source-available')
-    expect(html).toMatch(/© 2026 <a [^>]*>Space-O Technologies<\/a>/)
-    expect(html).toMatch(/href="[^"]*LICENSE"/)
-    expect(html).toContain('Open Anyway')
-    expect(html).toContain('Run anyway')
+  )
+
+  it('keeps the full first-start steps and every file on /download/', () => {
+    const download = pages[1]!.html
+    expect(download).toContain('Open Anyway')
+    expect(download).toContain('id="unsigned"')
+    expect(download).toContain('id="files-section"')
+  })
+
+  it('shows the big button, three OS cards, the install strip and the release row', () => {
+    for (const { html } of pages) {
+      expect(html.match(/data-dl-main/g)).toHaveLength(1)
+      expect(html.match(/class="os-card"/g)).toHaveLength(3)
+      expect(html).toContain('class="install"')
+      for (const label of ['Release notes', 'Older versions', 'Checksums (SHA-256)'])
+        expect(html).toContain(label)
+    }
+    // The home hero keeps the product video and its Sound on button.
+    expect(pages[0]!.html).toContain('data-sound')
   })
 })

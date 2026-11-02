@@ -1,12 +1,10 @@
 // The pages of site/. Each returns `{ path, file, html }`.
 import {
   CONTACT_EMAIL,
-  DEMO_URL,
   LICENSE_URL,
   PUBLISHER,
   RELEASES_URL,
   REPO_URL,
-  SAMPLES_URL,
   SITE_URL,
   TAGLINE
 } from './config.mjs'
@@ -33,17 +31,20 @@ import {
 import { absolute, breadcrumbData, breadcrumbs, faqData, page } from './layout.mjs'
 import { SAMPLES } from './samples.mjs'
 import { escapeHtml as e } from './markdown.mjs'
+import { cta, downloadPage, heroActions, homeDownload } from './download.mjs'
+import { ARROW, BROWSER, DOWNLOAD, REPORT } from './icons.mjs'
 
 /** A screenshot from media (copied to site/media), or nothing if it is not made yet. */
 function figure(media, name, alt, root, { eager = false, caption = '' } = {}) {
   const info = media[name]
   if (!info) return ''
-  return `<figure class="shot"><img src="${root}media/${name}" alt="${e(alt)}" width="${info.width}" height="${info.height}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async" />${caption ? `<figcaption class="small muted">${e(caption)}</figcaption>` : ''}</figure>`
+  // The link opens the full-size image; site/lightbox.js turns it into a zoomed view.
+  return `<figure class="shot"><a class="zoom" href="${root}media/${name}" data-zoom><img src="${root}media/${name}" alt="${e(alt)}" width="${info.width}" height="${info.height}"${eager ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async" /></a>${caption ? `<figcaption class="small muted">${e(caption)}</figcaption>` : ''}</figure>`
 }
 
-export function home({ media, version }) {
-  const root = './'
-  const software = {
+/** SoftwareApplication JSON-LD for the home and download pages. */
+function softwareData(media, version) {
+  return {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name: 'CiteFox',
@@ -66,12 +67,21 @@ export function home({ media, version }) {
     keywords:
       'AI visibility tracker, AI Overview tracker, GEO, AEO, LLM SEO, generative engine optimization, answer engine optimization, AI citation tracking'
   }
+}
+
+export function download({ media, version }) {
+  return downloadPage({ page, breadcrumbs, breadcrumbData, software: softwareData(media, version) })
+}
+
+export function home({ media, version }) {
+  const root = './'
+  const software = softwareData(media, version)
   const faq = FAQ.map(({ q, a }) => ({ question: q, answer: a }))
   // The product video plays silently in the hero (autoplay needs muted); the link opens
   // the same video with its music. Without it the hero shows the screenshot.
   const poster = media['demo-poster.png']
   const heroMedia = media['demo.mp4']
-    ? `<figure class="shot hero-video"><video class="shot" data-hero-video autoplay muted loop playsinline preload="auto"${poster ? ` poster="${root}media/demo-poster.png" width="${poster.width}" height="${poster.height}"` : ''} aria-label="CiteFox product video: how often AI answers cite you, which page wins, who is cited instead, what to fix, and client-ready reports"><source src="${root}media/demo.mp4" type="video/mp4" /></video><button type="button" class="sound-btn" data-sound aria-pressed="false">🔊 Sound on</button><figcaption class="small">A 75-second tour with music. Browsers start videos muted: press <strong>Sound on</strong> to hear it.</figcaption></figure>`
+    ? `<figure class="shot hero-video" id="hero-video"><video class="shot" data-hero-video autoplay muted loop playsinline preload="auto"${poster ? ` poster="${root}media/demo-poster.png" width="${poster.width}" height="${poster.height}"` : ''} aria-label="CiteFox product video: how often AI answers cite you, which page wins, who is cited instead, what to fix, and client-ready reports"><source src="${root}media/demo.mp4" type="video/mp4" /></video><button type="button" class="sound-btn" data-sound aria-pressed="false">🔊 Sound on</button><figcaption class="small">A 75-second tour with music. Browsers start videos muted: press <strong>Sound on</strong> to hear it.</figcaption></figure>`
     : figure(
         media,
         'hero.png',
@@ -89,36 +99,29 @@ export function home({ media, version }) {
     : ''
 
   const body = `    <main id="main">
-      <section class="hero wrap" id="download">
+      <section class="hero wrap">
         <p class="eyebrow">Free desktop app · Mac, Windows and Linux · Source-available</p>
         <h1>Free AI visibility tracker for Google AI Overviews, ChatGPT and Perplexity</h1>
         <p class="lead">
-          CiteFox shows whether AI answers cite your website for the questions your buyers ask,
-          which page they cite, who they cite instead, and what to fix. A free, local alternative to
-          Profound, Peec AI, Otterly.AI and Semrush’s AI toolkit.
+          Know whether AI answers recommend you when buyers ask, which of your pages they cite,
+          which competitor they pick instead, and exactly what to fix to win them back. A free, local
+          alternative to Profound, Peec AI, Otterly.AI and Semrush’s AI toolkit.
         </p>
+        ${heroActions({ video: Boolean(media['demo.mp4']) })}
         <ul class="pills" aria-label="In short">
           <li>Bring your own API keys</li>
           <li>Data stays on your computer</li>
           <li>Six client-ready reports</li>
           <li>Server edition coming soon</li>
         </ul>
-        <div id="primary" class="primary" aria-live="polite">
-          <p class="muted">Finding the latest version…</p>
-        </div>
-        <p id="release-meta" class="muted small"></p>
-        <p id="mobile-note" class="note" hidden>
-          CiteFox is a desktop app. Open this page on your Mac or PC to download it.
-        </p>
-        <p id="other-platforms" class="small"></p>
-        <p class="try"><a class="button ghost" href="demo/">Try the live demo</a><a class="try-link" href="samples/">See sample reports</a></p>
-        <p class="small muted">The demo runs in your browser with sample data. No install, no sign-up.</p>
         ${heroMedia}
       </section>
 
+${homeDownload()}
+
       <section class="wrap" id="keys" aria-labelledby="keys-title">
-        <h2 id="keys-title">Bring your own API keys. Keep your data.</h2>
-        <p class="section-lead">CiteFox is free. It captures data through third-party services on your own pay-as-you-go accounts, so you pay them directly and nobody marks it up.</p>
+        <h2 id="keys-title">Pay only for what you use, and keep your data</h2>
+        <p class="section-lead">CiteFox is free. Checks run on your own pay-as-you-go accounts, so you pay the services directly at their price, nobody marks it up, and your data never leaves your computer.</p>
         <div class="split">
           <div class="mini">
             <h3>What you connect</h3>
@@ -141,18 +144,18 @@ ${PRIVATE.map((t) => `              <li>${e(t)}</li>`).join('\n')}
 
       <section class="band" id="why" aria-labelledby="why-title">
         <div class="wrap">
-          <h2 id="why-title">Why teams pick CiteFox</h2>
+          <h2 id="why-title">What you get with CiteFox</h2>
           <ul class="cards three">
 ${DIFFERENT.map((x) => `            <li class="mini"><h3>${e(x.title)}</h3><p>${e(x.text)}</p></li>`).join('\n')}
           </ul>
-          <p class="small"><a href="compare/">See the sourced comparison with Profound, Peec AI, Otterly.AI and six more</a></p>
+          <p class="cta-row cta-row-left">${cta('compare/', 'See the sourced comparison with Profound, Peec AI, Otterly.AI and six more', ARROW, 'text')}</p>
         </div>
       </section>
 
       <section class="band" id="features" aria-labelledby="features-title">
         <div class="wrap">
-          <h2 id="features-title">Track your citations in AI search, then win more of them</h2>
-          <p class="section-lead">GEO and AEO tools for agencies and marketing teams, in one free desktop app.</p>
+          <h2 id="features-title">Win the AI answers your buyers read</h2>
+          <p class="section-lead">Find out where AI search cites you, where it picks a competitor, and what to change, with GEO and AEO tools for agencies and marketing teams in one free desktop app.</p>
           <div class="features">
 ${FEATURES.map(
   (f) => `            <article class="feature">
@@ -162,7 +165,7 @@ ${FEATURES.map(
             </article>`
 ).join('\n')}
           </div>
-          <h3 class="sub">Also included</h3>
+          <h3 class="sub">Also in the app</h3>
           <ul class="ticks">
 ${MORE_FEATURES.map((t) => `            <li>${e(t)}</li>`).join('\n')}
           </ul>
@@ -170,7 +173,7 @@ ${MORE_FEATURES.map((t) => `            <li>${e(t)}</li>`).join('\n')}
       </section>
 
       <section class="wrap" aria-labelledby="how-title">
-        <h2 id="how-title">How CiteFox works</h2>
+        <h2 id="how-title">From your website to your first fixes in three steps</h2>
         <ol class="how">
 ${STEPS.map((s) => `          <li><h3>${e(s.title)}</h3><p>${e(s.text)}</p></li>`).join('\n')}
         </ol>
@@ -178,7 +181,7 @@ ${STEPS.map((s) => `          <li><h3>${e(s.title)}</h3><p>${e(s.text)}</p></li>
       </section>
 
       <section class="wrap" id="engines" aria-labelledby="engines-title">
-        <h2 id="engines-title">Supported AI engines</h2>
+        <h2 id="engines-title">See every AI engine your buyers use, side by side</h2>
         <p>Every buyer question is asked on each engine you pick, in each market (country and language) you sell in.</p>
         <div class="table-wrap">
           <table>
@@ -192,7 +195,7 @@ ${ENGINES.map((x) => `              <tr><th scope="row">${e(x.name)}</th><td>${e
       </section>
 
       <section class="wrap" id="real-answers" aria-labelledby="real-title">
-        <h2 id="real-title">Real answers, not guessed “prompt volume”</h2>
+        <h2 id="real-title">Decide on real AI answers, not guessed “prompt volume”</h2>
         <p><strong>Nobody has real prompt volume data.</strong> ChatGPT, Perplexity and Gemini don’t publish how often a question is asked, so every “prompt volume” figure is a modelled estimate (<a href="https://ahrefs.com/blog/how-ahrefs-estimates-ai-search-demand/" target="_blank" rel="noopener">Ahrefs</a> notes only Microsoft Copilot shares query data).</p>
         <p><strong>Chat assistants answer each person differently.</strong> ChatGPT can use your saved memories and past chats to tailor replies (<a href="https://help.openai.com/en/articles/8590148" target="_blank" rel="noopener">OpenAI help</a>), and other assistants now remember earlier conversations too.</p>
         <p><strong>Google’s AI Overviews are the steadier signal.</strong> No personal chat memory, and Google aims to keep results mostly the same for everyone. The wording stays close from day to day while the cited sources rotate (<a href="https://ahrefs.com/blog/ai-overview-change/" target="_blank" rel="noopener">Ahrefs</a>), so CiteFox anchors on AI Overviews, checks the other engines beside it, and re-checks on a schedule.</p>
@@ -205,8 +208,9 @@ ${ENGINES.map((x) => `              <tr><th scope="row">${e(x.name)}</th><td>${e
 
       <section class="band" id="reports" aria-labelledby="reports-title">
         <div class="wrap">
-          <h2 id="reports-title">Client-ready AI visibility reports</h2>
-          <p class="section-lead">Six reports, rebuilt after every check, each answering one question a client or a boss asks. <a href="${SAMPLES_URL}" target="_blank" rel="noopener">See the sample reports</a>.</p>
+          <h2 id="reports-title">Prove results to clients in one click</h2>
+          <p class="section-lead">Six client-ready AI visibility reports, rebuilt after every check. Each answers one question a client or a boss asks.</p>
+          <p class="cta-row cta-row-left">${cta('samples/', 'See the sample reports', REPORT, 'outline')}${cta('demo/#/reports', 'Try Reports in the live demo', BROWSER, 'text')}</p>
           <ul class="cards">
 ${REPORTS.map((x) => `            <li class="mini"><h3><a href="docs/${x.doc}/">${e(x.name)}</a></h3><p>${e(x.text)}</p><p class="small muted">For: ${e(x.who)}</p></li>`).join('\n')}
           </ul>
@@ -219,7 +223,7 @@ ${REPORT_EXTRAS.map((t) => `            <li>${e(t)}</li>`).join('\n')}
       </section>
 
       <section class="wrap" aria-labelledby="who-title">
-        <h2 id="who-title">Who CiteFox is for</h2>
+        <h2 id="who-title">Built for the people who answer for AI visibility</h2>
         <ul class="cards three">
 ${AUDIENCES.map((x) => `          <li class="mini"><h3>${e(x.title)}</h3><p>${e(x.text)}</p></li>`).join('\n')}
         </ul>
@@ -232,7 +236,7 @@ ${GEO_VS_SEO.map((t) => `        <p>${e(t)}</p>`).join('\n')}
       </section>
 
       <section class="wrap" aria-labelledby="control-title">
-        <h2 id="control-title">Why full control matters</h2>
+        <h2 id="control-title">Own your data, your costs and your client work</h2>
         <ul class="ticks two">
 ${CONTROL.map((t) => `          <li>${e(t)}</li>`).join('\n')}
         </ul>
@@ -256,81 +260,6 @@ ${FAQ.map((x) => `            <div class="qa"><h3>${e(x.q)}</h3><p>${e(x.a)}</p>
         </div>
       </section>
 
-      <div class="wrap">
-        <section id="unsigned" class="card" aria-labelledby="unsigned-title">
-          <h2 id="unsigned-title">Opening CiteFox the first time</h2>
-          <p>
-            CiteFox is not signed with a paid certificate yet, so your computer asks once before the
-            first start. This is expected. You can check every file against its SHA-256 below.
-          </p>
-          <div class="steps">
-            <div class="step" data-os="mac">
-              <h3>Mac</h3>
-              <ol>
-                <li>Open the downloaded <code>.dmg</code> and drag CiteFox to Applications.</li>
-                <li>Open CiteFox. macOS says it cannot check the app. Click <strong>Done</strong>.</li>
-                <li>
-                  Open <strong>System Settings › Privacy &amp; Security</strong>, scroll down and
-                  click <strong>Open Anyway</strong> next to CiteFox. Confirm with your password.
-                </li>
-                <li>
-                  On macOS 14 or older you can instead right-click CiteFox in Applications and choose
-                  <strong>Open</strong>.
-                </li>
-              </ol>
-              <p class="small muted">
-                After an update macOS may ask once to let CiteFox read its saved keys. Click
-                <strong>Always Allow</strong>.
-              </p>
-            </div>
-            <div class="step" data-os="win">
-              <h3>Windows</h3>
-              <ol>
-                <li>Run the downloaded installer.</li>
-                <li>
-                  If you see “Windows protected your PC”, click <strong>More info</strong>, then
-                  <strong>Run anyway</strong>.
-                </li>
-                <li>
-                  CiteFox installs for you only (no admin needed) and adds a Start menu and desktop
-                  shortcut.
-                </li>
-              </ol>
-            </div>
-            <div class="step" data-os="linux">
-              <h3>Linux</h3>
-              <ol>
-                <li>
-                  AppImage: allow it to run (Properties › Allow executing, or
-                  <code data-copy>chmod +x CiteFox-*.AppImage</code>) and open it.
-                </li>
-                <li>
-                  Ubuntu and Debian: install the <code>.deb</code> with
-                  <code data-copy>sudo apt install ./CiteFox-*.deb</code>
-                </li>
-              </ol>
-            </div>
-          </div>
-        </section>
-
-        <section id="files-section" class="card" aria-labelledby="files-title" hidden>
-          <h2 id="files-title">All downloads</h2>
-          <div class="files-head small muted">
-            <span>File</span><span>Size</span><span>SHA-256</span>
-          </div>
-          <ul id="files" class="files"></ul>
-          <p id="sums" class="small"></p>
-        </section>
-
-        <section id="notes-section" class="card" aria-labelledby="notes-title" hidden>
-          <h2 id="notes-title">What’s new</h2>
-          <div id="notes" class="notes"></div>
-        </section>
-
-        <p class="small">
-          <a id="older" href="${RELEASES_URL}" target="_blank" rel="noopener">Older versions and betas</a>
-        </p>
-      </div>
     </main>`
 
   return {
@@ -518,7 +447,7 @@ ${GEO_VS_SEO.map((t) => `        <p>${e(t)}</p>`).join('\n')}
         )
           .join(', ')
           .replace(/, ([^,]*)$/, ' and $1')}, and shows which of your pages each answer cites.</p>
-        <p><a class="button" href="../#download">Download CiteFox</a></p>
+        <p class="cta-row cta-row-left">${cta('../download/', 'Download CiteFox', DOWNLOAD, 'primary')}${cta('../demo/', 'Try the live demo', BROWSER)}</p>
         <p class="small">The words the app itself uses (Right page, Named, not cited, Target page) are in <a href="../docs/glossary/">Words CiteFox uses</a>.</p>
       </section>
     </main>`
@@ -575,7 +504,7 @@ export function samplesIndex({ thumbs = {} } = {}) {
       <ul class="cards samples">
 ${SAMPLES.map(card).join('\n')}
       </ul>
-      <p class="try"><a class="button ghost" href="../demo/#/reports">Try Reports in the live demo</a><a class="try-link" href="../#download">Download CiteFox</a></p>
+      <p class="cta-row cta-row-left">${cta('../demo/#/reports', 'Try Reports in the live demo', BROWSER)}${cta('../download/', 'Download CiteFox', DOWNLOAD, 'text')}</p>
       <p class="small muted">The sample site, its questions and its results are made up for this demo. Read how each report works in the <a href="../docs/">docs</a>.</p>
     </main>`
   return {
@@ -600,7 +529,7 @@ export function notFound() {
       <h1>Page not found</h1>
       <p class="lead left">This page does not exist, or it has moved.</p>
       <ul>
-        <li><a href="${root}">Download CiteFox</a></li>
+        <li><a href="${root}download/">Download CiteFox</a></li>
         <li><a href="${root}docs/">Read the docs</a></li>
         <li><a href="${root}glossary/">GEO and AEO glossary</a></li>
       </ul>

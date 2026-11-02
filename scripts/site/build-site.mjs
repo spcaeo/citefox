@@ -22,7 +22,16 @@ import { fileURLToPath } from 'node:url'
 import { SITE_URL } from './config.mjs'
 import { comparePage } from './compare.mjs'
 import { parseFrontMatter, renderMarkdown } from './markdown.mjs'
-import { docOrder, docPage, docsIndex, glossary, home, notFound, samplesIndex } from './pages.mjs'
+import {
+  docOrder,
+  docPage,
+  docsIndex,
+  download,
+  glossary,
+  home,
+  notFound,
+  samplesIndex
+} from './pages.mjs'
 import { SAMPLES } from './samples.mjs'
 
 const here = dirname(fileURLToPath(import.meta.url))
@@ -110,6 +119,7 @@ export function buildSite(root = REPO_ROOT) {
   const docs = readDocs(root)
   const pages = [
     home({ media, version }),
+    download({ media, version }),
     docsIndex({ docs }),
     ...docOrder().map((id) => docPage({ docs, id })),
     glossary(),

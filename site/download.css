@@ -1,0 +1,705 @@
+/* The download section (scripts/site/download.mjs, filled by site/app.js) and the
+   screenshot zoom (site/lightbox.js). Uses the tokens in styles.css. Every link
+   and button here is at least 44 px tall. */
+
+.icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  flex: none;
+}
+
+/* ---- The big button ---- */
+.dl-primary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto 28px;
+}
+
+.dl-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 76px;
+  min-width: 320px;
+  padding: 16px 34px 16px 26px;
+  border-radius: 16px;
+  background: var(--fox);
+  color: var(--on-fox);
+  text-decoration: none;
+  text-align: left;
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.08),
+    0 10px 24px -10px var(--fox);
+  transition:
+    background 0.15s,
+    transform 0.15s;
+}
+
+.dl-main:hover {
+  background: var(--fox-hover);
+}
+
+.dl-main:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.dl-main-icon .icon {
+  width: 36px;
+  height: 36px;
+}
+
+.dl-main-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dl-main-title {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.dl-main-sub {
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.92;
+}
+
+.dl-main[data-state='none'],
+.dl-main[data-state='error'] {
+  background: var(--spruce);
+  color: var(--spruce-ink);
+  box-shadow: none;
+}
+
+.dl-status {
+  margin: 0;
+  max-width: 520px;
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.dl-status:empty {
+  display: none;
+}
+
+.dl-status a,
+.dl-also a {
+  font-weight: 600;
+}
+
+.dl-also {
+  margin: 0;
+  color: var(--ink-3);
+}
+
+.dl-also a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dl-main:hover {
+    transform: translateY(-1px);
+  }
+
+  .dl-main[data-state='loading'] .dl-main-icon {
+    animation: dl-pulse 1.2s ease-in-out infinite;
+  }
+}
+
+@keyframes dl-pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* ---- Three OS cards ---- */
+.dl-section,
+.dl-page {
+  max-width: 1040px;
+  scroll-margin-top: 16px;
+}
+
+.os-cards {
+  list-style: none;
+  margin: 8px 0 32px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  scroll-margin-top: 16px;
+}
+
+.os-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  padding: 26px 20px 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.os-card.own {
+  border-color: var(--fox);
+  box-shadow: 0 0 0 1px var(--fox);
+}
+
+.os-icon {
+  display: flex;
+  justify-content: center;
+  color: var(--ink);
+}
+
+.os-icon .icon {
+  width: 52px;
+  height: 52px;
+}
+
+.os-card .os-name {
+  margin: 4px 0 0;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.os-req {
+  margin: 0;
+  min-height: 2.9em;
+  font-size: 14px;
+  color: var(--ink-3);
+}
+
+.os-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.dl-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 50px;
+  padding: 10px 16px;
+  border: 2px solid var(--fox);
+  border-radius: 10px;
+  background: var(--fox);
+  color: var(--on-fox);
+  font-weight: 650;
+  font-size: 16px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.dl-btn:hover {
+  background: var(--fox-hover);
+  border-color: var(--fox-hover);
+}
+
+.dl-btn .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.dl-btn-2 {
+  background: transparent;
+  color: var(--fox-deep);
+}
+
+.dl-btn-2:hover {
+  background: var(--inset);
+  color: var(--fox-deep);
+}
+
+.dl-size {
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.dl-size:not(:empty)::before {
+  content: '· ';
+}
+
+.os-more {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0 14px;
+  margin: auto 0 0;
+  padding-top: 4px;
+  font-size: 14px;
+}
+
+.dl-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 6px;
+  color: var(--fox-deep);
+  font-weight: 600;
+  text-underline-offset: 3px;
+}
+
+.dl-link .dl-size {
+  display: none;
+}
+
+.os-hint {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+/* ---- Install in a minute ---- */
+.install-title {
+  margin: 0 0 12px;
+  font-size: 20px;
+  text-align: left;
+}
+
+.install {
+  list-style: none;
+  margin: 0 0 24px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  text-align: left;
+}
+
+.install li {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  column-gap: 12px;
+  align-items: start;
+}
+
+.install-icon {
+  grid-row: span 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--inset);
+  color: var(--fox-deep);
+}
+
+.install h3,
+.install h4 {
+  margin: 0 0 4px;
+  font-size: 17px;
+  line-height: 1.3;
+}
+
+.install p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+
+/* ---- Release notes · Older versions · Checksums ---- */
+.release-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.release-meta {
+  margin: 0;
+}
+
+.release-meta:empty {
+  display: none;
+}
+
+.release-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ---- Call-to-action buttons (download.mjs cta()): one style for the whole site ---- */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 22px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  font-weight: 650;
+  font-size: 16px;
+  line-height: 1.2;
+  text-decoration: none;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+}
+
+.cta .icon {
+  width: 22px;
+  height: 22px;
+}
+
+.cta:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.cta-primary {
+  background: var(--fox);
+  border-color: var(--fox);
+  color: var(--on-fox);
+}
+
+.cta-primary:hover {
+  background: var(--fox-hover);
+  border-color: var(--fox-hover);
+  color: var(--on-fox);
+}
+
+.cta-outline {
+  background: var(--surface);
+  border-color: var(--fox);
+  color: var(--fox-deep);
+}
+
+.cta-outline:hover {
+  background: var(--inset);
+  color: var(--fox-deep);
+}
+
+.cta-outline .icon {
+  color: var(--fox);
+}
+
+.cta-text {
+  min-height: 44px;
+  padding: 0 10px;
+  color: var(--fox-deep);
+}
+
+.cta-text span {
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 4px;
+}
+
+.cta-text:hover span {
+  text-decoration-color: currentColor;
+}
+
+.cta-text .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.cta-sm {
+  min-height: 44px;
+  padding: 0 16px;
+  border-width: 1.5px;
+  border-radius: 999px;
+  font-size: 15px;
+}
+
+.cta-sm .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.cta-row-left {
+  justify-content: flex-start;
+  margin: 16px 0;
+}
+
+.cta-row-text {
+  gap: 4px 14px;
+}
+
+/* The hero: Download, Watch the video and Try the live demo the same height. */
+.hero-actions .cta-row:first-child .dl-main,
+.hero-actions .cta-row:first-child .cta {
+  min-height: 68px;
+}
+
+.hero-actions .dl-main {
+  min-width: 300px;
+  padding: 10px 28px 10px 22px;
+}
+
+.hero-actions .cta-row:first-child .cta {
+  padding: 0 24px;
+  border-radius: 16px;
+  font-size: 17px;
+}
+
+.hero-actions .hero-note {
+  margin: 0;
+}
+
+/* ---- The /download/ page ---- */
+.dl-page {
+  padding-top: 24px;
+  text-align: center;
+}
+
+.dl-page .crumbs ol {
+  justify-content: flex-start;
+}
+
+.dl-page h1 {
+  margin-top: 8px;
+}
+
+.dl-page .os-card .os-name {
+  font-size: 22px;
+}
+
+.dl-page .install-title {
+  font-size: 22px;
+}
+
+@media (max-width: 720px) {
+  .dl-main {
+    width: 100%;
+    min-width: 0;
+    padding: 14px 18px;
+  }
+
+  .dl-main-title {
+    font-size: 20px;
+  }
+
+  .os-cards,
+  .install {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .os-req {
+    min-height: 0;
+  }
+
+  .release-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .release-links a {
+    flex: 1 1 100%;
+  }
+
+  .hero-actions .cta-row:first-child {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-actions .cta-row:first-child .cta {
+    min-height: 56px;
+  }
+
+  .hero-actions .dl-main {
+    min-width: 0;
+  }
+
+  .cta-row-left .cta-primary,
+  .cta-row-left .cta-outline {
+    flex: 1 1 100%;
+  }
+}
+
+/* ---- Screenshot zoom (site/lightbox.js) ---- */
+.zoom {
+  display: block;
+  cursor: zoom-in;
+  border-radius: 10px;
+}
+
+.zoom:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+html.lb-locked {
+  overflow: hidden;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 56px 72px 24px;
+  border: 0;
+  background: rgba(20, 15, 11, 0.97);
+  color: #f3e9d8;
+}
+
+.lightbox[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox::backdrop {
+  background: transparent;
+}
+
+.lb-figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.lb-img {
+  display: block;
+  max-width: min(1600px, 100%);
+  max-height: calc(100% - 56px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  background: var(--inset);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.lb-caption {
+  max-width: 70ch;
+  font-size: 15px;
+  text-align: center;
+  color: #f3e9d8;
+}
+
+.lb-btn {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  cursor: pointer;
+}
+
+.lb-btn:hover {
+  background: rgba(255, 255, 255, 0.26);
+}
+
+.lb-btn:focus-visible {
+  outline: 3px solid #f0915f;
+  outline-offset: 2px;
+}
+
+.lb-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.lb-close {
+  top: 12px;
+  right: 12px;
+}
+
+.lb-prev,
+.lb-next {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lb-prev {
+  left: 12px;
+}
+
+.lb-next {
+  right: 12px;
+}
+
+@media (max-width: 720px) {
+  .lightbox {
+    padding: 64px 12px 80px;
+  }
+
+  .lb-prev,
+  .lb-next {
+    top: auto;
+    bottom: 16px;
+    transform: none;
+  }
+
+  .lb-prev {
+    left: calc(50% - 60px);
+  }
+
+  .lb-next {
+    right: calc(50% - 60px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lightbox[open] {
+    animation: lb-fade 0.18s ease-out;
+  }
+
+  .lightbox[open] .lb-img {
+    animation: lb-zoom 0.22s ease-out;
+  }
+}
+
+@keyframes lb-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes lb-zoom {
+  from {
+    transform: scale(0.94);
+    opacity: 0.4;
+  }
+}

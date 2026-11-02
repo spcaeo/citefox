@@ -25,6 +25,7 @@
     <meta name="twitter:image:alt" content="CiteFox: free AI visibility tracker" />
     <link rel="icon" href="./icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./download.css" />
     <script type="module" src="./app.js"></script>
     <script type="application/ld+json">
     {
@@ -205,43 +206,107 @@
           <a href="./docs/">Docs</a>
           <a href="./glossary/">Glossary</a>
           <a href="./compare/">Compare</a>
-          <a href="./#download">Download</a>
+          <a href="./download/">Download</a>
           <a id="nav-source" href="https://github.com/spcaeo/citefox" target="_blank" rel="noopener">GitHub</a>
         </nav>
       </div>
     </header>
 
     <main id="main">
-      <section class="hero wrap" id="download">
+      <section class="hero wrap">
         <p class="eyebrow">Free desktop app · Mac, Windows and Linux · Source-available</p>
         <h1>Free AI visibility tracker for Google AI Overviews, ChatGPT and Perplexity</h1>
         <p class="lead">
-          CiteFox shows whether AI answers cite your website for the questions your buyers ask,
-          which page they cite, who they cite instead, and what to fix. A free, local alternative to
-          Profound, Peec AI, Otterly.AI and Semrush’s AI toolkit.
+          Know whether AI answers recommend you when buyers ask, which of your pages they cite,
+          which competitor they pick instead, and exactly what to fix to win them back. A free, local
+          alternative to Profound, Peec AI, Otterly.AI and Semrush’s AI toolkit.
         </p>
+        <div class="dl-primary hero-actions" data-dl-primary>
+          <div class="cta-row">
+            <a class="dl-main" data-dl-main data-state="loading" href="https://github.com/spcaeo/citefox/releases" target="_blank" rel="noopener">
+            <span class="dl-main-icon" data-dl-icon><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 3.5v11M7 10l5 5 5-5M4.5 16.5v2.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-2.5"/></svg></span>
+            <span class="dl-main-text">
+              <span class="dl-main-title" data-dl-title>Download CiteFox</span>
+              <span class="dl-main-sub" data-dl-sub>Finding the latest version…</span>
+            </span>
+          </a>
+            <a class="cta cta-outline" href="#hero-video" data-watch><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18z"/><path fill="currentColor" d="M10 8.3v7.4l6-3.7z"/></svg><span>Watch the video</span></a>
+            <a class="cta cta-outline" href="demo/"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4.5 4.5h15a1 1 0 0 1 1 1v8M3.5 13.5v-8a1 1 0 0 1 1-1M3.5 8.5h17M3.5 13.5v4a1 1 0 0 0 1 1h6M14 13l6.5 2.4-2.8 1.2-1.2 2.8z"/></svg><span>Try the live demo</span></a>
+          </div>
+          <div class="cta-row cta-row-text">
+            <a class="cta cta-text" href="samples/"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M6 3.5h8.5l3.5 3.5v13.5H6zM14.5 3.5V7H18M9 17v-3M12 17v-6M15 17v-4.5"/></svg><span>Sample reports</span></a>
+            <a class="cta cta-text" href="compare/"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 5.5h6.5v13H4zM13.5 5.5H20v13h-6.5zM6 9h2.5M6 12h2.5M15.5 9H18M15.5 12H18"/></svg><span>Compare</span></a>
+            <a class="cta cta-text" href="#download"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 3.5v11M7 10l5 5 5-5M4.5 16.5v2.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-2.5"/></svg><span>All downloads</span></a>
+          </div>
+          <p class="dl-status" data-dl-status aria-live="polite"></p>
+          <p class="note" data-dl-mobile hidden>CiteFox is a desktop app. Open this page on your Mac or PC to download it, or pick a file below.</p>
+          <p class="small muted hero-note">The demo runs in your browser with sample data. No install, no sign-up.</p>
+        </div>
         <ul class="pills" aria-label="In short">
           <li>Bring your own API keys</li>
           <li>Data stays on your computer</li>
           <li>Six client-ready reports</li>
           <li>Server edition coming soon</li>
         </ul>
-        <div id="primary" class="primary" aria-live="polite">
-          <p class="muted">Finding the latest version…</p>
+        <figure class="shot hero-video" id="hero-video"><video class="shot" data-hero-video autoplay muted loop playsinline preload="auto" poster="./media/demo-poster.png" width="1920" height="1080" aria-label="CiteFox product video: how often AI answers cite you, which page wins, who is cited instead, what to fix, and client-ready reports"><source src="./media/demo.mp4" type="video/mp4" /></video><button type="button" class="sound-btn" data-sound aria-pressed="false">🔊 Sound on</button><figcaption class="small">A 75-second tour with music. Browsers start videos muted: press <strong>Sound on</strong> to hear it.</figcaption></figure>
+      </section>
+
+      <section class="wrap dl-section" id="download" aria-labelledby="download-title">
+        <h2 id="download-title">Download CiteFox</h2>
+        <p class="section-lead">Free for Mac, Windows and Linux. Pick your computer.</p>
+        <ul class="os-cards" id="dl-cards" aria-label="Downloads by operating system">
+          <li class="os-card" data-os="mac">
+            <span class="os-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M15.6 7.4c-1.3 0-2.3.8-3.6.8s-2.2-.8-3.5-.8C6.2 7.4 4.4 9.4 4.4 12.6c0 3.9 2.5 8.6 4.6 8.6 1.1 0 1.6-.7 3-.7s1.8.7 3 .7c1.5 0 2.8-2.1 3.7-4.4-1.6-.7-2.6-2.2-2.6-4 0-1.5.8-2.9 2-3.6-.7-1.1-1.6-1.8-2.5-1.8z"/><path fill="currentColor" d="M12.3 6.4c-.2-2 1.2-3.9 3.3-4.2.2 2-1.2 3.9-3.3 4.2z"/></svg></span>
+            <h3 class="os-name">macOS</h3>
+            <p class="os-req">macOS 11 Big Sur or later. Apple chip and Intel.</p>
+            <div class="os-actions">
+              <a class="dl-btn" data-asset="mac-universal-dmg" href="https://github.com/spcaeo/citefox/releases" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 3.5v11M7 10l5 5 5-5M4.5 16.5v2.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-2.5"/></svg><span class="dl-btn-label">Universal .dmg</span><span class="dl-size" data-size></span></a>
+            </div>
+            <p class="os-more"><a class="dl-link" data-asset="mac-arm64-dmg" href="https://github.com/spcaeo/citefox/releases" target="_blank" rel="noopener"><span class="dl-btn-label">Apple chip .dmg</span><span class="dl-size" data-size></span></a><a class="dl-link" data-asset="mac-x64-dmg" href="https://github.com/spcaeo/citefox/releases" target="_blank" rel="noopener"><span class="dl-btn-label">Intel .dmg</span><span class="dl-size" data-size></span></a></p>
+            <p class="os-hint">Universal works on every Mac.</p>
+          </li>
+          <li class="os-card" data-os="win">
+            <span class="os-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M3 5.2l7.6-1v7.3H3zM11.6 4.1L21 2.8v8.7h-9.4zM3 12.5h7.6v7.3L3 18.8zM11.6 12.5H21v8.7l-9.4-1.3z"/></svg></span>
+            <h3 class="os-name">Windows</h3>
+            <p class="os-req">Windows 10 or 11, 64-bit.</p>
+            <div class="os-actions">
+              <a class="dl-btn" data-asset="win-x64-installer" href="https://github.com/spcaeo/citefox/releases" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 3.5v11M7 10l5 5 5-5M4.5 16.5v2.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-2.5"/></svg><span class="dl-btn-label">Installer .exe</span><span class="dl-size" data-size></span></a>
+              <a class="dl-btn dl-btn-2" data-asset="win-x64-portable" href="https://github.com/spcaeo/citefox/releases" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 3.5v11M7 10l5 5 5-5M4.5 16.5v2.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-2.5"/></svg><span class="dl-btn-label">Portable .exe</span><span class="dl-size" data-size></span></a>
+            </div>
+            <p class="os-more"><a class="dl-link" data-asset="win-arm64-installer" href="https://github.com/spcaeo/citefox/releases" target="_blank" rel="noopener"><span class="dl-btn-label">Arm installer</span><span class="dl-size" data-size></span></a><a class="dl-link" data-asset="win-arm64-portable" href="https://github.com/spcaeo/citefox/releases" target="_blank" rel="noopener"><span class="dl-btn-label">Arm portable</span><span class="dl-size" data-size></span></a></p>
+            <p class="os-hint">Portable runs without installing.</p>
+          </li>
+          <li class="os-card" data-os="linux">
+            <span class="os-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M12 2.2c-2.6 0-4.1 2.1-4.1 4.8 0 1.4.3 2.2-.5 3.5C6.3 12.4 5 14.6 5 17c0 2.6 2.9 4.3 7 4.3s7-1.7 7-4.3c0-2.4-1.3-4.6-2.4-6.5-.8-1.3-.5-2.1-.5-3.5 0-2.7-1.5-4.8-4.1-4.8zM12 11.3c-2 0-3.5 2.1-3.5 4.6 0 2.3 1.5 3.9 3.5 3.9s3.5-1.6 3.5-3.9c0-2.5-1.5-4.6-3.5-4.6zM10.5 5.6a.9 1.1 0 1 0 0 2.2.9 1.1 0 1 0 0-2.2zM13.5 5.6a.9 1.1 0 1 0 0 2.2.9 1.1 0 1 0 0-2.2zM10.7 8.6h2.6L12 10.2z"/><path fill="currentColor" d="M4.6 20.6c-.2-1.2 1.2-2.2 2.8-1.9l1.6 2.1c-.8 1.1-4.2 1-4.4-.2zM19.4 20.6c.2-1.2-1.2-2.2-2.8-1.9L15 20.8c.8 1.1 4.2 1 4.4-.2z"/></svg></span>
+            <h3 class="os-name">Linux</h3>
+            <p class="os-req">x64 and arm64. .deb for Ubuntu and Debian.</p>
+            <div class="os-actions">
+              <a class="dl-btn" data-asset="linux-x64-appimage" href="https://github.com/spcaeo/citefox/releases" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 3.5v11M7 10l5 5 5-5M4.5 16.5v2.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-2.5"/></svg><span class="dl-btn-label">AppImage</span><span class="dl-size" data-size></span></a>
+              <a class="dl-btn dl-btn-2" data-asset="linux-x64-deb" href="https://github.com/spcaeo/citefox/releases" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 3.5v11M7 10l5 5 5-5M4.5 16.5v2.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-2.5"/></svg><span class="dl-btn-label">.deb package</span><span class="dl-size" data-size></span></a>
+            </div>
+            <p class="os-more"><a class="dl-link" data-asset="linux-arm64-appimage" href="https://github.com/spcaeo/citefox/releases" target="_blank" rel="noopener"><span class="dl-btn-label">arm64 AppImage</span><span class="dl-size" data-size></span></a><a class="dl-link" data-asset="linux-arm64-deb" href="https://github.com/spcaeo/citefox/releases" target="_blank" rel="noopener"><span class="dl-btn-label">arm64 .deb</span><span class="dl-size" data-size></span></a></p>
+            <p class="os-hint">AppImage runs on most distributions.</p>
+          </li>
+        </ul>
+        <h3 class="install-title">Install in a minute</h3>
+        <ol class="install" aria-label="Install in a minute">
+          <li><span class="install-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 3.5v11M7 10l5 5 5-5M4.5 16.5v2.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-2.5"/></svg></span><h4>1. Download</h4><p>Pick your computer above. It is one file, free, no sign-up.</p></li>
+          <li><span class="install-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4.5 5.5h15a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1zM3.5 9h17M10 13l2 2 3.5-3.5"/></svg></span><h4>2. Open</h4><p>The app is not signed yet, so allow it once. Mac: click <strong>Done</strong>, then <strong>System Settings › Privacy &amp; Security › Open Anyway</strong>. Windows: <strong>More info</strong> › <strong>Run anyway</strong>. <a href="download/#unsigned">Full steps</a></p></li>
+          <li><span class="install-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M8 11a4 4 0 1 0 0 8 4 4 0 1 0 0-8zM10.9 12.1L19.5 3.5M16.5 6.5l2.2 2.2M14 9l1.6 1.6"/></svg></span><h4>3. Add your keys and run a check</h4><p>Paste your own API keys, add your site and buyer questions, then run your first check.</p></li>
+        </ol>
+        <div class="release-row">
+          <p class="release-meta small muted" data-dl-meta></p>
+          <nav class="release-links" aria-label="Release">
+            <a class="cta cta-outline cta-sm" data-dl-notes href="https://github.com/spcaeo/citefox/releases" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M6 3.5h8.5l3.5 3.5v13.5H6zM14.5 3.5V7H18M9 11.5h6M9 15h6"/></svg><span>Release notes</span></a>
+            <a class="cta cta-outline cta-sm" href="https://github.com/spcaeo/citefox/releases" target="_blank" rel="noopener"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 12a8 8 0 1 0 2.4-5.7M4 4.5v3.8h3.8M12 8v4.5l3 2"/></svg><span>Older versions</span></a>
+            <a class="cta cta-outline cta-sm" href="download/#files-section"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 3v5.5c0 4.5-3 7.7-7 9.5-4-1.8-7-5-7-9.5V6zM9 12l2 2 4-4"/></svg><span>Checksums (SHA-256)</span></a>
+          </nav>
         </div>
-        <p id="release-meta" class="muted small"></p>
-        <p id="mobile-note" class="note" hidden>
-          CiteFox is a desktop app. Open this page on your Mac or PC to download it.
-        </p>
-        <p id="other-platforms" class="small"></p>
-        <p class="try"><a class="button ghost" href="demo/">Try the live demo</a><a class="try-link" href="samples/">See sample reports</a></p>
-        <p class="small muted">The demo runs in your browser with sample data. No install, no sign-up.</p>
-        <figure class="shot hero-video"><video class="shot" data-hero-video autoplay muted loop playsinline preload="auto" poster="./media/demo-poster.png" width="1920" height="1080" aria-label="CiteFox product video: how often AI answers cite you, which page wins, who is cited instead, what to fix, and client-ready reports"><source src="./media/demo.mp4" type="video/mp4" /></video><button type="button" class="sound-btn" data-sound aria-pressed="false">🔊 Sound on</button><figcaption class="small">A 75-second tour with music. Browsers start videos muted: press <strong>Sound on</strong> to hear it.</figcaption></figure>
       </section>
 
       <section class="wrap" id="keys" aria-labelledby="keys-title">
-        <h2 id="keys-title">Bring your own API keys. Keep your data.</h2>
-        <p class="section-lead">CiteFox is free. It captures data through third-party services on your own pay-as-you-go accounts, so you pay them directly and nobody marks it up.</p>
+        <h2 id="keys-title">Pay only for what you use, and keep your data</h2>
+        <p class="section-lead">CiteFox is free. Checks run on your own pay-as-you-go accounts, so you pay the services directly at their price, nobody marks it up, and your data never leaves your computer.</p>
         <div class="split">
           <div class="mini">
             <h3>What you connect</h3>
@@ -270,76 +335,76 @@
 
       <section class="band" id="why" aria-labelledby="why-title">
         <div class="wrap">
-          <h2 id="why-title">Why teams pick CiteFox</h2>
+          <h2 id="why-title">What you get with CiteFox</h2>
           <ul class="cards three">
-            <li class="mini"><h3>Free and local</h3><p>A free desktop app. Your data on your computer, your own keys, the cost shown before every check.</p></li>
-            <li class="mini"><h3>The right page, not just the domain</h3><p>Set the page that should be cited for each question; CiteFox tells you if that page, another of yours, your brand without a link, or someone else was cited.</p></li>
-            <li class="mini"><h3>Fixes with a verdict</h3><p>Log a change and CiteFox re-checks for 14 days, then says whether it worked, made no change or got worse.</p></li>
-            <li class="mini"><h3>Six client-ready reports</h3><p>Visibility, What changed, Impact review, Pitch / audit, Content plan and Head-to-head, rebuilt after every check.</p></li>
-            <li class="mini"><h3>Branded for agencies</h3><p>Your agency’s name and logo with “Prepared for” each client, or your company’s, or none.</p></li>
-            <li class="mini"><h3>Every number drills down</h3><p>Click any number, in the app or a report, to see the exact questions and answers behind it.</p></li>
+            <li class="mini"><h3>Start free, keep control of costs</h3><p>A free desktop app on your own keys. You see the cost before every check and set a monthly cap, with no per-seat fees.</p></li>
+            <li class="mini"><h3>Get the right page cited, not just the domain</h3><p>Set the page that should win each question; CiteFox tells you if that page, another of yours, your brand without a link, or someone else was cited.</p></li>
+            <li class="mini"><h3>Know if each fix worked</h3><p>Log a change and CiteFox re-checks for 14 days, then says whether it worked, made no change or got worse.</p></li>
+            <li class="mini"><h3>Send a client-ready report after every check</h3><p>Visibility, What changed, Impact review, Pitch / audit, Content plan and Head-to-head, rebuilt for you each time.</p></li>
+            <li class="mini"><h3>Put your agency’s name on the work</h3><p>Your agency’s name and logo with “Prepared for” each client, or your company’s, or none.</p></li>
+            <li class="mini"><h3>Back every number with proof</h3><p>Click any number, in the app or a report, to see the exact questions and AI answers behind it.</p></li>
           </ul>
-          <p class="small"><a href="compare/">See the sourced comparison with Profound, Peec AI, Otterly.AI and six more</a></p>
+          <p class="cta-row cta-row-left"><a class="cta cta-text" href="compare/"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg><span>See the sourced comparison with Profound, Peec AI, Otterly.AI and six more</span></a></p>
         </div>
       </section>
 
       <section class="band" id="features" aria-labelledby="features-title">
         <div class="wrap">
-          <h2 id="features-title">Track your citations in AI search, then win more of them</h2>
-          <p class="section-lead">GEO and AEO tools for agencies and marketing teams, in one free desktop app.</p>
+          <h2 id="features-title">Win the AI answers your buyers read</h2>
+          <p class="section-lead">Find out where AI search cites you, where it picks a competitor, and what to change, with GEO and AEO tools for agencies and marketing teams in one free desktop app.</p>
           <div class="features">
             <article class="feature">
-              <h3>AI visibility tracking across six engines</h3>
-              <p>See how often AI answers cite your website, by engine, country and language. A trend line marks every fix you made, and each number opens the exact questions it counts.</p>
-              <figure class="shot"><img src="./media/summary.png" alt="CiteFox Summary screen with the AI visibility score, trend and next fixes" width="2400" height="1500" loading="lazy" decoding="async" /></figure>
+              <h3>See in seconds whether AI recommends you</h3>
+              <p>One score and trend for how often AI answers cite your website, across six AI engines and every country and language you sell in. Each fix you made is marked on the line, and every number opens the exact questions behind it.</p>
+              <figure class="shot"><a class="zoom" href="./media/summary.png" data-zoom><img src="./media/summary.png" alt="CiteFox Summary screen with the AI visibility score, trend and next fixes" width="2400" height="1500" loading="lazy" decoding="async" /></a></figure>
             </article>
             <article class="feature">
-              <h3>Every AI answer and every cited source</h3>
-              <p>Open any buyer question to read the full answer, the sources it links and how it changed between checks. CiteFox tells you whether the right page was cited, another page of yours, your brand named without a link, or someone else.</p>
-              <figure class="shot"><img src="./media/question.png" alt="A question in CiteFox showing the full AI answer and the sources it cites" width="2400" height="1500" loading="lazy" decoding="async" /></figure>
+              <h3>Read exactly what AI tells your buyers</h3>
+              <p>Open any buyer question to read the full AI answer, every source it links and how it changed between checks. You see at a glance whether the right page was cited, another page of yours, your brand named without a link, or someone else.</p>
+              <figure class="shot"><a class="zoom" href="./media/question.png" data-zoom><img src="./media/question.png" alt="A question in CiteFox showing the full AI answer and the sources it cites" width="2400" height="1500" loading="lazy" decoding="async" /></a></figure>
             </article>
             <article class="feature">
-              <h3>Competitor citation tracking</h3>
-              <p>Find out who AI answers cite instead of you, on which questions and engines, and where a competitor wins and you do not.</p>
-              <figure class="shot"><img src="./media/competitors.png" alt="CiteFox Competitors screen listing the sites AI answers cite instead of you" width="2400" height="1500" loading="lazy" decoding="async" /></figure>
+              <h3>Know which competitor AI picks instead of you</h3>
+              <p>See who takes your place in AI answers, on which questions and engines, so you know where to fight and which pages to beat.</p>
+              <figure class="shot"><a class="zoom" href="./media/competitors.png" data-zoom><img src="./media/competitors.png" alt="CiteFox Competitors screen listing the sites AI answers cite instead of you" width="2400" height="1500" loading="lazy" decoding="async" /></a></figure>
             </article>
             <article class="feature">
-              <h3>Fix briefs and before-and-after tracking</h3>
-              <p>Get a short brief for each page to improve or write. Log the change, and CiteFox measures the questions it should help for 14 days, then says whether it worked.</p>
-              <figure class="shot"><img src="./media/fixes.png" alt="CiteFox Fixes screen with page fixes, logged changes and verdicts" width="2400" height="1500" loading="lazy" decoding="async" /></figure>
+              <h3>Know which page to fix and what to write, then see if it worked</h3>
+              <p>Get a short brief for each page to improve or write. Log the change, and CiteFox re-checks the questions it should help for 14 days, then tells you whether it worked.</p>
+              <figure class="shot"><a class="zoom" href="./media/fixes.png" data-zoom><img src="./media/fixes.png" alt="CiteFox Fixes screen with page fixes, logged changes and verdicts" width="2400" height="1500" loading="lazy" decoding="async" /></a></figure>
             </article>
             <article class="feature">
-              <h3>Client-ready AI visibility reports</h3>
-              <p>Six reports rebuilt after every check: read them in the app, download offline HTML, PDF or CSV, put your agency name and logo on them, or email them to clients on a schedule.</p>
-              <figure class="shot"><img src="./media/reports-home.png" alt="CiteFox Reports screen with six ready reports" width="2400" height="1500" loading="lazy" decoding="async" /></figure>
+              <h3>Prove results to clients in one click</h3>
+              <p>Six AI visibility reports, rebuilt after every check. Read them in the app, download offline HTML, PDF or CSV, add your agency name and logo, or email them to clients on a schedule.</p>
+              <figure class="shot"><a class="zoom" href="./media/reports-home.png" data-zoom><img src="./media/reports-home.png" alt="CiteFox Reports screen with six ready reports" width="2400" height="1500" loading="lazy" decoding="async" /></a></figure>
             </article>
           </div>
-          <h3 class="sub">Also included</h3>
+          <h3 class="sub">Also in the app</h3>
           <ul class="ticks">
-            <li>Buyer questions written for you from your site, in the wording of each market</li>
-            <li>Topics and target pages: say which page should win each question</li>
-            <li>Scheduled re-checks while the app is closed, with a monthly budget you set</li>
-            <li>Alerts on the desktop, by email or in Slack when a target page loses its citation or a competitor is cited instead</li>
-            <li>Ask CiteFox: plain-English answers about your stored results, with links to the rows</li>
-            <li>Import questions, pages and competitors from a sitemap, CSV or Excel file</li>
-            <li>Many projects, each with its own markets and settings</li>
-            <li>Light and dark themes on Mac, Windows and Linux</li>
+            <li>Start fast: buyer questions written for you from your site, in the wording of each market</li>
+            <li>Get the right page cited: pick the target page that should win each question</li>
+            <li>Stay current without effort: re-checks run on a schedule while the app is closed, within a monthly budget you set</li>
+            <li>Hear about a lost citation first: alerts on the desktop, by email or in Slack when a target page drops out or a competitor is cited instead</li>
+            <li>Get answers, not spreadsheets: ask CiteFox in plain English about your results, with links to the rows</li>
+            <li>Bring what you have: import questions, pages and competitors from a sitemap, CSV or Excel file</li>
+            <li>Run every client in one place: many projects, each with its own markets and settings</li>
+            <li>Work your way: light and dark themes on Mac, Windows and Linux</li>
           </ul>
         </div>
       </section>
 
       <section class="wrap" aria-labelledby="how-title">
-        <h2 id="how-title">How CiteFox works</h2>
+        <h2 id="how-title">From your website to your first fixes in three steps</h2>
         <ol class="how">
-          <li><h3>Add your website</h3><p>CiteFox AI reads your site and works out what you sell, who buys it and who your competitors are.</p></li>
-          <li><h3>Get your buyer questions</h3><p>It writes the questions your buyers really ask, grouped into topics, for each country and language you sell in.</p></li>
-          <li><h3>Check, fix, re-check</h3><p>It asks every AI engine, saves each answer and source, shows who is cited instead, writes fix briefs and re-checks on a schedule.</p></li>
+          <li><h3>Add your website, get a ready setup</h3><p>CiteFox AI reads your site and works out what you sell, who buys it and who you compete with, so you start in minutes, not with a blank sheet.</p></li>
+          <li><h3>Get the questions your buyers really ask</h3><p>It writes them for you, grouped into topics, in the wording of each country and language you sell in.</p></li>
+          <li><h3>See where you win, fix what you lose</h3><p>Every AI engine is asked and every answer saved. You see who is cited instead, get a brief for each fix, and scheduled re-checks show whether it worked.</p></li>
         </ol>
-        <figure class="shot"><img src="./media/hero.png" alt="CiteFox showing which buyer questions AI answers cite your site for, by engine" width="2400" height="1500" loading="lazy" decoding="async" /></figure>
+        <figure class="shot"><a class="zoom" href="./media/hero.png" data-zoom><img src="./media/hero.png" alt="CiteFox showing which buyer questions AI answers cite your site for, by engine" width="2400" height="1500" loading="lazy" decoding="async" /></a></figure>
       </section>
 
       <section class="wrap" id="engines" aria-labelledby="engines-title">
-        <h2 id="engines-title">Supported AI engines</h2>
+        <h2 id="engines-title">See every AI engine your buyers use, side by side</h2>
         <p>Every buyer question is asked on each engine you pick, in each market (country and language) you sell in.</p>
         <div class="table-wrap">
           <table>
@@ -358,7 +423,7 @@
       </section>
 
       <section class="wrap" id="real-answers" aria-labelledby="real-title">
-        <h2 id="real-title">Real answers, not guessed “prompt volume”</h2>
+        <h2 id="real-title">Decide on real AI answers, not guessed “prompt volume”</h2>
         <p><strong>Nobody has real prompt volume data.</strong> ChatGPT, Perplexity and Gemini don’t publish how often a question is asked, so every “prompt volume” figure is a modelled estimate (<a href="https://ahrefs.com/blog/how-ahrefs-estimates-ai-search-demand/" target="_blank" rel="noopener">Ahrefs</a> notes only Microsoft Copilot shares query data).</p>
         <p><strong>Chat assistants answer each person differently.</strong> ChatGPT can use your saved memories and past chats to tailor replies (<a href="https://help.openai.com/en/articles/8590148" target="_blank" rel="noopener">OpenAI help</a>), and other assistants now remember earlier conversations too.</p>
         <p><strong>Google’s AI Overviews are the steadier signal.</strong> No personal chat memory, and Google aims to keep results mostly the same for everyone. The wording stays close from day to day while the cited sources rotate (<a href="https://ahrefs.com/blog/ai-overview-change/" target="_blank" rel="noopener">Ahrefs</a>), so CiteFox anchors on AI Overviews, checks the other engines beside it, and re-checks on a schedule.</p>
@@ -371,15 +436,16 @@
 
       <section class="band" id="reports" aria-labelledby="reports-title">
         <div class="wrap">
-          <h2 id="reports-title">Client-ready AI visibility reports</h2>
-          <p class="section-lead">Six reports, rebuilt after every check, each answering one question a client or a boss asks. <a href="https://spcaeo.github.io/citefox/samples/" target="_blank" rel="noopener">See the sample reports</a>.</p>
+          <h2 id="reports-title">Prove results to clients in one click</h2>
+          <p class="section-lead">Six client-ready AI visibility reports, rebuilt after every check. Each answers one question a client or a boss asks.</p>
+          <p class="cta-row cta-row-left"><a class="cta cta-outline" href="samples/"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M6 3.5h8.5l3.5 3.5v13.5H6zM14.5 3.5V7H18M9 17v-3M12 17v-6M15 17v-4.5"/></svg><span>See the sample reports</span></a><a class="cta cta-text" href="demo/#/reports"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4.5 4.5h15a1 1 0 0 1 1 1v8M3.5 13.5v-8a1 1 0 0 1 1-1M3.5 8.5h17M3.5 13.5v4a1 1 0 0 0 1 1h6M14 13l6.5 2.4-2.8 1.2-1.2 2.8z"/></svg><span>Try Reports in the live demo</span></a></p>
           <ul class="cards">
-            <li class="mini"><h3><a href="docs/reports-visibility/">Visibility report</a></h3><p>Where you stand: the opportunity, competitors and share of voice, sources, reputation and sentiment, answer shape.</p><p class="small muted">For: Monthly client or leadership updates</p></li>
-            <li class="mini"><h3><a href="docs/reports-changed/">What changed</a></h3><p>Any two checks compared, verdict first: citations and brand named, then what moved up, down, in and out.</p><p class="small muted">For: Check-ins after each re-check</p></li>
-            <li class="mini"><h3><a href="docs/reports-impact/">Impact review</a></h3><p>Did our fixes work? Published pages before and after, a page-by-page story, and what the client needs to do.</p><p class="small muted">For: Proving the value of the work</p></li>
-            <li class="mini"><h3><a href="docs/reports-pitch/">Pitch / audit</a></h3><p>A one-page audit from a single check: the gap, who wins instead, and what we’d fix first.</p><p class="small muted">For: Winning a new client, briefing a boss</p></li>
-            <li class="mini"><h3><a href="docs/reports-content/">Content plan</a></h3><p>The pages to write or fix, by topic, each with a brief you can copy to a writer.</p><p class="small muted">For: Writers and content leads</p></li>
-            <li class="mini"><h3><a href="docs/reports-rival/">Head-to-head</a></h3><p>You against one competitor: where they are cited and you are not.</p><p class="small muted">For: Answering “why them and not us?”</p></li>
+            <li class="mini"><h3><a href="docs/reports-visibility/">Visibility report</a></h3><p>Show where you stand and what is at stake: the opportunity, share of voice against competitors, the sources AI trusts, and how AI talks about the brand.</p><p class="small muted">For: Monthly client or leadership updates</p></li>
+            <li class="mini"><h3><a href="docs/reports-changed/">What changed</a></h3><p>Answer “what moved since last time?” in one page: verdict first, then the questions that went up, down, in and out.</p><p class="small muted">For: Check-ins after each re-check</p></li>
+            <li class="mini"><h3><a href="docs/reports-impact/">Impact review</a></h3><p>Prove your work paid off: each published page before and after, page by page, and what the client needs to do next.</p><p class="small muted">For: Proving the value of the work</p></li>
+            <li class="mini"><h3><a href="docs/reports-pitch/">Pitch / audit</a></h3><p>Win the meeting with a one-page audit from a single check: the gap, who wins instead, and what to fix first.</p><p class="small muted">For: Winning a new client, briefing a boss</p></li>
+            <li class="mini"><h3><a href="docs/reports-content/">Content plan</a></h3><p>Hand writers a ready plan: the pages to write or fix, by topic, each with a brief they can start from.</p><p class="small muted">For: Writers and content leads</p></li>
+            <li class="mini"><h3><a href="docs/reports-rival/">Head-to-head</a></h3><p>Answer “why them and not us?”: the questions where one competitor is cited and you are not.</p><p class="small muted">For: Answering “why them and not us?”</p></li>
           </ul>
           <ul class="ticks">
             <li>Offline HTML, PDF and CSV downloads, with the same numbers as the app</li>
@@ -389,16 +455,16 @@
             <li>Open the Reports home by goal (“Did our fixes work?”) or by report</li>
           </ul>
           <p><a href="samples/">Open the sample reports</a>, the same offline HTML files the app downloads, or <a href="demo/#/reports">try Reports in the live demo</a>.</p>
-          <figure class="shot"><img src="./media/report-visibility.png" alt="The CiteFox Visibility report with share of voice and the questions that cite you" width="2400" height="1500" loading="lazy" decoding="async" /></figure>
+          <figure class="shot"><a class="zoom" href="./media/report-visibility.png" data-zoom><img src="./media/report-visibility.png" alt="The CiteFox Visibility report with share of voice and the questions that cite you" width="2400" height="1500" loading="lazy" decoding="async" /></a></figure>
         </div>
       </section>
 
       <section class="wrap" aria-labelledby="who-title">
-        <h2 id="who-title">Who CiteFox is for</h2>
+        <h2 id="who-title">Built for the people who answer for AI visibility</h2>
         <ul class="cards three">
-          <li class="mini"><h3>SEO and GEO agencies</h3><p>Track AI citations for every client, pitch new clients with an audit, and send branded reports on a schedule.</p></li>
-          <li class="mini"><h3>In-house marketers</h3><p>Show whether AI answers recommend you or a competitor, and prove which page changes moved the numbers.</p></li>
-          <li class="mini"><h3>SaaS and ecommerce teams</h3><p>See which product, category and comparison pages AI engines cite for the questions buyers ask before they buy.</p></li>
+          <li class="mini"><h3>SEO and GEO agencies</h3><p>Win clients with an audit, keep them with branded reports on a schedule, and track AI citations for every account in one app.</p></li>
+          <li class="mini"><h3>In-house marketers</h3><p>Show your boss whether AI answers recommend you or a competitor, and prove which page changes moved the numbers.</p></li>
+          <li class="mini"><h3>SaaS and ecommerce teams</h3><p>Make sure your product, category and comparison pages are the ones AI cites when buyers ask before they buy.</p></li>
         </ul>
       </section>
 
@@ -412,7 +478,7 @@
       </section>
 
       <section class="wrap" aria-labelledby="control-title">
-        <h2 id="control-title">Why full control matters</h2>
+        <h2 id="control-title">Own your data, your costs and your client work</h2>
         <ul class="ticks two">
           <li>Your data: results stay on your computer, nothing held hostage</li>
           <li>Your keys and costs: pay the data services directly, with a budget cap</li>
@@ -458,81 +524,6 @@
         </div>
       </section>
 
-      <div class="wrap">
-        <section id="unsigned" class="card" aria-labelledby="unsigned-title">
-          <h2 id="unsigned-title">Opening CiteFox the first time</h2>
-          <p>
-            CiteFox is not signed with a paid certificate yet, so your computer asks once before the
-            first start. This is expected. You can check every file against its SHA-256 below.
-          </p>
-          <div class="steps">
-            <div class="step" data-os="mac">
-              <h3>Mac</h3>
-              <ol>
-                <li>Open the downloaded <code>.dmg</code> and drag CiteFox to Applications.</li>
-                <li>Open CiteFox. macOS says it cannot check the app. Click <strong>Done</strong>.</li>
-                <li>
-                  Open <strong>System Settings › Privacy &amp; Security</strong>, scroll down and
-                  click <strong>Open Anyway</strong> next to CiteFox. Confirm with your password.
-                </li>
-                <li>
-                  On macOS 14 or older you can instead right-click CiteFox in Applications and choose
-                  <strong>Open</strong>.
-                </li>
-              </ol>
-              <p class="small muted">
-                After an update macOS may ask once to let CiteFox read its saved keys. Click
-                <strong>Always Allow</strong>.
-              </p>
-            </div>
-            <div class="step" data-os="win">
-              <h3>Windows</h3>
-              <ol>
-                <li>Run the downloaded installer.</li>
-                <li>
-                  If you see “Windows protected your PC”, click <strong>More info</strong>, then
-                  <strong>Run anyway</strong>.
-                </li>
-                <li>
-                  CiteFox installs for you only (no admin needed) and adds a Start menu and desktop
-                  shortcut.
-                </li>
-              </ol>
-            </div>
-            <div class="step" data-os="linux">
-              <h3>Linux</h3>
-              <ol>
-                <li>
-                  AppImage: allow it to run (Properties › Allow executing, or
-                  <code data-copy>chmod +x CiteFox-*.AppImage</code>) and open it.
-                </li>
-                <li>
-                  Ubuntu and Debian: install the <code>.deb</code> with
-                  <code data-copy>sudo apt install ./CiteFox-*.deb</code>
-                </li>
-              </ol>
-            </div>
-          </div>
-        </section>
-
-        <section id="files-section" class="card" aria-labelledby="files-title" hidden>
-          <h2 id="files-title">All downloads</h2>
-          <div class="files-head small muted">
-            <span>File</span><span>Size</span><span>SHA-256</span>
-          </div>
-          <ul id="files" class="files"></ul>
-          <p id="sums" class="small"></p>
-        </section>
-
-        <section id="notes-section" class="card" aria-labelledby="notes-title" hidden>
-          <h2 id="notes-title">What’s new</h2>
-          <div id="notes" class="notes"></div>
-        </section>
-
-        <p class="small">
-          <a id="older" href="https://github.com/spcaeo/citefox/releases" target="_blank" rel="noopener">Older versions and betas</a>
-        </p>
-      </div>
     </main>
 
     <footer class="footer">

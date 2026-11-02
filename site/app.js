@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type -- plain JavaScript, no type annotations */
-// The download page: reads the latest release from the GitHub API and fills
-// in the buttons, the file list and the notes. Logic lives in release.js.
+// The home and download pages: read the latest release from the GitHub API and
+// fill in the big button, the OS cards, the file list and the notes. Logic
+// lives in release.js; the screenshot zoom in lightbox.js.
+import { initLightbox } from './lightbox.js'
 import {
+  assetsByKey,
   copyable,
   describeAsset,
   detectPlatform,
@@ -10,7 +13,8 @@ import {
   formatDay,
   formatSize,
   parseSums,
-  pickPrimary,
+  pickMain,
+  releaseState,
   renderNotes,
   repoFromLocation,
   sha256Of,
@@ -47,63 +51,131 @@ function el(tag, className, text) {
   return node
 }
 
-function showNoRelease(message) {
-  const primary = $('primary')
-  primary.replaceChildren()
-  primary.append(el('p', 'muted', message))
-  const link = el('a', 'button', 'See releases on GitHub')
-  link.href = `${repoUrl}/releases`
-  link.target = '_blank'
-  link.rel = 'noopener'
-  primary.append(link)
+const RELEASES = `${repoUrl}/releases`
+
+/** Points the big button at a file (or at the Releases page) and sets its two lines. */
+function setMain({ state, href, title, sub, os }) {
+  const main = document.querySelector('[data-dl-main]')
+  if (!main) return
+  main.dataset.state = state
+  main.href = href
+  if (href === RELEASES) {
+    main.target = '_blank'
+    main.rel = 'noopener'
+  } else {
+    main.removeAttribute('target')
+    main.removeAttribute('rel')
+  }
+  main.querySelector('[data-dl-title]').textContent = title
+  main.querySelector('[data-dl-sub]').textContent = sub
+  const icon = os && document.querySelector(`.os-card[data-os="${os}"] .os-icon svg`)
+  if (icon) main.querySelector('[data-dl-icon]').replaceChildren(icon.cloneNode(true))
 }
 
-function renderPrimary(release, platform) {
-  const primary = $('primary')
-  primary.replaceChildren()
-  const buttons = pickPrimary(release.assets, platform)
-  for (const { asset, title, info } of buttons) {
-    const link = el('a', 'button big')
-    link.href = asset.browser_download_url
-    link.append(el('span', 'button-title', title))
-    link.append(el('span', 'button-sub', `${info.kindLabel} · ${formatSize(asset.size)}`))
-    primary.append(link)
+/** The line under the big button: a message, then a link to the Releases page. */
+function setStatus(message, linkText) {
+  const status = document.querySelector('[data-dl-status]')
+  if (!status) return
+  status.replaceChildren()
+  if (!message) return
+  status.append(message)
+  if (linkText) {
+    status.append(' ')
+    const link = el('a', '', linkText)
+    link.href = RELEASES
+    link.target = '_blank'
+    link.rel = 'noopener'
+    status.append(link)
   }
-  if (buttons.length === 0) {
-    primary.append(el('p', 'muted', 'Pick your computer from the list of downloads below.'))
-  }
-  if (platform.os === 'mac' && buttons.length === 2) {
-    const universal = release.assets.find((a) => /-mac-universal\.dmg$/.test(a.name))
-    const hint = el('p', 'small muted', 'Not sure which chip? Apple menu › About This Mac. ')
-    if (universal) {
-      const link = el('a', '', 'Or get the version for every Mac')
-      link.href = universal.browser_download_url
-      hint.append(link)
-    }
-    primary.append(hint)
-  }
+}
 
-  const others = $('other-platforms')
-  others.replaceChildren()
-  const names = { mac: 'Mac', win: 'Windows', linux: 'Linux' }
-  const links = Object.keys(names)
-    .filter((os) => os !== platform.os)
-    .map((os) => {
-      const a = el('a', '', names[os])
-      a.href = '#files-section'
-      return a
+function showNoRelease(state) {
+  for (const card of document.querySelectorAll('.os-card')) card.dataset.state = state
+  if (state === 'none') {
+    setMain({
+      state,
+      href: RELEASES,
+      title: 'First release coming soon',
+      sub: 'Opens the Releases page on GitHub'
     })
-  if (platform.os === 'mac' || platform.os === 'win' || platform.os === 'linux') {
-    others.append('Also for ')
-    links.forEach((a, i) => {
-      if (i > 0) others.append(i === links.length - 1 ? ' and ' : ', ')
-      others.append(a)
+    setStatus(
+      'The first release is being built — check back in a few minutes.',
+      'See the Releases page'
+    )
+  } else {
+    setMain({
+      state,
+      href: RELEASES,
+      title: 'Download from GitHub',
+      sub: 'Every file is on the Releases page'
+    })
+    setStatus('Could not load the latest version just now.', 'Open the Releases page')
+  }
+}
+
+const OS_NAMES = { mac: 'Mac', win: 'Windows', linux: 'Linux' }
+
+function renderMain(release, platform, version) {
+  const main = pickMain(release.assets, platform, version)
+  const also = document.querySelector('[data-dl-also]')
+  if (main) {
+    setMain({
+      state: 'ready',
+      href: main.asset.browser_download_url,
+      title: main.title,
+      sub: main.sub,
+      os: main.info.os
+    })
+    const card = document.querySelector(`.os-card[data-os="${main.info.os}"]`)
+    card?.classList.add('own')
+    if (also) {
+      const others = Object.keys(OS_NAMES).filter((os) => os !== main.info.os)
+      also.replaceChildren(
+        main.info.os === 'mac' && main.info.arch === 'universal'
+          ? 'Works on every Mac, Apple chip and Intel. '
+          : '',
+        'Also for '
+      )
+      others.forEach((os, i) => {
+        if (i > 0) also.append(' and ')
+        const link = el('a', '', OS_NAMES[os])
+        link.href = '#dl-cards'
+        also.append(link)
+      })
+    }
+    setStatus('')
+  } else {
+    setMain({
+      state: 'ready',
+      href: '#dl-cards',
+      title: 'Choose your computer',
+      sub: `v${version} · Mac, Windows and Linux`
     })
   }
+}
+
+/** Points every card link at its file; a file missing from this release is hidden. */
+function renderCards(release) {
+  const byKey = assetsByKey(release.assets)
+  for (const link of document.querySelectorAll('[data-asset]')) {
+    const asset = byKey[link.dataset.asset]
+    if (!asset) {
+      if (link.classList.contains('dl-link')) link.hidden = true
+      continue
+    }
+    link.href = asset.browser_download_url
+    link.removeAttribute('target')
+    link.removeAttribute('rel')
+    link.title = asset.name
+    const size = link.querySelector('[data-size]')
+    if (size) size.textContent = formatSize(asset.size)
+  }
+  for (const card of document.querySelectorAll('.os-card')) card.dataset.state = 'ready'
 }
 
 function renderFiles(release, sums) {
   const list = $('files')
+  if (!list) return
   list.replaceChildren()
   for (const { asset, info } of downloadList(release.assets)) {
     const row = el('li', 'file')
@@ -134,7 +206,9 @@ function renderFiles(release, sums) {
       })
     )
   }
-  $('files-section').hidden = list.children.length === 0
+  const empty = document.querySelector('[data-files-empty]')
+  if (empty) empty.hidden = list.children.length > 0
+  document.querySelector('.files-head').hidden = list.children.length === 0
 }
 
 async function loadSums(release) {
@@ -152,6 +226,7 @@ async function loadSums(release) {
 
 function orderSteps(platform) {
   const steps = document.querySelector('.steps')
+  if (!steps) return
   const own = steps.querySelector(`[data-os="${platform.os}"]`)
   if (own) {
     steps.prepend(own)
@@ -161,35 +236,43 @@ function orderSteps(platform) {
 
 async function main() {
   enhanceCopyables(document)
+  initLightbox(document)
   $('nav-source').href = repoUrl
-  $('older').href = `${repoUrl}/releases`
   $('license').href = `${repoUrl}/blob/main/LICENSE`
 
   const platform = detectPlatform(navigator, await platformHints())
-  $('mobile-note').hidden = platform.os !== 'mobile'
+  const mobile = document.querySelector('[data-dl-mobile]')
+  if (mobile) mobile.hidden = platform.os !== 'mobile'
   orderSteps(platform)
 
-  let release
+  let release = null
+  let status = 0
   try {
     const response = await fetch(`https://api.github.com/repos/${repo}/releases/latest`, {
       headers: { Accept: 'application/vnd.github+json' }
     })
-    if (response.status === 404) return showNoRelease('The first release is on its way.')
-    if (!response.ok) return showNoRelease('GitHub is busy right now. The files are on GitHub too.')
-    release = await response.json()
+    status = response.status
+    if (response.ok) release = await response.json()
   } catch {
-    return showNoRelease('Could not reach GitHub. The files are on GitHub too.')
+    // Offline or blocked: status stays 0, shown as an error.
   }
+  const state = releaseState(status, release)
+  if (state !== 'ready') return showNoRelease(state)
 
   const version = release.tag_name.replace(/^v/, '')
-  renderPrimary(release, platform)
-  $('release-meta').textContent = `Version ${version} · ${formatDay(release.published_at)}`
-  $('footer-release').textContent = `Latest: v${version}`
+  renderMain(release, platform, version)
+  renderCards(release)
+  const meta = document.querySelector('[data-dl-meta]')
+  if (meta) meta.textContent = `Latest: v${version} · ${formatDay(release.published_at)}`
+  const notesLink = document.querySelector('[data-dl-notes]')
+  if (notesLink && release.html_url) notesLink.href = release.html_url
+  const footer = $('footer-release')
+  if (footer) footer.textContent = `Latest: v${version}`
 
   renderFiles(release, await loadSums(release))
 
   const notes = renderNotes(release.body || '')
-  if (notes) {
+  if (notes && $('notes')) {
     $('notes-title').textContent = `What’s new in ${version}`
     $('notes').innerHTML = notes
     $('notes-section').hidden = false
@@ -201,14 +284,26 @@ main()
 // Hero video: browsers only autoplay muted videos, so one button turns the music on (and back off).
 const heroVideo = document.querySelector('[data-hero-video]')
 const soundButton = document.querySelector('[data-sound]')
+const setSound = (on) => {
+  heroVideo.muted = !on
+  if (on) {
+    heroVideo.currentTime = 0
+    void heroVideo.play()
+  }
+  soundButton.textContent = on ? '🔇 Sound off' : '🔊 Sound on'
+  soundButton.setAttribute('aria-pressed', String(on))
+}
 if (heroVideo && soundButton) {
-  soundButton.addEventListener('click', () => {
-    heroVideo.muted = !heroVideo.muted
-    if (!heroVideo.muted) {
-      heroVideo.currentTime = 0
-      void heroVideo.play()
-    }
-    soundButton.textContent = heroVideo.muted ? '🔊 Sound on' : '🔇 Sound off'
-    soundButton.setAttribute('aria-pressed', String(!heroVideo.muted))
-  })
+  soundButton.addEventListener('click', () => setSound(heroVideo.muted))
+  // "Watch the video": scroll to the hero video and play it from the start with
+  // the music on (the click counts as the visitor allowing sound).
+  for (const watch of document.querySelectorAll('[data-watch]')) {
+    watch.addEventListener('click', (event) => {
+      event.preventDefault()
+      const still = matchMedia('(prefers-reduced-motion: reduce)').matches
+      heroVideo.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'center' })
+      setSound(true)
+      soundButton.focus({ preventScroll: true })
+    })
+  }
 }

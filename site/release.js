@@ -139,6 +139,69 @@ export function pickPrimary(assets, platform) {
   return []
 }
 
+/** `mac-universal-dmg`: the key a page link uses (data-asset) for one release file. */
+export function assetKey(info) {
+  return `${info.os}-${info.arch}-${info.kind}`
+}
+
+/** `{ key: asset }` for every release file people download. */
+export function assetsByKey(assets) {
+  const out = {}
+  for (const asset of assets || []) {
+    const info = describeAsset(asset.name)
+    if (info && !out[assetKey(info)]) out[assetKey(info)] = asset
+  }
+  return out
+}
+
+const SHORT_KIND = {
+  'mac-universal-dmg': 'Universal .dmg',
+  'mac-arm64-dmg': 'Apple chip .dmg',
+  'mac-x64-dmg': 'Intel .dmg',
+  'win-x64-installer': 'Installer .exe',
+  'win-arm64-installer': 'Arm installer .exe',
+  'win-x64-portable': 'Portable .exe',
+  'win-arm64-portable': 'Arm portable .exe',
+  'linux-x64-appimage': 'AppImage',
+  'linux-arm64-appimage': 'arm64 AppImage',
+  'linux-x64-deb': '.deb',
+  'linux-arm64-deb': 'arm64 .deb'
+}
+
+/**
+ * The one big button (Loom style): `{ asset, info, title, sub }` or null.
+ * A Mac with a known chip gets its own .dmg, otherwise the Universal one.
+ */
+export function pickMain(assets, platform, version) {
+  const buttons = pickPrimary(assets, platform)
+  let pick = buttons.length === 1 ? buttons[0] : null
+  if (!pick && platform.os === 'mac') {
+    const universal = assets.find((a) => /-mac-universal\.dmg$/.test(a.name))
+    const chosen = universal || buttons[0]?.asset
+    if (chosen) pick = { asset: chosen, info: describeAsset(chosen.name) }
+  }
+  if (!pick) return null
+  const kind = SHORT_KIND[assetKey(pick.info)] || pick.info.kindLabel
+  const size = formatSize(pick.asset.size)
+  return {
+    asset: pick.asset,
+    info: pick.info,
+    title: `Download for ${OS_LABEL[pick.info.os]}`,
+    sub: [version ? `v${version}` : '', kind, size].filter(Boolean).join(' · ')
+  }
+}
+
+/**
+ * What the download section shows for an API answer: 'ready' (a release with
+ * files), 'none' (no release yet, or one still being built with no files) or
+ * 'error' (GitHub could not be reached or said something else).
+ */
+export function releaseState(status, release) {
+  if (status === 404) return 'none'
+  if (status !== 200 || !release || typeof release.tag_name !== 'string') return 'error'
+  return downloadList(release.assets || []).length ? 'ready' : 'none'
+}
+
 /** Release files people download, in a fixed order: Mac, Windows, Linux. */
 export function downloadList(assets) {
   const osOrder = { mac: 0, win: 1, linux: 2 }

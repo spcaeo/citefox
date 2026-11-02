@@ -26,100 +26,100 @@ export const ENGINES = [
 
 export const STEPS = [
   {
-    title: 'Add your website',
-    text: 'CiteFox AI reads your site and works out what you sell, who buys it and who your competitors are.'
+    title: 'Add your website, get a ready setup',
+    text: 'CiteFox AI reads your site and works out what you sell, who buys it and who you compete with, so you start in minutes, not with a blank sheet.'
   },
   {
-    title: 'Get your buyer questions',
-    text: 'It writes the questions your buyers really ask, grouped into topics, for each country and language you sell in.'
+    title: 'Get the questions your buyers really ask',
+    text: 'It writes them for you, grouped into topics, in the wording of each country and language you sell in.'
   },
   {
-    title: 'Check, fix, re-check',
-    text: 'It asks every AI engine, saves each answer and source, shows who is cited instead, writes fix briefs and re-checks on a schedule.'
+    title: 'See where you win, fix what you lose',
+    text: 'Every AI engine is asked and every answer saved. You see who is cited instead, get a brief for each fix, and scheduled re-checks show whether it worked.'
   }
 ]
 
 /** Each feature has a screenshot made by the media builder in media/. */
 export const FEATURES = [
   {
-    title: 'AI visibility tracking across six engines',
+    title: 'See in seconds whether AI recommends you',
     image: 'summary.png',
     alt: 'CiteFox Summary screen with the AI visibility score, trend and next fixes',
-    text: 'See how often AI answers cite your website, by engine, country and language. A trend line marks every fix you made, and each number opens the exact questions it counts.'
+    text: 'One score and trend for how often AI answers cite your website, across six AI engines and every country and language you sell in. Each fix you made is marked on the line, and every number opens the exact questions behind it.'
   },
   {
-    title: 'Every AI answer and every cited source',
+    title: 'Read exactly what AI tells your buyers',
     image: 'question.png',
     alt: 'A question in CiteFox showing the full AI answer and the sources it cites',
-    text: 'Open any buyer question to read the full answer, the sources it links and how it changed between checks. CiteFox tells you whether the right page was cited, another page of yours, your brand named without a link, or someone else.'
+    text: 'Open any buyer question to read the full AI answer, every source it links and how it changed between checks. You see at a glance whether the right page was cited, another page of yours, your brand named without a link, or someone else.'
   },
   {
-    title: 'Competitor citation tracking',
+    title: 'Know which competitor AI picks instead of you',
     image: 'competitors.png',
     alt: 'CiteFox Competitors screen listing the sites AI answers cite instead of you',
-    text: 'Find out who AI answers cite instead of you, on which questions and engines, and where a competitor wins and you do not.'
+    text: 'See who takes your place in AI answers, on which questions and engines, so you know where to fight and which pages to beat.'
   },
   {
-    title: 'Fix briefs and before-and-after tracking',
+    title: 'Know which page to fix and what to write, then see if it worked',
     image: 'fixes.png',
     alt: 'CiteFox Fixes screen with page fixes, logged changes and verdicts',
-    text: 'Get a short brief for each page to improve or write. Log the change, and CiteFox measures the questions it should help for 14 days, then says whether it worked.'
+    text: 'Get a short brief for each page to improve or write. Log the change, and CiteFox re-checks the questions it should help for 14 days, then tells you whether it worked.'
   },
   {
-    title: 'Client-ready AI visibility reports',
+    title: 'Prove results to clients in one click',
     image: 'reports-home.png',
     alt: 'CiteFox Reports screen with six ready reports',
-    text: 'Six reports rebuilt after every check: read them in the app, download offline HTML, PDF or CSV, put your agency name and logo on them, or email them to clients on a schedule.'
+    text: 'Six AI visibility reports, rebuilt after every check. Read them in the app, download offline HTML, PDF or CSV, add your agency name and logo, or email them to clients on a schedule.'
   }
 ]
 
 /** Smaller features, listed without a screenshot. */
 export const MORE_FEATURES = [
-  'Buyer questions written for you from your site, in the wording of each market',
-  'Topics and target pages: say which page should win each question',
-  'Scheduled re-checks while the app is closed, with a monthly budget you set',
-  'Alerts on the desktop, by email or in Slack when a target page loses its citation or a competitor is cited instead',
-  'Ask CiteFox: plain-English answers about your stored results, with links to the rows',
-  'Import questions, pages and competitors from a sitemap, CSV or Excel file',
-  'Many projects, each with its own markets and settings',
-  'Light and dark themes on Mac, Windows and Linux'
+  'Start fast: buyer questions written for you from your site, in the wording of each market',
+  'Get the right page cited: pick the target page that should win each question',
+  'Stay current without effort: re-checks run on a schedule while the app is closed, within a monthly budget you set',
+  'Hear about a lost citation first: alerts on the desktop, by email or in Slack when a target page drops out or a competitor is cited instead',
+  'Get answers, not spreadsheets: ask CiteFox in plain English about your results, with links to the rows',
+  'Bring what you have: import questions, pages and competitors from a sitemap, CSV or Excel file',
+  'Run every client in one place: many projects, each with its own markets and settings',
+  'Work your way: light and dark themes on Mac, Windows and Linux'
 ]
 
 export const REPORTS = [
   {
     name: 'Visibility report',
     doc: 'reports-visibility',
-    text: 'Where you stand: the opportunity, competitors and share of voice, sources, reputation and sentiment, answer shape.',
+    text: 'Show where you stand and what is at stake: the opportunity, share of voice against competitors, the sources AI trusts, and how AI talks about the brand.',
     who: 'Monthly client or leadership updates'
   },
   {
     name: 'What changed',
     doc: 'reports-changed',
-    text: 'Any two checks compared, verdict first: citations and brand named, then what moved up, down, in and out.',
+    text: 'Answer “what moved since last time?” in one page: verdict first, then the questions that went up, down, in and out.',
     who: 'Check-ins after each re-check'
   },
   {
     name: 'Impact review',
     doc: 'reports-impact',
-    text: 'Did our fixes work? Published pages before and after, a page-by-page story, and what the client needs to do.',
+    text: 'Prove your work paid off: each published page before and after, page by page, and what the client needs to do next.',
     who: 'Proving the value of the work'
   },
   {
     name: 'Pitch / audit',
     doc: 'reports-pitch',
-    text: 'A one-page audit from a single check: the gap, who wins instead, and what we’d fix first.',
+    text: 'Win the meeting with a one-page audit from a single check: the gap, who wins instead, and what to fix first.',
     who: 'Winning a new client, briefing a boss'
   },
   {
     name: 'Content plan',
     doc: 'reports-content',
-    text: 'The pages to write or fix, by topic, each with a brief you can copy to a writer.',
+    text: 'Hand writers a ready plan: the pages to write or fix, by topic, each with a brief they can start from.',
     who: 'Writers and content leads'
   },
   {
     name: 'Head-to-head',
     doc: 'reports-rival',
-    text: 'You against one competitor: where they are cited and you are not.',
+    text: 'Answer “why them and not us?”: the questions where one competitor is cited and you are not.',
     who: 'Answering “why them and not us?”'
   }
 ]
@@ -193,43 +193,43 @@ export const CONTROL = [
 export const AUDIENCES = [
   {
     title: 'SEO and GEO agencies',
-    text: 'Track AI citations for every client, pitch new clients with an audit, and send branded reports on a schedule.'
+    text: 'Win clients with an audit, keep them with branded reports on a schedule, and track AI citations for every account in one app.'
   },
   {
     title: 'In-house marketers',
-    text: 'Show whether AI answers recommend you or a competitor, and prove which page changes moved the numbers.'
+    text: 'Show your boss whether AI answers recommend you or a competitor, and prove which page changes moved the numbers.'
   },
   {
     title: 'SaaS and ecommerce teams',
-    text: 'See which product, category and comparison pages AI engines cite for the questions buyers ask before they buy.'
+    text: 'Make sure your product, category and comparison pages are the ones AI cites when buyers ask before they buy.'
   }
 ]
 
 /** "Why teams pick CiteFox": short, true differentiators. */
 export const DIFFERENT = [
   {
-    title: 'Free and local',
-    text: 'A free desktop app. Your data on your computer, your own keys, the cost shown before every check.'
+    title: 'Start free, keep control of costs',
+    text: 'A free desktop app on your own keys. You see the cost before every check and set a monthly cap, with no per-seat fees.'
   },
   {
-    title: 'The right page, not just the domain',
-    text: 'Set the page that should be cited for each question; CiteFox tells you if that page, another of yours, your brand without a link, or someone else was cited.'
+    title: 'Get the right page cited, not just the domain',
+    text: 'Set the page that should win each question; CiteFox tells you if that page, another of yours, your brand without a link, or someone else was cited.'
   },
   {
-    title: 'Fixes with a verdict',
+    title: 'Know if each fix worked',
     text: 'Log a change and CiteFox re-checks for 14 days, then says whether it worked, made no change or got worse.'
   },
   {
-    title: 'Six client-ready reports',
-    text: 'Visibility, What changed, Impact review, Pitch / audit, Content plan and Head-to-head, rebuilt after every check.'
+    title: 'Send a client-ready report after every check',
+    text: 'Visibility, What changed, Impact review, Pitch / audit, Content plan and Head-to-head, rebuilt for you each time.'
   },
   {
-    title: 'Branded for agencies',
+    title: 'Put your agency’s name on the work',
     text: 'Your agency’s name and logo with “Prepared for” each client, or your company’s, or none.'
   },
   {
-    title: 'Every number drills down',
-    text: 'Click any number, in the app or a report, to see the exact questions and answers behind it.'
+    title: 'Back every number with proof',
+    text: 'Click any number, in the app or a report, to see the exact questions and AI answers behind it.'
   }
 ]
 

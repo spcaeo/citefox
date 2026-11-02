@@ -359,7 +359,7 @@ Get CiteFox from the **[download page][site]**, which picks the right file for y
 <details>
 <summary>How to open CiteFox the first time on macOS, Windows and Linux</summary>
 
-- **macOS:** open the `.dmg` and drag CiteFox to Applications. Open it; when macOS says it cannot check the app, click **Done**. Then open **System Settings › Privacy & Security**, scroll down and click **Open Anyway**. On macOS 14 or older you can instead Control-click the app and choose **Open**.
+- **macOS:** open the `.dmg` and drag CiteFox to Applications. Open it; when macOS says it cannot check the app, click **Done**. Then open **System Settings › Privacy & Security**, scroll down and click **Open Anyway**. On macOS 14 or older you can instead Control-click the app and choose **Open**. Or run once in Terminal: `xattr -dr com.apple.quarantine /Applications/CiteFox.app`.
 - **Windows:** run the installer. If you see "Windows protected your PC", click **More info**, then **Run anyway**. It installs for you only (no admin needed).
 - **Linux:** make the AppImage executable (`chmod +x CiteFox-*.AppImage`) and open it, or install the deb with `sudo apt install ./CiteFox-*.deb`. Storing keys needs a Secret Service (GNOME Keyring or KWallet; the deb pulls in `libsecret-1-0`).
 

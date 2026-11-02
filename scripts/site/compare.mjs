@@ -1,6 +1,8 @@
 // The comparison landing page (site/compare/), built from the README's
 // "How CiteFox compares" section so the two never disagree. The full matrix,
 // with a source for every cell, stays in Docs/COMPARISON.md on GitHub.
+import { cta } from './download.mjs'
+import { ARROW, BROWSER, DOWNLOAD } from './icons.mjs'
 import { REPO_URL } from './config.mjs'
 import { DIFFERENT } from './content.mjs'
 import { absolute, breadcrumbData, breadcrumbs, faqData, page } from './layout.mjs'
@@ -97,7 +99,7 @@ ${section
         <h2 id="compare-faq">Common questions</h2>
 ${COMPARE_FAQ.map((x) => `        <div class="qa"><h3>${e(x.q)}</h3><p>${e(x.a)}</p></div>`).join('\n')}
       </section>
-      <p><a class="button" href="../#download">Download CiteFox</a> <a href="${REPO_URL}/blob/main/Docs/COMPARISON.md" target="_blank" rel="noopener">Full matrix with sources</a></p>
+      <p class="cta-row cta-row-left">${cta('../download/', 'Download CiteFox', DOWNLOAD, 'primary')}${cta('../demo/', 'Try the live demo', BROWSER)}${cta(`${REPO_URL}/blob/main/Docs/COMPARISON.md`, 'Full matrix with sources', ARROW, 'text')}</p>
     </main>`
   const article = {
     '@context': 'https://schema.org',

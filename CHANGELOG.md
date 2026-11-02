@@ -25,7 +25,7 @@ The first public release of CiteFox: a free, local AI visibility tracker. Bring 
 
 ### Notes
 
-- These builds are not code-signed yet. On a Mac, right-click the app and choose Open the first time; on Windows, choose More info › Run anyway.
+- These builds are not code-signed yet. On a Mac, open CiteFox once, then go to System Settings › Privacy & Security and click Open Anyway (or run `xattr -dr com.apple.quarantine /Applications/CiteFox.app` in Terminal). On Windows, choose More info › Run anyway.
 
 ## 0.12.0 — 2026-10-23
 
