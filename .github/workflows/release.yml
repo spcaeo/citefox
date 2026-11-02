@@ -29,7 +29,7 @@ jobs:
     name: Check tag and changelog
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-node@v4
         with:
@@ -71,7 +71,7 @@ jobs:
             runs: --linux --x64 --arm64
     steps:
       # Full history: the build number is the commit count (scripts/build-number.ts).
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # The build number is the commit count (scripts/build-number.ts): a
           # shallow clone would stamp "build 1".
@@ -157,7 +157,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-node@v4
         with:
