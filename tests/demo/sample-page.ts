@@ -6,6 +6,8 @@ export { SAMPLES, type SampleInfo }
  * The sample reports on the site (site/samples, Docs/DEMO.md): the app's own
  * offline HTML download, plus search metadata and a small "made with CiteFox"
  * pill. The pill is fixed in a corner, so the report's own layout is unchanged,
+ * and it says the data is made up. The made-up page links have no "open" button
+ * (copy stays), so nobody lands on a page that does not exist. The pill
  * and it is styled by an inline <style> the report's CSP already allows
  * (`style-src 'unsafe-inline'`). It hides when printing.
  */
@@ -46,10 +48,11 @@ export function samplePage(html: string, info: SampleInfo, siteUrl: string): str
     `<meta name="twitter:card" content="summary_large_image">`,
     `<style>${BAR_CSS}</style>`
   ].join('\n')
-  const bar = `<div class="cf-sample-bar" role="note" aria-label="About this sample">Sample report made with CiteFox · <a href="../">More samples</a> <a class="cf-sample-dl" href="../../#download">Download</a></div>`
+  const bar = `<div class="cf-sample-bar" role="note" aria-label="About this sample">Sample report made with CiteFox, example data · <a href="../">More samples</a> <a class="cf-sample-dl" href="../../#download">Download</a></div>`
   const titled = html.replace(/<title>[\s\S]*?<\/title>/, () => head)
   if (titled === html) throw new Error('The report has no <title> to replace')
-  const out = titled.replace(/<body>/, () => `<body>\n${bar}`)
-  if (out === titled) throw new Error('The report has no <body> tag')
+  const offline = titled.replace(/<a class="cp-btn cp-open"[^>]*>[\s\S]*?<\/a>/g, '')
+  const out = offline.replace(/<body>/, () => `<body>\n${bar}`)
+  if (out === offline) throw new Error('The report has no <body> tag')
   return out
 }
