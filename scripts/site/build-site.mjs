@@ -20,6 +20,7 @@ import {
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { SITE_URL } from './config.mjs'
+import { comparePage } from './compare.mjs'
 import { parseFrontMatter, renderMarkdown } from './markdown.mjs'
 import { docOrder, docPage, docsIndex, glossary, home, notFound } from './pages.mjs'
 
@@ -93,6 +94,7 @@ export function buildSite(root = REPO_ROOT) {
     docsIndex({ docs }),
     ...docOrder().map((id) => docPage({ docs, id })),
     glossary(),
+    comparePage({ readme: readFileSync(join(root, 'README.md'), 'utf8') }),
     notFound()
   ]
   const indexed = pages.filter((p) => p.file !== '404.html')

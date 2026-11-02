@@ -182,6 +182,10 @@ export const FAQ = [
     a: 'A Mac, Windows or Linux computer, a key for a search data service (CiteFox links to sign-up pages with free plans and tests the key), and an AI assistant for CiteFox AI: one you already use on your computer under your own plan, or a paste-in mode with your own ChatGPT.'
   },
   {
+    q: 'How does CiteFox compare with Profound, Peec AI and Otterly.AI?',
+    a: 'CiteFox is a free desktop app that keeps your data on your computer, checks whether the page you want cited is the one cited, and gives each logged fix a 14-day verdict. Hosted tools such as Profound, Peec AI and Otterly.AI offer team dashboards, more engines, prompt volume data, AI crawler analytics and APIs. The comparison page has the full table, with a source for every fact.'
+  },
+  {
     q: 'Why does my computer warn me when I open CiteFox?',
     a: 'CiteFox builds are not code-signed with a paid certificate yet, so macOS and Windows ask once before the first start. On a Mac, click Open Anyway in System Settings › Privacy & Security. On Windows, choose More info, then Run anyway. Every release lists a SHA-256 checksum for each file.'
   },

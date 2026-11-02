@@ -107,6 +107,7 @@ ${data.map((d) => indent(jsonLd(d), 4)).join('\n')}
           ${link('#features', 'Features', 'features')}
           ${link('docs/', 'Docs', 'docs')}
           ${link('glossary/', 'Glossary', 'glossary')}
+          ${link('compare/', 'Compare', 'compare')}
           ${link('#download', 'Download', 'download')}
           <a id="nav-source" href="${REPO_URL}" target="_blank" rel="noopener">GitHub</a>
         </nav>
@@ -124,6 +125,7 @@ ${body}
         <nav aria-label="Footer">
           <a href="${r}docs/">Docs</a>
           <a href="${r}glossary/">GEO and AEO glossary</a>
+          <a href="${r}compare/">CiteFox vs other AI visibility tools</a>
           <a href="${r}docs/getting-started/">Getting started</a>
           <a href="${REPO_URL}/blob/main/Docs/PRIVACY.md" target="_blank" rel="noopener">Privacy</a>
           <a href="${REPO_URL}" target="_blank" rel="noopener">Source code</a>

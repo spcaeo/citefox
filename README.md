@@ -15,7 +15,7 @@
 
 <img src="media/hero.png" alt="CiteFox showing which buyer questions Google AI Overviews, ChatGPT and Perplexity cite your website for" width="900">
 
-[Website][site] · [Docs][docs] · [GEO glossary][glossary] · [FAQ](#faq) · [Releases][releases]
+[Website][site] · [Docs][docs] · [GEO glossary][glossary] · [Compare](#how-citefox-compares) · [FAQ](#faq) · [Releases][releases]
 
 </div>
 
@@ -187,6 +187,10 @@ Yes. The license allows use for your company's clients. CiteFox has six ready re
 
 A Mac, Windows or Linux computer, a key for a search data service (CiteFox links to sign-up pages with free plans and tests the key), and an AI assistant for CiteFox AI: one you already use on your computer under your own plan, or a paste-in mode with your own ChatGPT.
 
+### How does CiteFox compare with Profound, Peec AI and Otterly.AI?
+
+CiteFox is a free desktop app that keeps your data on your computer, checks whether the page you want cited is the one cited, and gives each logged fix a 14-day verdict. Hosted tools such as Profound, Peec AI and Otterly.AI offer team dashboards, more engines, prompt volume data, AI crawler analytics and APIs. See [How CiteFox compares](#how-citefox-compares) and the full matrix with a source for every fact in [Docs/COMPARISON.md](Docs/COMPARISON.md).
+
 ### Why does my computer warn me when I open CiteFox?
 
 CiteFox builds are not code-signed with a paid certificate yet, so macOS and Windows ask once before the first start. On a Mac, click **Open Anyway** in **System Settings › Privacy & Security**. On Windows, choose **More info**, then **Run anyway**. Every release lists a SHA-256 checksum for each file.
@@ -202,6 +206,64 @@ You pick the markets: a country and language pair, such as United States · Engl
 - **Source-available.** Anyone can read the code and see exactly what it does.
 - **Page-level answers.** Which of your pages is cited, and whether it is the page you want cited.
 - **A full loop.** Buyer questions, checks, fix briefs, 14-day verdicts and client reports in one tool.
+
+## How CiteFox compares
+
+Facts about other tools come from each vendor's own website, pricing page and docs, checked on 2026-11-02. The full matrix, with a source for every cell and three more tools (Rankscale, Goodie AI and Similarweb), is in **[Docs/COMPARISON.md](Docs/COMPARISON.md)**.
+
+✓ yes · ◐ partly, as an add-on or on some plans · ✗ no, or not found in its docs · ? not confirmed on the vendor's pages · – does not apply · nc = not checked
+
+|                                          |     **CiteFox**     |  Profound   | Peec AI | Otterly.AI |   Scrunch   | AthenaHQ  |  Searchable  | Promptwatch | Semrush AI ¹ | Ahrefs Brand Radar |
+| ---------------------------------------- | :-----------------: | :---------: | :-----: | :--------: | :---------: | :-------: | :----------: | :---------: | :----------: | :----------------: |
+| How it runs                              |     Desktop app     |    SaaS     |  SaaS   |    SaaS    |    SaaS     |   SaaS    |     SaaS     |    SaaS     |     SaaS     |        SaaS        |
+| Your data stays on your computer         |          ✓          |      ✗      |    ✗    |     ✗      |      ✗      |     ✗     |      ✗       |      ✗      |      ✗       |         ✗          |
+| Hosted web dashboard                     |          ✗          |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ✓       |         ✓          |
+| Free plan or trial                       |      Free app       | 7-day trial |    ?    |   Trial    | 7-day trial | Free plan | 14-day trial |    Trial    |      ✗       |     ◐ checker      |
+| Price to start                           | Free; your own keys |   Custom    |   $95   |    $29     |    $300     |   $295    |     $125     |     $95     |     $99      |   $199 add-on ²    |
+| Licence                                  |  Source-available   |   Closed    | Closed  |   Closed   |   Closed    |  Closed   |    Closed    |   Closed    |    Closed    |       Closed       |
+| Google AI Overviews                      |          ✓          |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ✓       |         ✓          |
+| Google AI Mode                           |          ✓          |      ◐      |    ✓    |     ◐      |      ✓      |     ◐     |      ◐       |      ✓      |      ✓       |         ✓          |
+| ChatGPT                                  |          ✓          |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ✓       |         ✓          |
+| Perplexity                               |          ✓          |      ◐      |    ◐    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ◐       |         ✓          |
+| Gemini                                   |          ✓          |      ✓      |    ✓    |     ◐      |      ✓      |     ✓     |      ◐       |      ✓      |      ◐       |         ✓          |
+| Copilot                                  |          ✓          |      ◐      |    ✓    |     ✓      |      ✗      |     ✓     |      ◐       |      ✓      |      ✗       |         ✓          |
+| More engines than these six              |          ✗          |      ◐      |    ◐    |     ◐      |      ✓      |     ◐     |      ◐       |      ✓      |      ✗       |         ◐          |
+| Your own prompts / buyer questions       |          ✓          |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ✓       |         ✓          |
+| Topics or clusters                       |          ✓          |      ✓      |    ✓    |     ✓      |      ✓      |     ◐     |      ✓       |      ✓      |      ✓       |         ✓          |
+| Right page cited check (target pages)    |          ✓          |      ◐      |    ◐    |     ?      |      ?      |     ?     |      ?       |      ?      |      ?       |         ?          |
+| Countries and languages                  |          ✓          |      ◐      |    ✓    |     ✓      |      ?      |     ◐     |      ✓       |      ✓      |      ✓       |         ✓          |
+| Prompt volume data                       |          ✗          |      ✓      |    ✓    |     ?      |      ?      |     ◐     |      ?       |      ✓      |      ✓       |         ✓          |
+| Competitor share of voice                |          ✓          |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ✓       |         ✓          |
+| Source analysis (Reddit, YouTube)        |          ✓          |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ✓      |      ◐       |         ✓          |
+| Sentiment                                |          ✓          |      ✓      |    ✓    |     ✓      |      ✓      |     ◐     |      ✓       |      ✓      |      ✓       |         ✓          |
+| AI crawler / traffic analytics           |          ✗          |      ✓      |    ✓    |     ◐      |      ✓      |     ?     |      ✓       |      ◐      |      ◐       |         ✓          |
+| Fix recommendations                      |          ✓          |      ✓      |    ✓    |     ✓      |      ✓      |     ✓     |      ✓       |      ◐      |      ✓       |         ?          |
+| Fix tracking with a before/after verdict |          ✓          |      ◐      |    ◐    |     ?      |      ?      |     ?     |      ?       |      ?      |      ?       |         ?          |
+| Client reports / white-label             |          ✓          |      ◐      |    ◐    |     ✓      |      ◐      |     ?     |      ◐       |      ✓      |      ◐       |         ◐          |
+| Scheduled email reports                  |          ✓          |      ◐      |    ?    |     ?      |      ?      |     ?     |      ✓       |      ?      |      ?       |         ◐          |
+| Export (CSV, PDF, HTML)                  |   HTML, PDF, CSV    |      ◐      |   CSV   |  CSV, PDF  | CSV, Excel  |   ◐ CSV   |   PDF, CSV   |      ◐      |     CSV      |         ◐          |
+| API                                      |          ✗          |      ◐      |    ◐    |     ◐      |      ◐      |     ◐     |      ✓       |      ✓      |      ?       |         ?          |
+| MCP server                               |          ✗          |      ✓      |    ✓    |     ◐      |      ◐      |     ✓     |      ✓       |      ✓      |      ?       |         ?          |
+
+¹ Semrush's AI Visibility Toolkit. ² Ahrefs Brand Radar is an add-on to a paid Ahrefs plan; custom prompts alone start at $50 a month. Prices are monthly list prices in USD on 2026-11-02 and change often.
+
+### Where others lead (honestly)
+
+- **A hosted dashboard for a team.** The others run in a browser, with shared logins, client guest access and live dashboards. CiteFox runs on one computer and shares results as files and emails.
+- **More engines.** Promptwatch, Scrunch, AthenaHQ and the Enterprise plans of Profound and Peec AI track more engines than CiteFox's six, such as Grok, DeepSeek, Meta AI or Mistral.
+- **Prompt volume and large datasets.** Ahrefs Brand Radar researches any brand across 525 million+ prompts; Profound, Peec AI, Promptwatch and Semrush estimate how often people ask a prompt. CiteFox measures only the questions you track.
+- **AI crawler and AI traffic analytics.** Most others read server or CDN logs and AI referrals. CiteFox does not read traffic.
+- **API, MCP and enterprise features.** Most others offer an API, an MCP server, SSO and dedicated support. CiteFox has none of these.
+- **Content writing.** Promptwatch, Searchable and AthenaHQ have agents that write or refresh pages. CiteFox writes the brief; a person writes the page.
+
+### Who should use what
+
+- **Page-level answers, fix verdicts and branded client reports, with no subscription and the data on your own computer:** CiteFox.
+- **Many engines, prompt volumes, crawler logs, SSO and a dedicated team, for a large brand:** Profound, or an Enterprise plan of Peec AI or Scrunch.
+- **A hosted, self-serve tracker with daily runs and a low entry price:** Otterly.AI or Peec AI.
+- **An agent that also writes and publishes content:** Promptwatch or Searchable.
+- **AI visibility beside your keyword and backlink data:** the Semrush or Ahrefs add-on you already pay for.
+- **Both:** CiteFox sits beside any of these. A hosted tool can watch the whole category daily while CiteFox checks which of your pages is cited and whether each fix worked.
 
 ## Roadmap
 
