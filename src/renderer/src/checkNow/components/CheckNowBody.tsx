@@ -1,10 +1,10 @@
 import { useId, type JSX } from 'react'
 import { pluralize } from '@shared/pluralize'
-import { ItemPicker, MarketChips, ScopeChooser } from '../../scope'
+import { allQuestionCount, ItemPicker, MarketChips, ScopeChooser } from '../../scope'
 import { marketLabel } from '../../shell/model'
 import { DrawerGrid, DrawerMain, DrawerRail, DrawerSection } from '../../ui'
 import type { CheckNowData } from '../hooks/useCheckNow'
-import { CHECK_KINDS, checkablePage, type CheckNowState, type QuestionMode } from '../model'
+import { checkablePage, offeredKinds, type CheckNowState, type QuestionMode } from '../model'
 
 export interface CheckNowBodyProps {
   state: CheckNowState
@@ -24,7 +24,7 @@ export function CheckNowBody({ state, data, onChange }: CheckNowBodyProps): JSX.
       <DrawerMain>
         <DrawerSection
           title="What to check"
-          description="Pages that are due, every tracked page, or the pages, topics, groups or clusters you pick."
+          description="Pages that are due, everything again, or the pages, topics, groups or clusters you pick."
           loading={options === null && data.error === null}
           error={data.error}
           onRetry={data.reload}
@@ -41,13 +41,20 @@ export function CheckNowBody({ state, data, onChange }: CheckNowBodyProps): JSX.
                   scope.kind !== state.scope.kind
                 )
               }
-              kinds={CHECK_KINDS}
+              kinds={offeredKinds(options, state.scope.kind)}
+              countText={{ all: pluralize(allQuestionCount(options), 'question') }}
               legend="What to check"
               pageFilter={checkablePage}
               query={state.q}
               onQueryChange={(q) => onChange({ q })}
               testId="check-now-chooser"
             />
+          ) : null}
+          {options && state.scope.kind === 'all' ? (
+            <p className="cn2-note" data-testid="check-now-all-note">
+              Runs all {pluralize(allQuestionCount(options), 'question')} of every tracked page and
+              topic again.
+            </p>
           ) : null}
         </DrawerSection>
       </DrawerMain>
@@ -88,6 +95,17 @@ function QuestionsSection({ state, data, onChange }: CheckNowBodyProps): JSX.Ele
   const modes: { mode: QuestionMode; label: string; hint: string; disabled?: string }[] = [
     { mode: 'all', label: 'All questions', hint: 'Every question the pages track.' },
     {
+      mode: 'failed',
+      label: 'Only the ones that failed last time',
+      hint:
+        data.failed === null
+          ? 'Looking at the last check…'
+          : `${pluralize(data.failed.questions, 'question')} had no result in their last check.`,
+      ...(data.failed !== null && data.failed.questions === 0
+        ? { disabled: 'Nothing failed last time.' }
+        : {})
+    },
+    {
       mode: 'notcited',
       label: 'Only questions not cited last time',
       hint: 'Only the questions whose last result did not cite the page.'
@@ -102,9 +120,11 @@ function QuestionsSection({ state, data, onChange }: CheckNowBodyProps): JSX.Ele
     }
   ]
   const notCitedLine =
-    state.only === 'notcited' && data.plan && !data.plan.waiting && data.plan.blocked === null
-      ? `${pluralize(data.plan.promptIds?.length ?? 0, 'question')} on ${pluralize(data.plan.estimate.pages, 'page')} were not cited last time${whereText(data)}.`
-      : null
+    state.only === 'failed' && data.plan && !data.plan.waiting && data.plan.blocked === null
+      ? `${pluralize(data.plan.promptIds?.length ?? 0, 'question')} on ${pluralize(data.plan.estimate.pages, 'page')} failed last time${whereText(data)}.`
+      : state.only === 'notcited' && data.plan && !data.plan.waiting && data.plan.blocked === null
+        ? `${pluralize(data.plan.promptIds?.length ?? 0, 'question')} on ${pluralize(data.plan.estimate.pages, 'page')} were not cited last time${whereText(data)}.`
+        : null
 
   return (
     <DrawerSection title="Questions" testId="check-now-questions">

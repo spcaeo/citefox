@@ -4,7 +4,7 @@ import { createScopeSource, type ScopeSource } from '../scope'
 /**
  * The channels Check now, the page's Check now menu and Add a page use. The
  * scope channels load pages, groups, clusters and topics; the rest start a
- * check, list the questions not cited last time, read one page's questions,
+ * check, list the questions not cited last time, list the checks (for the questions that failed), read one page's questions,
  * add a page and file it in a group. Production reads the preload bridge;
  * tests pass a fake.
  */
@@ -13,6 +13,7 @@ export type CheckNowSource = ScopeSource &
     CiteFoxApi,
     | 'checks:start'
     | 'checks:notCited'
+    | 'history:listProject'
     | 'prompts:list'
     | 'pages:add'
     | 'pages:update'
@@ -37,6 +38,7 @@ export function createCheckNowSource(): CheckNowSource {
     ...createScopeSource(),
     'checks:start': async (request) => api()['checks:start'](request),
     'checks:notCited': async (request) => api()['checks:notCited'](request),
+    'history:listProject': async (request) => api()['history:listProject'](request),
     'prompts:list': async (request) => api()['prompts:list'](request),
     'pages:add': async (request) => api()['pages:add'](request),
     'pages:update': async (request) => api()['pages:update'](request),

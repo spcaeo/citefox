@@ -132,6 +132,11 @@ export function resolveScopeIds(scope: Scope, options: ScopeOptions, now = new D
     case 'tracked':
     case 'project':
       return options.pages.filter((page) => page.tracked).map((page) => page.id)
+    case 'all':
+      return [
+        ...options.pages.filter((page) => page.tracked).map((page) => page.id),
+        ...options.topics.map((topic) => topic.id)
+      ]
     case 'pages':
       return options.pages.filter((page) => picked.has(page.id)).map((page) => page.id)
     case 'group':
@@ -147,6 +152,12 @@ export function resolveScopeIds(scope: Scope, options: ScopeOptions, now = new D
     case 'view':
       return []
   }
+}
+
+/** Questions a check of every tracked page and every topic would ask (their enabled questions). */
+export function allQuestionCount(options: ScopeOptions): number {
+  const pages = options.pages.reduce((sum, page) => sum + (page.tracked ? page.promptCount : 0), 0)
+  return options.topics.reduce((sum, topic) => sum + (topic.questions ?? 0), pages)
 }
 
 /**
@@ -246,6 +257,8 @@ export function describeScope(scope: Scope, options: ScopeOptions | null): strin
       return 'Everything due'
     case 'tracked':
       return 'Every tracked page'
+    case 'all':
+      return 'Everything again'
     case 'project':
       return 'Whole project'
     case 'pages':
@@ -265,6 +278,7 @@ export function describeScope(scope: Scope, options: ScopeOptions | null): strin
 export const SCOPE_LABELS: Readonly<Record<ScopeKind, string>> = {
   due: 'Everything due',
   tracked: 'Every tracked page',
+  all: 'Everything again',
   project: 'Whole project',
   pages: 'Pages I pick',
   group: 'A group',

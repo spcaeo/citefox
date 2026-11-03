@@ -1,11 +1,18 @@
 import { useMemo, useSyncExternalStore, type JSX } from 'react'
 import { useBuildTools } from '../buildMenu/buildClient'
 import { DRAWER_KINDS, drawerOwnedKeys } from '../shell/drawerUrl'
-import { Button } from '../ui'
+import { projectSettingsHash } from '../shell/routes'
+import { Button, LinkButton } from '../ui'
 import { writeQuery } from '../utils/queryState'
 import { CheckNowBody } from './components/CheckNowBody'
 import { useCheckNow } from './hooks/useCheckNow'
-import { checkParamsPatch, parseCheckParams, planSummary, type CheckNowState } from './model'
+import {
+  checkParamsPatch,
+  hasScopeParam,
+  parseCheckParams,
+  planSummary,
+  type CheckNowState
+} from './model'
 import { runCheck } from './run'
 import { createCheckNowSource, type CheckNowSource } from './source'
 import './checkNow.css'
@@ -46,9 +53,11 @@ export function CheckNowPanel({
   const source = useMemo(() => given ?? createCheckNowSource(), [given])
   const tools = useBuildTools()
   const key = useSyncExternalStore(subscribe, screenCheckKey, () => '{}')
-  const state = useMemo(() => parseCheckParams(JSON.parse(key) as Record<string, string>), [key])
-  const data = useCheckNow(projectId, state, source)
-  const { plan, options } = data
+  const params = useMemo(() => JSON.parse(key) as Record<string, string>, [key])
+  const parsed = useMemo(() => parseCheckParams(params), [params])
+  // Without a scope on the URL the first scope with something to check is used.
+  const data = useCheckNow(projectId, parsed, source, hasScopeParam(params))
+  const { plan, options, state } = data
 
   function change(patch: Partial<CheckNowState>, push = false): void {
     writeQuery(checkParamsPatch(patch), push ? 'push' : 'replace')
@@ -63,6 +72,15 @@ export function CheckNowPanel({
             ? 'Loading the pages…'
             : (plan.blocked ?? planSummary(plan, options))}
         </span>
+        {plan?.wayOut ? (
+          <Button
+            variant="secondary"
+            data-testid="check-now-way-out"
+            onClick={() => change(plan.wayOut?.patch ?? {}, true)}
+          >
+            {plan.wayOut.label}
+          </Button>
+        ) : null}
         <Button
           variant="primary"
           icon="refresh"
@@ -74,6 +92,11 @@ export function CheckNowPanel({
           Check now
         </Button>
       </div>
+      <p className="cn2-schedule">
+        <LinkButton variant="text" size="sm" href={projectSettingsHash('schedule')}>
+          Run this automatically: choose how often
+        </LinkButton>
+      </p>
     </section>
   )
 }

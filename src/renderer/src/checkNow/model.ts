@@ -1,5 +1,7 @@
+import type { ProjectCheck, ProjectHistory } from '@shared/ipc'
 import { pluralize } from '@shared/pluralize'
 import {
+  allQuestionCount,
   costLine,
   estimateSearches,
   estimateText,
@@ -23,6 +25,7 @@ export const CHECK_PREFIX = 'check'
 /** The scope kinds Check now offers, in order. */
 export const CHECK_KINDS: readonly ScopeKind[] = [
   'due',
+  'all',
   'tracked',
   'pages',
   'topic',
@@ -30,8 +33,26 @@ export const CHECK_KINDS: readonly ScopeKind[] = [
   'cluster'
 ]
 
-/** All questions, only the ones not cited last time, or the ones picked. */
-export type QuestionMode = 'all' | 'notcited' | 'picked'
+/**
+ * The kinds worth offering: "Everything again" when there is a question to ask,
+ * and "Every tracked page" only next to topics (without topics it is the same
+ * choice). The kind already chosen stays listed, so an old link still shows it.
+ */
+export function offeredKinds(options: ScopeOptions, current: ScopeKind): readonly ScopeKind[] {
+  const questions = allQuestionCount(options)
+  return CHECK_KINDS.filter((kind) => {
+    if (kind === current) return true
+    if (kind === 'all') return questions > 0
+    if (kind === 'tracked') return options.topics.length > 0
+    return true
+  })
+}
+
+/**
+ * All questions, only the ones that failed last time (no usable result), only the
+ * ones not cited last time, or the ones picked.
+ */
+export type QuestionMode = 'all' | 'failed' | 'notcited' | 'picked'
 
 /** Everything the Check now drawer holds, all of it on the URL. */
 export interface CheckNowState {
@@ -57,7 +78,11 @@ export function parseCheckParams(params: CheckParams): CheckNowState {
   const prompts = parseIds(params['check.prompts'])
   const raw = params['check.only']
   const only: QuestionMode =
-    raw === 'notcited' ? 'notcited' : raw === 'picked' || prompts.length > 0 ? 'picked' : 'all'
+    raw === 'notcited' || raw === 'failed'
+      ? raw
+      : raw === 'picked' || prompts.length > 0
+        ? 'picked'
+        : 'all'
   return {
     scope,
     markets: parseIds(params['check.markets']),
@@ -65,6 +90,41 @@ export function parseCheckParams(params: CheckParams): CheckNowState {
     prompts,
     q: params['check.q'] ?? ''
   }
+}
+
+/** True when the URL holds a scope of its own (else the screen picks a default). */
+export function hasScopeParam(params: CheckParams): boolean {
+  return Boolean(params['check.scope'])
+}
+
+/**
+ * The scope a screen opens on when the URL has none, so Check now is never left
+ * off: pages that are due, else every tracked page, else the one topic, else
+ * everything (several topics). Only a project with nothing to check keeps "due".
+ */
+export function defaultScope(options: ScopeOptions, now: Date): Scope {
+  if (options.pages.some((page) => checkablePage(page) && isDue(page, now))) {
+    return { kind: 'due', ids: [] }
+  }
+  if (options.pages.some((page) => checkablePage(page) && page.promptCount > 0)) {
+    return { kind: 'tracked', ids: [] }
+  }
+  const topics = options.topics.filter((topic) => (topic.questions ?? 0) > 0)
+  const [only] = topics
+  if (only && topics.length === 1) return { kind: 'topic', ids: [only.id] }
+  if (topics.length > 1) return { kind: 'all', ids: [] }
+  return { kind: 'due', ids: [] }
+}
+
+/** The state with the default scope in place of a scope the URL does not hold. */
+export function withDefaultScope(
+  state: CheckNowState,
+  chosen: boolean,
+  options: ScopeOptions | null,
+  now: Date
+): CheckNowState {
+  if (chosen || options === null) return state
+  return { ...state, scope: defaultScope(options, now) }
 }
 
 /** URL values for a state change (null removes a key). */
@@ -100,8 +160,52 @@ export interface NotCitedEntry {
   marketIds: readonly string[]
 }
 
-/** Not-cited questions per page. */
+/** Not-cited (or failed) questions per page. */
 export type NotCitedMap = ReadonlyMap<string, NotCitedEntry>
+
+/**
+ * Questions with no usable result in their latest check, per page or topic, from
+ * `history:listProject` (the same `failedPromptIds` Check history's "Retry failed
+ * questions" asks again). Only the latest ended check of each page and market
+ * counts; `markets` null is every market.
+ */
+export function failedMap(history: ProjectHistory, markets: readonly string[] | null): NotCitedMap {
+  const latest = new Map<string, ProjectCheck>()
+  for (const check of history.checks) {
+    if (check.status === 'running') continue
+    if (markets !== null && !markets.includes(check.marketId)) continue
+    const key = `${check.pageId}|${check.marketId}`
+    const seen = latest.get(key)
+    if (seen === undefined || seen.startedAt < check.startedAt) latest.set(key, check)
+  }
+  const out = new Map<string, { promptIds: string[]; marketIds: string[] }>()
+  for (const check of latest.values()) {
+    if (check.failedPromptIds.length === 0) continue
+    const entry = out.get(check.pageId) ?? { promptIds: [], marketIds: [] }
+    for (const id of check.failedPromptIds) {
+      if (!entry.promptIds.includes(id)) entry.promptIds.push(id)
+    }
+    if (!entry.marketIds.includes(check.marketId)) entry.marketIds.push(check.marketId)
+    out.set(check.pageId, entry)
+  }
+  return out
+}
+
+/** The failed questions of the pages in scope: how many questions, on how many pages. */
+export function failedCounts(
+  failed: NotCitedMap | null,
+  pageIds: readonly string[]
+): { questions: number; pages: number } | null {
+  if (failed === null) return null
+  let questions = 0
+  let pages = 0
+  for (const id of pageIds) {
+    const count = failed.get(id)?.promptIds.length ?? 0
+    if (count > 0) pages += 1
+    questions += count
+  }
+  return { questions, pages }
+}
 
 /** What a run would do, and why it cannot run when it cannot. */
 export interface CheckPlan {
@@ -109,10 +213,27 @@ export interface CheckPlan {
   marketIds: string[] | null
   promptIds: string[] | null
   estimate: SearchEstimate
+  /** Questions "Everything again" asks (before markets and samples). Null for other scopes. */
+  questionCount: number | null
   /** Plain reason Run check is off. Null when it can run. */
   blocked: string | null
+  /** The way out of `blocked`: a button that changes the choice. Null when there is none. */
+  wayOut: WayOut | null
   /** True while the not-cited lists or the picked page's questions load. */
   waiting: boolean
+}
+
+/** A button next to a blocked Check now: its label and the choice it makes. */
+export interface WayOut {
+  label: string
+  patch: Partial<CheckNowState>
+}
+
+/** The choice "Everything again" is: every tracked page and topic, all their questions. */
+export const EVERYTHING_AGAIN: Partial<CheckNowState> = {
+  scope: { kind: 'all', ids: [] },
+  only: 'all',
+  prompts: []
 }
 
 export interface PlanInput {
@@ -120,6 +241,8 @@ export interface PlanInput {
   options: ScopeOptions
   /** Null while it loads (only needed for `notcited`). */
   notCited: NotCitedMap | null
+  /** Null while it loads (only needed for `failed`). */
+  failed?: NotCitedMap | null
   /** The one page's question ids when `picked` covers one page; null when unknown. */
   pageQuestions: readonly string[] | null
   now: Date
@@ -146,12 +269,15 @@ export function buildPlan(input: PlanInput): CheckPlan {
   const { state, options, now } = input
   const marketIds = state.markets.length > 0 ? state.markets : null
   const inScope = scopePageIds(state, options, now)
-  const noPlan = (blocked: string, waiting = false): CheckPlan => ({
+  const everything = allQuestionCount(options)
+  const noPlan = (blocked: string, waiting = false, wayOut: WayOut | null = null): CheckPlan => ({
     pageIds: [],
     marketIds,
     promptIds: null,
     estimate: { min: 0, max: 0, pages: 0 },
+    questionCount: null,
     blocked,
+    wayOut,
     waiting
   })
 
@@ -159,7 +285,15 @@ export function buildPlan(input: PlanInput): CheckPlan {
     return noPlan(pickPrompt(state.scope.kind))
   }
   if (inScope.length === 0) {
-    if (state.scope.kind === 'due') return noPlan(nothingDue(options, now))
+    if (state.scope.kind === 'due') {
+      const base = nothingDue(options, now)
+      if (everything === 0) return noPlan(base)
+      return noPlan(
+        `${base} Choose “Everything again” to run all ${pluralize(everything, 'question')} now.`,
+        false,
+        { label: `Run all ${pluralize(everything, 'question')} again`, patch: EVERYTHING_AGAIN }
+      )
+    }
     return noPlan('None of these pages is tracked yet, so there is nothing to check.')
   }
 
@@ -167,18 +301,32 @@ export function buildPlan(input: PlanInput): CheckPlan {
   let promptIds: string[] | null = null
   let pageIds = inScope
   let runMarkets = marketIds
-  if (state.only === 'notcited') {
-    if (input.notCited === null) return noPlan('Finding the questions not cited last time…', true)
-    const notCited = input.notCited
-    pageIds = inScope.filter((id) => (notCited.get(id)?.promptIds.length ?? 0) > 0)
-    promptIds = [...new Set(pageIds.flatMap((id) => notCited.get(id)?.promptIds ?? []))]
-    limit = (id) => notCited.get(id)?.promptIds.length ?? 0
-    if (pageIds.length === 0) {
-      return noPlan('Every question was cited last time, or these pages have no check yet.')
+  if (state.only === 'notcited' || state.only === 'failed') {
+    const failedMode = state.only === 'failed'
+    const list = failedMode ? (input.failed ?? null) : input.notCited
+    if (list === null) {
+      return noPlan(
+        failedMode
+          ? 'Finding the questions that failed last time…'
+          : 'Finding the questions not cited last time…',
+        true
+      )
     }
-    // Only the picked markets where something was not cited: a market where
-    // every question was cited is not searched again.
-    runMarkets = missedMarkets(options, pageIds, notCited, marketIds)
+    pageIds = inScope.filter((id) => (list.get(id)?.promptIds.length ?? 0) > 0)
+    promptIds = [...new Set(pageIds.flatMap((id) => list.get(id)?.promptIds ?? []))]
+    limit = (id) => list.get(id)?.promptIds.length ?? 0
+    if (pageIds.length === 0) {
+      return failedMode
+        ? noPlan(
+            'No question failed last time, so there is nothing to retry. Choose “All questions” to run them again.',
+            false,
+            { label: 'Run all questions', patch: { only: 'all', prompts: [] } }
+          )
+        : noPlan('Every question was cited last time, or these pages have no check yet.')
+    }
+    // Only the picked markets where something was not cited (or failed): a market
+    // where every question was fine is not searched again.
+    runMarkets = missedMarkets(options, pageIds, list, marketIds)
   } else if (state.only === 'picked') {
     if (state.prompts.length === 0) return noPlan('Pick at least one question to check.')
     promptIds = state.prompts
@@ -200,9 +348,21 @@ export function buildPlan(input: PlanInput): CheckPlan {
     marketIds: runMarkets,
     promptIds,
     estimate,
+    questionCount:
+      state.scope.kind === 'all' && state.only === 'all'
+        ? askedQuestions(options, [...counted])
+        : null,
     blocked: null,
+    wayOut: null,
     waiting: false
   }
+}
+
+/** Questions the pages and topics ask (their own enabled questions). */
+function askedQuestions(options: ScopeOptions, ids: readonly string[]): number {
+  const pages = new Map(options.pages.map((page) => [page.id, page.promptCount]))
+  const topics = new Map(options.topics.map((topic) => [topic.id, topic.questions ?? 0]))
+  return ids.reduce((sum, id) => sum + (pages.get(id) ?? topics.get(id) ?? 0), 0)
 }
 
 /**
@@ -269,9 +429,18 @@ export function shortDate(at: number): string {
 export function planSummary(plan: CheckPlan, options: ScopeOptions): string {
   const markets =
     plan.marketIds === null ? 'every market' : pluralize(plan.marketIds.length, 'market')
-  const questions = plan.promptIds === null ? null : pluralize(plan.promptIds.length, 'question')
+  const questions =
+    plan.promptIds !== null
+      ? pluralize(plan.promptIds.length, 'question')
+      : plan.questionCount !== null
+        ? pluralize(plan.questionCount, 'question')
+        : null
+  const topicIds = new Set(options.topics.map((topic) => topic.id))
+  const topics = plan.pageIds.filter((id) => topicIds.has(id)).length
+  const pages = plan.estimate.pages - topics
   return [
-    pluralize(plan.estimate.pages, 'page'),
+    ...(pages > 0 || topics === 0 ? [pluralize(pages, 'page')] : []),
+    ...(topics > 0 ? [pluralize(topics, 'topic')] : []),
     markets,
     ...(questions ? [questions] : []),
     costLine(plan.estimate, options.searchesLeft)

@@ -5,6 +5,7 @@ import { CheckNowBody } from './components/CheckNowBody'
 import { useCheckNow } from './hooks/useCheckNow'
 import {
   checkParamsPatch,
+  hasScopeParam,
   parseCheckParams,
   planSummary,
   type CheckNowState,
@@ -44,9 +45,10 @@ export function CheckNowDrawer({
   const key = JSON.stringify(params)
   // Parsed once per URL, so the data hooks see a stable state.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const state = useMemo(() => parseCheckParams(params), [key])
-  const data = useCheckNow(projectId, state, source)
-  const { plan, options } = data
+  const parsed = useMemo(() => parseCheckParams(params), [key])
+  // Without a scope on the URL the first scope with something to check is used.
+  const data = useCheckNow(projectId, parsed, source, hasScopeParam(params))
+  const { plan, options, state } = data
 
   function change(patch: Partial<CheckNowState>, push = false): void {
     onParams(checkParamsPatch(patch), push)
@@ -58,6 +60,7 @@ export function CheckNowDrawer({
   }
 
   const nothingDue = state.scope.kind === 'due' && plan?.blocked?.startsWith('Nothing is due')
+  const wayOut = plan?.wayOut ?? null
   return (
     <Drawer
       id="check-now"
@@ -77,14 +80,22 @@ export function CheckNowDrawer({
           ) : (
             <span data-testid="check-now-cost">{planSummary(plan, options)}</span>
           ),
-        ...(nothingDue
+        ...(wayOut
           ? {
               secondary: {
-                label: 'Pick pages instead',
-                onClick: () => change({ scope: { kind: 'pages', ids: [] } }, true)
+                label: wayOut.label,
+                onClick: () => change(wayOut.patch, true),
+                testId: 'check-now-way-out'
               }
             }
-          : {}),
+          : nothingDue
+            ? {
+                secondary: {
+                  label: 'Pick pages instead',
+                  onClick: () => change({ scope: { kind: 'pages', ids: [] } }, true)
+                }
+              }
+            : {}),
         primary: {
           label: 'Check now',
           icon: 'refresh',

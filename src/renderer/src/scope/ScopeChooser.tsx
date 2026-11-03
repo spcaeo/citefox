@@ -35,6 +35,10 @@ export interface ScopeChooserProps {
     count?: number | null
     children?: ReactNode
   }
+  /** Another label for a kind, such as Check now's own words. */
+  labels?: Partial<Record<ScopeKind, string>>
+  /** Another count text for a kind, such as "8 questions". */
+  countText?: Partial<Record<ScopeKind, string>>
   now?: Date
   testId?: string
 }
@@ -56,6 +60,8 @@ export function ScopeChooser({
   onQueryChange,
   singleSet = false,
   leading,
+  labels,
+  countText,
   now,
   testId
 }: ScopeChooserProps): JSX.Element {
@@ -69,6 +75,7 @@ export function ScopeChooser({
   const counts: Record<ScopeKind, number | null> = {
     due: options.pages.filter((page) => isDue(page, at)).length,
     tracked: options.pages.filter((page) => page.tracked).length,
+    all: null,
     project: null,
     pages: listedPages.length,
     group: options.groups.length,
@@ -98,6 +105,7 @@ export function ScopeChooser({
   const nouns: Record<ScopeKind, readonly [string, string]> = {
     due: ['page', 'pages'],
     tracked: ['page', 'pages'],
+    all: ['page', 'pages'],
     project: ['page', 'pages'],
     pages: ['page', 'pages'],
     group: ['group', 'groups'],
@@ -130,8 +138,10 @@ export function ScopeChooser({
                 checked={!leadingOn && value.kind === kind}
                 onChange={() => onChange({ kind, ids: [] })}
               />
-              <span>{SCOPE_LABELS[kind]}</span>
-              {count === null ? null : (
+              <span>{labels?.[kind] ?? SCOPE_LABELS[kind]}</span>
+              {countText?.[kind] !== undefined ? (
+                <span className="sc-kind-count">{countText[kind]}</span>
+              ) : count === null ? null : (
                 <span className="sc-kind-count">{count.toLocaleString('en-US')}</span>
               )}
             </label>

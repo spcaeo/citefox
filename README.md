@@ -58,6 +58,11 @@ pay them directly, only for what you use, and nobody marks it up.
 site, writing questions, fix briefs), so there is no extra AI cost. The only pay-as-you-go part is
 the search data service that captures the AI answers: a few cents per question.
 
+**Only have a desktop app for Claude Code or Codex?** CiteFox finds the Claude Code that the desktop
+app keeps inside it (open its Code tab once and sign in), so no Terminal is needed. The Codex desktop
+app cannot be used by other programs: install the free Codex command-line tool instead, or use an AI
+model API key.
+
 | What you connect                              | What CiteFox uses it for                                                                                 | How you pay                                                                                                                                                                                 |
 | --------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **A search data API**                         | Asks each AI engine your buyer questions and saves every answer and source                               | Pay-as-you-go credits. Free tiers are enough to try it.                                                                                                                                     |
@@ -430,6 +435,18 @@ The Mac app is signed and notarized by Apple, so it opens like any other app (ma
 ### Which countries and languages does CiteFox support?
 
 You pick the markets: a country and language pair, such as United States · English or Germany · German. CiteFox writes the buyer questions in each market's wording and checks each market separately, because AI answers differ by place and language.
+
+### What if I only have the Claude Code or Codex desktop app?
+
+CiteFox looks for the Claude Code that the Claude Code desktop app keeps inside it, and uses it when you are signed in there (open the Code tab once). The Codex desktop app cannot be used by other programs, so for Codex install the free command-line tool (`npm install -g @openai/codex`), or choose Claude Code or an AI model API key in setup. You can also skip the AI step and use your own ChatGPT to fill in setup.
+
+### Many questions say "Check failed" or "being limited right now". What do I do?
+
+That is the search service limiting how many searches you can run at once, which is common on a free plan. CiteFox now starts with one search at a time, slows down by itself when the service says "too fast", and retries up to six times, so nothing is lost and refused searches cost no credits. If some questions still fail, run them again a minute later (**Check now** › **Only the ones that failed last time**), or move to a larger plan to check faster.
+
+### How do I report a problem?
+
+Open **Help › Report a problem…** (also in Settings › Data & about, and next to a failed check). You see the exact report first: your version, which connections are set up (yes or no, never a key), the latest failed checks and the end of the log. Send it to the CiteFox team with one click, or copy it, save it as a file, email it to us or open a GitHub issue. Nothing is sent unless you choose it, and keys, emails, IP addresses and your home folder are removed.
 
 ## Community and contributing
 

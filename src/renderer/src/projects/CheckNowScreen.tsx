@@ -157,7 +157,10 @@ export function CheckNowScreen({
         </div>
         {nothingDue ? (
           <p className="cn-message" id="cn-nothing-due">
-            Nothing is due right now, so there is nothing to check.{' '}
+            Nothing is due right now, so this button has nothing to check.{' '}
+            {projectId
+              ? 'To check anyway, choose “Everything again” below and press Check now. Or '
+              : ''}
             <a href={sectionHash('pages')}>Choose pages in All pages</a> and use Check now on any
             page you want checked now.
           </p>

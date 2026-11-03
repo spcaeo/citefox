@@ -6,6 +6,7 @@ import type { Market } from '@shared/domain'
 import { ItemPicker, PICKER_ROW_CAP } from './ItemPicker'
 import { ScopeChooser } from './ScopeChooser'
 import {
+  allQuestionCount,
   costLine,
   describeScope,
   estimateSearches,
@@ -96,6 +97,11 @@ describe('scope model', () => {
     const ids = (scope: Scope): string[] => resolveScopeIds(scope, OPTIONS, NOW)
     expect(ids({ kind: 'due', ids: [] })).toEqual(['a'])
     expect(ids({ kind: 'tracked', ids: [] })).toEqual(['a', 'b', 'd'])
+    // Everything again: tracked pages and topics, 3 pages x 4 questions + 6.
+    expect(ids({ kind: 'all', ids: [] })).toEqual(['a', 'b', 'd', 't1'])
+    expect(allQuestionCount(OPTIONS)).toBe(18)
+    expect(allQuestionCount({ ...OPTIONS, pages: [], topics: [] })).toBe(0)
+    expect(describeScope({ kind: 'all', ids: [] }, OPTIONS)).toBe('Everything again')
     expect(ids({ kind: 'pages', ids: ['b', 'zz'] })).toEqual(['b'])
     expect(ids({ kind: 'group', ids: ['g1'] })).toEqual(['a', 'b'])
     expect(ids({ kind: 'cluster', ids: ['c1', 'c2'] })).toEqual(['a', 'c', 'd'])

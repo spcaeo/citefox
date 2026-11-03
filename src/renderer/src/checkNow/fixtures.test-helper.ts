@@ -5,6 +5,8 @@ import type {
   CheckJob,
   NotCitedRequest,
   PageDetail,
+  ProjectCheck,
+  ProjectHistory,
   SetupProgress
 } from '@shared/ipc'
 import type { ScopeOptions, ScopePage } from '../scope'
@@ -124,6 +126,35 @@ export function job(overrides: Partial<CheckJob> = {}): CheckJob {
   }
 }
 
+/** One ended check in `history:listProject`, with the questions that have no result. */
+export function projectCheck(overrides: Partial<ProjectCheck> = {}): ProjectCheck {
+  return {
+    runId: 'run-1',
+    jobId: 'job-1',
+    pageId: 'a',
+    marketId: 'mkt-us',
+    snapshotId: 'snap-1',
+    kind: 'manual',
+    partial: false,
+    status: 'finished',
+    startedAt: '2026-10-19T10:00:00.000Z',
+    finishedAt: '2026-10-19T10:05:00.000Z',
+    durationMs: 300000,
+    questionsChecked: 4,
+    questionsTotal: 4,
+    aiOverviews: 3,
+    cited: 1,
+    named: 1,
+    searchesUsed: 4,
+    score: 40,
+    scoreChange: null,
+    samples: 1,
+    promptIds: null,
+    failedPromptIds: [],
+    ...overrides
+  }
+}
+
 export interface FakeSource extends CheckNowSource {
   progress: (event: SetupProgress) => void
 }
@@ -131,7 +162,8 @@ export interface FakeSource extends CheckNowSource {
 /** A Check now source over {@link OPTIONS}; every channel is a spy. */
 export function fakeSource(
   options: ScopeOptions = OPTIONS,
-  notCited: Readonly<Record<string, readonly string[]>> = { a: ['q2'], b: [] }
+  notCited: Readonly<Record<string, readonly string[]>> = { a: ['q2'], b: [] },
+  checks: readonly ProjectCheck[] = []
 ): FakeSource {
   const listeners = new Set<(event: SetupProgress) => void>()
   const source = {
@@ -172,6 +204,17 @@ export function fakeSource(
         }
       })
     })),
+    'history:listProject': vi.fn(
+      async () =>
+        ({
+          projectId: options.projectId,
+          builtAt: NOW.toISOString(),
+          markets: options.markets,
+          subjects: [],
+          checks,
+          trackedCount: options.pages.length
+        }) as unknown as ProjectHistory
+    ),
     'prompts:list': vi.fn(async ({ pageId }: { pageId: string }) => ({
       pageId,
       prompts: [

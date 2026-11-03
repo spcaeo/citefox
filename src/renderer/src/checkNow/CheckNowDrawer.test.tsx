@@ -7,7 +7,7 @@ import { DrawerHost } from '../shell/DrawerHost'
 import { DrawerTrailContext, type RouteCrumb } from '../shell/drawerCrumbs'
 import { resetDrawersForTests } from '../shell/drawers'
 import { CheckNowPanel } from './CheckNowPanel'
-import { fakeSource, job, OPTIONS, type FakeSource } from './fixtures.test-helper'
+import { fakeSource, job, OPTIONS, projectCheck, type FakeSource } from './fixtures.test-helper'
 
 const ROUTE: RouteCrumb[] = [
   { label: 'TextBolt', href: '#/overview' },
@@ -119,12 +119,38 @@ describe('Check now drawer', () => {
     const dialog = await screen.findByRole('dialog', { name: 'Check now' })
     await waitFor(() =>
       expect(within(dialog).getByTestId('check-now-reason').textContent).toBe(
-        'Nothing is due. Next check: Nov 2 (2 pages).'
+        'Nothing is due. Next check: Nov 2 (2 pages). Choose “Everything again” to run all 18 questions now.'
       )
     )
     expect(within(dialog).getByRole('button', { name: 'Check now' })).toHaveProperty(
       'disabled',
       true
+    )
+    // The way out is one press: run everything again (in the market that was picked).
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Run all 18 questions again' }))
+    await settle()
+    expect(query().get('check.scope')).toBe('all')
+    await waitFor(() =>
+      expect(within(dialog).getByTestId('check-now-cost').textContent).toBe(
+        '1 page · 1 topic · 1 market · 10 questions · About 10–20 searches · 500 left this month'
+      )
+    )
+    expect(within(dialog).getByRole('button', { name: 'Check now' })).toHaveProperty(
+      'disabled',
+      false
+    )
+  })
+
+  it('offers to pick pages when there is no question to run again', async () => {
+    window.location.hash = '#/pages?drawer=check-now&check.scope=due'
+    source = fakeSource({ ...OPTIONS, pages: [], topics: [] })
+    ;(window as unknown as { citefox: unknown }).citefox = source
+    render(<Shell />)
+    const dialog = await screen.findByRole('dialog', { name: 'Check now' })
+    await waitFor(() =>
+      expect(within(dialog).getByTestId('check-now-reason').textContent).toBe(
+        'Nothing is due and nothing is scheduled.'
+      )
     )
     fireEvent.click(within(dialog).getByRole('button', { name: 'Pick pages instead' }))
     await settle()
@@ -132,6 +158,64 @@ describe('Check now drawer', () => {
     expect(within(dialog).getByTestId('check-now-reason').textContent).toBe(
       'Pick at least one page to check.'
     )
+  })
+
+  it('opens on the first scope with something to check when the link has none', async () => {
+    window.location.hash = '#/pages?drawer=check-now'
+    source = fakeSource({
+      ...OPTIONS,
+      pages: OPTIONS.pages.map((page) => ({ ...page, nextCheckAt: null }))
+    })
+    ;(window as unknown as { citefox: unknown }).citefox = source
+    render(<Shell />)
+    const dialog = await screen.findByRole('dialog', { name: 'Check now' })
+    await waitFor(() =>
+      expect(within(dialog).getByRole('radio', { name: /Every tracked page/ })).toHaveProperty(
+        'checked',
+        true
+      )
+    )
+    expect(within(dialog).getByRole('button', { name: 'Check now' })).toHaveProperty(
+      'disabled',
+      false
+    )
+  })
+
+  it('retries only the questions that failed last time', async () => {
+    window.location.hash = '#/pages?drawer=check-now&check.scope=tracked&check.only=failed'
+    source = fakeSource(OPTIONS, undefined, [
+      projectCheck({ failedPromptIds: ['q1', 'q2'] }),
+      projectCheck({ runId: 'b', pageId: 'b', failedPromptIds: [] })
+    ])
+    ;(window as unknown as { citefox: unknown }).citefox = source
+    render(<Shell />)
+    const dialog = await screen.findByRole('dialog', { name: 'Check now' })
+    await waitFor(() =>
+      expect(within(dialog).getByTestId('check-now-cost').textContent).toBe(
+        '1 page · 1 market · 2 questions · About 2–4 searches · 500 left this month'
+      )
+    )
+    expect(within(dialog).getByText('2 questions had no result in their last check.')).toBeTruthy()
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Check now' }))
+    await settle()
+    expect(source['checks:start']).toHaveBeenCalledWith({
+      projectId: 'p1',
+      pageIds: ['a'],
+      marketIds: ['mkt-us'],
+      promptIds: ['q1', 'q2']
+    })
+  })
+
+  it('switches the failed choice off when nothing failed', async () => {
+    window.location.hash = '#/pages?drawer=check-now&check.scope=tracked'
+    render(<Shell />)
+    const dialog = await screen.findByRole('dialog', { name: 'Check now' })
+    await waitFor(() =>
+      expect(
+        within(dialog).getByRole('radio', { name: /Only the ones that failed last time/ })
+      ).toHaveProperty('disabled', true)
+    )
+    expect(within(dialog).getByText('Nothing failed last time.')).toBeTruthy()
   })
 
   it('picks questions of one page', async () => {
@@ -216,6 +300,107 @@ describe('#/check picker', () => {
       pageIds: ['a', 'b', 'd'],
       marketIds: null,
       promptIds: null
+    })
+  })
+
+  describe('when nothing is due and the project has one topic', () => {
+    // The tester's project: no tracked pages, one topic of 8 questions.
+    const topicOnly = {
+      ...OPTIONS,
+      pages: [],
+      topics: [{ id: 't1', name: '10DLC', kind: 'topic' as const, count: 0, questions: 8 }]
+    }
+
+    function renderPanel(): void {
+      render(
+        <BuildToolsContext.Provider value={{ client: ipcBuildClient, notify }}>
+          <CheckNowPanel projectId="p1" source={source} />
+        </BuildToolsContext.Provider>
+      )
+    }
+
+    beforeEach(() => {
+      source = fakeSource(topicOnly, undefined, [
+        projectCheck({ pageId: 't1', failedPromptIds: ['q1', 'q2', 'q3'] })
+      ])
+    })
+
+    it('opens with the topic chosen and Check now on', async () => {
+      window.location.hash = '#/check'
+      renderPanel()
+      await waitFor(() =>
+        expect(screen.getByRole('radio', { name: /A topic/ })).toHaveProperty('checked', true)
+      )
+      await waitFor(() =>
+        expect(screen.getByRole('button', { name: 'Check now' })).toHaveProperty('disabled', false)
+      )
+      expect(screen.getByTestId('check-now-panel-summary').textContent).toBe(
+        '1 topic · every market · About 16–32 searches · 500 left this month'
+      )
+    })
+
+    it('runs everything again, and keeps that choice on the URL', async () => {
+      window.location.hash = '#/check'
+      renderPanel()
+      fireEvent.click(await screen.findByRole('radio', { name: /Everything again/ }))
+      await settle()
+      expect(window.location.hash).toBe('#/check?check.scope=all')
+      await waitFor(() =>
+        expect(screen.getByTestId('check-now-panel-summary').textContent).toBe(
+          '1 topic · every market · 8 questions · About 16–32 searches · 500 left this month'
+        )
+      )
+      fireEvent.click(screen.getByRole('button', { name: 'Check now' }))
+      await settle()
+      expect(source['checks:start']).toHaveBeenCalledWith({
+        projectId: 'p1',
+        pageIds: ['t1'],
+        marketIds: null,
+        promptIds: null
+      })
+    })
+
+    it('retries only the failed questions, and keeps that choice on the URL', async () => {
+      window.location.hash = '#/check'
+      renderPanel()
+      fireEvent.click(await screen.findByRole('radio', { name: /Only the ones that failed/ }))
+      await settle()
+      expect(window.location.hash).toBe('#/check?check.only=failed')
+      await waitFor(() =>
+        expect(screen.getByTestId('check-now-panel-summary').textContent).toBe(
+          '1 topic · 1 market · 3 questions · About 3–6 searches · 500 left this month'
+        )
+      )
+      fireEvent.click(screen.getByRole('button', { name: 'Check now' }))
+      await settle()
+      expect(source['checks:start']).toHaveBeenCalledWith({
+        projectId: 'p1',
+        pageIds: ['t1'],
+        marketIds: ['mkt-us'],
+        promptIds: ['q1', 'q2', 'q3']
+      })
+    })
+
+    it('says why Check now is off on "Everything due" and offers the way out', async () => {
+      window.location.hash = '#/check?check.scope=due'
+      renderPanel()
+      await waitFor(() =>
+        expect(screen.getByTestId('check-now-panel-summary').textContent).toBe(
+          'Nothing is due and nothing is scheduled. Choose “Everything again” to run all 8 questions now.'
+        )
+      )
+      expect(screen.getByRole('button', { name: 'Check now' })).toHaveProperty('disabled', true)
+      fireEvent.click(screen.getByRole('button', { name: 'Run all 8 questions again' }))
+      await settle()
+      expect(window.location.hash).toBe('#/check?check.scope=all')
+      expect(screen.getByRole('button', { name: 'Check now' })).toHaveProperty('disabled', false)
+    })
+
+    it('links to the schedule', async () => {
+      window.location.hash = '#/check'
+      renderPanel()
+      const link = await screen.findByRole('link', { name: /Run this automatically/ })
+      expect(link.getAttribute('href')).toBe('#/project-settings?tab=schedule')
     })
   })
 })

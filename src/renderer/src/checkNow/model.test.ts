@@ -2,6 +2,11 @@ import { describe, expect, it } from 'vitest'
 import {
   buildPlan,
   checkParamsPatch,
+  defaultScope,
+  EVERYTHING_AGAIN,
+  failedCounts,
+  failedMap,
+  hasScopeParam,
   missedMarkets,
   nothingDue,
   pageCheckValues,
@@ -12,7 +17,8 @@ import {
   type CheckPlan,
   type NotCitedMap
 } from './model'
-import { NOW, OPTIONS, scopePage } from './fixtures.test-helper'
+import { NOW, OPTIONS, projectCheck, scopePage } from './fixtures.test-helper'
+import type { ProjectHistory } from '@shared/ipc'
 
 function state(overrides: Partial<CheckNowState> = {}): CheckNowState {
   return {
@@ -115,10 +121,28 @@ describe('Check now plan', () => {
     expect(nothingDue({ ...OPTIONS, pages: [] }, NOW)).toBe(
       'Nothing is due and nothing is scheduled.'
     )
-    expect(
-      buildPlan({ state: state(), options: quiet, notCited: null, pageQuestions: null, now: NOW })
-        .blocked
-    ).toBe('Nothing is due. Next check: Nov 2 (2 pages).')
+    const blocked = buildPlan({
+      state: state(),
+      options: quiet,
+      notCited: null,
+      pageQuestions: null,
+      now: NOW
+    })
+    // 3 pages x 4 questions + the topic's 6: the way out names all of them.
+    expect(blocked.blocked).toBe(
+      'Nothing is due. Next check: Nov 2 (2 pages). Choose “Everything again” to run all 18 questions now.'
+    )
+    expect(blocked.wayOut).toEqual({ label: 'Run all 18 questions again', patch: EVERYTHING_AGAIN })
+    // With no question anywhere there is nothing to offer.
+    const empty = buildPlan({
+      state: state(),
+      options: { ...quiet, pages: [], topics: [] },
+      notCited: null,
+      pageQuestions: null,
+      now: NOW
+    })
+    expect(empty.blocked).toBe('Nothing is due and nothing is scheduled.')
+    expect(empty.wayOut).toBeNull()
   })
 
   it('only not cited checks the pages with missed questions, just those questions', () => {
@@ -186,5 +210,158 @@ describe('Check now plan', () => {
       marketIds: ['mkt-us'],
       estimate: { min: 6, pages: 1 }
     })
+  })
+})
+
+describe('Check now default scope', () => {
+  const none = { ...OPTIONS, pages: OPTIONS.pages.map((page) => ({ ...page, nextCheckAt: null })) }
+
+  it('keeps everything due when something is due', () => {
+    expect(defaultScope(OPTIONS, NOW)).toEqual({ kind: 'due', ids: [] })
+  })
+
+  it('moves to every tracked page when nothing is due, so Check now is never off', () => {
+    expect(defaultScope(none, NOW)).toEqual({ kind: 'tracked', ids: [] })
+  })
+
+  it('moves to the one topic when there are no tracked pages', () => {
+    expect(defaultScope({ ...none, pages: [] }, NOW)).toEqual({ kind: 'topic', ids: ['t1'] })
+  })
+
+  it('moves to everything again when several topics are the only thing to check', () => {
+    const topics = [
+      ...OPTIONS.topics,
+      { id: 't2', name: 'Pricing', kind: 'topic' as const, count: 0, questions: 3 }
+    ]
+    expect(defaultScope({ ...none, pages: [], topics }, NOW)).toEqual({ kind: 'all', ids: [] })
+  })
+
+  it('stays on due for a project with nothing to check', () => {
+    expect(defaultScope({ ...none, pages: [], topics: [] }, NOW)).toEqual({ kind: 'due', ids: [] })
+  })
+
+  it('knows when the URL holds a scope', () => {
+    expect(hasScopeParam({})).toBe(false)
+    expect(hasScopeParam({ 'check.scope': 'tracked' })).toBe(true)
+  })
+})
+
+describe('Check now: everything again', () => {
+  const plan = (input: Partial<CheckNowState>): CheckPlan =>
+    buildPlan({
+      state: state({ scope: { kind: 'all', ids: [] }, ...input }),
+      options: OPTIONS,
+      notCited: null,
+      pageQuestions: null,
+      now: NOW
+    })
+
+  it('runs every question of every tracked page and topic, and says how many', () => {
+    const result = plan({})
+    // Tracked pages a, b, d (not c) and the topic t1; a has two markets.
+    expect(result).toMatchObject({
+      pageIds: ['a', 'b', 'd', 't1'],
+      marketIds: null,
+      promptIds: null,
+      questionCount: 18,
+      blocked: null
+    })
+    // a: 4 x 2 markets, b: 4, d: 4, topic: 6 x 2 markets (a topic uses every market).
+    expect(result.estimate).toEqual({ min: 28, max: 56, pages: 4 })
+    expect(planSummary(result, OPTIONS)).toBe(
+      '3 pages · 1 topic · every market · 18 questions · About 28–56 searches · 500 left this month'
+    )
+  })
+
+  it('is available with one topic and nothing else', () => {
+    const onlyTopic = { ...OPTIONS, pages: [] }
+    const result = buildPlan({
+      state: state({ scope: { kind: 'all', ids: [] } }),
+      options: onlyTopic,
+      notCited: null,
+      pageQuestions: null,
+      now: NOW
+    })
+    expect(result).toMatchObject({ pageIds: ['t1'], questionCount: 6, blocked: null })
+  })
+})
+
+describe('Check now: only the ones that failed last time', () => {
+  const history = (checks: ReturnType<typeof projectCheck>[]): ProjectHistory =>
+    ({ checks }) as unknown as ProjectHistory
+
+  it('takes the failed questions of the latest ended check of each page and market', () => {
+    const map = failedMap(
+      history([
+        projectCheck({
+          runId: 'new',
+          startedAt: '2026-10-20T10:00:00.000Z',
+          failedPromptIds: ['q1']
+        }),
+        // An older check of the same page and market: its failures were retried.
+        projectCheck({
+          runId: 'old',
+          startedAt: '2026-10-19T10:00:00.000Z',
+          failedPromptIds: ['q9']
+        }),
+        projectCheck({ runId: 'uk', marketId: 'mkt-uk', failedPromptIds: ['q1', 'q2'] }),
+        // A running check has no verdict yet.
+        projectCheck({ runId: 'run', pageId: 'b', status: 'running', failedPromptIds: ['q5'] }),
+        projectCheck({ runId: 'ok', pageId: 'd', failedPromptIds: [] })
+      ]),
+      null
+    )
+    expect([...map.entries()]).toEqual([
+      ['a', { promptIds: ['q1', 'q2'], marketIds: ['mkt-us', 'mkt-uk'] }]
+    ])
+    expect(failedCounts(map, ['a', 'b'])).toEqual({ questions: 2, pages: 1 })
+    expect(failedCounts(null, ['a'])).toBeNull()
+  })
+
+  it('looks only at the picked markets', () => {
+    const map = failedMap(
+      history([
+        projectCheck({ failedPromptIds: ['q1'] }),
+        projectCheck({ runId: 'uk', marketId: 'mkt-uk', failedPromptIds: ['q2'] })
+      ]),
+      ['mkt-uk']
+    )
+    expect(map.get('a')).toEqual({ promptIds: ['q2'], marketIds: ['mkt-uk'] })
+  })
+
+  it('retries just those questions, in just the markets where they failed', () => {
+    const failed: NotCitedMap = new Map([
+      ['a', { promptIds: ['q1', 'q2'], marketIds: ['mkt-uk'] }],
+      ['b', { promptIds: [], marketIds: [] }]
+    ])
+    const result = buildPlan({
+      state: state({ scope: { kind: 'tracked', ids: [] }, only: 'failed' }),
+      options: OPTIONS,
+      notCited: null,
+      failed,
+      pageQuestions: null,
+      now: NOW
+    })
+    expect(result).toMatchObject({
+      pageIds: ['a'],
+      marketIds: ['mkt-uk'],
+      promptIds: ['q1', 'q2'],
+      estimate: { min: 2, max: 4, pages: 1 },
+      blocked: null
+    })
+  })
+
+  it('waits for the checks, and says so when nothing failed', () => {
+    const input = {
+      state: state({ scope: { kind: 'tracked' as const, ids: [] }, only: 'failed' as const }),
+      options: OPTIONS,
+      notCited: null,
+      pageQuestions: null,
+      now: NOW
+    }
+    expect(buildPlan({ ...input, failed: null })).toMatchObject({ waiting: true })
+    const none = buildPlan({ ...input, failed: new Map() })
+    expect(none.blocked).toMatch(/No question failed last time/)
+    expect(none.wayOut?.patch).toEqual({ only: 'all', prompts: [] })
   })
 })

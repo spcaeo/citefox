@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## 0.13.5 — 2026-11-03
+
+### New
+
+- **Check now never leaves you stuck:** it opens on a choice that has something to check, and a new **Everything again** runs every question in every page and topic in one click, with the question count and the estimated searches. **Only the ones that failed last time** reruns just the questions that had no result. When the main button is greyed out, one line says why and offers the way out, and **Run this automatically** opens the schedule settings.
+
+### Improved
+
+- **Docs:** the README and the AI providers page now explain the Claude desktop app, the Codex desktop app, search-service rate limits and Report a problem.
+
 ## 0.13.4 — 2026-11-03
 
 ### Fixed

@@ -8,13 +8,16 @@ import type { AllPageRow } from '@shared/ipc'
  * `<prefix>.scope=<kind>&<prefix>.ids=a,b`.
  *
  * - `due`: tracked pages whose next check is due now (Check now only).
- * - `tracked`: every tracked page (and topic) in the project.
+ * - `tracked`: every tracked page in the project.
+ * - `all`: every tracked page and every topic, all their questions (Check now's
+ *   "Everything again").
  * - `project`: the whole project as one unit (Export, Reports).
  * - `pages`, `group`, `cluster`, `topic`, `view`: the picked ids.
  */
 export const SCOPE_KINDS = [
   'due',
   'tracked',
+  'all',
   'project',
   'pages',
   'group',

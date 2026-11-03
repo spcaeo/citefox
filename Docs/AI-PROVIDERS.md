@@ -27,6 +27,17 @@ So ten questions on all six engines are about 390 cloro credits, about $0.31 on 
 shows credits and dollars before each check (Settings › Track, setup step 7, Check now), records
 each check's cost in history, and stops at the monthly budget.
 
+### Rate limits (free plans)
+
+A search service can answer HTTP 429 ("too many requests"), most often on a free plan. CiteFox keeps one
+shared pace per service for the whole app (`src/main/engine/checks/provider-pacer.ts`): it starts at one
+call at a time with at least a second between starts, widens by one call after every two successes (up to
+four), and on a 429 halves the calls at once, doubles the gap and opens one cooldown that every worker
+waits for (the `Retry-After` header, or 2 s, 4 s, 8 s up to 60 s with jitter). A refused call is retried up
+to six times and costs no credits. A 429 never marks a key bad. The run console says "Going slower"; only
+after all tries fail does a question end as failed, with a plain message, and **Retry failed questions**
+(History) or **Check now › Only the ones that failed last time** runs those again.
+
 ## How to switch
 
 - **Onboarding, step 2 ("AI")**: pick Claude Code or Codex. CiteFox saves the
@@ -79,6 +90,15 @@ same way for Codex.
 
 **Logging.** Every call is logged in `llm_calls` with connection `codex` and its
 tokens. Codex does not say which model answered, so the requested model is logged.
+
+## Claude Desktop and Codex Desktop
+
+CiteFox runs the command-line programs. Claude Desktop keeps its own signed-in Claude Code (macOS:
+`~/Library/Application Support/Claude/claude-code/<version>/<id>/claude.app/Contents/MacOS/claude`; Windows:
+`%APPDATA%\Claude\claude-code\<version>\claude.exe`), so CiteFox looks there last, after PATH and the usual
+folders (`claudeDesktopBinaryCandidates` in `src/main/providers/claude/binary.ts`); a normal install wins.
+The Codex desktop app's bundled program cannot be started by another program (macOS stops it), so Codex
+needs its command-line tool.
 
 ## What Codex cannot do that Claude Code can
 

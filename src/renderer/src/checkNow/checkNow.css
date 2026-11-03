@@ -99,10 +99,16 @@
   }
 
   .cn2-screen-foot-text {
+    flex: 1;
     min-width: 0;
     color: var(--ink-2);
     font-size: var(--fs-small);
     line-height: var(--lh-small);
+  }
+
+  .cn2-schedule {
+    margin: calc(var(--s-2) * -1) 0 0;
+    padding-inline: var(--s-2);
   }
 
   /* The page header's split button: Check now + the menu of narrower checks. */

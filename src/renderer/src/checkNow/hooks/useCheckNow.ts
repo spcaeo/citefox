@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
-import { MAX_NOT_CITED_PAGES } from '@shared/ipc'
+import { MAX_NOT_CITED_PAGES, type ProjectHistory } from '@shared/ipc'
 import { errorText } from '../../components/errorText'
 import { useScopeOptions, type PickerItem, type ScopeOptions } from '../../scope'
 import {
   buildPlan,
+  failedCounts,
+  failedMap,
   scopePageIds,
+  withDefaultScope,
   type CheckNowState,
   type CheckPlan,
   type NotCitedMap
@@ -12,6 +15,8 @@ import {
 import type { CheckNowSource } from '../source'
 
 export interface CheckNowData {
+  /** The state to show: the URL's, with the default scope when the URL has none. */
+  state: CheckNowState
   options: ScopeOptions | null
   error: string | null
   reload: () => void
@@ -22,21 +27,33 @@ export interface CheckNowData {
   questions: readonly PickerItem[] | null
   questionsError: string | null
   notCitedError: string | null
+  /**
+   * Questions with no usable result in their last check, within the scope and
+   * markets. Null while the checks load.
+   */
+  failed: { questions: number; pages: number } | null
 }
 
 /**
  * Check now's data: the scope options, then (only when asked) the questions
  * not cited last time for the pages in scope and one page's question list,
- * and the plan Run check would start. Every input comes from the URL state.
+ * and the plan Run check would start. Every input comes from the URL state;
+ * `scopeChosen` is false when the URL has no scope, and the first scope with
+ * something to check is used (see `defaultScope`).
  */
 export function useCheckNow(
   projectId: string,
-  state: CheckNowState,
-  source: CheckNowSource
+  parsed: CheckNowState,
+  source: CheckNowSource,
+  scopeChosen = true
 ): CheckNowData {
   const { options, error, reload } = useScopeOptions(projectId, source)
   // "Now" is when the options loaded, so the due list does not move while the drawer is open.
   const now = useMemo(() => (options ? new Date() : new Date(0)), [options])
+  const state = useMemo(
+    () => withDefaultScope(parsed, scopeChosen, options, now),
+    [parsed, scopeChosen, options, now]
+  )
   const pageIds = useMemo(
     () => (options ? scopePageIds(state, options, now) : []),
     [options, state, now]
@@ -48,6 +65,19 @@ export function useCheckNow(
     state.only === 'notcited' && options !== null ? pageIds : null,
     state.markets
   )
+  const history = useHistory(source, projectId, options)
+  const failedAll = useMemo(
+    () =>
+      history.data
+        ? failedMap(history.data, state.markets.length > 0 ? state.markets : null)
+        : null,
+    [history.data, state.markets]
+  )
+  // A history that cannot be read means nothing is known to have failed.
+  const failedList = useMemo(
+    () => failedAll ?? (history.error ? new Map<string, never>() : null),
+    [failedAll, history.error]
+  )
   const questions = usePageQuestions(source, projectId, state.only === 'picked' ? onlyPageId : null)
 
   const plan = useMemo(
@@ -57,14 +87,16 @@ export function useCheckNow(
             state,
             options,
             notCited: notCited.map,
+            failed: failedList,
             pageQuestions: questions.items ? questions.items.map((item) => item.id) : null,
             now
           })
         : null,
-    [options, state, notCited.map, questions.items, now]
+    [options, state, notCited.map, failedList, questions.items, now]
   )
 
   return {
+    state,
     options,
     error,
     reload,
@@ -72,8 +104,37 @@ export function useCheckNow(
     onlyPageId,
     questions: questions.items,
     questionsError: questions.error,
-    notCitedError: notCited.error
+    notCitedError: notCited.error,
+    failed: failedCounts(failedList, pageIds)
   }
+}
+
+/** `history:listProject` once the pages are known: the checks and their failed questions. */
+function useHistory(
+  source: CheckNowSource,
+  projectId: string,
+  /** The loaded pages: the checks are read again whenever they are. */
+  options: ScopeOptions | null
+): { data: ProjectHistory | null; error: boolean } {
+  const [result, setResult] = useState<{ data: ProjectHistory | null; error: boolean } | null>(null)
+  useEffect(() => {
+    if (options === null) return
+    let live = true
+    Promise.resolve()
+      .then(() => source['history:listProject']({ projectId }))
+      .then(
+        (data) => {
+          if (live) setResult({ data, error: false })
+        },
+        () => {
+          if (live) setResult({ data: null, error: true })
+        }
+      )
+    return () => {
+      live = false
+    }
+  }, [source, projectId, options])
+  return result ?? { data: null, error: false }
 }
 
 function useNotCited(
