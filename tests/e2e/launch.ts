@@ -47,6 +47,12 @@ export async function launchCiteFox(options?: {
   if (userDataDir !== null) env.CITEFOX_SECRETS_FILE = testSecretsFile(userDataDir)
   if (options?.env) {
     for (const [key, value] of Object.entries(options.env)) {
+      // Windows names are case-insensitive: the inherited `Path` would hide our `PATH`.
+      if (process.platform === 'win32') {
+        for (const other of Object.keys(env)) {
+          if (other !== key && other.toLowerCase() === key.toLowerCase()) delete env[other]
+        }
+      }
       if (value === undefined) delete env[key]
       else env[key] = value
     }

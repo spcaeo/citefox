@@ -57,7 +57,8 @@ test('Settings exports all data as a zip and shows the data folder', async () =>
         )
       )
       // macOS temp folders sit behind a link (/var → /private/var); main shows the real one.
-      .toEqual([await realpath(dir)])
+      // Windows may keep the short 8.3 name (RUNNER~1) that the temp folder was given.
+      .toEqual([process.platform === 'win32' ? dir : await realpath(dir)])
   } finally {
     await app.close()
     await rm(dir, { recursive: true, force: true })
