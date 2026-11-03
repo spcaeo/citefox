@@ -716,3 +716,33 @@ html.lb-locked {
 .dl-version:empty {
   display: none;
 }
+
+/* "One quick thing before you install": shown before a Windows download while the build is unsigned. */
+.dl-dialog {
+  max-width: 30rem;
+  width: calc(100% - 2rem);
+  padding: 1.5rem;
+  border: 1px solid var(--line, #e5e2dd);
+  border-radius: 14px;
+  background: var(--surface, #fff);
+  color: var(--ink, #202020);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+.dl-dialog::backdrop {
+  background: rgba(20, 20, 20, 0.45);
+}
+.dl-dialog h2 {
+  margin: 0 0 0.6rem;
+  font-size: 1.25rem;
+}
+.dl-dialog-steps {
+  margin: 0.6rem 0;
+  padding-left: 1.3rem;
+}
+.dl-dialog-actions {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: flex-end;
+  margin-top: 1.1rem;
+  flex-wrap: wrap;
+}

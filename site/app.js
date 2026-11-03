@@ -53,11 +53,70 @@ function el(tag, className, text) {
 
 const RELEASES = `${repoUrl}/releases`
 
+// The Windows build is not signed with a paid certificate yet, so Windows shows "Windows protected
+// your PC" on the first start. Tell people on this page, before they download. Set to false once
+// the Windows installer is signed (the dialog, the notes under the button and on the card stop).
+const WINDOWS_UNSIGNED = true
+
+let windowsDialog = null
+/** A short "before you install" dialog; "Continue" starts the download. */
+function askAboutWindowsWarning(href) {
+  if (!windowsDialog) {
+    const dialog = el('dialog', 'dl-dialog')
+    dialog.setAttribute('aria-labelledby', 'win-warning-title')
+    const title = el('h2', '', 'One quick thing before you install')
+    title.id = 'win-warning-title'
+    const lead = el(
+      'p',
+      '',
+      'The first time you open CiteFox, Windows shows a blue screen that says “Windows protected your PC”. This is expected: CiteFox is free and open source, and it is not signed with a paid Windows certificate yet.'
+    )
+    const steps = el('ol', 'dl-dialog-steps')
+    steps.append(
+      el('li', '', 'Click “More info” on the blue screen.'),
+      el('li', '', 'Click “Run anyway”.')
+    )
+    const note = el(
+      'p',
+      'small muted',
+      'You only do this once. You can compare the file’s SHA-256 with the list on this page first.'
+    )
+    const actions = el('div', 'dl-dialog-actions')
+    const cancel = el('button', 'cta cta-outline', 'Cancel')
+    cancel.type = 'button'
+    cancel.addEventListener('click', () => dialog.close())
+    const go = el('a', 'dl-btn', 'Continue to download')
+    go.dataset.continue = ''
+    go.addEventListener('click', () => dialog.close())
+    actions.append(cancel, go)
+    dialog.append(title, lead, steps, note, actions)
+    document.body.append(dialog)
+    windowsDialog = dialog
+  }
+  windowsDialog.querySelector('[data-continue]').href = href
+  windowsDialog.showModal()
+}
+
+document.addEventListener('click', (event) => {
+  if (!WINDOWS_UNSIGNED || event.defaultPrevented || event.button !== 0) return
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+  const link =
+    event.target instanceof Element ? event.target.closest('a[data-dl-main], a[data-asset]') : null
+  if (!link || !link.href.includes('/releases/download/')) return
+  const isWindows = link.matches('[data-dl-main]')
+    ? link.dataset.os === 'win'
+    : /^win-/.test(link.dataset.asset || '')
+  if (!isWindows || typeof HTMLDialogElement !== 'function') return
+  event.preventDefault()
+  askAboutWindowsWarning(link.href)
+})
+
 /** Points the big button at a file (or at the Releases page) and sets its two lines. */
 function setMain({ state, href, title, sub, os }) {
   const main = document.querySelector('[data-dl-main]')
   if (!main) return
   main.dataset.state = state
+  main.dataset.os = os || ''
   main.href = href
   if (href === RELEASES) {
     main.target = '_blank'
@@ -73,7 +132,7 @@ function setMain({ state, href, title, sub, os }) {
 }
 
 /** The line under the big button: a message, then a link to the Releases page. */
-function setStatus(message, linkText) {
+function setStatus(message, linkText, href = RELEASES) {
   const status = document.querySelector('[data-dl-status]')
   if (!status) return
   status.replaceChildren()
@@ -82,9 +141,11 @@ function setStatus(message, linkText) {
   if (linkText) {
     status.append(' ')
     const link = el('a', '', linkText)
-    link.href = RELEASES
-    link.target = '_blank'
-    link.rel = 'noopener'
+    link.href = href
+    if (href === RELEASES) {
+      link.target = '_blank'
+      link.rel = 'noopener'
+    }
     status.append(link)
   }
 }
@@ -143,7 +204,13 @@ function renderMain(release, platform, version) {
         also.append(link)
       })
     }
-    setStatus('')
+    if (WINDOWS_UNSIGNED && main.info.os === 'win') {
+      setStatus(
+        'Windows will say “Windows protected your PC”. Click More info, then Run anyway.',
+        'Why?',
+        '#unsigned'
+      )
+    } else setStatus('')
   } else {
     setMain({
       state: 'ready',

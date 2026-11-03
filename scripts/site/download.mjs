@@ -109,7 +109,7 @@ const CARDS = [
       ['win-arm64-installer', 'Arm installer'],
       ['win-arm64-portable', 'Arm portable']
     ],
-    hint: 'Portable runs without installing.'
+    hint: 'Portable runs without installing. Windows may say “Windows protected your PC”: click More info, then Run anyway.'
   },
   {
     os: 'linux',
