@@ -1,12 +1,13 @@
 import { expect, test } from '@playwright/test'
 import Database from 'better-sqlite3'
 import { existsSync, readFileSync } from 'node:fs'
-import { chmod, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { e2eArtifactsDir } from './artifacts'
 import { animationsDone } from './drawer-helpers'
 import { launchCiteFox } from './launch'
+import { writeClaudeStandIn } from './claude-stand-in'
 
 /**
  * Ask CiteFox with no project open: the top bar and Ctrl J still open it, it
@@ -25,9 +26,7 @@ test('Ask CiteFox answers app and setup questions with no project open', async (
   const dir = await mkdtemp(path.join(os.tmpdir(), 'citefox-ask-noproject-'))
   const bin = path.join(dir, 'bin')
   await mkdir(bin, { recursive: true })
-  const claude = path.join(bin, 'claude')
-  await writeFile(claude, `#!/bin/sh\nexec node ${JSON.stringify(SHIM)} "$@"\n`)
-  await chmod(claude, 0o755)
+  await writeClaudeStandIn(path.join(bin, 'claude'), SHIM)
   const shimLog = path.join(dir, 'claude-shim.log')
   await mkdir(SHOTS, { recursive: true })
   const env = {

@@ -1,10 +1,11 @@
 import { expect, type ElectronApplication, type Page } from '@playwright/test'
 import { readFileSync, readdirSync } from 'node:fs'
-import { chmod, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { launchCiteFox } from './launch'
 import { expectTopicLanding, FIRST_TOPIC, walkSetup, type SetupWalkOptions } from './setup-walk'
+import { writeClaudeStandIn } from './claude-stand-in'
 
 /**
  * The production shell on the recorded TextBolt fixtures: Claude is the shim on
@@ -58,9 +59,7 @@ export async function launchJourneyApp(
   const dir = await mkdtemp(path.join(os.tmpdir(), `citefox-${prefix}-`))
   const bin = path.join(dir, 'bin')
   await mkdir(bin, { recursive: true })
-  const claude = path.join(bin, 'claude')
-  await writeFile(claude, `#!/bin/sh\nexec node ${JSON.stringify(SHIM)} "$@"\n`)
-  await chmod(claude, 0o755)
+  await writeClaudeStandIn(path.join(bin, 'claude'), SHIM)
   const { app, page } = await launchCiteFox({
     userDataDir: dir,
     viewport: { width: 1280, height: 900 },

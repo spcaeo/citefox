@@ -1,6 +1,6 @@
 import { expect, test, type ElectronApplication, type Locator, type Page } from '@playwright/test'
 import { readFileSync } from 'node:fs'
-import { chmod, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { e2eArtifact } from './artifacts'
@@ -9,6 +9,7 @@ import { launchCiteFox } from './launch'
 import { openAllPages } from './nav-helpers'
 import { installRawMarkdown } from './raw-hook'
 import { openHash } from './screens-app'
+import { writeClaudeStandIn } from './claude-stand-in'
 
 /**
  * ✦ Help me fill this in both Add market drawers (HelpFill.dc.html panel 7,
@@ -56,9 +57,7 @@ async function launch(): Promise<Launched> {
   await seedTwoMarketProject(dir)
   const bin = path.join(dir, 'bin')
   await mkdir(bin, { recursive: true })
-  const claude = path.join(bin, 'claude')
-  await writeFile(claude, `#!/bin/sh\nexec node ${JSON.stringify(SHIM)} "$@"\n`)
-  await chmod(claude, 0o755)
+  await writeClaudeStandIn(path.join(bin, 'claude'), SHIM)
   const shimLog = path.join(dir, 'claude-shim.log')
   const { app, page } = await launchCiteFox({
     userDataDir: dir,

@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test'
 import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
-import { chmod, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { textboltSitemapFixture } from '../../src/main/structure/fixtures/textbolt-sitemaps'
@@ -10,6 +10,7 @@ import { waitForChecksIdle } from './journey-app'
 import { launchCiteFox } from './launch'
 import { openStartChoice } from './first-run-helpers'
 import { expectTopicLanding, FIRST_TOPIC, walkSetup } from './setup-walk'
+import { writeClaudeStandIn } from './claude-stand-in'
 
 /**
  * The guided first run (owner feedback 4, journey A) in stub mode: Finish opens the
@@ -39,9 +40,7 @@ test('first run: choose, setup with edits mid-run, what we found, plan, first ch
   const dir = await mkdtemp(path.join(os.tmpdir(), 'citefox-first-run-'))
   const bin = path.join(dir, 'bin')
   await mkdir(bin, { recursive: true })
-  const claude = path.join(bin, 'claude')
-  await writeFile(claude, `#!/bin/sh\nexec node ${JSON.stringify(SHIM)} "$@"\n`)
-  await chmod(claude, 0o755)
+  await writeClaudeStandIn(path.join(bin, 'claude'), SHIM)
   const shimLog = path.join(dir, 'claude-shim.log')
   const sites = path.join(dir, 'sitemaps')
   mkdirSync(sites, { recursive: true })

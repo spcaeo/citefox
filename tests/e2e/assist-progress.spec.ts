@@ -1,12 +1,13 @@
 import AxeBuilder from '@axe-core/playwright'
 import { expect, test, type ElectronApplication, type Locator, type Page } from '@playwright/test'
 import { readFileSync } from 'node:fs'
-import { chmod, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { e2eArtifactsDir } from './artifacts'
 import { launchCiteFox } from './launch'
 import { onboardThroughBridge } from './onboarded'
+import { writeClaudeStandIn } from './claude-stand-in'
 
 /**
  * Owner feedback #1: "Fill from my website" shows what Claude is doing while it runs,
@@ -73,9 +74,7 @@ test('Fill from my website shows each real step live, then folds into the result
   const dir = await mkdtemp(path.join(os.tmpdir(), 'citefox-assist-progress-'))
   const bin = path.join(dir, 'bin')
   await mkdir(bin, { recursive: true })
-  const claude = path.join(bin, 'claude')
-  await writeFile(claude, `#!/bin/sh\nexec node ${JSON.stringify(SHIM)} "$@"\n`)
-  await chmod(claude, 0o755)
+  await writeClaudeStandIn(path.join(bin, 'claude'), SHIM)
   await mkdir(SCREENSHOTS, { recursive: true })
 
   const { app, page } = await launchCiteFox({

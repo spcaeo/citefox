@@ -2,7 +2,7 @@ import type { CiteFoxApi } from '@shared/ipc'
 import type { SentimentView } from '@shared/domain'
 import { expect, test, type Locator, type Page } from '@playwright/test'
 import { readFileSync } from 'node:fs'
-import { chmod, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { drawerShots } from './drawer-helpers'
@@ -10,6 +10,7 @@ import { launchCiteFox } from './launch'
 import { installRawMarkdown } from './raw-hook'
 import { expectMainAccessible, shot } from './screens-app'
 import { openAllPages } from './nav-helpers'
+import { writeClaudeStandIn } from './claude-stand-in'
 
 /**
  * The Sentiment tab on real IPC: a project seeded through the production
@@ -59,9 +60,7 @@ test('the Sentiment tab shows claims, drills to them, and re-reads with a new br
   await seedSentimentProject(dir)
   const bin = path.join(dir, 'bin')
   await mkdir(bin, { recursive: true })
-  const claude = path.join(bin, 'claude')
-  await writeFile(claude, `#!/bin/sh\nexec node ${JSON.stringify(SHIM)} "$@"\n`)
-  await chmod(claude, 0o755)
+  await writeClaudeStandIn(path.join(bin, 'claude'), SHIM)
   const shimLog = path.join(dir, 'claude-shim.log')
   const { app, page } = await launchCiteFox({
     userDataDir: dir,

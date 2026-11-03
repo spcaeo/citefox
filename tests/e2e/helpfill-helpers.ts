@@ -1,5 +1,5 @@
 import { expect, type ElectronApplication, type Locator, type Page } from '@playwright/test'
-import { chmod, mkdir, mkdtemp, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import type { SqliteDatabase } from '../../src/main/storage/database'
@@ -8,6 +8,7 @@ import { animationsDone } from './drawer-helpers'
 import { launchCiteFox } from './launch'
 import { openAllPages } from './nav-helpers'
 import { installRawMarkdown } from './raw-hook'
+import { writeClaudeStandIn } from './claude-stand-in'
 
 /**
  * Shared set-up for the ✦ Help me fill this specs that run on the two-market
@@ -51,9 +52,7 @@ export async function launchHelpFill(
   }
   const bin = path.join(dir, 'bin')
   await mkdir(bin, { recursive: true })
-  const claude = path.join(bin, 'claude')
-  await writeFile(claude, `#!/bin/sh\nexec node ${JSON.stringify(SHIM)} "$@"\n`)
-  await chmod(claude, 0o755)
+  await writeClaudeStandIn(path.join(bin, 'claude'), SHIM)
   const shimLog = path.join(dir, 'claude-shim.log')
   const { app, page } = await launchCiteFox({
     userDataDir: dir,

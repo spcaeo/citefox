@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test'
 import { existsSync, readFileSync } from 'node:fs'
-import { chmod, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { launchCiteFox } from './launch'
@@ -8,6 +8,7 @@ import { installRawMarkdown } from './raw-hook'
 import { expectMainAccessible } from './screens-app'
 import { e2eArtifactsDir } from './artifacts'
 import { openAllPages, sidebarLink } from './nav-helpers'
+import { writeClaudeStandIn } from './claude-stand-in'
 
 /**
  * Ask CiteFox (FR-25.7) through real IPC, in its drawer. The two-market
@@ -31,9 +32,7 @@ test('Ask CiteFox answers a list question from stored results', async () => {
   await seedTwoMarketProject(dir)
   const bin = path.join(dir, 'bin')
   await mkdir(bin, { recursive: true })
-  const claude = path.join(bin, 'claude')
-  await writeFile(claude, `#!/bin/sh\nexec node ${JSON.stringify(SHIM)} "$@"\n`)
-  await chmod(claude, 0o755)
+  await writeClaudeStandIn(path.join(bin, 'claude'), SHIM)
   const shimLog = path.join(dir, 'claude-shim.log')
 
   const { app, page } = await launchCiteFox({

@@ -1,5 +1,5 @@
 import { expect, test, type ElectronApplication, type Locator, type Page } from '@playwright/test'
-import { chmod, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { settle } from './a11y-helpers'
@@ -7,6 +7,7 @@ import { e2eArtifact } from './artifacts'
 import { launchCiteFox } from './launch'
 import { installRawMarkdown } from './raw-hook'
 import { openHash } from './screens-app'
+import { writeClaudeStandIn } from './claude-stand-in'
 
 /**
  * The guide, every screen's lesson end to end on the seeded TextBolt project, and
@@ -105,9 +106,7 @@ test.beforeAll(async () => {
   }
   const bin = path.join(dir, 'bin')
   await mkdir(bin, { recursive: true })
-  const claude = path.join(bin, 'claude')
-  await writeFile(claude, `#!/bin/sh\nexec node ${JSON.stringify(SHIM)} "$@"\n`)
-  await chmod(claude, 0o755)
+  await writeClaudeStandIn(path.join(bin, 'claude'), SHIM)
   const fixtures = path.join(dir, 'fixtures')
   await mkdir(fixtures, { recursive: true })
   await writeFile(path.join(fixtures, 'topic_page_edit.json'), JSON.stringify(PAGE_EDIT))

@@ -1,6 +1,6 @@
 import { expect, test, type Locator, type Page } from '@playwright/test'
 import type { CiteFoxApi } from '@shared/ipc'
-import { chmod, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, readFile, rm } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { e2eArtifact } from './artifacts'
@@ -9,6 +9,7 @@ import { launchCiteFox } from './launch'
 import { openAllPages } from './nav-helpers'
 import { installRawMarkdown } from './raw-hook'
 import { openHash, openTwoMarketApp } from './screens-app'
+import { writeClaudeStandIn } from './claude-stand-in'
 
 /**
  * Tracking leftovers (deep audit W3I item E), each on real IPC handlers with
@@ -175,10 +176,8 @@ test('Check history: What changed shows the recorded reply, labelled as AI', asy
   // The `claude` stand-in answers `Assist: history.whatChanged` from its recorded fixture.
   const bin = path.join(dir, 'bin')
   await mkdir(bin, { recursive: true })
-  const claude = path.join(bin, 'claude')
   const shim = path.join(process.cwd(), 'tests/e2e/claude-shim.mjs')
-  await writeFile(claude, `#!/bin/sh\nexec node ${JSON.stringify(shim)} "$@"\n`)
-  await chmod(claude, 0o755)
+  await writeClaudeStandIn(path.join(bin, 'claude'), shim)
   const { app, page } = await launchCiteFox({
     userDataDir: dir,
     viewport: { width: 1440, height: 900 },

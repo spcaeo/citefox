@@ -1,6 +1,6 @@
 import { expect, test, type Locator, type Page } from '@playwright/test'
 import { readFileSync } from 'node:fs'
-import { chmod, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { launchCiteFox } from './launch'
@@ -14,6 +14,7 @@ import {
   templateKindLifecycle
 } from '@shared/domain'
 import { openAllPages } from './nav-helpers'
+import { writeClaudeStandIn } from './claude-stand-in'
 
 /**
  * The Templates screen through real IPC (FR-26.1 to FR-26.8, TPL-1 to TPL-5).
@@ -62,9 +63,7 @@ test('templates list every step, save project versions, compare, reset, try and 
   await seedTwoMarketProject(dir)
   const bin = path.join(dir, 'bin')
   await mkdir(bin, { recursive: true })
-  const claude = path.join(bin, 'claude')
-  await writeFile(claude, `#!/bin/sh\nexec node ${JSON.stringify(SHIM)} "$@"\n`)
-  await chmod(claude, 0o755)
+  await writeClaudeStandIn(path.join(bin, 'claude'), SHIM)
   await mkdir(SCREENSHOTS, { recursive: true })
 
   const { app, page } = await launchCiteFox({

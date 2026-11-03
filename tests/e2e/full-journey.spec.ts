@@ -1,12 +1,13 @@
 import { expect, test, type Locator, type Page } from '@playwright/test'
 import { readFileSync, readdirSync } from 'node:fs'
-import { chmod, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { e2eArtifact } from './artifacts'
 import { launchCiteFox } from './launch'
 import { leaveFirstRun } from './first-run-helpers'
 import { onboardTextBolt } from './journey-app'
+import { writeClaudeStandIn } from './claude-stand-in'
 
 /**
  * Production-shell journey on the recorded textbolt fixture.
@@ -61,9 +62,7 @@ test('full journey on the textbolt fixture through the production shell', async 
   const dir = await mkdtemp(path.join(os.tmpdir(), 'citefox-journey-'))
   const bin = path.join(dir, 'bin')
   await mkdir(bin, { recursive: true })
-  const claude = path.join(bin, 'claude')
-  await writeFile(claude, `#!/bin/sh\nexec node ${JSON.stringify(SHIM)} "$@"\n`)
-  await chmod(claude, 0o755)
+  await writeClaudeStandIn(path.join(bin, 'claude'), SHIM)
   const shimLog = path.join(dir, 'claude-shim.log')
 
   const { app, page } = await launchCiteFox({

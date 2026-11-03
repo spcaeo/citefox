@@ -1,12 +1,13 @@
 import AxeBuilder from '@axe-core/playwright'
 import { expect, test, type Page } from '@playwright/test'
-import { chmod, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { e2eArtifact } from './artifacts'
 import { launchCiteFox } from './launch'
 import { installRawMarkdown } from './raw-hook'
 import { openAdd } from './nav-helpers'
+import { writeClaudeStandIn } from './claude-stand-in'
 
 /**
  * The Add wizard through the real `topics:*` handlers: the `claude` stand-in
@@ -47,9 +48,7 @@ test('seed path on the real topics handlers, resumed after a restart', async () 
   await seedTwoMarketProject(dir)
   const bin = path.join(dir, 'bin')
   await mkdir(bin, { recursive: true })
-  const claude = path.join(bin, 'claude')
-  await writeFile(claude, `#!/bin/sh\nexec node ${JSON.stringify(SHIM)} "$@"\n`)
-  await chmod(claude, 0o755)
+  await writeClaudeStandIn(path.join(bin, 'claude'), SHIM)
   const env = {
     PATH: `${bin}${path.delimiter}${process.env.PATH ?? ''}`,
     CITEFOX_FIXTURE_DIR: FIXTURE_DIR,

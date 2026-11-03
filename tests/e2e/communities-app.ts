@@ -1,10 +1,11 @@
 import type { ElectronApplication, Page } from '@playwright/test'
-import { chmod, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, readFile, rm } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { launchCiteFox } from './launch'
 import { installRawMarkdown } from './raw-hook'
 import { openAllPages } from './nav-helpers'
+import { writeClaudeStandIn } from './claude-stand-in'
 
 const ROOT = process.cwd()
 const SHIM = path.join(ROOT, 'tests/e2e/claude-shim.mjs')
@@ -35,9 +36,7 @@ export async function openCommunitiesApp(prefix: string): Promise<CommunitiesApp
   seeded.close()
   const bin = path.join(dir, 'bin')
   await mkdir(bin, { recursive: true })
-  const claude = path.join(bin, 'claude')
-  await writeFile(claude, `#!/bin/sh\nexec node ${JSON.stringify(SHIM)} "$@"\n`)
-  await chmod(claude, 0o755)
+  await writeClaudeStandIn(path.join(bin, 'claude'), SHIM)
   const { app, page } = await launchCiteFox({
     userDataDir: dir,
     viewport: { width: 1280, height: 900 },

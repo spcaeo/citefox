@@ -1,10 +1,11 @@
 import { spawn, type ChildProcess } from 'node:child_process'
-import { mkdtempSync, rmSync } from 'node:fs'
+import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { ProviderTimeoutError } from './errors'
 import { runAttempts } from './retry'
 import { withTimeout } from './timeout'
+import { isWindowsBatch, npmShimTarget, windowsBatchSpawn } from './windows-cmd'
 
 const MAX_OUTPUT_BYTES = 1_000_000
 
@@ -70,6 +71,31 @@ export function providerCommandSpawnOptions(
     detached: process.platform !== 'win32',
     stdio: [request.stdin === null ? 'ignore' : 'pipe', 'pipe', 'pipe']
   }
+}
+
+/**
+ * What to start. On Windows an npm launcher (`claude.cmd`, `codex.cmd`) runs node on its
+ * script directly; any other batch file goes through cmd.exe with every argument escaped
+ * (Node refuses batch files without a shell since CVE-2024-27980). Elsewhere: as given.
+ */
+export function spawnTarget(
+  command: string,
+  args: readonly string[],
+  platform: NodeJS.Platform = process.platform,
+  readText: (path: string) => string = (path) => readFileSync(path, 'utf8'),
+  exists: (path: string) => boolean = existsSync
+): { file: string; args: string[]; verbatim: boolean } {
+  if (!isWindowsBatch(command, platform)) return { file: command, args: [...args], verbatim: false }
+  let text = ''
+  try {
+    text = readText(command)
+  } catch {
+    // Unreadable: fall through to cmd.exe, which reports the problem itself.
+  }
+  const shim = text ? npmShimTarget(command, text, exists) : null
+  if (shim) return { file: shim.file, args: [...shim.prefix, ...args], verbatim: false }
+  const viaCmd = windowsBatchSpawn(command, args)
+  return { file: viaCmd.file, args: viaCmd.args, verbatim: true }
 }
 
 /** Children still running. Killed when the main process exits so none is left behind. */
@@ -143,11 +169,11 @@ export function createSpawnCommandTransport(): CommandTransport {
         }
         let child: ChildProcess
         try {
-          child = spawn(
-            request.command,
-            [...request.args],
-            providerCommandSpawnOptions(request, cwd)
-          )
+          const target = spawnTarget(request.command, request.args)
+          child = spawn(target.file, target.args, {
+            ...providerCommandSpawnOptions(request, cwd),
+            ...(target.verbatim ? { windowsVerbatimArguments: true } : {})
+          })
         } catch (error) {
           cleanup()
           const code = (error as NodeJS.ErrnoException).code

@@ -1,5 +1,5 @@
 import { expect, test, type ElectronApplication, type Locator, type Page } from '@playwright/test'
-import { chmod, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import type { CiteFoxApi, FillFromWebsiteResult } from '../../src/shared/ipc'
@@ -11,6 +11,7 @@ import { openAllPages } from './nav-helpers'
 import { installRawMarkdown } from './raw-hook'
 import { openHash } from './screens-app'
 import { expectSetupStep, expectTopicLanding, setupEngines, setupShapes } from './setup-walk'
+import { writeClaudeStandIn } from './claude-stand-in'
 
 /**
  * New project → "How should we set up …?" (HelpFill.dc.html panel 4) on the
@@ -107,9 +108,7 @@ async function launch(): Promise<Launched> {
   // A `claude` on the PATH that is never called: the setup prompt and read need no Claude.
   const bin = path.join(dir, 'bin')
   await mkdir(bin, { recursive: true })
-  const claude = path.join(bin, 'claude')
-  await writeFile(claude, '#!/bin/sh\nexit 1\n')
-  await chmod(claude, 0o755)
+  await writeClaudeStandIn(path.join(bin, 'claude'), null)
   const { app, page } = await launchCiteFox({
     userDataDir: dir,
     viewport: WIDE,

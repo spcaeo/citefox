@@ -1,6 +1,6 @@
 import { expect, test, type Locator, type Page } from '@playwright/test'
 import { existsSync, readFileSync } from 'node:fs'
-import { chmod, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { e2eArtifactsDir } from './artifacts'
@@ -8,6 +8,7 @@ import { animationsDone } from './drawer-helpers'
 import { launchCiteFox } from './launch'
 import { openAllPages } from './nav-helpers'
 import { installRawMarkdown } from './raw-hook'
+import { writeClaudeStandIn } from './claude-stand-in'
 
 /**
  * Ask CiteFox, the context-aware assistant, through real IPC. The two-market
@@ -32,9 +33,7 @@ test('Ask CiteFox knows the screen, suggests for it, and asks before it changes 
   await seedTwoMarketProject(dir)
   const bin = path.join(dir, 'bin')
   await mkdir(bin, { recursive: true })
-  const claude = path.join(bin, 'claude')
-  await writeFile(claude, `#!/bin/sh\nexec node ${JSON.stringify(SHIM)} "$@"\n`)
-  await chmod(claude, 0o755)
+  await writeClaudeStandIn(path.join(bin, 'claude'), SHIM)
   const shimLog = path.join(dir, 'claude-shim.log')
   await mkdir(SHOTS, { recursive: true })
 

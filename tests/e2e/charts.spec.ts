@@ -1,5 +1,5 @@
 import { expect, test, type Locator, type Page } from '@playwright/test'
-import { chmod, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { TEXTBOLT_TOPIC_ID } from '../../src/shared/fixtures/textbolt-topic'
@@ -8,6 +8,7 @@ import { launchCiteFox } from './launch'
 import { openAllPages } from './nav-helpers'
 import { installRawMarkdown } from './raw-hook'
 import { openHash } from './screens-app'
+import { writeClaudeStandIn } from './claude-stand-in'
 
 /**
  * The shared chart style (ui/chart) on every converted chart, on real IPC with
@@ -177,10 +178,8 @@ test('Sentiment trend and bars in the shared style, light and dark', async () =>
   await seedSentimentProject(dir)
   const bin = path.join(dir, 'bin')
   await mkdir(bin, { recursive: true })
-  const claude = path.join(bin, 'claude')
   const shim = path.join(ROOT, 'tests/e2e/claude-shim.mjs')
-  await writeFile(claude, `#!/bin/sh\nexec node ${JSON.stringify(shim)} "$@"\n`)
-  await chmod(claude, 0o755)
+  await writeClaudeStandIn(path.join(bin, 'claude'), shim)
   const { app, page } = await launchCiteFox({
     userDataDir: dir,
     viewport: { width: 1280, height: 900 },

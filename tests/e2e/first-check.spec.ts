@@ -1,12 +1,13 @@
 import { expect, test, type Page } from '@playwright/test'
 import { readFileSync, readdirSync } from 'node:fs'
-import { chmod, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { launchCiteFox } from './launch'
 import { leaveFirstRun } from './first-run-helpers'
 import { onboardThroughBridge } from './onboarded'
 import { sidebarLink } from './nav-helpers'
+import { writeClaudeStandIn } from './claude-stand-in'
 
 /**
  * Check now is the queue screen (`#/check`), not the page's First check step.
@@ -39,9 +40,7 @@ test('Check now runs a prompt set and leaves a page with no prompts unqueued', a
   const dir = await mkdtemp(path.join(os.tmpdir(), 'citefox-first-check-'))
   const bin = path.join(dir, 'bin')
   await mkdir(bin, { recursive: true })
-  const claude = path.join(bin, 'claude')
-  await writeFile(claude, `#!/bin/sh\nexec node ${JSON.stringify(SHIM)} "$@"\n`)
-  await chmod(claude, 0o755)
+  await writeClaudeStandIn(path.join(bin, 'claude'), SHIM)
 
   const { app, page } = await launchCiteFox({
     userDataDir: dir,

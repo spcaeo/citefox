@@ -1,5 +1,5 @@
 import { expect, test, type ElectronApplication, type Page } from '@playwright/test'
-import { chmod, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { settle } from './a11y-helpers'
@@ -7,6 +7,7 @@ import { e2eArtifact } from './artifacts'
 import { launchCiteFox } from './launch'
 import { installRawMarkdown } from './raw-hook'
 import { openHash } from './screens-app'
+import { writeClaudeStandIn } from './claude-stand-in'
 
 /**
  * What to fix › a page fix › Page edits, on the seeded TextBolt topic: the tab is
@@ -79,9 +80,7 @@ test.beforeAll(async () => {
   }
   const bin = path.join(dir, 'bin')
   await mkdir(bin, { recursive: true })
-  const claude = path.join(bin, 'claude')
-  await writeFile(claude, `#!/bin/sh\nexec node ${JSON.stringify(SHIM)} "$@"\n`)
-  await chmod(claude, 0o755)
+  await writeClaudeStandIn(path.join(bin, 'claude'), SHIM)
   // The page read here has only its title, so the reply adds under it (b1) and names no other block.
   const fixtures = path.join(dir, 'fixtures')
   await mkdir(fixtures, { recursive: true })
