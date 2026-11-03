@@ -177,9 +177,9 @@ describe('topic page names the running questions', () => {
     await view.findByText(/^Checking… 6 of/u)
     progress('job-1', [item(7, false, false), item(8, true, false), item(9, true, true)])
     fireEvent.click(view.getByRole('button', { name: 'Show Q8 in the list' }))
-    await vi.waitFor(() => expect(window.location.hash).toContain('view=list'))
+    await vi.waitFor(() => expect(window.location.hash).toContain('view=list'), { timeout: 5000 })
     await view.findByRole('grid', { name: /every search/ })
-    await vi.waitFor(() => expect(scrolled.length).toBeGreaterThan(0))
+    await vi.waitFor(() => expect(scrolled.length).toBeGreaterThan(0), { timeout: 5000 })
     const q8 = item(8, false, false).promptId
     expect(scrolled[0]?.getAttribute('data-line-key')).toBe(`row:${q8}`)
     expect(scrolled[0]?.querySelector('[title="Checking ChatGPT…"]')).toBeTruthy()

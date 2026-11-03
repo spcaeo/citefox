@@ -31,16 +31,23 @@ export function changeStatusLabel(status: ChangeStatus): string {
   return CHANGE_STATUSES.find((item) => item.id === status)?.label ?? 'Not cited yet'
 }
 
+/** The computer's calendar day of `ms`, as a day number (daylight saving cannot shift it). */
+function localDayNumber(ms: number): number {
+  const d = new Date(ms)
+  return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / DAY_MS
+}
+
 /**
- * Whole days since `liveSince`, counted on UTC calendar days so a change that went
- * live yesterday is 1 day live at any hour today. Negative for a change that goes live
- * later. Null when the date does not parse.
+ * Whole days since `liveSince`, counted on the computer's calendar days (the go-live
+ * date is the computer's midnight), so a change that went live yesterday is 1 day live
+ * at any hour today, and one that went live today is 0 days live even late in the
+ * evening. Negative for a change that goes live later. Null when the date does not parse.
  */
 export function daysLive(liveSince: string, now: string | Date): number | null {
   const live = Date.parse(liveSince)
   const at = typeof now === 'string' ? Date.parse(now) : now.getTime()
   if (Number.isNaN(live) || Number.isNaN(at)) return null
-  return Math.floor(at / DAY_MS) - Math.floor(live / DAY_MS)
+  return localDayNumber(at) - localDayNumber(live)
 }
 
 /** The tracked page is cited for this question (the status Results shows). */

@@ -2,6 +2,10 @@ import { resolve } from 'node:path'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
 
+// One clock for every run: tests read the same on a laptop in Toronto at 8 PM and on CI.
+// Tests that are about a zone set process.env.TZ themselves.
+process.env.TZ = 'UTC'
+
 export default defineConfig({
   plugins: [react()],
   resolve: {

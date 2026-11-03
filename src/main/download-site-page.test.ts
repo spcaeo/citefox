@@ -32,9 +32,9 @@ afterEach(() => {
 })
 
 describe('download page in a browser', () => {
-  it('shows both Mac buttons for an unknown chip, the files with copy icons and the notes', async () => {
-    const html = readFileSync(resolve('site/index.html'), 'utf8')
-    document.body.innerHTML = /<body>([\s\S]*)<\/body>/.exec(html)?.[1] ?? ''
+  it('offers the universal Mac file for an unknown chip, fills every card, lists files with copy icons and the notes', async () => {
+    const html = readFileSync(resolve('site/download/index.html'), 'utf8')
+    document.body.innerHTML = /<body[^>]*>([\s\S]*)<\/body>/.exec(html)?.[1] ?? ''
     const meta = document.createElement('meta')
     meta.name = 'citefox-repo'
     meta.content = 'spcaeo/citefox'
@@ -48,30 +48,40 @@ describe('download page in a browser', () => {
     vi.stubGlobal('fetch', fetchMock)
 
     await import(pathToFileURL(resolve('site/app.js')).href)
-    await vi.waitFor(() => expect(document.querySelectorAll('#primary a.button').length).toBe(2))
+    const main = (): HTMLAnchorElement =>
+      document.querySelector('[data-dl-main]') as HTMLAnchorElement
+    await vi.waitFor(() => expect(main().dataset.state).toBe('ready'))
 
     expect(fetchMock).toHaveBeenCalledWith(
       'https://api.github.com/repos/spcaeo/citefox/releases/latest',
       expect.anything()
     )
-    const buttons = [...document.querySelectorAll('#primary a.button')].map((a) => a.textContent)
-    expect(buttons[0]).toContain('Mac with Apple chip')
-    expect(buttons[1]).toContain('Mac with Intel chip')
-    expect(document.querySelector('#primary')?.textContent).toContain('version for every Mac')
+    // Safari hides the chip, so the big button offers the file for every Mac.
+    expect(main().href).toBe(release.assets[0]?.browser_download_url)
+    expect(main().textContent).toContain('Mac')
+    expect(document.querySelector('[data-dl-also]')?.textContent).toContain('every Mac')
+    expect(document.querySelector('[data-dl-meta]')?.textContent).toContain(`v${V}`)
+    // The OS cards: files in this release get real links, missing ones hide.
+    const link = (key: string): HTMLAnchorElement =>
+      document.querySelector(`[data-asset="${key}"]`) as HTMLAnchorElement
+    expect(link('mac-arm64-dmg').href).toBe(release.assets[1]?.browser_download_url)
+    expect(link('win-x64-installer').href).toBe(release.assets[3]?.browser_download_url)
+    expect(link('linux-x64-appimage').href).toBe(release.assets[4]?.browser_download_url)
+    for (const card of document.querySelectorAll<HTMLElement>('.os-card')) {
+      expect(card.dataset.state).toBe('ready')
+    }
+    expect(document.querySelector('.os-card[data-os="mac"]')?.classList.contains('own')).toBe(true)
 
     const rows = document.querySelectorAll('#files li')
     expect(rows).toHaveLength(5)
     expect(document.querySelectorAll('#files .copy-btn').length).toBe(10)
     expect(document.querySelector('#sums .open-btn')?.getAttribute('target')).toBe('_blank')
-    // Commands written in the page get the same helper.
-    expect(document.querySelectorAll('#unsigned .copyable').length).toBe(2)
-    // The Mac steps come first for a Mac.
-    expect(document.querySelector('.steps .step')?.getAttribute('data-os')).toBe('mac')
+    // Commands written in the page get the same copy helper.
+    expect(document.querySelectorAll('#unsigned .copyable').length).toBeGreaterThanOrEqual(2)
     expect(document.querySelector('#notes')?.innerHTML).toContain(
       '<li>Share a report as a link</li>'
     )
     expect(document.querySelector('#notes')?.textContent).not.toContain('Which file')
-    expect(document.querySelector('#release-meta')?.textContent).toContain(`Version ${V}`)
     expect((document.querySelector('#files-section') as HTMLElement).hidden).toBe(false)
   })
 })

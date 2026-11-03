@@ -16,7 +16,19 @@ function row(promptId: string, status: PromptCheckStatus): PromptCheckRow {
 }
 
 describe('daysLive', () => {
-  test('counts UTC calendar days, negative before go-live', () => {
+  test("counts the computer's calendar days: live today at 8 PM in Toronto is still day 0", () => {
+    const zone = process.env.TZ
+    process.env.TZ = 'America/Toronto'
+    try {
+      // Local midnight Nov 2 (05:00Z) to 8 PM Nov 2 local (01:00Z on Nov 3).
+      expect(daysLive('2026-11-02T05:00:00.000Z', '2026-11-03T01:00:00.000Z')).toBe(0)
+      expect(daysLive('2026-11-02T05:00:00.000Z', '2026-11-03T06:00:00.000Z')).toBe(1)
+    } finally {
+      process.env.TZ = zone
+    }
+  })
+
+  test('counts calendar days, negative before go-live', () => {
     expect(daysLive('2026-10-20T23:00:00.000Z', '2026-10-21T01:00:00.000Z')).toBe(1)
     expect(daysLive('2026-10-21T00:00:00.000Z', '2026-10-21T23:59:00.000Z')).toBe(0)
     expect(daysLive('2026-10-25T00:00:00.000Z', new Date('2026-10-23T12:00:00.000Z'))).toBe(-2)
