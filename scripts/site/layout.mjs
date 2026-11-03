@@ -5,6 +5,7 @@ import {
   CONTACT_EMAIL,
   LICENSE_URL,
   OG_IMAGE,
+  DIVISION,
   PUBLISHER,
   REPO,
   REPO_URL,
@@ -156,7 +157,7 @@ ${body}
       <div class="wrap footer-row small">
         <span>
           <a id="license" href="${LICENSE_URL}" target="_blank" rel="noopener">Source-available</a>
-          · © 2026 <a href="${PUBLISHER.url}" target="_blank" rel="noopener">${PUBLISHER.name}</a>
+          · © 2026 <a href="${PUBLISHER.url}" target="_blank" rel="noopener">${PUBLISHER.name}</a> (and ${DIVISION})
         </span>
         ${footerRelease ? '<span id="footer-release" class="muted"></span>' : ''}
       </div>

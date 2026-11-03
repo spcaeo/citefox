@@ -12,6 +12,8 @@ export const RELEASES_URL = `${REPO_URL}/releases`
 export const LICENSE_URL = `${REPO_URL}/blob/main/LICENSE`
 
 export const PUBLISHER = { name: 'Space-O Technologies', url: 'https://www.spaceo.ca' }
+/** Shown after the publisher in the copyright line. */
+export const DIVISION = 'vBridge Technologies, a division of Space-O'
 export const CONTACT_EMAIL = 'getcitifox@gmail.com'
 
 /** The default share image (1200 x 630), made by `npm run site:og`. */

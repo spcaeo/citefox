@@ -171,7 +171,7 @@ Repository secrets (all optional; missing ones give unsigned builds):
 
 - shows one big button for the visitor's computer: the Mac chip comes from User-Agent Client Hints or the WebGL renderer; when it stays unknown (Safari), both Mac buttons and a link to the universal file are shown; Windows gets the installer, Linux the AppImage, a phone a note to open the page on a computer;
 - lists every download with its size and SHA-256 (from the API's asset digest, or `SHA256SUMS.txt`), each with a copy icon;
-- shows how to open an unsigned app, the release notes, a link to older versions and betas, and "Source-available · © Space-O Technologies" linked to `LICENSE`.
+- shows how to open an unsigned app, the release notes, a link to older versions and betas, and "Source-available · © 2026 Space-O Technologies (and vBridge Technologies, a division of Space-O)" linked to `LICENSE`.
 
 The repo comes from the address (`<owner>.github.io/<repo>/`), else from `<meta name="citefox-repo">` in `site/index.html`. `.github/workflows/pages.yml` deploys `site/` on every push to `main` that changes it (or by hand). A new release needs no redeploy. Logic is in `site/release.js` and tested in `src/main/download-site.test.ts`.
 

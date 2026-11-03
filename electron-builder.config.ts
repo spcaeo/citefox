@@ -29,7 +29,8 @@ const artifactName = '${productName}-${version}-${os}-${arch}.${ext}'
 const config: Configuration = {
   appId: 'app.citefox.desktop',
   productName: 'CiteFox',
-  copyright: 'Copyright © 2026 Space-O Technologies',
+  copyright:
+    'Copyright © 2026 Space-O Technologies (and vBridge Technologies, a division of Space-O)',
   artifactName,
   // The .deb control file needs a homepage, and electron-builder reads it
   // from package.json metadata. Placeholder until the project has a public
