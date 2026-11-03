@@ -275,7 +275,7 @@ describe('download page: owner rules', () => {
 
   it('keeps the full first-start steps and every file on /download/', () => {
     const download = pages[1]!.html
-    expect(download).toContain('Open Anyway')
+    expect(download).toContain('notarized by Apple')
     expect(download).toContain('id="unsigned"')
     expect(download).toContain('id="files-section"')
   })

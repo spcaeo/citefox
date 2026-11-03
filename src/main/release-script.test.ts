@@ -184,13 +184,13 @@ describe('release notes', () => {
     expect(changelogSection(released, '0.12')).toBeNull()
   })
 
-  it('adds the beta warning, the file guide and the unsigned-build steps', () => {
+  it('adds the beta warning, the file guide and how to open it the first time', () => {
     const notes = releaseNotes(released, '0.13.0-beta.1')
     expect(notes.startsWith('> **Beta.**')).toBe(true)
     expect(notes).toContain('- Hand-written note.')
     expect(notes).toContain('CiteFox-0.13.0-beta.1-mac-universal.dmg')
-    expect(notes).toContain('Open Anyway')
-    expect(notes).toContain('More info › Run anyway')
+    expect(notes).toContain('notarized by Apple')
+    expect(notes).toContain('Run anyway')
     expect(notes).not.toContain('Older entry')
     expect(releaseNotes(released, '0.12.0').startsWith('- Older entry.')).toBe(true)
   })

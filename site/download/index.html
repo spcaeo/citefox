@@ -159,7 +159,7 @@
         <h2 class="install-title">Install in a minute</h2>
         <ol class="install" aria-label="Install in a minute">
           <li><span class="install-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 3.5v11M7 10l5 5 5-5M4.5 16.5v2.5a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-2.5"/></svg></span><h3>1. Download</h3><p>Pick your computer above. It is one file, free, no sign-up.</p></li>
-          <li><span class="install-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4.5 5.5h15a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1zM3.5 9h17M10 13l2 2 3.5-3.5"/></svg></span><h3>2. Open</h3><p>The app is not signed yet, so allow it once. Mac: click <strong>Done</strong>, then <strong>System Settings › Privacy &amp; Security › Open Anyway</strong>. Windows: <strong>More info</strong> › <strong>Run anyway</strong>. <a href="#unsigned">Full steps</a></p></li>
+          <li><span class="install-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4.5 5.5h15a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1zM3.5 9h17M10 13l2 2 3.5-3.5"/></svg></span><h3>2. Open</h3><p>Mac: open CiteFox from Applications (Apple has checked it). Windows: the first time, click <strong>More info</strong> › <strong>Run anyway</strong>. <a href="#unsigned">Full steps</a></p></li>
           <li><span class="install-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M8 11a4 4 0 1 0 0 8 4 4 0 1 0 0-8zM10.9 12.1L19.5 3.5M16.5 6.5l2.2 2.2M14 9l1.6 1.6"/></svg></span><h3>3. Add your keys and run a check</h3><p>Paste your own API keys, add your site and buyer questions, then run your first check.</p></li>
         </ol>
         <div class="release-row">
@@ -176,13 +176,13 @@
         <section id="unsigned" class="card" aria-labelledby="unsigned-title">
           <h2 id="unsigned-title">Opening CiteFox the first time</h2>
           <p>
-            CiteFox is not signed with a paid certificate yet, so your computer asks once before the
-            first start. This is expected. You can check every file against its SHA-256 below.
+            The Mac app is signed and notarized by Apple, so it opens like any other app. The Windows
+            app is not signed with a paid certificate yet, so Windows asks once before the first
+            start. That is expected. You can check every file against its SHA-256 below.
           </p>
           <p class="card">
-            <strong>Skip the warning: install with one command.</strong> On a Mac or Linux, paste this into
-            Terminal. It downloads the latest release from GitHub, checks it against its SHA-256 and
-            installs it, so your computer does not ask first.
+            <strong>Prefer one command?</strong> On a Mac or Linux, paste this into Terminal. It
+            downloads the latest release from GitHub, checks it against its SHA-256 and installs it.
             <code data-copy>curl -fsSL https://spcaeo.github.io/citefox/install.sh | bash</code>
             <span class="small muted">Read the script first if you like: <a href="../install.sh">install.sh</a>.</span>
           </p>
@@ -191,20 +191,11 @@
               <h3>Mac</h3>
               <ol>
                 <li>Open the downloaded <code>.dmg</code> and drag CiteFox to Applications.</li>
-                <li>Open CiteFox once. macOS says it could not verify the app. Click <strong>Done</strong>.</li>
                 <li>
-                  Go to <strong>System Settings › Privacy &amp; Security</strong>, scroll to
-                  “CiteFox was blocked…”, click <strong>Open Anyway</strong> and enter your password.
-                </li>
-                <li>
-                  Or run one command in Terminal:
-                  <code data-copy>xattr -dr com.apple.quarantine /Applications/CiteFox.app</code>
+                  Open CiteFox. If macOS says it was downloaded from the internet, click
+                  <strong>Open</strong>. Apple has checked this app, so there is nothing else to allow.
                 </li>
               </ol>
-              <p class="small muted">
-                On macOS 14 or older, right-click CiteFox in Applications and choose
-                <strong>Open</strong> also works. macOS 15 removed that shortcut.
-              </p>
               <p class="small muted">
                 After an update macOS may ask once to let CiteFox read its saved keys. Click
                 <strong>Always Allow</strong>.

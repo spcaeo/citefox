@@ -193,7 +193,7 @@ export function changelogSection(changelog: string, version: string): string | n
   return match ? (match[1] ?? '').trim() : null
 }
 
-/** Release notes: the changelog section, then how to open an unsigned build and check a download. */
+/** Release notes: the changelog section, then which file to pick, how to open it and how to check a download. */
 export function releaseNotes(changelog: string, version: string): string {
   const section = changelogSection(changelog, version)
   if (section === null) throw new Error(`CHANGELOG.md has no "## ${version}" section`)
@@ -216,12 +216,11 @@ export function releaseNotes(changelog: string, version: string): string {
       '-win-x64.exe` is the installer (`-arm64` for Windows on Arm). `-portable.exe` runs without installing.',
     '- **Linux:** the `.AppImage` runs anywhere; the `.deb` is for Ubuntu and Debian.',
     '',
-    '### Opening an unsigned build',
+    '### Opening it the first time',
     '',
-    'CiteFox builds are not signed with a paid certificate yet, so your computer asks once before the first start.',
-    '',
-    '- **Mac:** open the app; when macOS says it cannot check it, open **System Settings › Privacy & Security** and click **Open Anyway** (on older macOS: right-click the app › **Open**).',
-    '- **Windows:** when SmartScreen says "Windows protected your PC", click **More info › Run anyway**.',
+    '- **Mac:** signed and notarized by Apple, so it opens like any other app. If macOS says it was downloaded from the internet, click **Open**.',
+    '- **Windows:** the Windows build is not signed with a paid certificate yet. When SmartScreen says "Windows protected your PC", click **More info**, then **Run anyway**. You only do this once.',
+    '- **Linux:** nothing special. For the AppImage, make it executable first (`chmod +x`).',
     '',
     'Check a download against `SHA256SUMS.txt`: `shasum -a 256 <file>` (Mac, Linux) or `Get-FileHash <file>` (Windows).'
   ]

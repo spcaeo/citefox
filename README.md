@@ -354,12 +354,12 @@ Get CiteFox from the **[download page][site]**, which picks the right file for y
 | Windows            | `CiteFox-<version>-win-x64.exe` installer (or `-arm64.exe`), or `-win-x64-portable.exe` |
 | Linux              | `CiteFox-<version>-linux-x86_64.AppImage`, or `CiteFox-<version>-linux-amd64.deb`       |
 
-**Builds are not code-signed yet**, so your computer asks once the first time you open CiteFox.
+**The Mac app is signed and notarized by Apple.** The Windows app is not signed with a paid certificate yet, so Windows asks once the first time you open CiteFox.
 
 <details>
 <summary>How to open CiteFox the first time on macOS, Windows and Linux</summary>
 
-- **macOS:** open the `.dmg` and drag CiteFox to Applications. Open it; when macOS says it cannot check the app, click **Done**. Then open **System Settings › Privacy & Security**, scroll down and click **Open Anyway**. On macOS 14 or older you can instead Control-click the app and choose **Open**. Or run once in Terminal: `xattr -dr com.apple.quarantine /Applications/CiteFox.app`.
+- **macOS:** open the `.dmg` and drag CiteFox to Applications. Open it. If macOS says it was downloaded from the internet, click **Open**. Apple has checked the app, so there is nothing else to allow.
 - **Windows:** run the installer. If you see "Windows protected your PC", click **More info**, then **Run anyway**. It installs for you only (no admin needed).
 - **Linux:** make the AppImage executable (`chmod +x CiteFox-*.AppImage`) and open it, or install the deb with `sudo apt install ./CiteFox-*.deb`. Storing keys needs a Secret Service (GNOME Keyring or KWallet; the deb pulls in `libsecret-1-0`).
 
@@ -425,7 +425,7 @@ CiteFox is a free desktop app that keeps your data on your computer, checks whet
 
 ### Why does my computer warn me when I open CiteFox?
 
-CiteFox builds are not code-signed with a paid certificate yet, so macOS and Windows ask once before the first start. On a Mac, click **Open Anyway** in **System Settings › Privacy & Security**. On Windows, choose **More info**, then **Run anyway**. Every release lists a SHA-256 checksum for each file.
+The Mac app is signed and notarized by Apple, so it opens like any other app (macOS may ask you to confirm it was downloaded from the internet). The Windows app is not signed with a paid certificate yet, so Windows asks once before the first start: choose **More info**, then **Run anyway**. Every release lists a SHA-256 checksum for each file.
 
 ### Which countries and languages does CiteFox support?
 

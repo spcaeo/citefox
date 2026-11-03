@@ -295,7 +295,7 @@ export const FAQ = [
   },
   {
     q: 'Why does my computer warn me when I open CiteFox?',
-    a: 'CiteFox builds are not code-signed with a paid certificate yet, so macOS and Windows ask once before the first start. On a Mac, click Open Anyway in System Settings › Privacy & Security. On Windows, choose More info, then Run anyway. Every release lists a SHA-256 checksum for each file.'
+    a: 'The Mac app is signed and notarized by Apple, so it opens like any other app (macOS may ask you to confirm it was downloaded from the internet). The Windows app is not signed with a paid certificate yet, so Windows asks once before the first start: choose More info, then Run anyway. Every release lists a SHA-256 checksum for each file.'
   },
   {
     q: 'Which countries and languages does CiteFox support?',

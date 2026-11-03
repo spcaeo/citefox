@@ -149,7 +149,7 @@ export function installStrip(level = 3, stepsHref = 'download/#unsigned') {
   const h = `h${level}`
   return `<ol class="install" aria-label="Install in a minute">
           <li><span class="install-icon">${DOWNLOAD}</span><${h}>1. Download</${h}><p>Pick your computer above. It is one file, free, no sign-up.</p></li>
-          <li><span class="install-icon">${OPEN}</span><${h}>2. Open</${h}><p>The app is not signed yet, so allow it once. Mac: click <strong>Done</strong>, then <strong>System Settings › Privacy &amp; Security › Open Anyway</strong>. Windows: <strong>More info</strong> › <strong>Run anyway</strong>. <a href="${stepsHref}">Full steps</a></p></li>
+          <li><span class="install-icon">${OPEN}</span><${h}>2. Open</${h}><p>Mac: open CiteFox from Applications (Apple has checked it). Windows: the first time, click <strong>More info</strong> › <strong>Run anyway</strong>. <a href="${stepsHref}">Full steps</a></p></li>
           <li><span class="install-icon">${KEY}</span><${h}>3. Add your keys and run a check</${h}><p>Paste your own API keys, add your site and buyer questions, then run your first check.</p></li>
         </ol>`
 }
@@ -183,13 +183,13 @@ function unsignedSteps() {
   return `<section id="unsigned" class="card" aria-labelledby="unsigned-title">
           <h2 id="unsigned-title">Opening CiteFox the first time</h2>
           <p>
-            CiteFox is not signed with a paid certificate yet, so your computer asks once before the
-            first start. This is expected. You can check every file against its SHA-256 below.
+            The Mac app is signed and notarized by Apple, so it opens like any other app. The Windows
+            app is not signed with a paid certificate yet, so Windows asks once before the first
+            start. That is expected. You can check every file against its SHA-256 below.
           </p>
           <p class="card">
-            <strong>Skip the warning: install with one command.</strong> On a Mac or Linux, paste this into
-            Terminal. It downloads the latest release from GitHub, checks it against its SHA-256 and
-            installs it, so your computer does not ask first.
+            <strong>Prefer one command?</strong> On a Mac or Linux, paste this into Terminal. It
+            downloads the latest release from GitHub, checks it against its SHA-256 and installs it.
             <code data-copy>curl -fsSL https://spcaeo.github.io/citefox/install.sh | bash</code>
             <span class="small muted">Read the script first if you like: <a href="../install.sh">install.sh</a>.</span>
           </p>
@@ -198,20 +198,11 @@ function unsignedSteps() {
               <h3>Mac</h3>
               <ol>
                 <li>Open the downloaded <code>.dmg</code> and drag CiteFox to Applications.</li>
-                <li>Open CiteFox once. macOS says it could not verify the app. Click <strong>Done</strong>.</li>
                 <li>
-                  Go to <strong>System Settings › Privacy &amp; Security</strong>, scroll to
-                  “CiteFox was blocked…”, click <strong>Open Anyway</strong> and enter your password.
-                </li>
-                <li>
-                  Or run one command in Terminal:
-                  <code data-copy>xattr -dr com.apple.quarantine /Applications/CiteFox.app</code>
+                  Open CiteFox. If macOS says it was downloaded from the internet, click
+                  <strong>Open</strong>. Apple has checked this app, so there is nothing else to allow.
                 </li>
               </ol>
-              <p class="small muted">
-                On macOS 14 or older, right-click CiteFox in Applications and choose
-                <strong>Open</strong> also works. macOS 15 removed that shortcut.
-              </p>
               <p class="small muted">
                 After an update macOS may ask once to let CiteFox read its saved keys. Click
                 <strong>Always Allow</strong>.

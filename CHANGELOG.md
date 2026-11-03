@@ -24,26 +24,6 @@
 - **Plain wording:** messages talk about CiteFox credits and CiteFox AI instead of naming the companies behind them.
 - **Smoother window:** dragging or resizing the window no longer stutters, and background errors are written to the log instead of being lost.
 
-### Fixed
-
-- Close database files before deleting them, so Windows can remove them
-- A fix published today shows 14 days left all evening (count the computer's calendar days); tests run on one clock; download page test for the new layout; keep the sync test private
-
-### Other changes
-
-- Review fixes: safer import, event times, lost saves, nicer Mac installer, cleanup
-- Keep the owner's _handover folder (chats, notes, certificates) out of git, lint and format
-- Fix Windows: find Claude Code and Codex installed with npm (claude.cmd/codex.cmd on PATH or in AppData\Roaming\npm); CI e2e retries once on shared runners
-- E2e on Windows: our PATH replaces the inherited Path (case-insensitive names); data folder check accepts the 8.3 temp name
-- Fix Windows: Claude Code and Codex installed with npm (claude.cmd, codex.cmd) now start (node runs the npm script directly; other batch files go through cmd.exe with escaped arguments); e2e fake claude is a .cmd on Windows
-- Chart date links: 24 px tall, never wider than the gap to the next check, below the plot layer (WCAG 2.5.8); CI: 90 minutes for the Mac e2e run; axe messages say why
-- Fix Windows exports: flush the finished file through a read-write handle (Windows refuses fsync on read-only, EPERM)
-- GitHub, help and About us everywhere: home page tiles + About us + three-column footer, Docs/HELP.md (every help topic, rendered on GitHub), app Settings › Data & about gets About us with links, README About us
-- Sample reports: say the data is an example, drop open buttons on made-up page links
-- Mac first-open steps for macOS 15+: Open Anyway in Privacy & Security, or one Terminal command
-- Live demo in the browser (site/demo) and six sample reports (site/samples)
-- Public sync never publishes Docs/outreach (private partner drafts)
-
 ## 0.13.0 — 2026-11-02
 
 The first public release of CiteFox: a free, local AI visibility tracker. Bring your own API keys; your data stays on your computer.
