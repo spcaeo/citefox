@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import type { SetupDraft, SetupItem, SetupListId, SetupRow } from '@shared/ipc'
+import type { RowFillList, SetupDraft, SetupItem, SetupListId, SetupRow } from '@shared/ipc'
 import type { SetupSectionClient } from '../sectionClient'
 
 /** What every section card needs from its step: the draft and the section channels. */
@@ -62,6 +62,11 @@ export interface ListSectionProps extends CommonProps {
   rowTag?: (item: SetupItem) => string | null
   /** The second line under the name. Default: the detail. */
   renderSub?: (item: SetupItem) => ReactNode
+  /**
+   * A row typed by hand (a name only) is filled in by CiteFox AI: its second part
+   * (`products`, `buyers`). Leave out for every other list.
+   */
+  autoFill?: RowFillList
 }
 
 export interface ChipSectionProps extends CommonProps {

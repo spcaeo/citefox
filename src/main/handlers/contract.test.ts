@@ -51,6 +51,7 @@ describe('IPC handlers', () => {
       'onboarding:sectionRun',
       'onboarding:sectionRead',
       'onboarding:finishSetup',
+      'onboarding:rowFill',
       'keys:add',
       'keys:test',
       'keys:rename',
@@ -407,6 +408,8 @@ describe('IPC handlers', () => {
       'products:saveFill',
       'products:page',
       'products:setPage',
+      'products:fillEstimate',
+      'products:fillRow',
       'engines:get',
       'engines:set',
       'engines:page',
@@ -460,7 +463,12 @@ describe('IPC handlers', () => {
       'transfer:exportSettings',
       'transfer:pickSettings',
       'transfer:settingsPreview',
-      'transfer:applySettings'
+      'transfer:applySettings',
+      'diagnostics:build',
+      'diagnostics:send',
+      'diagnostics:save',
+      'diagnostics:reveal-logs',
+      'diagnostics:open-mail'
     ])
     const pending = IPC_INVOKE_CHANNELS.filter((channel) => !implemented.has(channel))
     // Automatic export was the last stub (FR-22.6); every invoke now has a real handler.

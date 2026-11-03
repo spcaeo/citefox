@@ -27,6 +27,7 @@ import { topicClustersHandlers } from './topicClusters'
 import { topicsHandlers } from './topics'
 import { communitiesHandlers } from './communities'
 import { competitorsHandlers } from './competitors'
+import { diagnosticsHandlers } from './diagnostics'
 import { faviconsHandlers } from './favicons'
 import { connectionsHandlers, runCheckup } from './connections'
 import { fixesHandlers } from './fixes'
@@ -155,9 +156,10 @@ export function createIpcHandlers(deps: IpcHandlerDeps): IpcHandlerMap {
   return withGuideSignals(withSetupKicks(composeHandlers(), setupRunner, ctx), ctx)
 
   function composeHandlers(): IpcHandlerMap {
+    const accountServices = deps.accountServices ?? defaultAccountServices(ctx)
     return {
       ...appHandlers(ctx),
-      ...accountHandlers(ctx, deps.accountServices ?? defaultAccountServices(ctx)),
+      ...accountHandlers(ctx, accountServices),
       ...connectionsHandlers(ctx),
       ...onboardingHandlers(ctx, checks),
       ...keysHandlers(ctx),
@@ -204,6 +206,7 @@ export function createIpcHandlers(deps: IpcHandlerDeps): IpcHandlerMap {
       ...importerHandlers(ctx),
       ...helpFillHandlers(ctx),
       ...transferHandlers(ctx, scheduleQueueTray.schedule),
+      ...diagnosticsHandlers(ctx, accountServices.reports),
       ...visibilityHandlers(ctx),
       ...metricsHandlers(ctx),
       ...competitorsHandlers(ctx),

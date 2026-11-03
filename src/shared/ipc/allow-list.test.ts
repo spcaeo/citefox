@@ -137,6 +137,7 @@ const CONTRACT_CHANNELS = [
   'onboarding:sectionRun',
   'onboarding:sectionRead',
   'onboarding:finishSetup',
+  'onboarding:rowFill',
   'keys:add',
   'keys:test',
   'keys:rename',
@@ -259,6 +260,8 @@ const CONTRACT_CHANNELS = [
   'products:save',
   'products:saveFill',
   'products:setPage',
+  'products:fillEstimate',
+  'products:fillRow',
   'competitors:overview',
   'competitors:sortSites',
   'competitors:list',
@@ -575,7 +578,13 @@ const CONTRACT_CHANNELS = [
   'transfer:pickSettings',
   'transfer:settingsPreview',
   'transfer:applySettings',
-  'transfer:menu'
+  'transfer:menu',
+  'diagnostics:build',
+  'diagnostics:send',
+  'diagnostics:save',
+  'diagnostics:reveal-logs',
+  'diagnostics:open-mail',
+  'diagnostics:menu'
 ] as const
 
 const keyMetadata: ApiKeyMetadata = {

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { SetupItem, SetupRow } from '@shared/ipc'
 import {
   addItem,
+  applyFill,
   applyMore,
   applyRedo,
   clearFresh,
@@ -11,6 +12,7 @@ import {
   itemsFromRows,
   keptCount,
   makeItemId,
+  needsFill,
   removeItem,
   restoreItem,
   rowKey,
@@ -260,5 +262,67 @@ describe('itemsFromNames', () => {
 describe('keptCount', () => {
   it('counts ticked rows', () => {
     expect(keptCount([item('a', 'A'), item('b', 'B', { kept: false })])).toBe(1)
+  })
+})
+
+describe('applyFill (CiteFox AI fills a row added by hand)', () => {
+  const mine = (extra: Partial<SetupItem> = {}): SetupItem =>
+    item('a', 'Mass texting', { origin: 'user', ...extra })
+
+  it('writes the detail and a known page, marks the row, and keeps it the person’s', () => {
+    const [done] = applyFill([mine()], 'a', 'Mass texting', {
+      detail: 'Sends one text to a whole list',
+      url: '/bulk-sms/'
+    })
+    expect(done).toMatchObject({
+      detail: 'Sends one text to a whole list',
+      url: '/bulk-sms/',
+      aiFilled: true,
+      origin: 'user',
+      edited: false
+    })
+  })
+
+  it('an edit by the person wins: a typed detail or page, a rename, or a removal drops the result', () => {
+    const fill = { detail: 'Sends texts', url: '/bulk-sms/' }
+    const typedDetail = [mine({ detail: 'My words' })]
+    expect(applyFill(typedDetail, 'a', 'Mass texting', fill)).toEqual(typedDetail)
+    const typedPage = [mine({ url: '/mine/' })]
+    expect(applyFill(typedPage, 'a', 'Mass texting', fill)).toEqual(typedPage)
+    const renamed = [mine({ name: 'Group SMS' })]
+    expect(applyFill(renamed, 'a', 'Mass texting', fill)).toEqual(renamed)
+    expect(applyFill([], 'a', 'Mass texting', fill)).toEqual([])
+    const other = [item('b', 'Other', { origin: 'user' })]
+    expect(applyFill(other, 'a', 'Mass texting', fill)).toEqual(other)
+  })
+
+  it('never overwrites a fill that is already there, and an AI row is not a hand-added one', () => {
+    const filled = [mine({ detail: 'First fill', aiFilled: true })]
+    expect(applyFill(filled, 'a', 'Mass texting', { detail: 'Second', url: null })).toEqual(filled)
+    const aiRow = [item('a', 'Mass texting')]
+    expect(applyFill(aiRow, 'a', 'Mass texting', { detail: 'Second', url: null })).toEqual(aiRow)
+  })
+
+  it('a blank answer changes nothing; ticks and "new" marks are left alone', () => {
+    const rows = [mine({ kept: false, fresh: true })]
+    expect(applyFill(rows, 'a', 'Mass texting', { detail: '  ', url: null })).toEqual(rows)
+    const [done] = applyFill(rows, 'a', 'Mass texting', { detail: 'Sends texts', url: null })
+    expect(done).toMatchObject({ kept: false, fresh: true, url: null })
+  })
+
+  it('needsFill: only a hand-added row with no detail and no page', () => {
+    expect(needsFill(mine())).toBe(true)
+    expect(needsFill(mine({ detail: 'x' }))).toBe(false)
+    expect(needsFill(mine({ url: '/x/' }))).toBe(false)
+    expect(needsFill(item('a', 'AI row'))).toBe(false)
+  })
+
+  it('editing the AI-written detail removes the mark; editing something else keeps it', () => {
+    const filled = [mine({ detail: 'Sends texts', aiFilled: true })]
+    const kept = editItem(filled, 'a', { url: '/x/' })
+    expect(kept[0]?.aiFilled).toBe(true)
+    const own = editItem(filled, 'a', { detail: 'My own words' })
+    expect(own[0]).toMatchObject({ detail: 'My own words', origin: 'user' })
+    expect(own[0]).not.toHaveProperty('aiFilled')
   })
 })

@@ -59,6 +59,10 @@ Open **Project settings › Schedule** and pick a longer interval, or set a cap 
 
 Untick both boxes in **Your CiteFox account**, or use the unsubscribe link in any email.
 
+### I added a product by name only. What does CiteFox AI do?
+
+When you add a product (in setup or here) or a buyer by hand, CiteFox AI writes one short line about it, such as what the product does, and picks its page on your site only when one clearly matches. You see **✦ Filling in…** while it works, and **✦** in front of the text it wrote. Change the text any time; what you type always wins. If CiteFox AI does not know the name, or your AI is not set up, the row keeps **Added by you** and a small **✦ Fill in** link lets you try again. It only uses your own AI connection.
+
 ### Where do I change the theme?
 
 Use the theme menu in the top bar: Light, Dark, Sepia or System.

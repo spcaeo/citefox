@@ -55,6 +55,12 @@ const HelpDrawer = lazy(() =>
   import('../help/HelpDrawer').then((module) => ({ default: module.HelpDrawer }))
 )
 
+const ReportProblem = lazy(() =>
+  import('../diagnostics/ReportProblemDrawer').then((module) => ({
+    default: module.ReportProblemDrawer
+  }))
+)
+
 const TopicSettings = lazy(() =>
   import('../topics/settings').then((module) => ({ default: module.TopicSettingsHost }))
 )
@@ -490,6 +496,23 @@ export function DrawerHost({
                 <HelpDrawer
                   id={entry.params['help.id'] ?? null}
                   depth={depth}
+                  onClose={() => closeDrawer(depth)}
+                />
+              </Suspense>
+            </DrawerLevel>
+          )
+        }
+        if (entry.id === 'report-problem') {
+          // Report a problem needs no project; it reads the one named in the link, else the open one.
+          return (
+            <DrawerLevel key={`${depth}:${entry.id}`} depth={depth}>
+              <Suspense fallback={null}>
+                <ReportProblem
+                  includeQuestions={entry.params['rp.q'] === '1'}
+                  onIncludeQuestions={(value) =>
+                    setDrawerParams(depth, { 'rp.q': value ? '1' : null })
+                  }
+                  projectId={entry.params['rp.project'] ?? projectId}
                   onClose={() => closeDrawer(depth)}
                 />
               </Suspense>

@@ -468,6 +468,14 @@ export const DRAWER_KINDS = {
     title: 'Import app settings',
     params: ['is.file']
   },
+  /**
+   * Report a problem (diagnostics/): the report text, a note, and ways to share it.
+   * `rp.q=1` includes the question texts; `rp.project` = the project id the report reads.
+   */
+  'report-problem': {
+    title: 'Report a problem',
+    params: ['rp.q', 'rp.project']
+  },
   // ---- Wave 3 (C): Start, Playground, Reports, Templates, Alerts and Build menu drawers. ----
   /** The Activity list over any screen: what CiteFox is doing now and did in this window. */
   activity: {

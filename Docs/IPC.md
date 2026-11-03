@@ -325,10 +325,16 @@ The invoke still resolves with the full result after the last progress event. Th
 | `transfer:importProject` | `ImportProjectRequest` (`mode` new or replace, `replaceProjectId`) | `ProjectImportResult` (per-section added, skipped, failed with reasons; `undoable`) | New: Undo deletes the project. Replace: merge, nothing removed |
 | `transfer:exportSettings` | none | `ExportSettingsResult` | `.citefox-settings.json`; no keys, tokens, webhooks or passwords |
 | `transfer:settingsPreview` / `transfer:applySettings` | `TransferTokenRequest` | `SettingsImportPreview` / per-setting results | A file with a secret or an unknown field is refused |
+| `diagnostics:build` | `BuildDiagnosticsRequest` (`includeQuestions`, `note` up to 2000, `projectId` or null) | `DiagnosticsReport` (`text`, `bytes`, `lines`, `release`) | Report a problem: the text is cleaned of keys, emails, IPs and the home folder in main. Unknown fields are refused |
+| `diagnostics:send` | `SendDiagnosticsRequest` (build options, `consent` must be true, optional shown `text`) | `{ ok: true, reportId }` or `{ ok: false, error }` | Zips `report.txt`, `citefox.log`, `environment.json` (at most 2.5 MB) and POSTs `kind: 'report'` to the registration script. A build with no registration address answers `offline` and sends nothing |
+| `diagnostics:save` | `SaveDiagnosticsRequest` (`text`, cleaned again) | `{ saved, filename }` | Native save dialog; `.txt` |
+| `diagnostics:reveal-logs` | none | `DiagnosticsOpenResult` | Shows `citefox.log` in the file manager |
+| `diagnostics:open-mail` | `OpenReportMailRequest` (`note`) | `DiagnosticsOpenResult` | Opens only a `mailto:` link main builds, to the CiteFox address |
 
 | Event | Payload | When |
 | --- | --- | --- |
 | `transfer:menu` | `TransferMenuEvent` (`export-project`, `import-project`, `export-settings`, `import-settings`) | A File menu item was chosen; the renderer opens the matching drawer |
+| `diagnostics:menu` | `DiagnosticsMenuEvent` (`report-problem`) | Help › Report a problem… was chosen; the renderer opens the drawer (`drawer=report-problem`) |
 | `settings:themeChanged` | `ThemeChangedEvent` (`theme`) | Light, Dark or System changed in Settings › Appearance or View › Appearance |
 
 ## Join CiteFox and updates (Docs/PRIVACY.md)

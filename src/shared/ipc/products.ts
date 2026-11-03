@@ -6,6 +6,7 @@
 
 import type { ProductCompetitor, ProjectProduct } from '../domain'
 import { invokeWith, type InvokeChannelSpecs } from './contract'
+import type { HelpFillEstimate } from './helpfill'
 import type { FillFromWebsiteResult } from './projects'
 
 /** `products:get` and every catalog write. */
@@ -70,10 +71,29 @@ export interface SetPageProductRequest {
   productId: string | null
 }
 
+/**
+ * `products:fillRow`: CiteFox AI writes the job (and the matching tracked page) for a
+ * product the person added by name only. Nothing is saved; the renderer saves.
+ */
+export interface FillProductRowRequest {
+  projectId: string
+  name: string
+}
+
+export interface FillProductRowResult {
+  /** '' when CiteFox AI did not know the product. */
+  job: string
+  /** A tracked page path of the project, or null. */
+  evidencePath: string | null
+}
+
 export const productsChannels = {
   'products:get': invokeWith<ProductsProjectRequest, ProductCatalogView>(),
   'products:save': invokeWith<SaveProductCatalogRequest, ProductCatalogView>(),
   'products:saveFill': invokeWith<SaveFillProductsRequest, ProductCatalogView>(),
   'products:page': invokeWith<PageProductRequest, PageProductView>(),
-  'products:setPage': invokeWith<SetPageProductRequest, PageProductView>()
+  'products:setPage': invokeWith<SetPageProductRequest, PageProductView>(),
+  /** Is CiteFox AI ready for this project's product fill? Never calls the AI. */
+  'products:fillEstimate': invokeWith<ProductsProjectRequest, HelpFillEstimate>(),
+  'products:fillRow': invokeWith<FillProductRowRequest, FillProductRowResult>()
 } as const satisfies InvokeChannelSpecs

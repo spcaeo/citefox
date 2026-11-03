@@ -28,6 +28,8 @@ import {
   parseSectionRead,
   parseSectionRun
 } from '../onboarding/sections/parse'
+import { parseRowFill } from '../onboarding/row-fill/request'
+import { fillSetupRow } from '../onboarding/row-fill/service'
 import {
   estimateSection,
   promptSection,
@@ -85,7 +87,10 @@ export function onboardingHandlers(
     'onboarding:finishSetup': (request) =>
       guard('onboarding:finishSetup', ctx, () =>
         finishSetup(ctx, checks, parseFinishSetup(request), () => readOnboarding(ctx))
-      )
+      ),
+    // After a manual add: CiteFox AI writes the row's missing detail.
+    'onboarding:rowFill': (request) =>
+      guard('onboarding:rowFill', ctx, () => fillSetupRow(ctx, parseRowFill(request)))
   }
 }
 

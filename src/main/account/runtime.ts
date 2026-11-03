@@ -54,7 +54,7 @@ export function startAccountRuntime(input: {
     timer.unref?.()
   }
   return {
-    services: { account, updates },
+    services: { account, updates, reports: { endpoint, installId: () => store.read().installId } },
     stop: () => {
       if (timer !== null) clearInterval(timer)
       timer = null

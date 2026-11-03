@@ -190,7 +190,10 @@ without one, so a fresh install can use them: Ask CiteFox (`drawer=ask`,
 app and setup questions) and the Move to a new Mac drawers
 (`drawer=export-project&ep.project=<id>`, `drawer=import-project&ip.file=<token>`,
 `drawer=import-settings&is.file=<token>`; the file is an opaque token from
-main's open dialog, never a path). Add a drawer to that set only when it
+main's open dialog, never a path), and Report a problem
+(`drawer=report-problem&rp.q=1&rp.project=<id>`; `rp.q=1` includes the question
+texts, `rp.project` is an opaque project id; the report text is never on the URL).
+Add a drawer to that set only when it
 needs no project data.
 
 ### Opening Check now with a scope

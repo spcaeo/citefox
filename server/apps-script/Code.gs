@@ -2,11 +2,12 @@
  * CiteFox registration and update emails: a Google Apps Script web app bound
  * to a Google Sheet, owned by the CiteFox Gmail account. Setup: server/README.md.
  *
- * The desktop app sends two kinds of POST (JSON body, always with `token`):
+ * The desktop app sends three kinds of POST (JSON body, always with `token`):
  *   { kind: 'register', installId, name, email, company, role, productUpdates, news, version, build, os, arch }
  *   { kind: 'ping', installId, day, version, build, os, arch }
- * and reads `{ ok: true }` or `{ ok: false, error }`. Apps Script cannot send an
- * HTTP status, so errors travel in the body.
+ *   { kind: 'report', reportId, installId, version, build, os, arch, note, summary, zipName, zipBase64 }
+ * and reads `{ ok: true }` (a report: `{ ok: true, reportId }`) or `{ ok: false, error }`.
+ * Apps Script cannot send an HTTP status, so errors travel in the body.
  *
  * The token ships inside the app, so it is public: it only keeps random
  * traffic out. Input is checked, every caller is rate-limited with
@@ -20,6 +21,7 @@
  *   sendEmailToOptedIn()  send the email in the Compose tab to opted-in users
  *   sendTestEmail()       send the Compose email to yourself only
  *   deleteUserByEmail()   remove one person everywhere (privacy request)
+ *   deleteReportByReference()  remove one problem report (row and Drive file)
  */
 
 /* ---------- Settings ---------- */
@@ -28,7 +30,8 @@ var SHEETS = {
   users: 'Users',
   installs: 'Installs',
   compose: 'Compose',
-  sends: 'Sends'
+  sends: 'Sends',
+  reports: 'Reports'
 }
 
 var USER_COLUMNS = [
@@ -48,8 +51,25 @@ var USER_COLUMNS = [
 
 var INSTALL_COLUMNS = ['install_id', 'first_seen', 'last_seen', 'version', 'build', 'os', 'arch']
 var SEND_COLUMNS = ['campaign', 'email', 'sent_at']
+var REPORT_COLUMNS = [
+  'Received',
+  'Reference',
+  'Install',
+  'Version',
+  'Build',
+  'OS',
+  'Arch',
+  'Note',
+  'Summary',
+  'File',
+  'Status',
+  'Handled by',
+  'Notes'
+]
+var REPORT_FOLDER_NAME = 'CiteFox reports'
 
 var LIMITS = { name: 100, email: 254, company: 120, version: 40, os: 20, arch: 20 }
+var REPORT_LIMITS = { note: 2000, summary: 4000, zipBase64: 3500000, zipBytes: 2600000 }
 var ROLES = ['agency', 'in-house', 'solo']
 var OS_NAMES = ['darwin', 'win32', 'linux']
 
@@ -57,11 +77,19 @@ var OS_NAMES = ['darwin', 'win32', 'linux']
 var RATE = {
   register: { max: 5, seconds: 3600 },
   ping: { max: 4, seconds: 21600 },
+  /** Problem reports. CacheService keeps a value 6 hours at most, so the hourly
+   *  rule uses the cache and the two daily rules count rows of the Reports tab. */
+  report: { max: 3, seconds: 3600 },
+  reportDay: { max: 10, seconds: 86400 },
+  reportAll: { max: 200, seconds: 86400 },
   /** Everyone together, per minute: keeps a flood off the Sheet and the quota. */
   all: { max: 120, seconds: 60 }
 }
 
 var DEFAULT_APP_TOKEN = 'citefox-public-v1'
+var MAX_BODY = 10000
+var MAX_REPORT_BODY = 3600000
+var CACHE_MAX_SECONDS = 21600
 
 /* ---------- Pure helpers (unit-tested in src/main/account/apps-script.test.ts) ---------- */
 
@@ -143,12 +171,127 @@ function validatePing(body) {
   }
 }
 
-/** Parses the POST body; null when it is not a JSON object. */
+/** Like cleanText but keeps line breaks (a report summary has lines). */
+function cleanMultiline(value, max) {
+  if (typeof value !== 'string') return ''
+  return value
+    .replace(/\r\n?/g, '\n')
+    .replace(/\t/g, ' ')
+    .replace(/[\u0000-\u0009\u000b-\u001f\u007f]/g, ' ')
+    .trim()
+    .slice(0, max)
+}
+
+var BASE64_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+
+/** True when `text` is padded standard base64 (length a multiple of 4). */
+function isBase64(text) {
+  return text.length % 4 === 0 && /^[A-Za-z0-9+\/]+={0,2}$/.test(text)
+}
+
+/** Size in bytes of the data a valid base64 string holds. */
+function base64DecodedLength(text) {
+  var pad = text.slice(-2) === '==' ? 2 : text.slice(-1) === '=' ? 1 : 0
+  return (text.length / 4) * 3 - pad
+}
+
+/** True when the base64 data starts with the ZIP signature "PK" (0x50 0x4B). */
+function startsWithZipSignature(text) {
+  if (text.length < 4) return false
+  var a = BASE64_ALPHABET.indexOf(text.charAt(0))
+  var b = BASE64_ALPHABET.indexOf(text.charAt(1))
+  var c = BASE64_ALPHABET.indexOf(text.charAt(2))
+  if (a < 0 || b < 0 || c < 0) return false
+  var first = (a << 2) | (b >> 4)
+  var second = ((b & 15) << 4) | (c >> 2)
+  return first === 0x50 && second === 0x4b
+}
+
+/** `{ ok: true, value }` or `{ ok: false, error: 'invalid' | 'size' }` for a report message. */
+function validateReport(body) {
+  if (typeof body.reportId !== 'string' || !/^CF-[A-HJ-KM-NP-Z2-9]{6}$/.test(body.reportId)) {
+    return { ok: false, error: 'invalid' }
+  }
+  if (!isInstallId(body.installId)) return { ok: false, error: 'invalid' }
+  if (typeof body.zipBase64 !== 'string' || body.zipBase64.length === 0) {
+    return { ok: false, error: 'invalid' }
+  }
+  if (body.zipBase64.length > REPORT_LIMITS.zipBase64) return { ok: false, error: 'size' }
+  if (!isBase64(body.zipBase64)) return { ok: false, error: 'invalid' }
+  if (base64DecodedLength(body.zipBase64) > REPORT_LIMITS.zipBytes) {
+    return { ok: false, error: 'size' }
+  }
+  if (!startsWithZipSignature(body.zipBase64)) return { ok: false, error: 'invalid' }
+  if (body.zipName !== body.reportId + '.zip') return { ok: false, error: 'invalid' }
+  var facts = readClientFacts(body)
+  return {
+    ok: true,
+    value: {
+      reportId: body.reportId,
+      installId: body.installId,
+      version: facts.version,
+      build: facts.build,
+      os: facts.os,
+      arch: facts.arch,
+      note: cleanText(body.note, REPORT_LIMITS.note),
+      summary: cleanMultiline(body.summary, REPORT_LIMITS.summary),
+      zipName: body.zipName,
+      zipBase64: body.zipBase64
+    }
+  }
+}
+
+/**
+ * True when this install, or everyone together, already sent its daily share of
+ * reports in the 24 hours before `now`. `rows` are Reports rows (REPORT_COLUMNS).
+ */
+function reportsOverDailyLimit(rows, installId, now) {
+  var since = now.getTime() - RATE.reportDay.seconds * 1000
+  var mine = 0
+  var all = 0
+  for (var i = 0; i < rows.length; i++) {
+    var at = new Date(rows[i][0]).getTime()
+    if (isNaN(at) || at < since) continue
+    all++
+    if (String(rows[i][2]) === installId) mine++
+  }
+  return mine >= RATE.reportDay.max || all >= RATE.reportAll.max
+}
+
+/** Plain-text email to the owner. No HTML, no user text beyond the body. */
+function buildReportEmail(report, link) {
+  var summary = report.summary.slice(0, 1500)
+  return {
+    subject: '[CiteFox report] ' + report.reportId,
+    body: [
+      'Reference: ' + report.reportId,
+      'Version: ' + report.version + (report.build === '' ? '' : ' (build ' + report.build + ')'),
+      'OS: ' + report.os + ' ' + report.arch,
+      '',
+      'Note from the user:',
+      report.note === '' ? '(none)' : report.note,
+      '',
+      'Summary' + (report.summary.length > 1500 ? ' (cut at 1500 characters)' : '') + ':',
+      summary === '' ? '(none)' : summary,
+      '',
+      'File: ' + (link || 'not saved (see the Reports tab)'),
+      'All reports: the Reports tab in the CiteFox Sheet.'
+    ].join('\n')
+  }
+}
+
+/**
+ * Parses the POST body; null when it is not a JSON object. Bodies over 10,000
+ * characters are only allowed for kind "report" (up to 3,600,000 characters).
+ */
 function parseBody(text) {
-  if (typeof text !== 'string' || text.length > 10000) return null
+  if (typeof text !== 'string' || text.length > MAX_REPORT_BODY) return null
+  if (text.length > MAX_BODY && text.indexOf('"report"') < 0) return null
   try {
     var value = JSON.parse(text)
-    return value && typeof value === 'object' && !Array.isArray(value) ? value : null
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return null
+    if (text.length > MAX_BODY && value.kind !== 'report') return null
+    return value
   } catch (e) {
     return null
   }
@@ -272,7 +415,7 @@ function allow(kind, id) {
   var key = 'rl:' + kind + ':' + id
   var used = Number(cache.get(key) || 0)
   if (used >= rule.max) return false
-  cache.put(key, String(used + 1), rule.seconds)
+  cache.put(key, String(used + 1), Math.min(rule.seconds, CACHE_MAX_SECONDS))
   return true
 }
 
@@ -280,17 +423,39 @@ function doPost(e) {
   var body = parseBody(e && e.postData ? e.postData.contents : null)
   if (body === null) return json({ ok: false, error: 'invalid' })
   if (body.token !== appToken()) return json({ ok: false, error: 'token' })
-  if (body.kind !== 'register' && body.kind !== 'ping') return json({ ok: false, error: 'invalid' })
-  var checked = body.kind === 'register' ? validateRegister(body) : validatePing(body)
+  var kind = body.kind
+  if (kind !== 'register' && kind !== 'ping' && kind !== 'report') {
+    return json({ ok: false, error: 'invalid' })
+  }
+  var checked =
+    kind === 'register'
+      ? validateRegister(body)
+      : kind === 'ping'
+        ? validatePing(body)
+        : validateReport(body)
   if (!checked.ok) return json(checked)
-  if (!allow('all', 'everyone') || !allow(body.kind, checked.value.installId)) {
+  if (!allow('all', 'everyone') || !allow(kind, checked.value.installId)) {
     return json({ ok: false, error: 'rate' })
   }
   var lock = LockService.getScriptLock()
   if (!lock.tryLock(10000)) return json({ ok: false, error: 'busy' })
   try {
-    if (body.kind === 'register') saveUser(checked.value, new Date())
-    else saveInstall(checked.value, new Date())
+    if (kind === 'register') saveUser(checked.value, new Date())
+    else if (kind === 'ping') saveInstall(checked.value, new Date())
+    else {
+      var now = new Date()
+      var tab = sheet(SHEETS.reports, REPORT_COLUMNS)
+      var existing = rowsOf(tab, REPORT_COLUMNS.length)
+      if (reportsOverDailyLimit(existing, checked.value.installId, now)) {
+        return json({ ok: false, error: 'rate' })
+      }
+      try {
+        return json(saveReport(checked.value, now))
+      } catch (err) {
+        Logger.log('Report not saved: ' + err)
+        return json({ ok: false, error: 'failed' })
+      }
+    }
   } finally {
     lock.releaseLock()
   }
@@ -396,6 +561,67 @@ function saveInstall(ping, now) {
   else tab.appendRow(row)
 }
 
+/** The private Drive folder for report files; made once, its id kept in REPORTS_FOLDER_ID. */
+function reportsFolder() {
+  var id = props().getProperty('REPORTS_FOLDER_ID')
+  if (id) {
+    try {
+      return DriveApp.getFolderById(id)
+    } catch (e) {
+      // Deleted by hand: make a new one below.
+    }
+  }
+  var folder = DriveApp.createFolder(REPORT_FOLDER_NAME)
+  props().setProperty('REPORTS_FOLDER_ID', folder.getId())
+  return folder
+}
+
+/** Saves the zip in the private folder (never shared) and returns the file's link. */
+function saveReportFile(report) {
+  var bytes = Utilities.base64Decode(report.zipBase64)
+  var blob = Utilities.newBlob(bytes, 'application/zip', report.zipName)
+  return reportsFolder().createFile(blob).getUrl()
+}
+
+/**
+ * Records one problem report: a row in the Reports tab, the zip in Drive and an
+ * email to the owner. A Drive or mail failure never loses the row.
+ */
+function saveReport(report, now) {
+  var tab = sheet(SHEETS.reports, REPORT_COLUMNS)
+  var rows = rowsOf(tab, REPORT_COLUMNS.length)
+  // The same reference again (the app retried): already saved.
+  if (findRow(rows, 1, report.reportId) >= 0) return { ok: true, reportId: report.reportId }
+  var link = ''
+  try {
+    link = saveReportFile(report)
+  } catch (e) {
+    Logger.log('Report file not saved: ' + e)
+  }
+  tab.appendRow([
+    now,
+    report.reportId,
+    report.installId,
+    safeCell(report.version),
+    report.build,
+    report.os,
+    report.arch,
+    safeCell(report.note.slice(0, 300)),
+    safeCell(report.summary.slice(0, 500)),
+    link || 'not saved',
+    'new',
+    '',
+    ''
+  ])
+  try {
+    var email = buildReportEmail(report, link)
+    MailApp.sendEmail(Session.getEffectiveUser().getEmail(), email.subject, email.body)
+  } catch (e) {
+    Logger.log('Report email not sent: ' + e)
+  }
+  return { ok: true, reportId: report.reportId }
+}
+
 function unsubscribe(email, now) {
   var tab = sheet(SHEETS.users, USER_COLUMNS)
   var rows = rowsOf(tab, USER_COLUMNS.length)
@@ -418,6 +644,7 @@ function onOpen() {
     .addItem('Send email to opted-in users', 'sendEmailToOptedIn')
     .addSeparator()
     .addItem('Delete a user by email…', 'deleteUserByEmail')
+    .addItem('Delete a report by reference…', 'deleteReportByReference')
     .addToUi()
 }
 
@@ -426,6 +653,7 @@ function setup() {
   sheet(SHEETS.users, USER_COLUMNS)
   sheet(SHEETS.installs, INSTALL_COLUMNS)
   sheet(SHEETS.sends, SEND_COLUMNS)
+  sheet(SHEETS.reports, REPORT_COLUMNS)
   var compose = sheet(SHEETS.compose, null)
   if (compose.getLastRow() === 0) {
     compose.getRange(1, 1, 5, 2).setValues([
@@ -451,15 +679,36 @@ function activeInstalls(now) {
   return { last7: countActive(rows, at, 7), last30: countActive(rows, at, 30), total: rows.length }
 }
 
+/** Problem reports: all, in the last 7 days, and still marked "new". */
+function reportCounts(now) {
+  var rows = rowsOf(sheet(SHEETS.reports, REPORT_COLUMNS), REPORT_COLUMNS.length)
+  var since = (now || new Date()).getTime() - 7 * 24 * 3600 * 1000
+  var counts = { total: rows.length, last7: 0, unhandled: 0 }
+  rows.forEach(function (r) {
+    var at = new Date(r[0]).getTime()
+    if (!isNaN(at) && at >= since) counts.last7++
+    if (String(r[10]) === 'new') counts.unhandled++
+  })
+  return counts
+}
+
 function showActiveInstalls() {
   var counts = activeInstalls()
+  var reports = reportCounts()
   var text =
     'Active in the last 7 days: ' +
     counts.last7 +
     '\nActive in the last 30 days: ' +
     counts.last30 +
     '\nAll installs ever: ' +
-    counts.total
+    counts.total +
+    '\nProblem reports: ' +
+    reports.total +
+    ' (' +
+    reports.last7 +
+    ' in the last 7 days, ' +
+    reports.unhandled +
+    ' still new)'
   Logger.log(text)
   try {
     SpreadsheetApp.getUi().alert(text)
@@ -602,5 +851,37 @@ function deleteUserByEmail(emailArg) {
     if (String(sendRows[k][1]).toLowerCase() === email) sends.deleteRow(k + 2)
   }
   Logger.log('Deleted ' + removed + ' row(s) for ' + email)
+  return removed
+}
+
+/** Removes one problem report: its Reports row, and its zip in Drive (moved to the trash). */
+function deleteReportByReference(refArg) {
+  var ref = typeof refArg === 'string' ? refArg : null
+  if (ref === null) {
+    var ui = SpreadsheetApp.getUi()
+    var answer = ui.prompt('Delete a CiteFox report', 'Its reference (CF-XXXXXX):', ui.ButtonSet.OK_CANCEL)
+    if (answer.getSelectedButton() !== ui.Button.OK) return 0
+    ref = answer.getResponseText()
+  }
+  ref = String(ref).trim().toUpperCase()
+  if (!/^CF-[A-HJ-KM-NP-Z2-9]{6}$/.test(ref)) throw new Error('That is not a report reference.')
+  var tab = sheet(SHEETS.reports, REPORT_COLUMNS)
+  var rows = rowsOf(tab, REPORT_COLUMNS.length)
+  var removed = 0
+  for (var i = rows.length - 1; i >= 0; i--) {
+    if (String(rows[i][1]) !== ref) continue
+    var link = String(rows[i][9])
+    var match = /\/d\/([A-Za-z0-9_-]+)/.exec(link) || /[?&]id=([A-Za-z0-9_-]+)/.exec(link)
+    if (match) {
+      try {
+        DriveApp.getFileById(match[1]).setTrashed(true)
+      } catch (e) {
+        Logger.log('Could not trash the file, delete it by hand in Drive: ' + link)
+      }
+    }
+    tab.deleteRow(i + 2)
+    removed++
+  }
+  Logger.log('Deleted ' + removed + ' report row(s) for ' + ref)
   return removed
 }

@@ -76,6 +76,7 @@ import { ConsoleActivityButton } from '../console/ConsoleActivityButton'
 import { startClient } from '../start/client'
 import { GettingStartedStrip } from '../start/GettingStartedStrip'
 import { useStartRedirect } from '../start/useStartRedirect'
+import { useDiagnosticsMenu } from '../diagnostics/useDiagnosticsMenu'
 import { useTransferMenu } from '../transfer/useTransferMenu'
 import { useReadiness } from '../permissions/useReadiness'
 import { GuideHost, GuideOverlays, GuidePill, PageHelpButton } from '../guide'
@@ -137,6 +138,8 @@ export function AppShell({
   const activeId = data.active?.id ?? null
   // File › Export / Import Project and App Settings.
   useTransferMenu(activeId)
+  // Help › Report a problem…
+  useDiagnosticsMenu(activeId)
   const questions = useMemo(() => questionSearch ?? createQuestionSearchSource(), [questionSearch])
   const search = useShellSearch(client, questions, activeId, setActionError)
   // Ctrl+K's "Switch theme to …", saved like the theme menu's choice.

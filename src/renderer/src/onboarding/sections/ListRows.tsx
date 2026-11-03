@@ -10,6 +10,7 @@ export function ListRow({
   item,
   sub,
   badge,
+  live,
   onToggle,
   onEdit,
   onRemove
@@ -17,6 +18,8 @@ export function ListRow({
   item: SetupItem
   sub: ReactNode
   badge: RowBadge | null
+  /** The second line changes by itself (CiteFox AI fills it in): announce it politely. */
+  live?: boolean
   onToggle: () => void
   onEdit: () => void
   onRemove: () => void
@@ -36,7 +39,11 @@ export function ListRow({
       />
       <div className="osc-item-main">
         <span className="osc-item-name">{item.name}</span>
-        {sub ? <span className="osc-item-sub">{sub}</span> : null}
+        {sub ? (
+          <span className="osc-item-sub" {...(live ? { 'aria-live': 'polite' as const } : {})}>
+            {sub}
+          </span>
+        ) : null}
       </div>
       {badge ? (
         <span className={`osc-tag osc-tag-${badge.tone}`} data-testid="row-tag">

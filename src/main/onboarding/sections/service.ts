@@ -46,7 +46,7 @@ import type { SectionDef } from './types'
  */
 
 /** The project steps 7 and 8 work on, once step 6 saved the profile; else Settings'. */
-function setupProjectId(host: EngineHost): string | null {
+export function setupProjectId(host: EngineHost): string | null {
   return listProjects(host.storage.db)[0]?.id ?? null
 }
 

@@ -227,4 +227,35 @@ describe('View › Appearance menu', () => {
       'import-settings'
     ])
   })
+
+  it('Help has Report a problem… and Show logs folder, last on every platform', () => {
+    for (const platform of ['darwin', 'win32', 'linux'] as const) {
+      const commands: string[] = []
+      const template = appMenuTemplate({
+        appName: 'CiteFox',
+        platform,
+        dev: false,
+        theme: 'system',
+        onTheme: () => undefined,
+        onHelpCommand: (command) => commands.push(command)
+      })
+      const help = template[template.length - 1]
+      expect(help?.label).toBe('Help')
+      const items = Array.isArray(help?.submenu) ? help.submenu : []
+      expect(items.map((item) => item.label)).toEqual(['Report a problem…', 'Show logs folder'])
+      for (const item of items) item.click?.(undefined as never, undefined, undefined as never)
+      expect(commands).toEqual(['report-problem', 'show-logs'])
+    }
+  })
+
+  it('leaves Help out when nothing handles it', () => {
+    const template = appMenuTemplate({
+      appName: 'CiteFox',
+      platform: 'linux',
+      dev: false,
+      theme: 'system',
+      onTheme: () => undefined
+    })
+    expect(template.some((item) => item.label === 'Help')).toBe(false)
+  })
 })

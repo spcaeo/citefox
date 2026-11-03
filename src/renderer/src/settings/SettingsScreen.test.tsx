@@ -251,6 +251,9 @@ describe('SettingsScreen tabs', () => {
     const more = screen.getByText('More').closest('details') as HTMLDetailsElement
     expect(more.open).toBe(false)
     expect(more.contains(screen.getByRole('region', { name: 'Testing' }))).toBe(true)
+    // Report a problem… opens the drawer on the URL, so a copied link reopens it.
+    fireEvent.click(within(about).getByRole('button', { name: 'Report a problem…' }))
+    expect(window.location.hash).toContain('drawer=report-problem')
   })
 })
 

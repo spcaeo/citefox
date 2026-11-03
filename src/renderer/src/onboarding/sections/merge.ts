@@ -147,7 +147,50 @@ export function editItem(items: readonly SetupItem[], id: string, patch: ItemPat
       next.tag !== item.tag ||
       (next.tier ?? null) !== (item.tier ?? null)
     if (!changed) return item
-    return { ...next, origin: 'user', edited: item.origin === 'ai' ? true : item.edited }
+    const edited: SetupItem = {
+      ...next,
+      origin: 'user',
+      edited: item.origin === 'ai' ? true : item.edited
+    }
+    // The person's own words replace the AI's: the "written by CiteFox AI" mark goes.
+    if (next.detail !== item.detail && edited.aiFilled !== undefined) delete edited.aiFilled
+    return edited
+  })
+}
+
+/** What CiteFox AI wrote for a row added by hand: a detail and maybe a known page. */
+export interface RowFill {
+  detail: string
+  url: string | null
+}
+
+/** A row the person added by hand with a name only: the one CiteFox AI may fill in. */
+export function needsFill(item: SetupItem): boolean {
+  return item.origin === 'user' && item.detail.trim() === '' && (item.url ?? '').trim() === ''
+}
+
+/**
+ * CiteFox AI's fill for a row added by hand. The person always wins: the result is
+ * dropped when the row is gone, was renamed, or no longer has the empty second part it
+ * had when the fill was asked for (they typed something, or the AI already filled it).
+ * Ticks and the "new" marks are not touched.
+ */
+export function applyFill(
+  items: readonly SetupItem[],
+  id: string,
+  askedName: string,
+  fill: RowFill
+): SetupItem[] {
+  const detail = fill.detail.trim()
+  if (detail.length === 0) return [...items]
+  return items.map((item) => {
+    if (item.id !== id || item.name !== askedName || !needsFill(item)) return item
+    return {
+      ...item,
+      detail,
+      url: (fill.url ?? '').trim() === '' ? item.url : fill.url,
+      aiFilled: true
+    }
   })
 }
 

@@ -25,6 +25,7 @@ import {
   type PushMapOf
 } from './contract'
 import { coverageChannels } from './coverage'
+import { diagnosticsChannels, diagnosticsEvents } from './diagnostics'
 import { emailChannels } from './email'
 import { exportsChannels, exportsEvents } from './exports'
 import { faviconsChannels } from './favicons'
@@ -83,6 +84,7 @@ export * from './communities'
 export * from './competitors'
 export * from './connections'
 export * from './coverage'
+export * from './diagnostics'
 export * from './email'
 export * from './exports'
 export * from './favicons'
@@ -186,7 +188,8 @@ const INVOKE_GROUPS = [
   importerChannels,
   helpFillChannels,
   transferChannels,
-  guideChannels
+  guideChannels,
+  diagnosticsChannels
 ] as const
 
 /** Every area's push spec record. */
@@ -207,7 +210,8 @@ const EVENT_GROUPS = [
   settingsEvents,
   transferEvents,
   liveResultsEvents,
-  guideEvents
+  guideEvents,
+  diagnosticsEvents
 ] as const
 
 const INVOKE_SPECS = mergeSpecs(INVOKE_GROUPS)

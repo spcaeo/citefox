@@ -9,7 +9,11 @@ import type {
   productsChannels,
   SetPageProductRequest
 } from '@shared/ipc'
+import { knownOutline, type SiteOutline } from '../engine/site-outline'
 import { withProject } from '../engine/project-db'
+import { readHelpFillContext } from '../helpfill/context'
+import { rowFillDef } from '../onboarding/row-fill/defs'
+import { estimateRowFill, runRowFill } from '../onboarding/row-fill/service'
 import { resolvePageProduct, saveFillCatalog } from '../engine/products'
 import { IpcRequestError } from '../ipc-request'
 import type { SqliteDatabase } from '../storage/database'
@@ -75,8 +79,59 @@ export function productsHandlers(ctx: EngineContext): IpcHandlersFor<typeof prod
           setPageProduct(db, parsed.pageId, parsed.productId, parsed.mode === 'pick')
           return pageView(db, channel, parsed.pageId)
         })
+      }),
+    'products:fillEstimate': (request) =>
+      guard('products:fillEstimate', ctx, () => {
+        const channel = 'products:fillEstimate'
+        const projectId = projectIdOf(channel, request)
+        return withProject(ctx, projectId, channel, () => estimateRowFill(ctx, projectId))
+      }),
+    'products:fillRow': (request) =>
+      guard('products:fillRow', ctx, async () => {
+        const channel = 'products:fillRow'
+        const record = recordOf(channel, request)
+        const projectId = idOf(channel, record.projectId)
+        const name = nameOf(channel, record.name)
+        // Read the project once and close its file before the AI call.
+        const input = await withProject(ctx, projectId, channel, ({ db, project }) => {
+          const context = readHelpFillContext(db, project, null)
+          const known = knownOutline(ctx, project.domain)
+          const site: SiteOutline = {
+            pages: [
+              ...(context.pages ?? []).map((page) => ({ path: page.path, title: page.name })),
+              ...(known?.pages ?? [])
+            ],
+            menu: known?.menu ?? []
+          }
+          return {
+            name,
+            domain: project.domain,
+            summary: '',
+            brands: context.brands,
+            examples: listProducts(db)
+              .filter((item) => item.job.trim().length > 0)
+              .map((item) => ({ name: item.name, detail: item.job, url: null, tag: null })),
+            site
+          }
+        })
+        const filled = await runRowFill(
+          ctx,
+          channel,
+          projectId,
+          rowFillDef('products'),
+          name,
+          input
+        )
+        return { job: filled.detail, evidencePath: filled.url }
       })
   }
+}
+
+function nameOf(channel: string, value: unknown): string {
+  if (typeof value !== 'string') throw new IpcRequestError(channel)
+  const name = value.replace(/\s+/gu, ' ').trim()
+  if (name.length === 0 || name.length > 200) throw new IpcRequestError(channel)
+  return name
 }
 
 function view(db: SqliteDatabase, projectId: string): ProductCatalogView {

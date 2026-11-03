@@ -14,8 +14,26 @@ controls. These notes cover the main-process side. The contract is
 | `onboarding:sectionRun` | ✦ Find more (`mode: 'more'`) or ✦ Redo (`mode: 'redo'`, with `instruction`) | 1 call |
 | `onboarding:sectionRead` | Reads a chatbot answer pasted back, the same way as a run | No |
 | `onboarding:finishSetup` | Step 8's "Finish and run the first check" | No |
+| `onboarding:rowFill` | Writes the missing second part of a row the person added by hand (a product's job and page, a buyer's situation) | 1 small call |
 
 Nothing in the section channels saves anything. The renderer merges the rows into its draft.
+
+### Row fill (`onboarding:rowFill`, `products:fillRow`)
+
+A product or buyer typed by hand (a name only) gets its second part from CiteFox AI in the
+background (`main/onboarding/row-fill/`). One single-purpose prompt per list
+(`row-fill/defs.ts`): the brand, the site, the summary the person confirmed, a few rows of
+the list for style, and the site pages the earlier steps already read. The answer is JSON
+`{"line","page"}`. `line` is at most 14 words; "unknown" or a name the AI does not
+recognise comes back blank, and a blank line drops the page too. `page` (products only)
+must be one of the known site pages, else it is dropped; a URL is never invented. It runs on
+the person's own AI connection through the same provider layer, so the "calls at once"
+gate, the timeout, the call log and usage accounting apply. The renderer queues at most two
+at a time, shows "✦ Filling in…", marks the AI text with ✦ (`aiFilled` on the item, optional
+so older drafts still load) and merges with `applyFill`: a row that was edited, renamed or
+removed meanwhile drops the result. A failure keeps "Added by you" and offers "✦ Fill in".
+In Settings › General, `products:fillEstimate` and `products:fillRow` do the same for the
+catalog (the job and `evidencePath`, from the project's tracked pages).
 
 ## Sections
 

@@ -3,6 +3,7 @@ import type {
   SetupDraft,
   SetupItem,
   SetupListId,
+  RowFillResult,
   SetupRow,
   SetupSectionId,
   SetupSectionResult
@@ -17,6 +18,8 @@ export interface FakeSectionOptions {
   rows?: Partial<Record<SetupSectionId, SetupRow[]>>
   text?: string | null
   warnings?: string[]
+  /** What each rowFill returns (default: a short line, no page). */
+  fill?: RowFillResult | ((name: string) => RowFillResult)
 }
 
 export function row(name: string, extra: Partial<SetupRow> = {}): SetupRow {
@@ -29,6 +32,7 @@ export function fakeSectionClient(options: FakeSectionOptions = {}): SetupSectio
   sectionRun: ReturnType<typeof vi.fn>
   sectionRead: ReturnType<typeof vi.fn>
   finishSetup: ReturnType<typeof vi.fn>
+  rowFill: ReturnType<typeof vi.fn>
 } {
   const available = options.available ?? true
   const result = (section: SetupSectionId): SetupSectionResult => ({
@@ -55,6 +59,11 @@ export function fakeSectionClient(options: FakeSectionOptions = {}): SetupSectio
     sectionRead: vi.fn(async ({ section }: { section: SetupSectionId }) => result(section)),
     finishSetup: vi.fn(async () => {
       throw new Error('not in these tests')
+    }),
+    rowFill: vi.fn(async ({ name }: { name: string }) => {
+      const fill = options.fill
+      if (typeof fill === 'function') return fill(name)
+      return fill ?? { detail: 'Sends texts for small teams', url: null }
     })
   }
 }

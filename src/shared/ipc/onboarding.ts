@@ -249,6 +249,12 @@ export interface SetupItem extends SetupRow {
   edited: boolean
   /** Arrived with the latest ✦ Find more; shown marked "new" until the next action. */
   fresh: boolean
+  /**
+   * CiteFox AI wrote this row's detail after the person added the row by hand (the row
+   * stays theirs). Absent in drafts saved before this existed. Cleared when the person
+   * edits the detail.
+   */
+  aiFilled?: boolean
 }
 
 /** What Claude knows when it works on one section: the kept rows of the draft so far. */
@@ -325,6 +331,31 @@ export interface SetupSectionResult {
   text: string | null
   /** Plain warnings: nothing came back, columns missing, the web search could not run. */
   warnings: readonly string[]
+}
+
+/** The lists CiteFox AI fills in after a person adds a row by hand (name only). */
+export const ROW_FILL_LISTS = ['products', 'buyers'] as const
+
+export type RowFillList = (typeof ROW_FILL_LISTS)[number]
+
+/**
+ * `onboarding:rowFill`: write the missing second part of one row the person added by
+ * hand. `context` carries the site, the confirmed summary and the brand names;
+ * `examples` are a few other rows of the same list, for style.
+ */
+export interface RowFillRequest {
+  list: RowFillList
+  context: SetupContext
+  /** The row's name as typed. */
+  name: string
+  examples: readonly SetupRow[]
+}
+
+/** The fill: `detail` is '' and `url` null when CiteFox AI did not know the name. */
+export interface RowFillResult {
+  detail: string
+  /** A page already known on the site (products only), else null. */
+  url: string | null
 }
 
 export interface SetupSiteDraft {
@@ -417,5 +448,7 @@ export const onboardingChannels = {
   'onboarding:sectionPrompt': invokeWith<SetupSectionRequest, SetupSectionPrompt>(),
   'onboarding:sectionRun': invokeWith<SetupSectionRunRequest, SetupSectionResult>(),
   'onboarding:sectionRead': invokeWith<SetupSectionReadRequest, SetupSectionResult>(),
-  'onboarding:finishSetup': invokeWith<FinishSetupRequest, FinishSetupResult>()
+  'onboarding:finishSetup': invokeWith<FinishSetupRequest, FinishSetupResult>(),
+  /** After a manual add: CiteFox AI writes the row's missing detail (products, buyers). */
+  'onboarding:rowFill': invokeWith<RowFillRequest, RowFillResult>()
 } as const satisfies InvokeChannelSpecs

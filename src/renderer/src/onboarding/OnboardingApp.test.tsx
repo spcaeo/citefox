@@ -115,6 +115,7 @@ function fakeSections(client: MockOnboardingClient): FakeSections {
       return { section: request.section, rows, text: null, warnings: [] }
     },
     sectionRead: async ({ section }) => ({ section, rows: [], text: null, warnings: [] }),
+    rowFill: async () => ({ detail: '', url: null }),
     finishSetup: async (request) => {
       finishes.push(request)
       const state = { ...(await client.getState()), finished: true, currentStep: null }

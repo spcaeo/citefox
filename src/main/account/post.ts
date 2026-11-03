@@ -22,8 +22,10 @@ const REPLY_HOST = /^script\.googleusercontent\.com$/
 export async function postToScript(
   http: HttpTransport,
   endpoint: RegisterEndpoint,
-  message: Record<string, unknown>
+  message: Record<string, unknown>,
+  options: { timeoutMs?: number } = {}
 ): Promise<ScriptReply> {
+  const timeout = options.timeoutMs ?? TIMEOUT_MS
   const label = 'CiteFox account'
   const first = await withTimeout(
     (signal) =>
@@ -32,11 +34,11 @@ export async function postToScript(
         url: endpoint.url,
         headers: { 'content-type': 'application/json', 'user-agent': 'CiteFox' },
         body: JSON.stringify({ ...message, token: endpoint.token }),
-        timeoutMs: TIMEOUT_MS,
+        timeoutMs: timeout,
         signal,
         maxBodyBytes: 64_000
       }),
-    TIMEOUT_MS,
+    timeout,
     label
   )
   let response = first

@@ -3,8 +3,10 @@ import type { ProductCompetitor, ProjectProduct } from '@shared/domain'
 import { openDrawer } from '../shell/drawers'
 import { siteColumns } from '../sites/siteColumns'
 import { Button, ListGrid, ToolButton, type ListColumn } from '../ui'
+import { productsApi, type ProductsApi } from './client'
 import { newProductId } from './options'
 import type { ProductCatalogState } from './useProductCatalog'
+import { useProductFill, type ProductFill } from './useProductFill'
 import './products.css'
 
 const WHOLE = ''
@@ -17,14 +19,18 @@ const WHOLE = ''
  */
 export function ProductsPanel({
   state,
-  onChanged
+  onChanged,
+  api = productsApi()
 }: {
   state: ProductCatalogState
   /** After a save that may have changed the flat competitor list. */
   onChanged?: () => void
+  /** The products channels (CiteFox AI fills in the job of a product added by name). */
+  api?: ProductsApi | null
 }): JSX.Element | null {
   const base = useId()
   const [draftName, setDraftName] = useState('')
+  const fill = useProductFill(state, api)
   const catalog = state.catalog
   if (catalog === null) {
     return state.error ? (
@@ -57,10 +63,14 @@ export function ProductsPanel({
     const name = draftName.trim()
     if (name.length === 0) return
     setDraftName('')
+    const id = newProductId()
+    // A name only: once it is saved, CiteFox AI writes what it does (and its page).
     void save(
-      [...products, { id: newProductId(), name, job: '', buyer: '', evidencePath: null }],
+      [...products, { id, name, job: '', buyer: '', evidencePath: null }],
       competitors
-    )
+    ).then(() => {
+      fill.start(id)
+    })
   }
 
   function removeProduct(id: string): void {
@@ -106,7 +116,7 @@ export function ProductsPanel({
           rows={products}
           rowKey={(product) => product.id}
           rowLabel={(product) => product.name}
-          columns={productColumns(rename)}
+          columns={productColumns(rename, fill)}
           rowMenu={(product) => [
             {
               id: 'remove',
@@ -187,7 +197,10 @@ export function ProductsPanel({
 }
 
 /** Products: the name edits in place (saved on blur or Enter); Remove sits behind the row's ⋯. */
-function productColumns(rename: (id: string, name: string) => void): ListColumn<ProjectProduct>[] {
+function productColumns(
+  rename: (id: string, name: string) => void,
+  fill: ProductFill
+): ListColumn<ProjectProduct>[] {
   return [
     {
       id: 'name',
@@ -209,7 +222,7 @@ function productColumns(rename: (id: string, name: string) => void): ListColumn<
       id: 'job',
       label: 'Job it does',
       width: 'fill',
-      render: (product) => <span className="prod-domain">{product.job || '—'}</span>
+      render: (product) => <JobCell product={product} fill={fill} />
     }
   ]
 }
@@ -269,4 +282,42 @@ function competitorColumns(
       )
     }
   ]
+}
+
+/** A product's job: "Filling in…" while CiteFox AI writes it, the ✦ mark once it did, a retry link. */
+function JobCell({ product, fill }: { product: ProjectProduct; fill: ProductFill }): JSX.Element {
+  if (fill.filling(product.id)) {
+    return (
+      <span className="prod-domain prod-filling" aria-live="polite" data-testid="product-filling">
+        <span className="prod-mark" aria-hidden="true">
+          ✦
+        </span>{' '}
+        Filling in…
+      </span>
+    )
+  }
+  const mark = fill.written(product.id) && product.job.length > 0
+  return (
+    <span className="prod-domain" aria-live="polite">
+      {mark ? (
+        <>
+          <span className="prod-mark" aria-hidden="true" title="Written by CiteFox AI">
+            ✦
+          </span>
+          <span className="sr-only">Written by CiteFox AI: </span>{' '}
+        </>
+      ) : null}
+      {product.job || '—'}
+      {fill.canRetry(product) ? (
+        <button
+          type="button"
+          className="prod-retry"
+          aria-label={`Fill in ${product.name} with CiteFox AI`}
+          onClick={() => fill.start(product.id)}
+        >
+          ✦ Fill in
+        </button>
+      ) : null}
+    </span>
+  )
 }

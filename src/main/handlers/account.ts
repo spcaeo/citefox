@@ -3,14 +3,24 @@
 import type { accountChannels, IpcHandlersFor } from '@shared/ipc'
 import { githubSlug } from '@shared/release-compare'
 import packageJson from '../../../package.json'
+import type { RegisterEndpoint } from '../account/endpoint'
 import { createAccountService, type AccountService } from '../account/service'
 import { accountFilePath, createAccountStore } from '../account/store'
 import { createUpdateService, type UpdateService } from '../updates/service'
 import { guard, type EngineContext } from './context'
 
+/** Where a problem report goes (the same script as registration) and which install sends it. */
+export interface ReportRoute {
+  /** Null: this build never contacts the server (dev, tests, a fork). */
+  endpoint: RegisterEndpoint | null
+  installId: () => string
+}
+
 export interface AccountServices {
   account: AccountService
   updates: UpdateService
+  /** Report a problem › Send to CiteFox. Absent: nothing is sent. */
+  reports?: ReportRoute
 }
 
 /** "owner/repo" of the GitHub project releases come from (package.json `repository`). */
@@ -24,6 +34,7 @@ export const RELEASE_REPO = githubSlug(packageJson.repository)
 export function defaultAccountServices(ctx: EngineContext): AccountServices {
   const store = createAccountStore(accountFilePath(ctx.storage.paths.root))
   return {
+    reports: { endpoint: null, installId: () => store.read().installId },
     account: createAccountService({
       store,
       endpoint: null,

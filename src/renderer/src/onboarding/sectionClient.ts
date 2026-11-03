@@ -3,6 +3,8 @@ import type {
   FinishSetupRequest,
   FinishSetupResult,
   HelpFillEstimate,
+  RowFillRequest,
+  RowFillResult,
   SetupSectionEstimateRequest,
   SetupSectionPrompt,
   SetupSectionReadRequest,
@@ -22,6 +24,8 @@ export interface SetupSectionClient {
   sectionRun(request: SetupSectionRunRequest): Promise<SetupSectionResult>
   sectionRead(request: SetupSectionReadRequest): Promise<SetupSectionResult>
   finishSetup(request: FinishSetupRequest): Promise<FinishSetupResult>
+  /** After a manual add: CiteFox AI writes the row's missing second part. */
+  rowFill(request: RowFillRequest): Promise<RowFillResult>
 }
 
 function requireApi(): CiteFoxApi {
@@ -37,6 +41,7 @@ export function createIpcSectionClient(): SetupSectionClient {
     sectionPrompt: (request) => requireApi()['onboarding:sectionPrompt'](request),
     sectionRun: (request) => requireApi()['onboarding:sectionRun'](request),
     sectionRead: (request) => requireApi()['onboarding:sectionRead'](request),
-    finishSetup: (request) => requireApi()['onboarding:finishSetup'](request)
+    finishSetup: (request) => requireApi()['onboarding:finishSetup'](request),
+    rowFill: (request) => requireApi()['onboarding:rowFill'](request)
   }
 }

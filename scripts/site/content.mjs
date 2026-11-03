@@ -416,7 +416,8 @@ export const DOC_GROUPS = [
       'pages',
       'history',
       'alerts',
-      'settings'
+      'settings',
+      'report-a-problem'
     ]
   },
   {
@@ -448,6 +449,7 @@ export const DOC_TITLES = {
   history: 'Check history: compare two AI visibility checks',
   alerts: 'Alerts and schedules: when AI citations change',
   settings: 'Settings: projects, connections and app settings',
+  'report-a-problem': 'Report a problem: send a log to the CiteFox team',
   reports: 'AI visibility reports: six client-ready reports',
   'reports-visibility': 'Visibility report: where you stand in AI answers',
   'reports-changed': 'What changed report: two checks compared',

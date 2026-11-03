@@ -5,6 +5,8 @@
 export { SectionCard } from './SectionCard'
 export { SetupStepFrame } from './SetupStepFrame'
 export { NameLine } from './NameLine'
+export { ManualDetail } from './fillView'
+export { hasManualDetail } from './fillText'
 export { HostText, SitePage } from './SiteText'
 export { useSectionEnv } from './useSectionEnv'
 export {

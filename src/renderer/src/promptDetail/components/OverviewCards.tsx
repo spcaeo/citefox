@@ -3,7 +3,8 @@ import { overviewFromSample } from '@shared/aio-overview'
 import type { BrandLens } from '@shared/brand-mentions'
 import type { SampleCapture } from '@shared/domain'
 import { formatMoment } from '../../utils/dates'
-import { SegmentedControl } from '../../ui'
+import { openReportProblem } from '../../diagnostics/actions'
+import { Button, SegmentedControl } from '../../ui'
 import { sampleLabel } from '../utils/model'
 import { GoogleOverview } from './aio/GoogleOverview'
 import { Marked } from './aio/Marked'
@@ -94,7 +95,10 @@ export function AioCard({
         <p className="pd2-muted">No search is stored for this question in this check.</p>
       ) : sample.errorCode !== null ? (
         <p className="pd2-muted" role="note">
-          {sample.message ?? 'This search failed.'} {sample.nextStep ?? ''}
+          {sample.message ?? 'This search failed.'} {sample.nextStep ?? ''}{' '}
+          <Button variant="text" size="sm" onClick={() => openReportProblem()}>
+            Report this
+          </Button>
         </p>
       ) : overview ? (
         <GoogleOverview

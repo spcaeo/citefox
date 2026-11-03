@@ -1,0 +1,98 @@
+/*
+ * Report a problem (diagnostics/ReportProblemDrawer.tsx): the note box, the "include
+ * question texts" tick and the scrollable monospace preview. Tokens from
+ * styles/tokens.css only. In `screens`, as layers.test.ts asks of a stylesheet imported
+ * by its component.
+ */
+
+@layer shared, results, screens, utilities;
+
+@layer screens {
+  .rp-note {
+    width: 100%;
+    resize: vertical;
+  }
+
+  .rp-check {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-2);
+    margin-top: var(--s-3);
+    color: var(--ink);
+    font-size: var(--fs-ui);
+  }
+
+  .rp-check input {
+    margin-top: 3px;
+    accent-color: var(--select);
+  }
+
+  .rp-hint {
+    display: block;
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .rp-preview {
+    max-height: 360px;
+    margin: 0;
+    padding: var(--s-3);
+    overflow: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--inset);
+    color: var(--ink);
+    font-family: var(--font-code);
+    font-size: var(--fs-small);
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .rp-preview[aria-busy='true'] {
+    opacity: 0.6;
+  }
+
+  .rp-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-2);
+    color: var(--ink);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+  }
+
+  .rp-consent input {
+    margin-top: 2px;
+    accent-color: var(--select);
+  }
+
+  .rp-sent,
+  .rp-failed {
+    margin: 0 0 var(--s-3);
+    padding: var(--s-3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    font-size: var(--fs-ui);
+  }
+
+  .rp-sent {
+    background: var(--ok-tint, var(--inset));
+    color: var(--ink);
+  }
+
+  .rp-failed {
+    background: var(--inset);
+    color: var(--bad);
+  }
+
+  .rp-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-2);
+    margin-bottom: var(--s-2);
+  }
+}

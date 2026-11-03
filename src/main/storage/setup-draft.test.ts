@@ -104,6 +104,34 @@ describe('onboarding draft: v2 setup', () => {
     expect(parsed.setup).toEqual(draft.setup)
   })
 
+  test('a row CiteFox AI filled in keeps its mark across a restart; older rows have none', () => {
+    const filled = item({
+      id: 'p-1',
+      name: 'Mass texting',
+      origin: 'user',
+      detail: 'Sends texts',
+      aiFilled: true
+    })
+    const draft = roundTrip({
+      ...v1(),
+      setupView: 'brand' as const,
+      setup: { ...setup(), lists: { ...setup().lists, products: [filled, item({ id: 'p-2' })] } }
+    })
+    const parsed = parseOnboardingDraft(draft)
+    expect(parsed.setup?.lists.products[0]?.aiFilled).toBe(true)
+    expect(parsed.setup?.lists.products[1]).not.toHaveProperty('aiFilled')
+    expect(parsed.setup).toEqual(draft.setup)
+  })
+
+  test('aiFilled must be a boolean', () => {
+    const bad = roundTrip({
+      ...v1(),
+      setupView: 'brand' as const,
+      setup: { ...setup(), lists: { ...setup().lists, products: [{ ...item(), aiFilled: 'yes' }] } }
+    })
+    expect(() => parseOnboardingDraft(bad)).toThrow(OnboardingDraftError)
+  })
+
   test.each([
     ['an unknown step', (d: Record<string, unknown>) => ({ ...d, setupView: 'profile' })],
     [

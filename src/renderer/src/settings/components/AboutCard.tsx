@@ -1,16 +1,17 @@
 import { useCallback, type JSX } from 'react'
 import { ABOUT_US, PROJECT_LINKS } from '@shared/project-links'
 import { buildLine, TestingPanel, useBuildActions } from '../../buildMenu'
+import { openReportProblem } from '../../diagnostics/actions'
 import type { OnboardingClient } from '../../onboarding/client'
 import { sectionHash } from '../../shell/routes'
 import { SponsorList } from '../../sponsors'
-import { Panel } from '../../ui'
+import { Button, Panel } from '../../ui'
 import { UrlText } from '../../ui/UrlText'
 
 /**
  * Settings › Data & about: what CiteFox is, its version, build and licence,
  * who makes it and where to find the source, help docs and news (PROJECT_LINKS),
- * who sponsors it (SPONSORS.md, the shared sponsor config), and the Testing
+ * who sponsors it (SPONSORS.md, the shared sponsor config), Report a problem, and the Testing
  * tools (the build menu's actions) folded under More.
  */
 export function AboutCard({ client }: { client: Pick<OnboardingClient, 'getInfo'> }): JSX.Element {
@@ -39,6 +40,19 @@ export function AboutCard({ client }: { client: Pick<OnboardingClient, 'getInfo'
             <dt>Your data</dt>
             <dd>
               Your SEO data stays on this computer. <a href={sectionHash('status')}>Status</a>
+            </dd>
+          </div>
+          <div>
+            <dt>Something wrong?</dt>
+            <dd>
+              <Button
+                variant="text"
+                onClick={() => openReportProblem()}
+                data-testid="settings-report"
+              >
+                Report a problem…
+              </Button>{' '}
+              You see exactly what would be shared. Nothing is sent unless you choose it.
             </dd>
           </div>
           <div>

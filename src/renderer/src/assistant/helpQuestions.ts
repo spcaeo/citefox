@@ -67,6 +67,11 @@ const BY_TOPIC: Readonly<Record<HelpTopicId, readonly string[]>> = {
     'What do CiteFox credits pay for?',
     'Where is my data kept?'
   ],
+  'report-a-problem': [
+    'How do I report a problem?',
+    'What does a problem report contain?',
+    'Does CiteFox send my report by itself?'
+  ],
   glossary: ['What does Right page mean?', 'What is an AI Overview?', 'What is a check?']
 }
 

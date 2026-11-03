@@ -4,7 +4,9 @@ import type { CiteFoxApi } from '@shared/ipc'
 export type ProductsApi = Pick<
   CiteFoxApi,
   'products:get' | 'products:save' | 'products:saveFill' | 'products:page' | 'products:setPage'
->
+> &
+  /** CiteFox AI fills in a product added by name only. Optional: older bridges lack it. */
+  Partial<Pick<CiteFoxApi, 'products:fillEstimate' | 'products:fillRow'>>
 
 /**
  * The preload bridge when it has the products channels, else null. The pickers render

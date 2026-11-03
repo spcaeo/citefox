@@ -1,10 +1,12 @@
-import { useCallback, useId, type JSX } from 'react'
+import { useCallback, useId, type JSX, type ReactNode } from 'react'
 import type { SetupItem, SetupRow } from '@shared/ipc'
 import { pluralize } from '@shared/pluralize'
 import { BusyBar } from '../../ui'
 import { currentRows, mergeIntoList, withList } from './draftOps'
+import { hasManualDetail } from './fillText'
+import { FillRetry, FillingText, ManualDetail } from './fillView'
 import { AddRow, ListRow, RowEditor } from './ListRows'
-import { addItem, editItem, removeItem, restoreItem, toggleItem } from './merge'
+import { addItem, editItem, makeItemId, removeItem, restoreItem, toggleItem } from './merge'
 import { rowBadge } from './rowView'
 import {
   FindMoreButton,
@@ -17,6 +19,7 @@ import { sectionMenuLines } from './menuLines'
 import type { ListSectionProps } from './types'
 import { useSectionActions } from './useSectionActions'
 import { useSectionAi, type AiMode } from './useSectionAi'
+import { useRowFill } from './useRowFill'
 import { useSectionUrl } from './useSectionUrl'
 
 function plainRow(text: string): SetupRow | null {
@@ -45,6 +48,13 @@ export function ListSection(props: ListSectionProps): JSX.Element {
   const ai = useSectionAi(env, list, current, apply)
   const actions = useSectionActions(env, list, ai, url)
   const working = ai.busy !== null || props.working === true
+  // A hand-added row (a name only) is filled in by CiteFox AI, when the list asks for it.
+  const fill = useRowFill(
+    env,
+    props.autoFill ?? 'products',
+    props.autoFill !== undefined,
+    ai.available
+  )
 
   const change = (update: (now: readonly SetupItem[]) => readonly SetupItem[]): void => {
     onDraft((now) => withList(now, list, update))
@@ -73,9 +83,30 @@ export function ListSection(props: ListSectionProps): JSX.Element {
     if (!check.added) {
       return check.id === null ? `Type a ${noun.one} first.` : `“${row.name}” is already listed.`
     }
-    change((now) => addItem(now, row).items)
+    const id = check.id
+    change((now) => addItem(now, row, () => id ?? makeItemId()).items)
     env.announce(`Added “${row.name}”.`)
+    if (id !== null && row.detail.trim() === '' && (row.url ?? '').trim() === '') fill.start(id)
     return null
+  }
+
+  function baseSub(item: SetupItem): ReactNode {
+    if (props.renderSub) return props.renderSub(item)
+    return hasManualDetail(item) ? <ManualDetail item={item} /> : null
+  }
+
+  function rowSub(item: SetupItem): ReactNode {
+    if (props.autoFill === undefined) return baseSub(item)
+    if (fill.filling(item.id)) return <FillingText />
+    const base = baseSub(item)
+    if (!fill.canRetry(item)) return base
+    return (
+      <>
+        {base}
+        {base ? ' · ' : null}
+        <FillRetry item={item} onClick={() => fill.start(item.id)} />
+      </>
+    )
   }
 
   const kept = items.filter((item) => item.kept).length
@@ -137,11 +168,8 @@ export function ListSection(props: ListSectionProps): JSX.Element {
               <ListRow
                 key={item.id}
                 item={item}
-                sub={
-                  props.renderSub
-                    ? props.renderSub(item)
-                    : item.detail || (item.origin === 'user' && !item.edited ? 'Added by you' : '')
-                }
+                sub={rowSub(item)}
+                live={props.autoFill !== undefined && item.origin === 'user'}
                 badge={rowBadge(item, props.aiLabel, props.rowTag)}
                 onToggle={() => change((now) => toggleItem(now, item.id))}
                 onEdit={() => url.startEdit(item.id)}

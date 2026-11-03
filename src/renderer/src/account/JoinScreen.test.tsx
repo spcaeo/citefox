@@ -43,7 +43,7 @@ function type(view: ReturnType<typeof render>, label: string, value: string): vo
 }
 
 describe('Join CiteFox', () => {
-  it('asks for name, email, company and who the reports are for, with two unticked consents', () => {
+  it('asks for name, email, company and who the reports are for, with both email boxes ticked to start', () => {
     const view = render(<JoinScreen client={fakeClient().client} onJoined={() => undefined} />)
     expect(view.getByRole('heading', { name: 'Join CiteFox' })).toBeTruthy()
     for (const label of ['Your name', 'Work email', 'Company']) {
@@ -54,8 +54,8 @@ describe('Join CiteFox', () => {
     const news = view.getByRole('checkbox', {
       name: 'Occasional news and offers'
     }) as HTMLInputElement
-    expect(updates.checked).toBe(false)
-    expect(news.checked).toBe(false)
+    expect(updates.checked).toBe(true)
+    expect(news.checked).toBe(true)
     expect(view.container.textContent).toContain(
       'Your SEO data stays on this computer. Only these details and an anonymous daily version check are sent.'
     )
@@ -73,7 +73,7 @@ describe('Join CiteFox', () => {
     expect(onJoined).not.toHaveBeenCalled()
   })
 
-  it('joins with only the boxes the person ticked', async () => {
+  it('joins with the boxes as the person left them (they can untick)', async () => {
     const { client, saved } = fakeClient()
     const onJoined = vi.fn()
     const view = render(<JoinScreen client={client} onJoined={onJoined} />)
@@ -86,7 +86,20 @@ describe('Join CiteFox', () => {
     await waitFor(() => {
       expect(onJoined).toHaveBeenCalled()
     })
-    expect(saved).toEqual([{ ...DETAILS, productUpdates: true }])
+    expect(saved).toEqual([{ ...DETAILS, productUpdates: false, news: true }])
+  })
+
+  it('keeps both boxes ticked when the person does not touch them', async () => {
+    const { client, saved } = fakeClient()
+    const view = render(<JoinScreen client={client} onJoined={() => undefined} />)
+    type(view, 'Your name', 'Ana Ruiz')
+    type(view, 'Work email', 'ana@agency.com')
+    type(view, 'Company', 'Agency Co')
+    fireEvent.click(view.getByRole('radio', { name: /Clients/ }))
+    fireEvent.click(view.getByRole('button', { name: /Join and continue/ }))
+    await waitFor(() => {
+      expect(saved).toEqual([{ ...DETAILS, productUpdates: true, news: true }])
+    })
   })
 })
 

@@ -1,8 +1,9 @@
 /**
  * The application menu: the standard app, Edit and Window menus, plus
  * View › Appearance (System, Light, Dark) so a Mac user finds the theme where
- * they expect it, and File › Export / Import project and app settings for
- * moving to a new Mac. Without a menu of its own Electron shows its default one.
+ * they expect it, File › Export / Import project and app settings for moving to
+ * a new Mac, and Help › Report a problem… / Show logs folder. Without a menu of
+ * its own Electron shows its default one.
  */
 
 import { THEME_PREFERENCES, type ThemePreference } from '@shared/domain'
@@ -18,6 +19,33 @@ export interface AppMenuOptions {
   onTheme: (theme: ThemePreference) => void
   /** File › Export / Import: the renderer carries the command out (`transfer:menu`). */
   onFileCommand?: (command: TransferMenuCommand) => void
+  /** Help › Report a problem… (the renderer opens the drawer) and Show logs folder (main opens it). */
+  onHelpCommand?: (command: HelpMenuCommand) => void
+}
+
+export type HelpMenuCommand = 'report-problem' | 'show-logs'
+
+const HELP_ITEMS: readonly { command: HelpMenuCommand; label: string }[] = [
+  { command: 'report-problem', label: 'Report a problem…' },
+  { command: 'show-logs', label: 'Show logs folder' }
+]
+
+/** Help: Report a problem… and Show logs folder. */
+export function helpMenu(
+  onHelpCommand: (command: HelpMenuCommand) => void
+): MenuItemConstructorOptions {
+  return {
+    id: 'help',
+    label: 'Help',
+    role: 'help',
+    submenu: HELP_ITEMS.map((item) => ({
+      id: `help-${item.command}`,
+      label: item.label,
+      click: () => {
+        onHelpCommand(item.command)
+      }
+    }))
+  }
 }
 
 const FILE_ITEMS: readonly { command: TransferMenuCommand; label: string }[] = [
@@ -106,6 +134,7 @@ export function appMenuTemplate(options: AppMenuOptions): MenuItemConstructorOpt
     fileMenu(options.platform, options.onFileCommand),
     { role: 'editMenu' },
     { id: 'view', label: 'View', submenu: view },
-    { role: 'windowMenu' }
+    { role: 'windowMenu' },
+    ...(options.onHelpCommand ? [helpMenu(options.onHelpCommand)] : [])
   ]
 }

@@ -30,6 +30,7 @@ New here? Start with [Getting started](help/getting-started.md).
 | [Check history](help/history.md) | Every check CiteFox ran, and what changed between any two. | [Read on the website](https://spcaeo.github.io/citefox/docs/history/) |
 | [Alerts & schedules](help/alerts.md) | Get told when something important changes after a check. | [Read on the website](https://spcaeo.github.io/citefox/docs/alerts/) |
 | [Settings](help/settings.md) | Project settings, Connections and App settings, and what each tab holds. | [Read on the website](https://spcaeo.github.io/citefox/docs/settings/) |
+| [Report a problem](help/report-a-problem.md) | Share what went wrong with us, in a report you can read first. Nothing is sent unless you choose it. | [Read on the website](https://spcaeo.github.io/citefox/docs/report-a-problem/) |
 
 ## Reports
 

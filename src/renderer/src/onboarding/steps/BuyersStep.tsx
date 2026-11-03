@@ -61,6 +61,7 @@ export function BuyersStep(props: SetupStepProps): JSX.Element {
         fields={BUYER_FIELDS}
         aiLabel="✦"
         redoLabel="Redo buyers"
+        autoFill="buyers"
       />
       <SectionCard
         variant="list"

@@ -1,6 +1,13 @@
 import type { JSX } from 'react'
 import { pluralize } from '@shared/pluralize'
-import { SectionCard, SetupStepFrame, SitePage, useSectionEnv } from '../sections'
+import {
+  SectionCard,
+  SetupStepFrame,
+  SitePage,
+  ManualDetail,
+  hasManualDetail,
+  useSectionEnv
+} from '../sections'
 import { StartOverStep } from '../sections/StartOverStep'
 import { keptCount } from '../sections/merge'
 import { brandName } from '../sections/rowView'
@@ -77,15 +84,15 @@ export function BrandStep(props: SetupStepProps): JSX.Element {
         fields={PRODUCT_FIELDS}
         aiLabel="✦ found"
         redoLabel="Redo products"
+        autoFill="products"
         renderSub={(item) => {
           const page = <SitePage value={item.url} site={site} />
-          const detail =
-            item.detail || (item.origin === 'user' && !item.edited ? 'Added by you' : '')
-          if (!detail && !item.url) return null
+          const hasDetail = hasManualDetail(item)
+          if (!hasDetail && !item.url) return null
           return (
             <>
-              {detail}
-              {detail && item.url ? ' · ' : null}
+              {hasDetail ? <ManualDetail item={item} /> : null}
+              {hasDetail && item.url ? ' · ' : null}
               {page}
             </>
           )

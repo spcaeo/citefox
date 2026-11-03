@@ -235,6 +235,35 @@
     margin-top: 1px;
   }
 
+  /* A hand-added row's second line while CiteFox AI writes it, and its small retry link. */
+  .osc-filling {
+    color: var(--fox-ink);
+  }
+
+  .osc-fill-mark {
+    color: var(--fox-ink);
+  }
+
+  .osc-filling .osc-fill-mark {
+    animation: osc-fill-pulse 1.4s ease-in-out infinite;
+  }
+
+  .osc-fill-retry {
+    font-size: inherit;
+  }
+
+  @keyframes osc-fill-pulse {
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .osc-filling .osc-fill-mark {
+      animation: none;
+    }
+  }
+
   .osc-tag {
     display: inline-flex;
     padding: 1px 8px;

@@ -44,6 +44,7 @@ import { applySessionBusEnv } from './secrets/session-bus'
 import type { EngineHost } from './engine/host'
 import { openCheckClaude, openProjectClaude } from './engine/claude'
 import { claudeSummaryWriter } from './email/summary-writer'
+import { configureDiagnosticsShell, revealLogFile } from './diagnostics'
 import { configureDataFolderReveal } from './export/data-folder'
 import { configureAutoExportFolderDialog } from './export/auto/ipc'
 import { runAutoExports } from './export/auto/run'
@@ -504,6 +505,14 @@ void app
               },
               onFileCommand: (command) => {
                 broadcastIpcEvent('transfer:menu', { command })
+              },
+              onHelpCommand: (command) => {
+                if (command === 'report-problem') {
+                  broadcastIpcEvent('diagnostics:menu', { command })
+                  return
+                }
+                const shown = revealLogFile(appStorage.paths.root, logFile)
+                if (!shown.ok) logger.warn('CiteFox could not show the logs folder', shown)
               }
             })
           )
@@ -557,6 +566,7 @@ void app
     )
     configureExportReveal((filePath) => shell.showItemInFolder(filePath))
     configureDataFolderReveal((folderPath) => shell.showItemInFolder(folderPath))
+    configureDiagnosticsShell((url) => shell.openExternal(url))
     const sitemapFetch = e2eSitemapFetch(app.isPackaged, process.env)
     const topicSiteReader = e2eTopicSiteReader(app.isPackaged, process.env)
     const topicDns = e2eTopicDns(app.isPackaged, process.env)

@@ -77,16 +77,44 @@ type ScriptFn =
   | 'activeInstalls'
   | 'sendEmailToOptedIn'
   | 'deleteUserByEmail'
+  | 'deleteReportByReference'
   | 'listUsers'
+  | 'validateReport'
+  | 'parseBody'
+  | 'safeCell'
+  | 'reportsOverDailyLimit'
+  | 'reportCounts'
+  | 'allow'
+  | 'pickRecipients'
+
+export interface FakeDriveFile {
+  id: string
+  name: string
+  type: string
+  bytes: number[]
+  trashed: boolean
+  url: string
+}
+
+interface FakeFolder {
+  getId(): string
+  createFile(blob: { bytes: number[]; type: string; name: string }): {
+    getUrl(): string
+    getId(): string
+  }
+}
 
 export interface ScriptWorld {
   fn: Readonly<Record<ScriptFn, (...args: unknown[]) => unknown>>
   sheets: Map<string, FakeSheet>
   properties: Map<string, string>
   cache: Map<string, string>
-  mail: { to: string; subject: string; body: string; htmlBody: string }[]
+  mail: { to: string; subject: string; body: string; htmlBody?: string }[]
+  drive: { folders: string[]; files: FakeDriveFile[] }
+  /** Make Drive or mail calls throw, to test that the Sheet row still lands. */
+  breakServices(which: { drive?: boolean; mail?: boolean }): void
   setQuota(n: number): void
-  post(body: unknown): { ok: boolean; error?: string }
+  post(body: unknown): { ok: boolean; error?: string; reportId?: string }
   get(parameter: Record<string, string>): string
   rows(name: string): Cell[][]
 }
@@ -97,7 +125,25 @@ export function loadScript(): ScriptWorld {
   const properties = new Map<string, string>()
   const cache = new Map<string, string>()
   const mail: ScriptWorld['mail'] = []
+  const drive: ScriptWorld['drive'] = { folders: [], files: [] }
+  const broken = { drive: false, mail: false }
   let quota = 100
+  const folderFor = (id: string): FakeFolder => ({
+    getId: () => id,
+    createFile: (blob: { bytes: number[]; type: string; name: string }) => {
+      const fileId = `file${drive.files.length + 1}`
+      const file: FakeDriveFile = {
+        id: fileId,
+        name: blob.name,
+        type: blob.type,
+        bytes: blob.bytes,
+        trashed: false,
+        url: `https://drive.google.com/file/d/${fileId}/view`
+      }
+      drive.files.push(file)
+      return { getUrl: () => file.url, getId: () => fileId }
+    }
+  })
   const sandbox: Record<string, unknown> = {
     SpreadsheetApp: {
       getActiveSpreadsheet: () => ({
@@ -146,13 +192,44 @@ export function loadScript(): ScriptWorld {
         ...createHmac('sha256', key).update(value).digest()
       ],
       base64EncodeWebSafe: (bytes: number[]) => Buffer.from(bytes).toString('base64url') + '=',
-      getUuid: () => randomUUID()
+      getUuid: () => randomUUID(),
+      base64Decode: (text: string) =>
+        [...Buffer.from(text, 'base64')].map((b) => (b > 127 ? b - 256 : b)),
+      newBlob: (bytes: number[], type: string, name: string) => ({ bytes, type, name })
+    },
+    DriveApp: {
+      createFolder: (name: string) => {
+        if (broken.drive) throw new Error('Drive is down')
+        const id = `folder${drive.folders.length + 1}`
+        drive.folders.push(name)
+        return folderFor(id)
+      },
+      getFolderById: (id: string) => {
+        if (broken.drive) throw new Error('Drive is down')
+        if (!id.startsWith('folder')) throw new Error('No folder')
+        return folderFor(id)
+      },
+      getFileById: (id: string) => {
+        const file = drive.files.find((f) => f.id === id)
+        if (!file) throw new Error('No file')
+        return {
+          setTrashed: (value: boolean) => {
+            file.trashed = value
+          }
+        }
+      }
     },
     MailApp: {
       getRemainingDailyQuota: () => quota,
-      sendEmail: (message: ScriptWorld['mail'][number]) => {
+      sendEmail: (...args: unknown[]) => {
+        if (broken.mail) throw new Error('Mail is down')
         quota -= 1
-        mail.push(message)
+        // Both forms: sendEmail(to, subject, body) and sendEmail({ to, subject, body, ... }).
+        mail.push(
+          typeof args[0] === 'string'
+            ? { to: args[0], subject: String(args[1]), body: String(args[2]) }
+            : (args[0] as ScriptWorld['mail'][number])
+        )
       }
     },
     ScriptApp: {
@@ -172,12 +249,17 @@ export function loadScript(): ScriptWorld {
     properties,
     cache,
     mail,
+    drive,
+    breakServices: (which) => {
+      broken.drive = which.drive ?? broken.drive
+      broken.mail = which.mail ?? broken.mail
+    },
     setQuota: (n) => {
       quota = n
     },
     post(body) {
       const out = fn.doPost({ postData: { contents: JSON.stringify(body) } }) as { text: string }
-      return JSON.parse(out.text) as { ok: boolean; error?: string }
+      return JSON.parse(out.text) as { ok: boolean; error?: string; reportId?: string }
     },
     get(parameter) {
       return (fn.doGet({ parameter }) as { html: string }).html

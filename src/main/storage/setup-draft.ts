@@ -62,7 +62,8 @@ const ITEM_FIELDS = [
   'origin',
   'kept',
   'edited',
-  'fresh'
+  'fresh',
+  'aiFilled'
 ]
 
 const SECTION_IDS: readonly SetupSectionId[] = [...SETUP_LISTS, 'summary', 'topic']
@@ -182,7 +183,8 @@ function readItem(value: unknown): SetupItem {
   const r = plain(value)
   for (const key of Object.keys(r)) if (!ITEM_FIELDS.includes(key)) throw new SetupDraftError()
   for (const key of ITEM_FIELDS) {
-    if (key !== 'tier' && !Object.prototype.hasOwnProperty.call(r, key)) throw new SetupDraftError()
+    if (key !== 'tier' && key !== 'aiFilled' && !Object.prototype.hasOwnProperty.call(r, key))
+      throw new SetupDraftError()
   }
   const id = textOf(r.id, MAX_ID)
   if (id.length === 0) throw new SetupDraftError()
@@ -200,6 +202,11 @@ function readItem(value: unknown): SetupItem {
   if (Object.prototype.hasOwnProperty.call(r, 'tier')) {
     if (r.tier !== null && r.tier !== 'direct' && r.tier !== 'partial') throw new SetupDraftError()
     item.tier = r.tier
+  }
+  // Drafts saved before CiteFox AI could fill a row have no `aiFilled`.
+  if (Object.prototype.hasOwnProperty.call(r, 'aiFilled')) {
+    if (r.aiFilled === true) item.aiFilled = true
+    else if (r.aiFilled !== false) throw new SetupDraftError()
   }
   return item
 }

@@ -55,4 +55,48 @@
     font-size: var(--fs-small);
     line-height: var(--lh-small);
   }
+
+  /* A product added by name: its job while CiteFox AI writes it, the ✦ mark, the retry link. */
+  .prod-filling,
+  .prod-mark {
+    color: var(--fox-ink);
+  }
+
+  .prod-filling .prod-mark {
+    animation: prod-fill-pulse 1.4s ease-in-out infinite;
+  }
+
+  .prod-retry {
+    margin-left: var(--s-2);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--action-ink);
+    font: inherit;
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+  }
+
+  .prod-retry:hover {
+    color: var(--action-ink-hover);
+    text-decoration: underline;
+  }
+
+  .prod-retry:focus-visible {
+    outline: none;
+    border-radius: var(--r-s);
+    box-shadow: var(--focus-ring);
+  }
+
+  @keyframes prod-fill-pulse {
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .prod-filling .prod-mark {
+      animation: none;
+    }
+  }
 }

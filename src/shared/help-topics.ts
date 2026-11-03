@@ -28,6 +28,7 @@ export const HELP_TOPIC_TITLES = {
   'reports-branding': 'Reports branding',
   alerts: 'Alerts & schedules',
   settings: 'Settings',
+  'report-a-problem': 'Report a problem',
   glossary: 'Words CiteFox uses'
 } as const satisfies Readonly<Record<string, string>>
 

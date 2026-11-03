@@ -275,6 +275,16 @@ export function createMockSectionClient(options: MockSectionOptions = {}): Setup
       return readPaste(request.section, request.text, request.current)
     },
 
+    async rowFill(request) {
+      if (!claudeOn(options.claude)) {
+        throw new Error('onboarding:rowFill: CiteFox AI is not set up.')
+      }
+      await wait(pace)
+      return request.list === 'buyers'
+        ? { detail: 'Their old tool shut down and they need a new one', url: null }
+        : { detail: 'Sends alerts as texts, for small teams', url: null }
+    },
+
     async finishSetup(request: FinishSetupRequest): Promise<FinishSetupResult> {
       const onboarding = options.onboarding ?? lastOnboarding
       const saved = onboarding === null ? null : (await onboarding.getState()).profile

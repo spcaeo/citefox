@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## 0.13.3 — 2026-11-03
+
+### New
+
+- **Typed a name only? CiteFox AI fills in the rest:** when you add a product (in setup or in Settings › General) or a buyer by hand, CiteFox AI writes a short line about it, such as what the product does, and picks its page on your site when it clearly matches one. It shows "✦ Filling in…" while it works, marks its own text with ✦, and keeps "Added by you" with a small "✦ Fill in" link if it is not sure or your AI is not available. It uses only your own AI connection, and anything you type yourself always wins.
+- **Join screen:** "Product updates" and "Occasional news and offers" now start ticked. You can untick either one, and change them later in Settings.
+- **Report a problem:** if something goes wrong, such as many questions saying "Check failed", open **Help › Report a problem…** (also in Settings › Data & about, and next to a failed check). You see the exact report first: your version, which AI program and keys are set up (yes or no only), the latest failed checks and the end of the log. Send it to the CiteFox team with one click (you get a reference to quote), or copy it, save it as a file, email it to us or open a GitHub issue. CiteFox sends nothing by itself, and keys, emails, IP addresses and your home folder are removed. **Help › Show logs folder** opens the log file.
+
 ## 0.13.2 — 2026-11-03
 
 ### New
