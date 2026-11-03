@@ -241,6 +241,7 @@ ${GEO_VS_SEO.map((t) => `        <p>${e(t)}</p>`).join('\n')}
 ${CONTROL.map((t) => `          <li>${e(t)}</li>`).join('\n')}
         </ul>
         <p class="card"><strong>Pairs with Skald for AI crawlers and traffic.</strong> <a href="https://github.com/spcaeo/skald" target="_blank" rel="noopener">Skald</a> is our free analytics that runs on your own server and reads its access log: every AI crawler and assistant visit by name, checked to be real, split by why it came, plus the people and leads AI answers sent you. CiteFox shows what AI says about you; Skald shows what AI does on your site.</p>
+        <p class="card"><strong>Let an AI agent run it for you.</strong> CiteFox runs on Linux, so you can install it on an AI agent's own Linux computer, such as Grok Bot, Meta Muse or OpenAI dots, and have the agent run your checks and send your reports on a schedule. The MCP server, coming soon, makes this smoother.</p>
       </section>
 
       <section class="wrap" id="editions" aria-labelledby="editions-title">

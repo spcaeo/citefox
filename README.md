@@ -510,7 +510,7 @@ Questions, early access to the Server edition or the managed service, or sponsor
 [releases]: https://github.com/spcaeo/citefox/releases
 [issues]: https://github.com/spcaeo/citefox/issues
 [discussions]: https://github.com/spcaeo/citefox/discussions
-[stargazers]: https://github.com/spcaeo/citefox/stargazers
+[stargazers]: https://github.com/spcaeo/citefox
 [badge-version]: https://img.shields.io/github/v/release/spcaeo/citefox?label=version&color=b23c0a
 [badge-downloads]: https://img.shields.io/github/downloads/spcaeo/citefox/total?color=2a221b
 [badge-license]: https://img.shields.io/badge/license-source--available-6f2a10
