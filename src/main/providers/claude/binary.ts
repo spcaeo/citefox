@@ -87,6 +87,7 @@ export function usualClaudeBinaryCandidates(
   const candidates = [join(home, '.local', 'bin', name), join(home, '.claude', 'local', name)]
   if (platform === 'win32') {
     candidates.push(join(home, 'AppData', 'Local', 'Programs', 'claude', name))
+    candidates.push(join(home, 'AppData', 'Roaming', 'npm', 'claude.cmd'))
   } else {
     candidates.push('/usr/local/bin/claude')
     candidates.push(platform === 'darwin' ? '/opt/homebrew/bin/claude' : '/usr/bin/claude')
@@ -185,8 +186,11 @@ export function locateClaudeBinary(
     }
     return { path: preferred, source: 'override' }
   }
-  const onPath = probe.searchPath(claudeExecutableName(context.platform), context.pathEnv)
-  if (onPath !== null && !isCredentialPath(onPath)) return { path: onPath, source: 'path' }
+  // Every name, in order: on Windows npm installs `claude.cmd`, the installer `claude.exe`.
+  for (const name of claudeBinaryNames(context.platform)) {
+    const onPath = probe.searchPath(name, context.pathEnv)
+    if (onPath !== null && !isCredentialPath(onPath)) return { path: onPath, source: 'path' }
+  }
   for (const candidate of usualClaudeBinaryCandidates(context.home, context.platform)) {
     if (probe.exists(candidate)) return { path: candidate, source: 'usual' }
   }

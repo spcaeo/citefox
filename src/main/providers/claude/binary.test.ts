@@ -133,3 +133,40 @@ describe('e2e runs find only fake AI programs', () => {
     }
   )
 })
+
+describe('Windows: npm installs claude.cmd and codex.cmd', () => {
+  const NPM = 'C:\\Users\\a\\AppData\\Roaming\\npm'
+  const probeWith = (files: readonly string[]): BinaryProbe => ({
+    exists: (file) => files.includes(file),
+    searchPath: (name, pathEnv) =>
+      (pathEnv ?? '')
+        .split(';')
+        .map((dir) => `${dir}\\${name}`)
+        .find((file) => files.includes(file)) ?? null
+  })
+  const context = {
+    home: 'C:\\Users\\a',
+    platform: 'win32' as const,
+    pathEnv: `C:\\Windows;${NPM}`
+  }
+
+  test('finds claude.cmd on PATH when there is no claude.exe', () => {
+    expect(locateClaudeBinary(null, probeWith([`${NPM}\\claude.cmd`]), context)).toEqual({
+      path: `${NPM}\\claude.cmd`,
+      source: 'path'
+    })
+  })
+
+  test('prefers claude.exe when both are on PATH', () => {
+    const files = [`${NPM}\\claude.cmd`, `C:\\Windows\\claude.exe`]
+    expect(locateClaudeBinary(null, probeWith(files), context).path).toBe('C:\\Windows\\claude.exe')
+  })
+
+  test('finds codex.cmd on PATH', async () => {
+    const { locateCodexBinary } = await import('../codex/binary')
+    expect(locateCodexBinary(null, probeWith([`${NPM}\\codex.cmd`]), context)).toEqual({
+      path: `${NPM}\\codex.cmd`,
+      source: 'path'
+    })
+  })
+})

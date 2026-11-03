@@ -10,7 +10,9 @@ export default defineConfig({
   expect: { timeout: 15_000 },
   fullyParallel: false,
   forbidOnly: true,
-  retries: 0,
+  // GitHub's shared Mac and Windows runners are slow and uneven: one retry there, and the
+  // report still lists any test that needed it as flaky. Local and Docker runs never retry.
+  retries: process.env.CI ? 1 : 0,
   workers: 1,
   reporter: 'list',
   outputDir: 'test-results'

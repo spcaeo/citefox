@@ -103,7 +103,12 @@ export function locateCodexBinary(
     }
     return { path: preferred, source: 'override' }
   }
-  const onPath = probe.searchPath(codexExecutableName(context.platform), context.pathEnv)
+  let onPath: string | null = null
+  // Every name, in order: on Windows npm installs `codex.cmd`.
+  for (const name of codexBinaryNames(context.platform)) {
+    onPath = probe.searchPath(name, context.pathEnv)
+    if (onPath !== null) break
+  }
   if (onPath !== null && !isCodexCredentialPath(onPath)) return { path: onPath, source: 'path' }
   for (const candidate of usualCodexBinaryCandidates(context.home, context.platform)) {
     if (probe.exists(candidate)) return { path: candidate, source: 'usual' }
