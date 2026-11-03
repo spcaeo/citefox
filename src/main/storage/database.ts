@@ -23,10 +23,16 @@ export function openSqliteDatabase(
   const db = new Sqlite(filename, {
     fileMustExist: options?.fileMustExist ?? false
   })
-  db.pragma('foreign_keys = ON')
-  if (!memory) {
-    db.pragma('journal_mode = WAL')
-    restrictDatabaseFiles(filename)
+  try {
+    db.pragma('foreign_keys = ON')
+    if (!memory) {
+      db.pragma('journal_mode = WAL')
+      restrictDatabaseFiles(filename)
+    }
+  } catch (error) {
+    // A file that is not a database fails here. Let go of it, or Windows keeps it locked.
+    db.close()
+    throw error
   }
   return db
 }

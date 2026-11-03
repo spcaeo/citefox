@@ -94,13 +94,12 @@ export function createProjectChannel(
     return saved
   } catch (error) {
     close()
+    if (inserted) deleteProject(host.storage.db, id, host.email.outboxDir)
+    // Close every handle on the file before deleting it: Windows refuses to delete an open file.
+    host.email.alerts.evictProject(id)
     rmSync(file, { force: true })
     rmSync(`${file}-wal`, { force: true })
     rmSync(`${file}-shm`, { force: true })
-    if (inserted) {
-      deleteProject(host.storage.db, id, host.email.outboxDir)
-      host.email.alerts.evictProject(id)
-    }
     throw error
   }
 }

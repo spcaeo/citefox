@@ -21,7 +21,13 @@ export function openProjectDatabase(projectsDirectory: string, slug: string): Sq
   if (!existsSync(filePath)) throw new StorageError('Project database does not exist')
   assertStaysInside(projectsDirectory, filePath)
   const db = openSqliteDatabase(filePath, { fileMustExist: true })
-  ensureProjectSchema(db)
+  try {
+    ensureProjectSchema(db)
+  } catch (error) {
+    // Close a file that cannot be read, so Windows does not keep it locked.
+    closeDatabase(db)
+    throw error
+  }
   return db
 }
 

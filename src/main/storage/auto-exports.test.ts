@@ -1,6 +1,6 @@
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { join, resolve } from 'node:path'
 import { afterEach, describe, expect, test } from 'vitest'
 import { freshExportPath, usableExportFolder } from '../export/auto/folder'
 import {
@@ -133,11 +133,13 @@ describe('automatic export folders', () => {
   })
 
   test('a fresh path never names an existing file and refuses traversal', () => {
-    const taken = new Set(['/out/report.pdf', '/out/report (2).pdf'])
+    // Paths come back resolved: '/out/…' on Linux and macOS, '<drive>:\\out\\…' on Windows.
+    const out = (name: string): string => resolve('/out', name)
+    const taken = new Set([out('report.pdf'), out('report (2).pdf')])
     const exists = (path: string): boolean => taken.has(path)
-    expect(freshExportPath('/out', 'other.pdf', exists)).toBe('/out/other.pdf')
-    expect(freshExportPath('/out', 'report.pdf', exists)).toBe('/out/report (3).pdf')
-    expect(freshExportPath('/out', 'README', () => false)).toBe('/out/README')
+    expect(freshExportPath('/out', 'other.pdf', exists)).toBe(out('other.pdf'))
+    expect(freshExportPath('/out', 'report.pdf', exists)).toBe(out('report (3).pdf'))
+    expect(freshExportPath('/out', 'README', () => false)).toBe(out('README'))
     expect(freshExportPath('/out', 'report.pdf', () => true)).toBeNull()
     expect(() => freshExportPath('/out', '../escape.pdf', exists)).toThrow('Unsafe export filename')
   })

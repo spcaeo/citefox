@@ -86,7 +86,7 @@ describe('pending client pdfs', () => {
       }
     ])
     expect(readPendingClientPdf(db, dir, 'pdf-1')).toEqual(bytes)
-    expect(statSync(listed[0]!.path).mode & 0o777).toBe(0o600)
+    if (process.platform !== 'win32') expect(statSync(listed[0]!.path).mode & 0o777).toBe(0o600)
     const dumped = JSON.stringify(
       db.prepare(`SELECT id, filename, bytes FROM pending_client_pdfs`).all()
     )

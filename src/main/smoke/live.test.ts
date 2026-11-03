@@ -22,6 +22,12 @@ import { assistPackage } from './assist'
 import { DEFAULT_SMOKE_URL, SmokeError, parseSmokeArgs, runSmokeLive } from './live'
 import type { SmokeIo, SmokeReport } from './live'
 
+/**
+ * The stand-in Claude Code: only the probe knows it, nothing is on disk. A fixed macOS path
+ * (the runs pass platform 'darwin'), so it stays valid when the temp folder is a Windows one.
+ */
+const FAKE_CLAUDE = '/Users/me/Application Support/claude'
+
 const PRIMARY = 'smoke-fake-serpapi-primary'
 const SECOND = 'smoke-fake-serpapi-second'
 const THIRD = 'smoke-fake-serpapi-third'
@@ -324,7 +330,7 @@ describe('runSmokeLive offline', () => {
     const root = makeRoot()
     writeEnv(root)
     const dataDir = join(root, 'app data')
-    const binary = join(root, 'Application Support', 'claude')
+    const binary = FAKE_CLAUDE
     const home = join(root, 'home folder')
     const commands: CommandRequest[] = []
     const serp: string[] = []
@@ -451,7 +457,7 @@ describe('runSmokeLive offline', () => {
       platform: 'darwin',
       http: stubHttp(serp),
       command: stubClaude([]),
-      probe: probeFor(join(root, 'Application Support', 'claude'))
+      probe: probeFor(FAKE_CLAUDE)
     })
     expect(report.ok).toBe(true)
     expect(serp).toHaveLength(2)
@@ -473,7 +479,7 @@ describe('runSmokeLive offline', () => {
     const root = makeRoot()
     writeEnv(root)
     const dataDir = join(root, 'app data')
-    const binary = join(root, 'Application Support', 'claude')
+    const binary = FAKE_CLAUDE
     const fileSecrets = FAKE_VALUES.filter((value) => value !== JINA)
     const command: CommandTransport = {
       run: () => Promise.reject(new Error(`provider failed ${fileSecrets.join(' ')}`))

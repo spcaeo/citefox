@@ -364,6 +364,6 @@ describe('app migrations', () => {
       { version: 24, name: '024_codex_connection' },
       { version: 25, name: '025_report_schedule_report' }
     ])
-    expect(statSync(filename).mode & 0o777).toBe(0o600)
+    if (process.platform !== 'win32') expect(statSync(filename).mode & 0o777).toBe(0o600)
   })
 })

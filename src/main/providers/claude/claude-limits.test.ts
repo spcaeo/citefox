@@ -43,6 +43,7 @@ function provider(
     probe: probeFor([binary]),
     logger: captureLogger().logger,
     savedBinaryPath: binary,
+    platform: 'linux',
     model: null,
     pathEnv: '',
     baseEnv: { PATH: '/usr/bin' },

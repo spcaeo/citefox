@@ -2,7 +2,7 @@
 // a unique title and description, one H1, a canonical, share tags, alt texts,
 // JSON-LD that parses, headings in order, and internal links that resolve.
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
-import { dirname, join, normalize } from 'node:path'
+import { join, posix } from 'node:path'
 import { Window } from 'happy-dom'
 import { describe, expect, it } from 'vitest'
 import { buildSite, MEDIA, REPO_ROOT } from './build-site.mjs'
@@ -120,8 +120,9 @@ describe.each(Object.keys(docs))('%s', (file) => {
       const [path, hash] = target.split('#')
       let resolved = file
       if (path) {
-        resolved = normalize(join(dirname(file), path))
-        if (path.endsWith('/') || resolved === '.') resolved = join(resolved, 'index.html')
+        // URL paths: always '/', whatever the computer's own separator is.
+        resolved = posix.normalize(posix.join(posix.dirname(file), path))
+        if (path.endsWith('/') || resolved === '.') resolved = posix.join(resolved, 'index.html')
       }
       if (resolved.startsWith('media/')) continue // screenshots, copied at build time
       // The live demo and the sample reports: made by npm run demo:build / samples:build.

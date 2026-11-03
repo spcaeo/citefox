@@ -1,5 +1,5 @@
 import { readdirSync, readFileSync } from 'node:fs'
-import { join, relative } from 'node:path'
+import { join, relative, sep } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 /**
@@ -54,6 +54,11 @@ function walk(dir: string, out: string[] = []): string[] {
     else out.push(path)
   }
   return out
+}
+
+/** The path under ROOT with '/' separators on every platform, as the lists above spell it. */
+function fromRoot(path: string): string {
+  return relative(ROOT, path).split(sep).join('/')
 }
 
 /** Index just past the `>` that closes the opening tag starting at `from`, and whether it self-closes. */
@@ -162,7 +167,7 @@ describe('tool buttons are icon only (DESIGN-GUIDELINES §1)', () => {
   it('no non-primary Button pairs a tool icon with a word', () => {
     const files = walk(ROOT)
       .filter((path) => path.endsWith('.tsx') && !/\.test\.tsx$/.test(path))
-      .map((path) => relative(ROOT, path))
+      .map(fromRoot)
     const found = files
       .filter((rel) => !PENDING.includes(rel))
       .flatMap((rel) => offences(rel, readFileSync(join(ROOT, rel), 'utf8')))
@@ -178,7 +183,7 @@ describe('tool buttons are icon only (DESIGN-GUIDELINES §1)', () => {
     ).toEqual([{ file: 'x.tsx', line: 2, icon: 'search' }])
     const found = walk(ROOT)
       .filter((path) => path.endsWith('.tsx') && !/\.test\.tsx$/.test(path))
-      .map((path) => relative(ROOT, path))
+      .map(fromRoot)
       .filter((rel) => !rel.startsWith('ui/'))
       .filter((rel) => !SEARCH_PENDING.includes(rel) && !SEARCH_KEPT.includes(rel))
       .flatMap((rel) => searchInputs(rel, readFileSync(join(ROOT, rel), 'utf8')))
@@ -187,7 +192,7 @@ describe('tool buttons are icon only (DESIGN-GUIDELINES §1)', () => {
   })
 
   it('the allow-lists only name files that still need them', () => {
-    const files = new Set(walk(ROOT).map((path) => relative(ROOT, path)))
+    const files = new Set(walk(ROOT).map(fromRoot))
     const listed = [...PENDING, ...SEARCH_PENDING, ...SEARCH_KEPT]
     expect(listed.filter((rel) => !files.has(rel))).toEqual([])
     // A file that was fixed must leave the list, so the list only ever shrinks.

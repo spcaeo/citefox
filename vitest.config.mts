@@ -18,6 +18,9 @@ export default defineConfig({
   },
   test: {
     environment: 'node',
+    // Windows runners are several times slower at file and SQLite work (antivirus scans every
+    // new temp file), so tests that take 1-2 s elsewhere can pass the 5 s default there.
+    ...(process.platform === 'win32' ? { testTimeout: 30_000, hookTimeout: 30_000 } : {}),
     include: ['src/**/*.test.ts', 'src/**/*.test.tsx', 'scripts/**/*.test.mjs'],
     // The report inlines the chart kit's stylesheet (`charts.css?raw`); keep its text in tests.
     css: { include: [/src\/shared\/charts\/charts\.css/] },

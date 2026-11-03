@@ -49,7 +49,7 @@ describe('settings.json', () => {
     settings.defaultSamples = 3
     writeSettings(file, settings)
     expect(readSettings(file)).toEqual(settings)
-    expect(statSync(file).mode & 0o777).toBe(0o600)
+    if (process.platform !== 'win32') expect(statSync(file).mode & 0o777).toBe(0o600)
     expect(readFileSync(file, 'utf8').endsWith('\n')).toBe(true)
     const leftovers = readFileSync(file, 'utf8')
     expect(leftovers).not.toMatch(/\.tmp/)

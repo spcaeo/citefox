@@ -66,8 +66,11 @@ describe('secrets stay out of app files', () => {
     expect(dumped).not.toContain(secret)
     expect(dumped).toContain(keychainRef)
     expect(dumped).toContain(hint)
-    expect(statSync(join(directory, 'settings.json')).mode & 0o777).toBe(0o600)
-    expect(statSync(join(directory, 'app.sqlite')).mode & 0o777).toBe(0o600)
+    // Windows has no POSIX file modes; there the files sit in the user's own profile folder.
+    if (process.platform !== 'win32') {
+      expect(statSync(join(directory, 'settings.json')).mode & 0o777).toBe(0o600)
+      expect(statSync(join(directory, 'app.sqlite')).mode & 0o777).toBe(0o600)
+    }
 
     const lines: string[] = []
     const logger = createLogger({

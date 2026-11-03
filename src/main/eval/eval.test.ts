@@ -1,3 +1,4 @@
+import { resolve } from 'node:path'
 import type { FillFromWebsiteResult } from '@shared/ipc'
 import { describe, expect, test } from 'vitest'
 import { APP_ORDER, EvalArgsError, parseEvalArgs, parseSections, parseSiteList } from './args'
@@ -18,7 +19,7 @@ describe('prompt bench args', () => {
     expect(args).toEqual({
       sites: ['textbolt.com', 'linear.app'],
       sections: [...APP_ORDER],
-      out: '/w/o',
+      out: resolve('/w', 'o'), // a drive path on Windows
       label: 'run',
       country: 'US',
       language: 'en'
@@ -30,7 +31,7 @@ describe('prompt bench args', () => {
     const args = parseEvalArgs(
       ['--sites', 'sites.txt', '--out', '/o', '--label', 'baseline'],
       '/w',
-      (path) => (path === '/w/sites.txt' ? file : null)
+      (path) => (path === resolve('/w', 'sites.txt') ? file : null)
     )
     expect(args.sites).toEqual(['textbolt.com', 'linear.app'])
     expect(args.label).toBe('baseline')

@@ -16,6 +16,10 @@ import {
 import { OsJobError } from './types'
 import type { CommandResult, OsJobSpec } from './types'
 
+// Skipped on Windows: install writes into a real temp home, and systemd and cron (Linux only) take
+// only POSIX paths, which a Windows temp folder is not. Windows uses Task Scheduler instead.
+const onWindows = process.platform === 'win32'
+
 let temp: TempHome
 
 beforeEach(() => {
@@ -113,88 +117,107 @@ describe('systemd units', () => {
 })
 
 describe('systemdInstaller', () => {
-  test('install writes both units, reloads and enables the timer, and clears old cron lines', () => {
-    const tab = crontab(`0 1 * * * backup\n5 * * * * old ${CRON_MARKER}\n`)
-    const runner = fakeRunner(tab.respond)
-    const installer = systemdInstaller({ home: temp.home, runner })
-    const unitDirectory = join(temp.home, '.config', 'systemd', 'user')
+  test.skipIf(onWindows)(
+    'install writes both units, reloads and enables the timer, and clears old cron lines',
+    () => {
+      const tab = crontab(`0 1 * * * backup\n5 * * * * old ${CRON_MARKER}\n`)
+      const runner = fakeRunner(tab.respond)
+      const installer = systemdInstaller({ home: temp.home, runner })
+      const unitDirectory = join(temp.home, '.config', 'systemd', 'user')
 
-    installer.install(spec())
+      installer.install(spec())
 
-    expect(installer.kind).toBe('systemd')
-    expect(readFileSync(join(unitDirectory, SYSTEMD_SERVICE), 'utf8')).toBe(
-      systemdServiceUnit(spec())
-    )
-    expect(readFileSync(join(unitDirectory, SYSTEMD_TIMER), 'utf8')).toBe(systemdTimerUnit(spec()))
-    expect(statSync(join(unitDirectory, SYSTEMD_TIMER)).mode & 0o777).toBe(0o644)
-    expect(existsSync(spec().logDirectory)).toBe(true)
-    expect(runner.calls.slice(0, 2)).toEqual([
-      { file: 'systemctl', args: ['--user', 'daemon-reload'] },
-      { file: 'systemctl', args: ['--user', 'enable', '--now', 'citefox-checkdue.timer'] }
-    ])
-    expect(tab.content()).toBe('0 1 * * * backup\n')
-    expect(installer.isInstalled()).toBe(true)
-  })
+      expect(installer.kind).toBe('systemd')
+      expect(readFileSync(join(unitDirectory, SYSTEMD_SERVICE), 'utf8')).toBe(
+        systemdServiceUnit(spec())
+      )
+      expect(readFileSync(join(unitDirectory, SYSTEMD_TIMER), 'utf8')).toBe(
+        systemdTimerUnit(spec())
+      )
+      expect(statSync(join(unitDirectory, SYSTEMD_TIMER)).mode & 0o777).toBe(0o644)
+      expect(existsSync(spec().logDirectory)).toBe(true)
+      expect(runner.calls.slice(0, 2)).toEqual([
+        { file: 'systemctl', args: ['--user', 'daemon-reload'] },
+        { file: 'systemctl', args: ['--user', 'enable', '--now', 'citefox-checkdue.timer'] }
+      ])
+      expect(tab.content()).toBe('0 1 * * * backup\n')
+      expect(installer.isInstalled()).toBe(true)
+    }
+  )
 
-  test('install honours XDG_CONFIG_HOME', () => {
+  test.skipIf(onWindows)('install honours XDG_CONFIG_HOME', () => {
     const runner = fakeRunner(crontab(null).respond)
     const xdg = join(temp.home, 'xdg')
     systemdInstaller({ home: temp.home, env: { XDG_CONFIG_HOME: xdg }, runner }).install(spec())
     expect(existsSync(join(xdg, 'systemd', 'user', SYSTEMD_TIMER))).toBe(true)
   })
 
-  test('falls back to cron when systemctl is missing, deleting the unit files', () => {
-    const tab = crontab('MAILTO=me@example.com\n0 3 * * * /usr/bin/backup --all\n')
-    const runner = fakeRunner((call) =>
-      call.file === 'systemctl' ? notFound('systemctl') : tab.respond(call)
-    )
-    const installer = systemdInstaller({ home: temp.home, runner })
-    const unitDirectory = join(temp.home, '.config', 'systemd', 'user')
+  test.skipIf(onWindows)(
+    'falls back to cron when systemctl is missing, deleting the unit files',
+    () => {
+      const tab = crontab('MAILTO=me@example.com\n0 3 * * * /usr/bin/backup --all\n')
+      const runner = fakeRunner((call) =>
+        call.file === 'systemctl' ? notFound('systemctl') : tab.respond(call)
+      )
+      const installer = systemdInstaller({ home: temp.home, runner })
+      const unitDirectory = join(temp.home, '.config', 'systemd', 'user')
 
-    installer.install(spec({ args: ['--check-due', '--label=50%'] }))
+      installer.install(spec({ args: ['--check-due', '--label=50%'] }))
 
-    expect(existsSync(join(unitDirectory, SYSTEMD_SERVICE))).toBe(false)
-    expect(existsSync(join(unitDirectory, SYSTEMD_TIMER))).toBe(false)
-    const write = runner.calls.find((call) => call.file === 'crontab' && call.args[0] === '-')
-    expect(write?.args).toEqual(['-'])
-    const lines = (write?.input ?? '').split('\n')
-    expect(lines.filter((line) => line.includes(CRON_MARKER))).toHaveLength(1)
-    expect(lines.slice(0, 2)).toEqual(['MAILTO=me@example.com', '0 3 * * * /usr/bin/backup --all'])
-    expect(lines[2]).toMatch(/^9 \* \* \* \* \/opt\/CiteFox\/citefox --check-due '--label=50\\%' /)
-    expect(lines[2]).not.toMatch(/[^\\]%/)
-    expect(lines[2]?.endsWith(` ${CRON_MARKER}`)).toBe(true)
-    expect(write?.input?.endsWith('\n')).toBe(true)
-    expect(installer.isInstalled()).toBe(true)
-  })
+      expect(existsSync(join(unitDirectory, SYSTEMD_SERVICE))).toBe(false)
+      expect(existsSync(join(unitDirectory, SYSTEMD_TIMER))).toBe(false)
+      const write = runner.calls.find((call) => call.file === 'crontab' && call.args[0] === '-')
+      expect(write?.args).toEqual(['-'])
+      const lines = (write?.input ?? '').split('\n')
+      expect(lines.filter((line) => line.includes(CRON_MARKER))).toHaveLength(1)
+      expect(lines.slice(0, 2)).toEqual([
+        'MAILTO=me@example.com',
+        '0 3 * * * /usr/bin/backup --all'
+      ])
+      expect(lines[2]).toMatch(
+        /^9 \* \* \* \* \/opt\/CiteFox\/citefox --check-due '--label=50\\%' /
+      )
+      expect(lines[2]).not.toMatch(/[^\\]%/)
+      expect(lines[2]?.endsWith(` ${CRON_MARKER}`)).toBe(true)
+      expect(write?.input?.endsWith('\n')).toBe(true)
+      expect(installer.isInstalled()).toBe(true)
+    }
+  )
 
-  test('falls back to cron when enabling the timer fails, and replaces an older cron line', () => {
-    const tab = crontab(`7 * * * * /old/citefox --check-due ${CRON_MARKER}\n@reboot me\n`)
-    const runner = fakeRunner((call) => {
-      if (call.file === 'systemctl' && call.args[1] === 'enable') {
-        return fail(1, 'Failed to connect to bus: No medium found')
-      }
-      if (call.file === 'systemctl' && call.args[1] === 'is-enabled') return fail(1)
-      return tab.respond(call)
-    })
-    const installer = systemdInstaller({ home: temp.home, runner })
-    installer.install(spec())
+  test.skipIf(onWindows)(
+    'falls back to cron when enabling the timer fails, and replaces an older cron line',
+    () => {
+      const tab = crontab(`7 * * * * /old/citefox --check-due ${CRON_MARKER}\n@reboot me\n`)
+      const runner = fakeRunner((call) => {
+        if (call.file === 'systemctl' && call.args[1] === 'enable') {
+          return fail(1, 'Failed to connect to bus: No medium found')
+        }
+        if (call.file === 'systemctl' && call.args[1] === 'is-enabled') return fail(1)
+        return tab.respond(call)
+      })
+      const installer = systemdInstaller({ home: temp.home, runner })
+      installer.install(spec())
 
-    expect(runner.commands()).toContain('systemctl --user disable --now citefox-checkdue.timer')
-    expect(existsSync(join(temp.home, '.config', 'systemd', 'user', SYSTEMD_TIMER))).toBe(false)
-    expect(tab.content()).toBe(`@reboot me\n${cronLine(spec())}\n`)
-    expect(installer.isInstalled()).toBe(true)
-  })
+      expect(runner.commands()).toContain('systemctl --user disable --now citefox-checkdue.timer')
+      expect(existsSync(join(temp.home, '.config', 'systemd', 'user', SYSTEMD_TIMER))).toBe(false)
+      expect(tab.content()).toBe(`@reboot me\n${cronLine(spec())}\n`)
+      expect(installer.isInstalled()).toBe(true)
+    }
+  )
 
-  test('install throws and leaves nothing behind when systemd and cron both fail', () => {
-    const runner = fakeRunner((call) =>
-      call.file === 'systemctl' ? notFound('systemctl') : notFound('crontab')
-    )
-    const installer = systemdInstaller({ home: temp.home, runner })
-    expect(() => installer.install(spec())).toThrow(OsJobError)
-    expect(() => installer.install(spec())).toThrow(/systemd .*ENOENT.*cron .*ENOENT/)
-    expect(existsSync(join(temp.home, '.config', 'systemd', 'user', SYSTEMD_SERVICE))).toBe(false)
-    expect(installer.isInstalled()).toBe(false)
-  })
+  test.skipIf(onWindows)(
+    'install throws and leaves nothing behind when systemd and cron both fail',
+    () => {
+      const runner = fakeRunner((call) =>
+        call.file === 'systemctl' ? notFound('systemctl') : notFound('crontab')
+      )
+      const installer = systemdInstaller({ home: temp.home, runner })
+      expect(() => installer.install(spec())).toThrow(OsJobError)
+      expect(() => installer.install(spec())).toThrow(/systemd .*ENOENT.*cron .*ENOENT/)
+      expect(existsSync(join(temp.home, '.config', 'systemd', 'user', SYSTEMD_SERVICE))).toBe(false)
+      expect(installer.isInstalled()).toBe(false)
+    }
+  )
 
   test('remove disables the timer, deletes the units, reloads and strips the cron line', () => {
     const tab = crontab(`0 1 * * * backup\n${cronLine(spec())}\n`)
@@ -281,7 +304,7 @@ describe('cron', () => {
     expect(rewriteCrontab(`x ${CRON_MARKER}\n`, null)).toBe('')
   })
 
-  test('cronInstaller installs, reports and removes its line', () => {
+  test.skipIf(onWindows)('cronInstaller installs, reports and removes its line', () => {
     const tab = crontab(null)
     const runner = fakeRunner(tab.respond)
     const installer = cronInstaller({ runner })
@@ -298,7 +321,7 @@ describe('cron', () => {
     installer.remove()
   })
 
-  test('cronInstaller throws when crontab cannot be read', () => {
+  test.skipIf(onWindows)('cronInstaller throws when crontab cannot be read', () => {
     const runner = fakeRunner(() => fail(1, 'crontab: you are not allowed to use this program'))
     expect(() => cronInstaller({ runner }).install(spec())).toThrow(/not allowed/)
     expect(runner.calls.some((call) => call.args[0] === '-')).toBe(false)

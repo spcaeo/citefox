@@ -24,7 +24,12 @@ export const FIXTURES = join(process.cwd(), 'src/main/providers/fixtures')
 
 export const SECRET = 'serp-live-secret-value-9f3c'
 
-export const BINARY = '/usr/local/bin/claude'
+/**
+ * A Claude Code path the IPC layer accepts on this computer: it checks the path against the
+ * real platform, which wants `claude.exe` or `claude.cmd` on Windows.
+ */
+export const BINARY =
+  process.platform === 'win32' ? 'C:\\Program Files\\Claude\\claude.exe' : '/usr/local/bin/claude'
 
 const directories: string[] = []
 /** Close callbacks for open harness stores. A test that reopens storage swaps its entry. */

@@ -1,5 +1,5 @@
 import { chmodSync, mkdirSync, renameSync, rmSync, writeFileSync } from 'node:fs'
-import { join, posix, win32 } from 'node:path'
+import { posix, win32 } from 'node:path'
 import { OsJobError } from './types'
 import type { CommandResult, OsJobSpec } from './types'
 
@@ -109,10 +109,11 @@ export function twoDigits(value: number): string {
   return String(value).padStart(2, '0')
 }
 
+/** Log files for the launchd, systemd and cron jobs. Those run only on macOS and Linux: '/' paths. */
 export function logPaths(spec: OsJobSpec): { stdout: string; stderr: string } {
   return {
-    stdout: join(spec.logDirectory, CHECK_DUE_LOG),
-    stderr: join(spec.logDirectory, CHECK_DUE_ERROR_LOG)
+    stdout: posix.join(spec.logDirectory, CHECK_DUE_LOG),
+    stderr: posix.join(spec.logDirectory, CHECK_DUE_ERROR_LOG)
   }
 }
 

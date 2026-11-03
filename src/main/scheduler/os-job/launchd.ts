@@ -1,5 +1,5 @@
 import { existsSync } from 'node:fs'
-import { dirname, join } from 'node:path'
+import { posix } from 'node:path'
 import {
   NEXT_STEP,
   ensureDirectory,
@@ -16,8 +16,9 @@ import type { CommandRunner, OsJobInstaller, OsJobSpec } from './types'
 
 export const LAUNCHD_LABEL = 'app.citefox.checkdue'
 
+/** launchd exists only on macOS, so the path is always a POSIX one. */
 export function launchAgentPlistPath(home: string): string {
-  return join(home, 'Library', 'LaunchAgents', `${LAUNCHD_LABEL}.plist`)
+  return posix.join(home, 'Library', 'LaunchAgents', `${LAUNCHD_LABEL}.plist`)
 }
 
 export function xmlEscape(value: string): string {
@@ -100,7 +101,7 @@ export function launchdInstaller(input: {
       validateSpec(spec, 'posix')
       const target = domain()
       const plist = launchAgentPlist(spec)
-      ensureDirectory(dirname(plistPath), 'the LaunchAgents folder')
+      ensureDirectory(posix.dirname(plistPath), 'the LaunchAgents folder')
       ensureDirectory(spec.logDirectory, 'the background check log folder')
       if (isLoaded()) runner.run('launchctl', ['bootout', `${target}/${LAUNCHD_LABEL}`])
       writeFileAtomic(plistPath, plist, 0o644, 'the background check file')

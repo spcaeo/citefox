@@ -1,5 +1,5 @@
 import { readdirSync, readFileSync } from 'node:fs'
-import { join, relative } from 'node:path'
+import { join, relative, sep } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 /**
@@ -51,7 +51,10 @@ function walk(dir: string, out: string[] = []): string[] {
 }
 
 const files = walk(ROOT)
-const sheets = files.filter((file) => file.endsWith('.css')).map((file) => relative(ROOT, file))
+// Posix-style names on every platform, so the lists above match on Windows too.
+const sheets = files
+  .filter((file) => file.endsWith('.css'))
+  .map((file) => relative(ROOT, file).split(sep).join('/'))
 const scripts = files.filter((file) => /\.tsx?$/.test(file) && !/\.test\.tsx?$/.test(file))
 
 function source(rel: string): string {

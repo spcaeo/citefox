@@ -1,5 +1,5 @@
 import { existsSync } from 'node:fs'
-import { isAbsolute, join } from 'node:path'
+import { posix } from 'node:path'
 import { installCronLine, crontabHasMarker, stripCronMarker, CRON_MARKER } from './cron'
 import {
   NEXT_STEP,
@@ -21,17 +21,17 @@ export { cronInstaller, cronLine, CRON_MARKER, shQuote } from './cron'
 export const SYSTEMD_SERVICE = 'citefox-checkdue.service'
 export const SYSTEMD_TIMER = 'citefox-checkdue.timer'
 
-/** `$XDG_CONFIG_HOME/systemd/user`, falling back to `~/.config/systemd/user`. */
+/** `$XDG_CONFIG_HOME/systemd/user`, falling back to `~/.config/systemd/user`. Linux only: POSIX paths. */
 export function systemdUserUnitDirectory(
   home: string,
   env: Record<string, string | undefined> = {}
 ): string {
   const configured = env.XDG_CONFIG_HOME
   const configHome =
-    configured !== undefined && configured !== '' && isAbsolute(configured)
+    configured !== undefined && configured !== '' && posix.isAbsolute(configured)
       ? configured
-      : join(home, '.config')
-  return join(configHome, 'systemd', 'user')
+      : posix.join(home, '.config')
+  return posix.join(configHome, 'systemd', 'user')
 }
 
 /** `%` starts a unit-file specifier; `%%` is a literal percent sign. */
@@ -90,8 +90,8 @@ export function systemdInstaller(input: {
 }): OsJobInstaller {
   const { runner } = input
   const unitDirectory = systemdUserUnitDirectory(input.home, input.env)
-  const servicePath = join(unitDirectory, SYSTEMD_SERVICE)
-  const timerPath = join(unitDirectory, SYSTEMD_TIMER)
+  const servicePath = posix.join(unitDirectory, SYSTEMD_SERVICE)
+  const timerPath = posix.join(unitDirectory, SYSTEMD_TIMER)
   const systemctl = (...args: string[]): CommandResult =>
     runner.run('systemctl', ['--user', ...args])
 

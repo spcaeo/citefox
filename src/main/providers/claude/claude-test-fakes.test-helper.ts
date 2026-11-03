@@ -85,6 +85,7 @@ export function claudeProvider(
     probe: probeFor([BINARY]),
     logger,
     savedBinaryPath: BINARY,
+    platform: 'linux',
     model: null,
     pathEnv: '',
     baseEnv: { PATH: '/usr/bin' },

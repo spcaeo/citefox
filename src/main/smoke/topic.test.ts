@@ -13,6 +13,12 @@ import type { SmokeIo } from './live'
 import { DEFAULT_TOPIC_SEED, namesBrand, pickAcrossStages, TOPIC_SEARCH_BUDGET } from './topic-args'
 import { whyRow } from './topic'
 
+/**
+ * The stand-in Claude Code: only the probe knows it, nothing is on disk. A fixed macOS path
+ * (the runs pass platform 'darwin'), so it stays valid when the temp folder is a Windows one.
+ */
+const FAKE_CLAUDE = '/Users/me/Application Support/claude'
+
 const PRIMARY = 'topic-smoke-fake-serpapi-primary'
 const SECOND = 'topic-smoke-fake-serpapi-second'
 const ANTHROPIC = 'sk-ant-topic-smoke-fake-value'
@@ -174,7 +180,7 @@ describe('runSmokeLive --topic offline', () => {
         platform: 'darwin',
         http: stubHttp(serp, ACCOUNT_BODY()),
         command: stubClaude(commands),
-        probe: probeFor(join(root, 'bin', 'claude'))
+        probe: probeFor(FAKE_CLAUDE)
       })
       const stdout = captured.stdout.join('\n')
       expect(captured.stderr).toEqual([])
@@ -274,7 +280,7 @@ describe('runSmokeLive --topic offline', () => {
       platform: 'darwin',
       http: stubHttp(serp, ACCOUNT_BODY()),
       command: stubClaude(commands),
-      probe: probeFor(join(root, 'bin', 'claude'))
+      probe: probeFor(FAKE_CLAUDE)
     })
     expect(report.ok).toBe(true)
     const lines = captured.stdout
@@ -319,7 +325,7 @@ describe('runSmokeLive --topic offline', () => {
         platform: 'darwin',
         http: stubHttp(serp, low),
         command: stubClaude(commands),
-        probe: probeFor(join(root, 'bin', 'claude'))
+        probe: probeFor(FAKE_CLAUDE)
       })
     ).rejects.toBeInstanceOf(SmokeError)
     const stderr = captured.stderr.join('\n')
@@ -353,7 +359,7 @@ describe('runSmokeLive --topic offline', () => {
         platform: 'darwin',
         http: stubHttp(serp, ACCOUNT_BODY(), empty),
         command: stubClaude(commands),
-        probe: probeFor(join(root, 'bin', 'claude'))
+        probe: probeFor(FAKE_CLAUDE)
       })
     ).rejects.toBeInstanceOf(SmokeError)
     const stderr = captured.stderr.join('\n')

@@ -20,6 +20,7 @@ import {
   type StoredSnapshot
 } from '../storage/content-records'
 import { closeDatabase, type SqliteDatabase } from '../storage/database'
+import { closeProjectDatabasePool } from '../storage/project-db-pool'
 import { listFixFollowUps, createFixFollowUp } from '../storage/fix-follow-ups'
 import {
   addPageMarket,
@@ -47,7 +48,12 @@ const dirs: string[] = []
 const databases: SqliteDatabase[] = []
 
 afterEach(() => {
-  for (const db of databases.splice(0)) closeDatabase(db)
+  // An app database also owns the project databases its pool opened; close those too, or Windows
+  // cannot delete the temp folder.
+  for (const db of databases.splice(0)) {
+    closeProjectDatabasePool(db)
+    closeDatabase(db)
+  }
   for (const dir of dirs.splice(0)) rmSync(dir, { recursive: true, force: true })
 })
 

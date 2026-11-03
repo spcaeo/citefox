@@ -1,5 +1,5 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
-import { join, relative, resolve } from 'node:path'
+import { join, relative, resolve, sep } from 'node:path'
 import { describe, expect, test } from 'vitest'
 import { Q } from '@shared/fixtures/textbolt-topic-data'
 import { textboltTopicPrompts } from '@shared/fixtures/textbolt-topic'
@@ -60,7 +60,8 @@ function fixturePhrases(): string[] {
 describe('release bundles carry no demo data', () => {
   const files = bundleFiles()
   const texts = files.map((file) => ({
-    name: relative(process.cwd(), file),
+    // '/' on every platform, so the names read the same on Windows.
+    name: relative(process.cwd(), file).split(sep).join('/'),
     text: readFileSync(file, 'utf8')
   }))
 

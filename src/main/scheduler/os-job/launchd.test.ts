@@ -10,6 +10,10 @@ import type { CommandResult, OsJobSpec } from './types'
 
 const SERVICE = `gui/501/${LAUNCHD_LABEL}`
 
+// Skipped on Windows: install writes into a real temp home, and launchd (macOS only) takes only
+// POSIX paths, which a Windows temp folder is not. Windows uses Task Scheduler instead.
+const onWindows = process.platform === 'win32'
+
 let temp: TempHome
 
 beforeEach(() => {
@@ -123,38 +127,48 @@ describe('launchAgentPlist', () => {
 })
 
 describe('launchdInstaller', () => {
-  test('install creates the folders, writes the plist and bootstraps it into gui/<uid>', () => {
-    const runner = fakeRunner(launchctl())
-    const installer = launchdInstaller({ home: temp.home, uid: 501, runner })
-    const plistPath = launchAgentPlistPath(temp.home)
-    expect(plistPath).toBe(join(temp.home, 'Library', 'LaunchAgents', 'app.citefox.checkdue.plist'))
+  test.skipIf(onWindows)(
+    'install creates the folders, writes the plist and bootstraps it into gui/<uid>',
+    () => {
+      const runner = fakeRunner(launchctl())
+      const installer = launchdInstaller({ home: temp.home, uid: 501, runner })
+      const plistPath = launchAgentPlistPath(temp.home)
+      expect(plistPath).toBe(
+        join(temp.home, 'Library', 'LaunchAgents', 'app.citefox.checkdue.plist')
+      )
 
-    installer.install(spec())
+      installer.install(spec())
 
-    expect(installer.kind).toBe('launchd')
-    expect(runner.calls.map((call) => call.args)).toEqual([
-      ['print', SERVICE],
-      ['bootstrap', 'gui/501', plistPath]
-    ])
-    expect(readFileSync(plistPath, 'utf8')).toBe(launchAgentPlist(spec()))
-    expect(statSync(plistPath).mode & 0o777).toBe(0o644)
-    expect(existsSync(spec().logDirectory)).toBe(true)
-    expect(installer.isInstalled()).toBe(true)
-  })
+      expect(installer.kind).toBe('launchd')
+      expect(runner.calls.map((call) => call.args)).toEqual([
+        ['print', SERVICE],
+        ['bootstrap', 'gui/501', plistPath]
+      ])
+      expect(readFileSync(plistPath, 'utf8')).toBe(launchAgentPlist(spec()))
+      expect(statSync(plistPath).mode & 0o777).toBe(0o644)
+      expect(existsSync(spec().logDirectory)).toBe(true)
+      expect(installer.isInstalled()).toBe(true)
+    }
+  )
 
-  test('install replaces a loaded job: bootout first, then bootstrap the new plist', () => {
-    const runner = fakeRunner(launchctl({ loaded: true }))
-    const installer = launchdInstaller({ home: temp.home, uid: 501, runner })
-    installer.install(spec({ minute: 30 }))
-    expect(runner.calls.map((call) => call.args)).toEqual([
-      ['print', SERVICE],
-      ['bootout', SERVICE],
-      ['bootstrap', 'gui/501', launchAgentPlistPath(temp.home)]
-    ])
-    expect(readFileSync(launchAgentPlistPath(temp.home), 'utf8')).toContain('<integer>30</integer>')
-  })
+  test.skipIf(onWindows)(
+    'install replaces a loaded job: bootout first, then bootstrap the new plist',
+    () => {
+      const runner = fakeRunner(launchctl({ loaded: true }))
+      const installer = launchdInstaller({ home: temp.home, uid: 501, runner })
+      installer.install(spec({ minute: 30 }))
+      expect(runner.calls.map((call) => call.args)).toEqual([
+        ['print', SERVICE],
+        ['bootout', SERVICE],
+        ['bootstrap', 'gui/501', launchAgentPlistPath(temp.home)]
+      ])
+      expect(readFileSync(launchAgentPlistPath(temp.home), 'utf8')).toContain(
+        '<integer>30</integer>'
+      )
+    }
+  )
 
-  test('install ignores a failing bootout of the old job', () => {
+  test.skipIf(onWindows)('install ignores a failing bootout of the old job', () => {
     const runner = fakeRunner(launchctl({ loaded: true, bootout: fail(5, 'Input/output error') }))
     launchdInstaller({ home: temp.home, uid: 501, runner }).install(spec())
     expect(runner.commands()).toContain(
@@ -162,7 +176,7 @@ describe('launchdInstaller', () => {
     )
   })
 
-  test('install falls back to load -w when bootstrap fails', () => {
+  test.skipIf(onWindows)('install falls back to load -w when bootstrap fails', () => {
     const runner = fakeRunner(launchctl({ bootstrap: fail(5, 'Bootstrap failed: 5') }))
     const installer = launchdInstaller({ home: temp.home, uid: 501, runner })
     const plistPath = launchAgentPlistPath(temp.home)
@@ -176,16 +190,19 @@ describe('launchdInstaller', () => {
     expect(existsSync(plistPath)).toBe(true)
   })
 
-  test('install deletes the plist and throws when bootstrap and load both fail', () => {
-    const runner = fakeRunner(
-      launchctl({ bootstrap: fail(5, 'Bootstrap failed: 5: Input/output error'), load: fail(1) })
-    )
-    const installer = launchdInstaller({ home: temp.home, uid: 501, runner })
-    expect(() => installer.install(spec())).toThrow(OsJobError)
-    expect(() => installer.install(spec())).toThrow(/Bootstrap failed: 5.*Nothing was installed/)
-    expect(existsSync(launchAgentPlistPath(temp.home))).toBe(false)
-    expect(installer.isInstalled()).toBe(false)
-  })
+  test.skipIf(onWindows)(
+    'install deletes the plist and throws when bootstrap and load both fail',
+    () => {
+      const runner = fakeRunner(
+        launchctl({ bootstrap: fail(5, 'Bootstrap failed: 5: Input/output error'), load: fail(1) })
+      )
+      const installer = launchdInstaller({ home: temp.home, uid: 501, runner })
+      expect(() => installer.install(spec())).toThrow(OsJobError)
+      expect(() => installer.install(spec())).toThrow(/Bootstrap failed: 5.*Nothing was installed/)
+      expect(existsSync(launchAgentPlistPath(temp.home))).toBe(false)
+      expect(installer.isInstalled()).toBe(false)
+    }
+  )
 
   test('install treats a load that exits 0 without registering as a failure', () => {
     const runner = fakeRunner(launchctl({ bootstrap: fail(5), loadRegisters: false }))
@@ -204,7 +221,7 @@ describe('launchdInstaller', () => {
     expect(existsSync(dirname(launchAgentPlistPath(temp.home)))).toBe(false)
   })
 
-  test('install without a user ID throws a user-facing error', () => {
+  test.skipIf(onWindows)('install without a user ID throws a user-facing error', () => {
     const runner = fakeRunner(launchctl())
     const installer = launchdInstaller({ home: temp.home, uid: null, runner })
     expect(() => installer.install(spec())).toThrow(/user ID/)
@@ -212,7 +229,7 @@ describe('launchdInstaller', () => {
     expect(installer.isInstalled()).toBe(false)
   })
 
-  test('remove boots the job out, then deletes the plist', () => {
+  test.skipIf(onWindows)('remove boots the job out, then deletes the plist', () => {
     const runner = fakeRunner(launchctl())
     const installer = launchdInstaller({ home: temp.home, uid: 501, runner })
     installer.install(spec())
