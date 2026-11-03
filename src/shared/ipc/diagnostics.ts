@@ -76,8 +76,8 @@ export interface OpenReportMailRequest {
 /** A folder or mail window that did not open, with a plain reason. */
 export type DiagnosticsOpenResult = { ok: true } | { ok: false; reason: string; nextStep: string }
 
-/** Menu items that open the Report a problem drawer (`diagnostics:menu`). */
-export const DIAGNOSTICS_MENU_COMMANDS = ['report-problem'] as const
+/** Help menu items the window carries out (`diagnostics:menu`): the drawer and the tour. */
+export const DIAGNOSTICS_MENU_COMMANDS = ['report-problem', 'watch-tour'] as const
 
 export type DiagnosticsMenuCommand = (typeof DIAGNOSTICS_MENU_COMMANDS)[number]
 

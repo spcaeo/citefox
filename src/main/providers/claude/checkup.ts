@@ -9,7 +9,7 @@ import { redactValue } from '../../logging/redact'
 import type { SqliteDatabase } from '../../storage/database'
 import { insertClaudeCheckup } from '../../storage/records'
 import { ProviderError, ProviderTimeoutError, ClaudeLimitError } from '../errors'
-import { resolveSecretList } from '../log'
+import { logProvider, resolveSecretList } from '../log'
 import type { ClaudeCodeProvider, ClaudeCodeProviderOptions } from './claude-code'
 import { ClaudeCodeCallError, createClaudeCodeProvider } from './claude-code'
 import { EventEmitter } from 'node:events'
@@ -90,6 +90,21 @@ async function runWithProvider(
   }
   const finish = (result: ClaudeCheckupResult): ClaudeCheckupResult => {
     const safe = redactValue(result, { secrets: secrets() }) as ClaudeCheckupResult
+    if (!safe.ready) {
+      // One line for a check that did not pass: which step stopped it, never a path or message.
+      logProvider(
+        options.logger,
+        'warn',
+        'ai check did not pass',
+        {
+          provider: 'claude-code',
+          binaryFound: safe.binaryPath !== null,
+          login: safe.login,
+          roundTrip: safe.roundTrip
+        },
+        secrets()
+      )
+    }
     insertClaudeCheckup(options.db, {
       id: options.id ?? randomUUID(),
       ranAt: (options.now ?? ((): Date => new Date()))().toISOString(),

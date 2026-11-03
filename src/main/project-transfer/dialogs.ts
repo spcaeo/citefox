@@ -3,6 +3,7 @@ import { readFile, stat } from 'node:fs/promises'
 import { basename, dirname } from 'node:path'
 import { TRANSFER_MAX_FILE_BYTES, type TransferFailure } from '@shared/ipc'
 import { nodeExportIo, publishBytes, type ExportAtomicIo } from '../export/atomic'
+import type { Logger } from '../logging/logger'
 
 /**
  * The native save and open dialogs for moving to a new Mac. Production passes
@@ -30,9 +31,20 @@ export interface TransferDialogs {
 }
 
 let dialogs: TransferDialogs | null = null
+let transferLogger: Pick<Logger, 'warn'> | null = null
 
-export function configureTransferDialogs(next: TransferDialogs | null): void {
+export function configureTransferDialogs(
+  next: TransferDialogs | null,
+  logger: Pick<Logger, 'warn'> | null = null
+): void {
   dialogs = next
+  transferLogger = logger
+}
+
+/** `EACCES`, `ENOENT`... for a log line; null when the error has no short code. */
+function errorCode(error: unknown): string | null {
+  const code = (error as NodeJS.ErrnoException | null)?.code
+  return typeof code === 'string' && /^[A-Z_]{2,24}$/u.test(code) ? code : null
 }
 
 const NO_DIALOG: TransferFailure = {
@@ -64,7 +76,8 @@ export async function saveText(
   const bytes = Buffer.from(text, 'utf8')
   try {
     await publishBytes(dirname(picked.filePath), basename(picked.filePath), bytes, io)
-  } catch {
+  } catch (error) {
+    transferLogger?.warn('project file could not be written', { code: errorCode(error) })
     return {
       ok: false,
       cancelled: false,
@@ -109,7 +122,8 @@ export async function openText(options: {
       }
     }
     return { ok: true, filename, text: await readFile(path, 'utf8') }
-  } catch {
+  } catch (error) {
+    transferLogger?.warn('project file could not be read', { code: errorCode(error) })
     return {
       ok: false,
       cancelled: false,

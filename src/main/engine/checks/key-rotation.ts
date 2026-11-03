@@ -15,7 +15,7 @@ import type { AppStorage } from '../../storage/app-storage'
 import { recordActivity } from '../../storage/activity-events'
 import { getKeyUsageForMonth } from '../../storage/key-usage'
 import { addKeyUsage, insertConnectionEvent, listApiKeys } from '../../storage/records'
-import { captureSerpApi, type CaptureQuery, type SerpCapture } from './capture'
+import { captureSerpApi, logSerpApiFailure, type CaptureQuery, type SerpCapture } from './capture'
 import {
   captureCloroAnswer,
   captureCloroGoogle,
@@ -470,7 +470,10 @@ export function createKeyRotation(
         (secret) =>
           provider === 'cloro'
             ? captureCloroGoogle(captureOptions(secret, query, gate))
-            : captureSerpApi(captureOptions(secret, query, gate)),
+            : captureSerpApi(captureOptions(secret, query, gate)).then((capture) => {
+                logSerpApiFailure(deps.logger, capture)
+                return capture
+              }),
         (message, nextStep) => ({
           ...emptyCapture(),
           ...(message.length === 0 ? {} : { errorCode: 'other' as const, message, nextStep })

@@ -8,6 +8,8 @@ import { PageProductField } from '../products/PageProductField'
 import { LoadError } from '../components/LoadError'
 import { LinkButton, TrackingChangesContext, UndoToastHost } from '../ui'
 import { CelebrationHost } from '../celebrate/CelebrationHost'
+import { CheckSounds } from '../celebrate/CheckSounds'
+import { IntroHost } from '../intro/IntroHost'
 import { errorText } from '../components/errorText'
 import { PageTabs } from '../components/PageTabs'
 import { Sidebar } from '../components/Sidebar'
@@ -525,6 +527,8 @@ export function AppShell({
                 />
                 <UndoToastHost />
                 <CelebrationHost />
+                <CheckSounds />
+                <IntroHost firstRun={false} />
                 <GuideOverlays />
               </div>
             </DrillHost>

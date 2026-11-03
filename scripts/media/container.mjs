@@ -91,7 +91,8 @@ export function openContainer({ name, rebuild = false }) {
     })
   }
 
-  async function start() {
+  /** `build: false` skips npm ci and the app build (composing a film needs only the Revideo packages). */
+  async function start({ build = true } = {}) {
     if (docker(['info'], { stdio: 'ignore' }).status !== 0) fail('Docker is not running.')
     const fingerprint = createHash('sha256')
       .update(readFileSync(dockerfile))
@@ -190,10 +191,9 @@ export function openContainer({ name, rebuild = false }) {
     })
     if (!copied) fail('Copying the working tree failed')
 
-    log('npm ci and build')
-    if (
-      (await exec('npm ci --no-audit --no-fund --loglevel=error && npx electron-vite build')) !== 0
-    )
+    log(build ? 'npm ci and build' : 'npm ci')
+    const install = 'npm ci --no-audit --no-fund --loglevel=error'
+    if ((await exec(build ? `${install} && npx electron-vite build` : install)) !== 0)
       fail('npm ci or the build failed')
   }
 
@@ -203,6 +203,12 @@ export function openContainer({ name, rebuild = false }) {
       echo -n "" | gnome-keyring-daemon --unlock --components=secrets >/dev/null
       xvfb-run -a -s "-screen 0 1920x1080x24" npx playwright test -c ${config} ${extra}
     '`)
+  }
+
+  /** Copies a folder into the container (it lands as `to`, under the app folder's tree). */
+  function copyIn(from, to) {
+    const back = docker(['cp', from, `${container}:${to}`])
+    if (back.status !== 0) fail(`Could not copy ${from} in: ${back.stderr}`)
   }
 
   /** Copies a folder out of the container. */
@@ -217,6 +223,7 @@ export function openContainer({ name, rebuild = false }) {
     exec,
     playwright,
     copyOut,
+    copyIn,
     fail,
     cleanup,
     get started() {

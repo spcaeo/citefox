@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## 0.13.7 — 2026-11-03
+
+### New
+
+- **Welcome tour:** a short captioned film of the real app, with its own music, plays once before **Join CiteFox**. Skip and Mute are there from the first second, Esc skips, and it starts muted when the sound switch is off or the system asks for less motion. Replay it any time from **Help › Watch the welcome tour**.
+- **Check sounds:** a soft two-note chime when a check starts and a rising chime when it finishes, made by CiteFox itself. They play only while the window is in front, so a check the schedule runs in the background stays silent. **Settings › Appearance › Play a sound** turns them off, together with the citation jingle.
+
+### Improved
+
+- **Even clearer logs and plainer messages:** the log now also says why an AI step, an AI check, a sitemap read, an import, an export, a project file, the daily ping or the update check did not finish (a short reason code or a status, never your keys, questions, page text or email addresses). When a search cannot be read or takes too long, the message now says what happened and what to do next, without naming the search service.
+
 ## 0.13.6 — 2026-11-03
 
 ### Improved

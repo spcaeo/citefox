@@ -507,7 +507,7 @@ void app
                 broadcastIpcEvent('transfer:menu', { command })
               },
               onHelpCommand: (command) => {
-                if (command === 'report-problem') {
+                if (command === 'report-problem' || command === 'watch-tour') {
                   broadcastIpcEvent('diagnostics:menu', { command })
                   return
                 }
@@ -553,10 +553,13 @@ void app
       open: (options) => dialog.showOpenDialog(options),
       save: (options) => dialog.showSaveDialog(options)
     })
-    configureTransferDialogs({
-      open: (options) => dialog.showOpenDialog(options),
-      save: (options) => dialog.showSaveDialog(options)
-    })
+    configureTransferDialogs(
+      {
+        open: (options) => dialog.showOpenDialog(options),
+        save: (options) => dialog.showSaveDialog(options)
+      },
+      logger
+    )
     configureAutoExportFolderDialog(() =>
       dialog.showOpenDialog({
         title: 'Choose a folder for automatic exports',

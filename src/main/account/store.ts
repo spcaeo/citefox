@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { checkAccountDetails, type AccountDetails } from '@shared/account'
 import type { UpdateRelease } from '@shared/ipc'
+import type { Logger } from '../logging/logger'
 import { atomicWriteFile } from '../storage/atomic-file'
 
 /**
@@ -57,7 +58,11 @@ export function defaultAccountState(createId: () => string = randomUUID): Accoun
 }
 
 /** A file store; a missing or broken file starts fresh (and asks to join again). */
-export function createAccountStore(filePath: string, createId?: () => string): AccountStore {
+export function createAccountStore(
+  filePath: string,
+  createId?: () => string,
+  logger?: Pick<Logger, 'warn'>
+): AccountStore {
   let cached: AccountState | null = null
   function load(): AccountState {
     if (cached !== null) return cached
@@ -73,8 +78,12 @@ export function createAccountStore(filePath: string, createId?: () => string): A
   function write(state: AccountState): void {
     try {
       atomicWriteFile(filePath, `${JSON.stringify({ version: 1, ...state }, null, 2)}\n`)
-    } catch {
+    } catch (error) {
       // A read-only data folder keeps the state for this run only.
+      const code = (error as NodeJS.ErrnoException).code
+      logger?.warn('CiteFox account: the account file could not be saved', {
+        code: typeof code === 'string' ? code : null
+      })
     }
   }
   return {

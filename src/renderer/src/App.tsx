@@ -17,6 +17,7 @@ import { BuildToolsHost, loadAppInfo } from './buildMenu'
 import { WorkConsoleHost } from './console'
 import { ACCOUNT_OFF, ipcAccountClient, type AccountClient } from './account/client'
 import { JoinScreen } from './account/JoinScreen'
+import { IntroHost } from './intro/IntroHost'
 import { ReleaseLine } from './shell/ReleaseLine'
 import type { AccountStatus } from '@shared/ipc'
 
@@ -171,6 +172,7 @@ export function App(): JSX.Element {
     return (
       <>
         <JoinScreen client={accountClient} onJoined={setAccount} />
+        <IntroHost firstRun />
         <ReleaseLine />
       </>
     )

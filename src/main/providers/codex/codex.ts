@@ -202,6 +202,13 @@ export function createCodexProvider(options: CodexProviderOptions): CodexProvide
     async complete(request: ClaudeCompletionRequest): Promise<ClaudeCompletion> {
       const located = provider.locate(options.savedBinaryPath ?? null)
       if (located.path === null) {
+        logProvider(
+          options.logger,
+          'warn',
+          'codex call finished',
+          { provider: 'codex', outcome: 'error', code: 'not_installed', located: false },
+          secretsNow()
+        )
         throw new ProviderError('Codex was not found on this computer.', {
           code: 'not_installed',
           state: 'warning',
@@ -288,7 +295,8 @@ export function createCodexProvider(options: CodexProviderOptions): CodexProvide
         model,
         usage,
         secrets,
-        0
+        0,
+        wrapped.code
       )
       throw wrapped
     }
@@ -392,7 +400,8 @@ export function createCodexProvider(options: CodexProviderOptions): CodexProvide
     model: string,
     usage: ClaudeCliUsage | null,
     secrets: readonly string[],
-    webSearches: number
+    webSearches: number,
+    code: string | null = null
   ): void {
     logProvider(
       options.logger,
@@ -402,6 +411,8 @@ export function createCodexProvider(options: CodexProviderOptions): CodexProvide
         provider: 'codex',
         durationMs,
         outcome,
+        // Why it failed (not_installed, logged_out, timeout...): a short code, never the message.
+        ...(code === null ? {} : { code }),
         model,
         webSearches,
         inputTokens: usage?.inputTokens ?? null,

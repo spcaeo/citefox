@@ -32,7 +32,7 @@ export const RELEASE_REPO = githubSlug(packageJson.repository)
  * sent) and no automatic update check.
  */
 export function defaultAccountServices(ctx: EngineContext): AccountServices {
-  const store = createAccountStore(accountFilePath(ctx.storage.paths.root))
+  const store = createAccountStore(accountFilePath(ctx.storage.paths.root), undefined, ctx.logger)
   return {
     reports: { endpoint: null, installId: () => store.read().installId },
     account: createAccountService({

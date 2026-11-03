@@ -7,6 +7,7 @@ import {
   type ReleaseAsset
 } from '@shared/release-compare'
 import type { Logger } from '../logging/logger'
+import { ProviderError } from '../providers/errors'
 import type { HttpTransport } from '../providers/http'
 import { withTimeout } from '../providers/timeout'
 import type { AccountStore } from '../account/store'
@@ -147,6 +148,13 @@ export function createUpdateService(deps: UpdateServiceDeps): UpdateService {
       const latest =
         response.status === 200 ? readGithubRelease(response.body, platform, arch) : null
       const failed = response.status !== 200 && response.status !== 404
+      if (failed) {
+        deps.logger.warn('CiteFox updates: the release list answered with an error', {
+          status: response.status
+        })
+      } else if (response.status === 200 && latest === null) {
+        deps.logger.warn('CiteFox updates: the newest release could not be understood')
+      }
       deps.store.update({
         updates: {
           ...saved,
@@ -155,8 +163,10 @@ export function createUpdateService(deps: UpdateServiceDeps): UpdateService {
           failed
         }
       })
-    } catch {
-      deps.logger.info('CiteFox updates: could not read the newest release')
+    } catch (error) {
+      deps.logger.info('CiteFox updates: could not read the newest release', {
+        reason: error instanceof ProviderError ? error.code : 'unexpected'
+      })
       deps.store.update({ updates: { ...saved, checkedAt: now().toISOString(), failed: true } })
     }
     return status()

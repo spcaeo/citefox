@@ -6,6 +6,7 @@
 
 import type { IpcHandlerMap } from '@shared/ipc'
 import { bindEmailIpcHandlers, bindReportIpcHandlers } from '../email/engine-email'
+import { logReportBuildFailure } from '../email/reports/build-failure-log'
 import { createCheckEngine } from '../engine/checks/engine'
 import { scheduledReportPayload } from '../headless/due-reports'
 import { bindExportIpcHandlers } from '../export/ipc'
@@ -220,6 +221,10 @@ export function createIpcHandlers(deps: IpcHandlerDeps): IpcHandlerMap {
           scheduledReportPayload(ctx.storage, schedule, ctx.email.clock.now(), {
             logger: ctx.logger,
             redacted: ctx.knownSecrets()
+          }).catch((error: unknown) => {
+            // The send goes on without the file; the log says the file was the problem.
+            logReportBuildFailure(ctx.logger, schedule.id, error)
+            throw error
           })
       }),
       ...bindExportIpcHandlers(

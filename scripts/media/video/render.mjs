@@ -4,17 +4,24 @@
  * through Puppeteer, then ffmpeg). Run by scripts/media/make-video.mjs inside the
  * Docker container, from this folder, once public/ holds the footage and assets:
  *
- *   node render.mjs <out-dir> <download-url>
+ *   node render.mjs <out-dir> <download-url> [project file]
+ *
+ * The project file is ./src/project.ts (the product video) or ./src/tour-project.ts (the
+ * welcome tour, make-tour.mjs).
  *
  * Writes <out-dir>/film.mp4 (silent; make-video.mjs adds the music and encodes).
  */
 import { renderVideo } from '@revideo/renderer'
 
-const [outDir = 'output', downloadUrl = 'https://spcaeo.github.io/citefox/'] = process.argv.slice(2)
+const [
+  outDir = 'output',
+  downloadUrl = 'https://spcaeo.github.io/citefox/',
+  projectFile = './src/project.ts'
+] = process.argv.slice(2)
 process.env.DISABLE_TELEMETRY = 'true'
 
 const file = await renderVideo({
-  projectFile: './src/project.ts',
+  projectFile,
   variables: { downloadUrl },
   settings: {
     outFile: 'film.mp4',

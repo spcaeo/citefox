@@ -26,7 +26,7 @@ export function startAccountRuntime(input: {
   packaged: boolean
   endpoint?: RegisterEndpoint | null
 }): { services: AccountServices; stop: () => void } {
-  const store = createAccountStore(accountFilePath(input.dataRoot))
+  const store = createAccountStore(accountFilePath(input.dataRoot), undefined, input.logger)
   // Only an installed app joins and pings; dev runs and tests never call out unless
   // CITEFOX_REGISTER_DEV=1 (to try the Join step against the real Sheet).
   const live = input.packaged || process.env.CITEFOX_REGISTER_DEV === '1'

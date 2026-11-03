@@ -72,5 +72,17 @@ export function logEmail(
   secrets: readonly string[]
 ): void {
   const safeMessage = redactString(message, { secrets })
-  deps.logger[level](safeMessage, redactValue(extra, { secrets }))
+  deps.logger[level](safeMessage, maskEmailAddresses(redactValue(extra, { secrets })))
+}
+
+const EMAIL_ADDRESS = /[^\s<>"'(),;:@\\]+@[^\s<>"'(),;:@\\]+\.[^\s<>"'(),;:@\\]+/gu
+
+/**
+ * A mail server's answer can quote the recipient or the sender ("550 <name@host> unknown").
+ * Logs hold no email address, so every one in a logged value is replaced.
+ */
+export function maskEmailAddresses<T>(value: T): T {
+  const encoded = JSON.stringify(value)
+  if (encoded === undefined || !encoded.includes('@')) return value
+  return JSON.parse(encoded.replace(EMAIL_ADDRESS, '[email]')) as T
 }

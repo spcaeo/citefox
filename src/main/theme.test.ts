@@ -242,9 +242,13 @@ describe('View › Appearance menu', () => {
       const help = template[template.length - 1]
       expect(help?.label).toBe('Help')
       const items = Array.isArray(help?.submenu) ? help.submenu : []
-      expect(items.map((item) => item.label)).toEqual(['Report a problem…', 'Show logs folder'])
+      expect(items.map((item) => item.label)).toEqual([
+        'Watch the welcome tour',
+        'Report a problem…',
+        'Show logs folder'
+      ])
       for (const item of items) item.click?.(undefined as never, undefined, undefined as never)
-      expect(commands).toEqual(['report-problem', 'show-logs'])
+      expect(commands).toEqual(['watch-tour', 'report-problem', 'show-logs'])
     }
   })
 

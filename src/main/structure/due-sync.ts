@@ -15,7 +15,12 @@ export function dueSyncProjects(host: EngineHost, now: Date): string[] {
     let db
     try {
       db = openProjectDatabase(host.storage.paths.projectsDirectory, project.slug)
-    } catch {
+    } catch (error) {
+      // This project's scheduled sitemap sync cannot run until its file opens again.
+      host.logger.warn('project file could not be opened for the sitemap schedule', {
+        projectId: project.id,
+        threw: error instanceof Error ? error.name : typeof error
+      })
       continue
     }
     try {

@@ -28,6 +28,12 @@ describe('logIpcFailure', () => {
     expect(JSON.stringify(log.lines)).not.toContain('question about')
   })
 
+  test('a cancelled dialog is not logged as a failure', async () => {
+    const log = recorder()
+    await logIpcFailure(log, 'transfer:save', () => ({ ok: false, cancelled: true }))
+    expect(log.lines).toEqual([])
+  })
+
   test('a good answer, a plain value and a missing logger write nothing and change nothing', async () => {
     const log = recorder()
     await logIpcFailure(log, 'a', () => ({ ok: true }))

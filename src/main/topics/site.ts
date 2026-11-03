@@ -5,6 +5,7 @@ import type { EngineHost } from '../engine/host'
 import { fetchPlaygroundPage } from '../pipeline/playground'
 import { sharedReadPool } from '../pipeline/read-pool'
 import { EVIDENCE_PAGE_CHARS, evidenceBlock, type EvidencePage } from '../prompts/blocks'
+import { ProviderError } from '../providers/errors'
 import { createJinaReaderClient } from '../providers/jina/reader'
 import type { SqliteDatabase } from '../storage/database'
 import { listPagesOfKind } from '../storage/pages'
@@ -186,8 +187,11 @@ async function fetchRead(
         )
       }
     }
-  } catch {
-    // Fall through to a direct read.
+  } catch (error) {
+    // Fall through to a direct read; the line says why the first way did not work.
+    host.logger.warn('website page read through the reader failed', {
+      reason: error instanceof ProviderError ? error.code : 'unexpected'
+    })
   }
   onMethod('Trying a direct read')
   try {

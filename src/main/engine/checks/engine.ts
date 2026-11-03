@@ -335,7 +335,16 @@ export function createCheckRunner(
           ...(finished.runIds[0] ? { runId: finished.runIds[0] } : {})
         }
       } catch (error) {
-        const message = error instanceof Error ? error.message : 'Check failed.'
+        // A named input problem says what to fix; anything else gets a plain sentence.
+        const message =
+          error instanceof CheckInputError
+            ? error.message
+            : 'The check could not start. Try it again in a minute.'
+        // The check could not even start: the type of the error only, never its message.
+        deps.logger.warn('check could not start', {
+          jobId: job.id,
+          threw: error instanceof Error ? error.name : typeof error
+        })
         return { outcome: 'error', message, searches: [] }
       }
     }

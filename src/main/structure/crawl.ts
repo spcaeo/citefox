@@ -151,6 +151,9 @@ export async function crawlSitemaps(ctx: CrawlContext): Promise<CrawlResult> {
     try {
       parsed = parseSitemapXml(fetched.text)
     } catch (error) {
+      ctx.fetch.logger.warn('sitemap file is not a readable sitemap', {
+        reason: error instanceof SitemapParseError ? 'parse' : 'unexpected'
+      })
       fail(
         ctx,
         result,

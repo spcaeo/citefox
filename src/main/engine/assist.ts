@@ -65,6 +65,13 @@ export async function completeAssist(
       })
       json = completion.json ?? parseJson(completion.text)
     } catch (error) {
+      // Which step asked and the short reason; the AI call itself logs its own line.
+      host.logger.warn('claude assist failed', {
+        channel,
+        assistId: trace.assistId,
+        attempt,
+        reason: errorReason(error)
+      })
       const message = error instanceof Error ? error.message : 'The CiteFox AI call failed'
       throw new PipelineError(message, {
         code: 'fetch_failed',
@@ -77,6 +84,11 @@ export async function completeAssist(
       check.done()
       return json
     }
+    host.logger.warn('claude assist reply did not match the shape', {
+      channel,
+      assistId: trace.assistId,
+      attempt
+    })
     if (attempt === 0) {
       check.fail('It did not match the expected shape · asking again')
       progressRetryNext()
@@ -89,6 +101,15 @@ export async function completeAssist(
     code: 'schema_validation',
     nextStep: 'Try again.'
   })
+}
+
+/** A short reason code for a log line: the error's own code, else its type. Never its message. */
+function errorReason(error: unknown): string {
+  if (typeof error === 'object' && error !== null && 'code' in error) {
+    const code = (error as { code: unknown }).code
+    if (typeof code === 'string' && /^[a-z_]{1,32}$/u.test(code)) return code
+  }
+  return error instanceof Error ? error.name : typeof error
 }
 
 /** Per-call options for {@link completeAssist}. */

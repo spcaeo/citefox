@@ -132,6 +132,8 @@ export async function seed(input: {
   extraKeys?: readonly string[]
   sleep?: (ms: number) => Promise<void>
   claude?: ClaudeProvider
+  /** Every log line the engine writes, for a test that checks a failure was logged. */
+  logLines?: string[]
   /** A promise lets a test hold a response, so calls overlap as they do live. */
   http: (request: HttpRequest) => HttpResponse | Promise<HttpResponse>
   /** Questions of one market at once. Default: the engine's own. */
@@ -302,7 +304,11 @@ export async function seed(input: {
   const checkDeps: CheckEngineDeps = {
     storage,
     secrets,
-    logger: createLogger({ write: () => undefined }),
+    logger: createLogger({
+      write: (_level, line) => {
+        input.logLines?.push(line)
+      }
+    }),
     http: {
       async request(request) {
         return input.http(request)

@@ -1,5 +1,6 @@
 import type { CheckErrorCode, SearchProvider } from '@shared/domain'
 import type { MarketDevice } from '@shared/domain'
+import type { Logger } from '../../logging/logger'
 import type { GoogleExtras } from '../../providers/serpapi/extras'
 import { serpApiGl } from '@shared/domain'
 import { RATE_LIMITED_MESSAGE } from '../../providers/cloro/api'
@@ -75,6 +76,19 @@ export interface SerpCapture {
   markdown?: string | null
   /** Organic top 10 and "People also ask", read by the provider. Absent: read from `rawSearchJson`. */
   extras?: GoogleExtras
+}
+
+/** One log line for a SerpApi search that ended in a failure: provider, reason and count only. */
+export function logSerpApiFailure(
+  logger: Pick<Logger, 'warn'> | undefined,
+  capture: Pick<SerpCapture, 'errorCode' | 'halted' | 'searches'>
+): void {
+  if (logger === undefined || capture.halted || capture.errorCode === null) return
+  logger.warn('search call failed', {
+    provider: 'serpapi',
+    reason: capture.errorCode,
+    searches: capture.searches
+  })
 }
 
 export interface CaptureOptions {
@@ -201,7 +215,7 @@ async function callSerp(
   const now = options.now ?? Date.now
   let last: CallBody = failedCall(
     'other',
-    'SerpApi did not return an AI Overview CiteFox could read.',
+    'CiteFox could not read an AI Overview for this search. Try the check again.',
     null
   )
   const pacer = options.pacer ?? createCallPacer('serpapi', { now, sleep })
@@ -241,8 +255,8 @@ async function callSerp(
       last = failedCall(
         timeout ? 'timeout' : 'other',
         timeout
-          ? 'The SerpApi search timed out.'
-          : 'SerpApi did not return an AI Overview CiteFox could read.',
+          ? 'The search took too long and was stopped.'
+          : 'CiteFox could not read an AI Overview for this search. Try the check again.',
         timeout ? 'Check the network and try again.' : null
       )
       // Paid-call rule: only a request that never reached SerpApi is sent again.
@@ -464,7 +478,7 @@ function nextFor(code: CheckErrorCode): string | null {
   if (code === 'timeout') return 'Check the network and try again.'
   // A rate limit is about the plan, not the key: the message says what to do.
   if (code === 'rejected' || code === 'out_of_searches') {
-    return 'Open Connections and check this SerpApi key.'
+    return 'Open Connections and check your search key.'
   }
   return null
 }

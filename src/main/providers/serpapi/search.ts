@@ -20,8 +20,8 @@ export interface InterpretedSearch {
   overview: ParsedAiOverview | null
 }
 
-const UNREADABLE = 'SerpApi returned a response CiteFox could not read.'
-const NO_OVERVIEW = 'SerpApi did not return an AI Overview CiteFox could read.'
+const UNREADABLE = 'The search service sent an answer CiteFox could not read. Try the check again.'
+const NO_OVERVIEW = 'CiteFox could not read an AI Overview for this search. Try the check again.'
 
 /**
  * Reads one SerpApi JSON body. Messages are fixed sentences: they never hold the

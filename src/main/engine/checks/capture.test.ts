@@ -162,7 +162,7 @@ describe('captureSerpApi', () => {
       timeoutMs: 20
     })
     expect(captured.errorCode).toBe('timeout')
-    expect(captured.message).toBe('The SerpApi search timed out.')
+    expect(captured.message).toBe('The search took too long and was stopped.')
     // Paid-call rule: a timeout after sending may already be billed (no_cache), so no retry.
     expect(http.calls).toHaveLength(1)
     expect(captured.searches).toBe(1)

@@ -83,7 +83,8 @@ export async function logIpcFailure<T>(
   }
   if (logger !== undefined && typeof result === 'object' && result !== null) {
     const record = result as Record<string, unknown>
-    if (record.ok === false) {
+    // A cancelled dialog is the user's choice, not a failure.
+    if (record.ok === false && record.cancelled !== true) {
       const code = ['code', 'errorCode', 'reason', 'kind']
         .map((key) => record[key])
         .find(isShortCode)

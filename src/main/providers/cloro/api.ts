@@ -82,7 +82,7 @@ export interface CloroFailure {
 export const RATE_LIMITED_MESSAGE =
   'Your CiteFox credits plan limited too many searches at once, so these were not checked. Run them again in a minute, or upgrade your plan to check faster.'
 
-const UNREADABLE = 'cloro returned a response CiteFox could not read.'
+const UNREADABLE = 'The search service sent an answer CiteFox could not read. Try the check again.'
 
 /**
  * Reads cloro's error envelope (`{ success: false, error: { code, message } }`). Null

@@ -6,8 +6,8 @@ CiteFox is pre-1.0. Security fixes go into the latest release only.
 
 | Version          | Supported |
 | ---------------- | --------- |
-| 0.12.x (latest)  | Yes       |
-| 0.11.x and older | No        |
+| 0.13.x (latest)  | Yes       |
+| 0.12.x and older | No        |
 
 ## Reporting a vulnerability
 

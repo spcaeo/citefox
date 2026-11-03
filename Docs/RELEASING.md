@@ -207,6 +207,23 @@ Scenes and their captions live in `scripts/media/video/src/film.tsx`; every numb
 
 Both specs live in `tests/media/` with their own Playwright config, are not part of the e2e suite, and skip themselves outside Docker. The scripts remove their container; the image and the npm/cache volumes stay, as with `npm run test:e2e:docker`.
 
+### The welcome tour film
+
+`src/renderer/src/assets/intro/tour.mp4` (1280×720, 30 fps, H.264 + AAC, about 45 s, under 6 MB) is the first-run tour that `src/renderer/src/intro/` plays once. It is made like the product video, in Docker only:
+
+```sh
+npm run media:tour                         # record, compose, make the music, encode (about 12 minutes)
+npm run media:tour -- --record-only <dir>  # only the footage (tests/media/tour.spec.ts), kept in <dir>
+npm run media:tour -- --compose <dir>      # compose and encode from that footage
+npm run media:tour -- --encode <dir>       # only re-encode <dir>/film.mp4 (makes new music if <dir> has none)
+```
+
+- **Timeline.** `scripts/media/video/tour.json` is the one source for the beat grid (96 BPM, 18 bars, exactly 45 s) and the eight captions. A unit test (`src/renderer/src/intro/tourGuard.test.ts`) fails when its captions differ from `src/renderer/src/intro/captions.ts`, when a caption names a provider, or when the film is over 6 MB.
+- **Footage.** `tests/media/tour.spec.ts` records the TextBolt sample project with the sponsor cards, the "write it with" card and the release line hidden. It never presses Check now and never saves the typed question. The date on screen is the sample data's own.
+- **Picture.** `scripts/media/video/src/tour.tsx`: the fox mark, then the real app in a laptop, an engine strip with a counter and a quiet beat, spotlights, the end card. Captions are typed in over 0.5 s, held, and wiped out over 0.5 s, in dark ink on the sepia ground, burned in; a scene that runs over its beats fails the render.
+- **Music.** `scripts/media/make-tour-music.py`: A major, 96 BPM, numpy only (no samples, no AI music, nothing copied from any other product's files), about -23 LUFS integrated, sample peak at or below -6 dBFS. Quiet swell, a 7 dB dip for the silent counting beat, a 5 dB step up at 17.5 s, low end cut at 40 s, fade out by 45 s.
+- Before you commit, pull frames at 0, 5, 12, 20, 30, 40 and 44 s and look: captions readable and not cut off, no provider names, no sponsor strip, no keys or emails.
+
 ## First release checklist
 
 1. The repo `spcaeo/citefox` must be **public**: the download page calls the GitHub API without a token, and visitors download release files without signing in. (A private repo still gets draft releases, but the page shows "See releases on GitHub" and downloads need access.)

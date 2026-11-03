@@ -164,8 +164,8 @@ async function callCloro(engine: EngineId, options: CloroCaptureOptions): Promis
         ...failedOutcome(searches, {
           code: 'other',
           message: timeout
-            ? 'The cloro call timed out. cloro may still charge it.'
-            : 'CiteFox could not reach cloro.',
+            ? 'The search took too long and was stopped. It may still use a credit. Try the check again.'
+            : 'CiteFox could not reach the search service. Check the network and try again.',
           retryable: false
         }),
         timedOut: timeout

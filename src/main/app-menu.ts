@@ -23,14 +23,15 @@ export interface AppMenuOptions {
   onHelpCommand?: (command: HelpMenuCommand) => void
 }
 
-export type HelpMenuCommand = 'report-problem' | 'show-logs'
+export type HelpMenuCommand = 'watch-tour' | 'report-problem' | 'show-logs'
 
 const HELP_ITEMS: readonly { command: HelpMenuCommand; label: string }[] = [
+  { command: 'watch-tour', label: 'Watch the welcome tour' },
   { command: 'report-problem', label: 'Report a problem…' },
   { command: 'show-logs', label: 'Show logs folder' }
 ]
 
-/** Help: Report a problem… and Show logs folder. */
+/** Help: Watch the welcome tour, Report a problem… and Show logs folder. */
 export function helpMenu(
   onHelpCommand: (command: HelpMenuCommand) => void
 ): MenuItemConstructorOptions {

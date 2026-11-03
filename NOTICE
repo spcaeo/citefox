@@ -11,6 +11,12 @@ from sine waves and noise by scripts/media/make-music.py, with no samples and no
 recordings, and is licensed under the CiteFox Source-Available License with the rest of the
 project.
 
+The welcome tour film (src/renderer/src/assets/intro/tour.mp4) is recorded from the TextBolt
+sample project and composed by scripts/media/make-tour.mjs. Its music is original to CiteFox:
+an instrumental in A major at 96 BPM, composed and synthesised from sine waves and noise by
+scripts/media/make-tour-music.py, with no samples, no third-party recordings and no AI-generated
+music, and is licensed under the CiteFox Source-Available License with the rest of the project.
+
 The product video is composed with Revideo (https://github.com/midrender/revideo, MIT
 License), a development tool that is not shipped with the app. Its easing curves and the
 analytic spring in scripts/media/video/src/ease.ts are ported from snap-cn

@@ -170,6 +170,7 @@ export function bindExportIpcHandlers(
           secrets: deps.knownSecrets(),
           now: deps.now,
           builders: builders(request.projectId),
+          ...(deps.logger !== undefined ? { logger: deps.logger } : {}),
           createId: deps.createId,
           onProgress: deps.emitProgress,
           chooseOutputPath: async (filename) => {

@@ -12,7 +12,7 @@ import type { SqliteDatabase } from '../../storage/database'
 import { insertClaudeCheckup } from '../../storage/records'
 import { CHECKUP_PROMPT, CHECKUP_SCHEMA, formatDuration } from '../claude/checkup'
 import { ProviderError, ProviderTimeoutError } from '../errors'
-import { resolveSecretList } from '../log'
+import { logProvider, resolveSecretList } from '../log'
 import type { CodexProviderOptions } from './codex'
 import { createCodexProvider } from './codex'
 import { CODEX_INSTALL_STEP, CODEX_LOGIN_STEP } from './errors'
@@ -44,6 +44,21 @@ export async function runCodexCheckup(
   }
   const finish = (result: ClaudeCheckupResult): ClaudeCheckupResult => {
     const safe = redactValue(result, { secrets: secrets() }) as ClaudeCheckupResult
+    if (!safe.ready) {
+      // One line for a check that did not pass: which step stopped it, never a path or message.
+      logProvider(
+        options.logger,
+        'warn',
+        'ai check did not pass',
+        {
+          provider: 'codex',
+          binaryFound: safe.binaryPath !== null,
+          login: safe.login,
+          roundTrip: safe.roundTrip
+        },
+        secrets()
+      )
+    }
     insertClaudeCheckup(options.db, {
       id: options.id ?? randomUUID(),
       ranAt: (options.now ?? ((): Date => new Date()))().toISOString(),

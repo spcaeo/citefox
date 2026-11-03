@@ -11,6 +11,7 @@ import {
   temporaryPath,
   type ExportAtomicIo
 } from './atomic'
+import type { Logger } from '../logging/logger'
 import type { ExportTable } from './cells'
 import { htmlReportPreviewText, packageHtmlReport, renderHtmlReport } from './html'
 import { buildJsonExport, serializeJsonExport } from './json'
@@ -71,6 +72,8 @@ export interface StartExportInput extends PreviewExportInput {
   onProgress?: (progress: ExportProgress) => void
   createId?: () => string
   io?: ExportAtomicIo
+  /** Where a failed write leaves its one line (the error code only). */
+  logger?: Pick<Logger, 'warn'>
 }
 
 interface Loaded {
@@ -298,9 +301,19 @@ export async function startExport(input: StartExportInput): Promise<ExportStartR
     }
     emit(phase(exportId, 'write', 'ok', 1, 1))
     return written(statSync(finalPath).size, finalPath)
-  } catch {
+  } catch (error) {
+    input.logger?.warn('export file could not be written', {
+      format: request.format,
+      code: errorCode(error)
+    })
     return { ok: false, ...WRITE_FAILURE }
   }
+}
+
+/** `EACCES`, `ENOSPC`... for a log line; null when the error has no short code. */
+function errorCode(error: unknown): string | null {
+  const code = (error as NodeJS.ErrnoException | null)?.code
+  return typeof code === 'string' && /^[A-Z_]{2,24}$/u.test(code) ? code : null
 }
 
 async function load(input: PreviewExportInput): Promise<LoadResult> {

@@ -225,6 +225,10 @@ export function commitQuestions(
       outcome.added += written.promptIds.length
       outcome.items.push(...addRowMarkets(host, db, group.page.id, group.addMarkets))
     } catch (error) {
+      host.logger.warn('import rows were not added', {
+        rows: group.rows.length,
+        threw: error instanceof Error ? error.name : typeof error
+      })
       const reason = error instanceof Error ? error.message : 'Could not add these rows.'
       for (const index of group.rows) outcome.skipped.push({ index, reason })
     }
@@ -236,6 +240,10 @@ export function commitQuestions(
       outcome.items.push({ kind: 'topic', topicId })
       outcome.added += group.prompts.length
     } catch (error) {
+      host.logger.warn('import topic was not created', {
+        rows: group.rows.length,
+        threw: error instanceof Error ? error.name : typeof error
+      })
       const reason = error instanceof Error ? error.message : 'Could not create that topic.'
       for (const index of group.rows) outcome.skipped.push({ index, reason })
     }

@@ -1,0 +1,25 @@
+{
+  "comment": "The welcome tour's timeline: the beat grid shared by the Revideo scenes (src/tour.tsx), the music (scripts/media/make-tour-music.py) and the captions. 96 BPM, one bar is 2.5 s, 18 bars make exactly 45 s. The captions must equal src/renderer/src/intro/captions.ts (a unit test checks it).",
+  "fps": 30,
+  "bpm": 96,
+  "scenes": [
+    { "id": "hook", "beats": 8 },
+    { "id": "add", "beats": 8 },
+    { "id": "check", "beats": 12 },
+    { "id": "result", "beats": 8 },
+    { "id": "rivals", "beats": 8 },
+    { "id": "fix", "beats": 12 },
+    { "id": "report", "beats": 8 },
+    { "id": "end", "beats": 8 }
+  ],
+  "captions": [
+    { "start": 1.5, "end": 5, "text": "Your buyers now ask AI, not Google." },
+    { "start": 5.5, "end": 10, "text": "Add the questions your buyers ask." },
+    { "start": 10.5, "end": 17.5, "text": "It checks the main AI engines for you." },
+    { "start": 18, "end": 22.5, "text": "See if your page is cited." },
+    { "start": 23, "end": 27.5, "text": "See who is cited instead." },
+    { "start": 28, "end": 35, "text": "Get a fix. Check it after 14 days." },
+    { "start": 35.5, "end": 40, "text": "Send a client-ready report." },
+    { "start": 40.5, "end": 45, "text": "Free. Runs on your computer." }
+  ]
+}

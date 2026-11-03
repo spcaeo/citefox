@@ -104,9 +104,16 @@ export function createAccountService(deps: AccountServiceDeps): AccountService {
         day,
         ...facts()
       })
-      if (reply.ok) deps.store.update({ lastPingDay: day })
+      if (reply.ok) {
+        deps.store.update({ lastPingDay: day })
+      } else {
+        deps.logger.warn('CiteFox account: the daily ping was not accepted', {
+          reason: reply.error
+        })
+      }
     } catch {
       // Offline: try again later today.
+      deps.logger.info('CiteFox account: offline, the daily ping will be tried again later')
     }
   }
 
@@ -137,7 +144,11 @@ export function createAccountService(deps: AccountServiceDeps): AccountService {
     tick() {
       if (running === null) {
         running = runTick()
-          .catch(() => undefined)
+          .catch((error: unknown) => {
+            deps.logger.warn('CiteFox account: the background check did not finish', {
+              threw: error instanceof Error ? error.name : typeof error
+            })
+          })
           .finally(() => {
             running = null
           })

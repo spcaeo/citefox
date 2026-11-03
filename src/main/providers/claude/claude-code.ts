@@ -289,6 +289,13 @@ export function createClaudeCodeProvider(options: ClaudeCodeProviderOptions): Cl
       const preferred = options.savedBinaryPath ?? null
       const located = provider.locate(preferred)
       if (located.path === null) {
+        logProvider(
+          options.logger,
+          'warn',
+          'claude call finished',
+          { provider: 'claude-code', outcome: 'error', code: 'not_installed', located: false },
+          secretsNow()
+        )
         throw new ProviderError('Claude Code was not found.', {
           code: 'not_installed',
           state: 'warning',
@@ -390,7 +397,8 @@ export function createClaudeCodeProvider(options: ClaudeCodeProviderOptions): Cl
             wrapped.code === 'plan_limit' ? 'limit' : 'error',
             resolvedModel ?? model,
             usage,
-            secrets
+            secrets,
+            wrapped.code
           )
           throw wrapped
         }
@@ -485,7 +493,8 @@ export function createClaudeCodeProvider(options: ClaudeCodeProviderOptions): Cl
     outcome: 'ok' | 'limit' | 'error',
     model: string,
     usage: ClaudeCliUsage | null,
-    secrets: readonly string[]
+    secrets: readonly string[],
+    code: string | null = null
   ): void {
     logProvider(
       options.logger,
@@ -495,6 +504,8 @@ export function createClaudeCodeProvider(options: ClaudeCodeProviderOptions): Cl
         provider: 'claude-code',
         durationMs,
         outcome,
+        // Why it failed (not_installed, logged_out, timeout...): a short code, never the message.
+        ...(code === null ? {} : { code }),
         model,
         inputTokens: usage?.inputTokens ?? null,
         outputTokens: usage?.outputTokens ?? null,

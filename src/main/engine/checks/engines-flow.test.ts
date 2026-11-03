@@ -417,7 +417,7 @@ describe('cloro retries and per-page engines', () => {
       credits: 0,
       costMicros: 0
     })
-    expect(answer?.message).toContain('timed out')
+    expect(answer?.message).toContain('took too long')
     expect(analysisStates(seeded, job.id)).toEqual(['warning'])
     const usage = usageByKey(seeded.storage)
     const searches = Object.values(usage).reduce((sum, row) => sum + row.searches, 0)

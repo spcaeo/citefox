@@ -168,7 +168,8 @@ describe('captureCloroGoogle', () => {
       halted: false,
       hasAio: false,
       errorCode: 'timeout',
-      message: 'The cloro call timed out. cloro may still charge it.',
+      message:
+        'The search took too long and was stopped. It may still use a credit. Try the check again.',
       nextStep: 'Check the network and try again.',
       credits: 0
     })
@@ -313,7 +314,8 @@ describe('cloro retry rules', () => {
       outcome: 'error',
       searches: 1,
       errorCode: 'timeout',
-      message: 'The cloro call timed out. cloro may still charge it.',
+      message:
+        'The search took too long and was stopped. It may still use a credit. Try the check again.',
       credits: 0
     })
   })
@@ -327,7 +329,7 @@ describe('cloro retry rules', () => {
     expect(captured).toMatchObject({
       outcome: 'error',
       errorCode: 'other',
-      message: 'CiteFox could not reach cloro.'
+      message: 'CiteFox could not reach the search service. Check the network and try again.'
     })
     expect(captured.message).not.toContain(KEY)
   })

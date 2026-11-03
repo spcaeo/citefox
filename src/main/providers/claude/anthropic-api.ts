@@ -236,6 +236,7 @@ export function createAnthropicApiProvider(
               provider: 'anthropic-api',
               durationMs: Math.max(0, clock() - started),
               outcome: wrapped.code === 'plan_limit' ? 'limit' : 'error',
+              code: wrapped.code,
               model: request.model ?? options.model ?? DEFAULT_CLAUDE_MODEL,
               inputTokens: spentUsage(wrapped)?.inputTokens ?? null,
               outputTokens: spentUsage(wrapped)?.outputTokens ?? null

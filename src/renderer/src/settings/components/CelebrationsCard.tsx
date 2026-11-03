@@ -78,12 +78,18 @@ export function CelebrationsCard({
           id="stg-celebrate-sound"
           type="checkbox"
           checked={sound}
+          aria-describedby="stg-celebrate-sound-h"
           disabled={!celebrate}
           onChange={(event) =>
             void toggle('celebrateSound', setCelebrateSound, event.target.checked)
           }
         />
-        <span className="field-label">Play a sound</span>
+        <span className="stack-tight">
+          <span className="field-label">Play a sound</span>
+          <span className="hint" id="stg-celebrate-sound-h">
+            A short chime when a citation is found, and when a check starts and finishes.
+          </span>
+        </span>
       </label>
       <p role="status" aria-live="polite" className="data-note data-note-error">
         {error ?? ''}

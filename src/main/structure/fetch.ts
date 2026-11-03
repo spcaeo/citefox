@@ -38,6 +38,19 @@ export async function fetchSitemapText(
   url: string,
   kind: 'robots' | 'sitemap'
 ): Promise<FetchTextResult> {
+  const result = await fetchSitemapOnce(deps, url, kind)
+  // A network failure logs itself below; this line is for an answer that was not a file.
+  if (!result.ok && result.status !== null) {
+    deps.logger.warn('sitemap read did not finish', { kind, status: result.status })
+  }
+  return result
+}
+
+async function fetchSitemapOnce(
+  deps: SitemapFetchDeps,
+  url: string,
+  kind: 'robots' | 'sitemap'
+): Promise<FetchTextResult> {
   const resolve = deps.dns ?? systemAddressLookup()
   const maxBytes = kind === 'robots' ? MAX_ROBOTS_BYTES : SITEMAP_LIMITS.maxBytes
   const secrets = deps.secrets()
@@ -46,6 +59,7 @@ export async function fetchSitemapText(
     try {
       await assertPublicPageUrl(current, resolve)
     } catch {
+      deps.logger.warn('sitemap fetch refused a private address', { kind })
       return {
         ok: false,
         status: null,
