@@ -19,9 +19,10 @@ import {
 } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { SITE_URL } from './config.mjs'
+import { REPO_URL, SITE_URL } from './config.mjs'
 import { comparePage } from './compare.mjs'
 import { parseFrontMatter, renderMarkdown } from './markdown.mjs'
+import { DOC_GROUPS } from './content.mjs'
 import {
   docOrder,
   docPage,
@@ -112,6 +113,46 @@ export function readDocs(root = REPO_ROOT) {
   return docs
 }
 
+/** Where the help index lives, relative to the repo: GitHub renders it as the docs home. */
+export const HELP_INDEX = 'Docs/HELP.md'
+
+/**
+ * Docs/HELP.md: every help topic, grouped as on the website, linked to its .md file
+ * so the help reads well on GitHub too. Made from the topics' front matter.
+ */
+export function helpIndex(docs) {
+  const row = (id) => {
+    const { title, summary } = docs[id].meta
+    return `| [${title}](help/${id}.md) | ${summary ?? ''} | [Read on the website](${SITE_URL}docs/${id}/) |`
+  }
+  const groups = DOC_GROUPS.map(
+    (group) => `## ${group.title}
+
+| Topic | What it covers | |
+| --- | --- | --- |
+${group.ids.map(row).join('\n')}`
+  ).join('\n\n')
+  return `<!-- Made by scripts/site/build-site.mjs from Docs/help/*.md (npm run site:build). Do not edit by hand. -->
+
+# CiteFox help
+
+Everything the in-app help says, one page per screen and report. The same pages are on the
+website at [${SITE_URL}docs/](${SITE_URL}docs/), and inside CiteFox: press **Ctrl K** (⌘K on a Mac)
+and type a topic, or ask CiteFox a question.
+
+New here? Start with [Getting started](help/getting-started.md).
+
+${groups}
+
+## More
+
+- [Privacy](PRIVACY.md): what stays on your computer and what leaves it.
+- [CiteFox compared with other AI visibility tools](COMPARISON.md).
+- [What's new](../CHANGELOG.md) and [downloads](${REPO_URL}/releases).
+- Questions or ideas: [Discussions](${REPO_URL}/discussions). Found a problem: [open an issue](${REPO_URL}/issues/new/choose).
+`
+}
+
 /** Every generated file as `{ file, content }`, paths relative to site/. */
 export function buildSite(root = REPO_ROOT) {
   const media = findMedia(root)
@@ -140,6 +181,7 @@ Sitemap: ${SITE_URL}sitemap.xml
 `
   return {
     media,
+    help: { file: HELP_INDEX, content: helpIndex(docs) },
     files: [
       ...pages.map((p) => ({ file: p.file, content: p.html })),
       { file: 'sitemap.xml', content: sitemap },
@@ -151,8 +193,13 @@ Sitemap: ${SITE_URL}sitemap.xml
 function main() {
   const check = process.argv.includes('--check')
   const site = join(REPO_ROOT, 'site')
-  const { files, media } = buildSite()
+  const { files, media, help } = buildSite()
   const stale = []
+  const helpPath = join(REPO_ROOT, help.file)
+  if (!existsSync(helpPath) || readFileSync(helpPath, 'utf8') !== help.content) {
+    if (check) stale.push(help.file)
+    else writeFileSync(helpPath, help.content)
+  }
   for (const { file, content } of files) {
     const target = join(site, file)
     const current = existsSync(target) ? readFileSync(target, 'utf8') : null

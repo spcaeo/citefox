@@ -69,6 +69,17 @@ export const COMPARE = svg(
 )
 
 /** An arrow to the right, for text links. */
+/** Angle brackets with a slash: the source code. */
+export const CODE = svg(line('M8.5 7.5L4 12l4.5 4.5M15.5 7.5L20 12l-4.5 4.5M13.5 5l-3 14'))
+/** An open book: the help docs. */
+export const BOOK = svg(
+  line(
+    'M12 6.5c-1.8-1.3-4.3-2-7.5-2v13c3.2 0 5.7.7 7.5 2 1.8-1.3 4.3-2 7.5-2v-13c-3.2 0-5.7.7-7.5 2zM12 6.5v13'
+  )
+)
+/** A speech bubble: discussions and issues. */
+export const CHAT = svg(line('M4.5 5.5h15v10h-9l-4.5 3.5v-3.5h-1.5z'))
+
 export const ARROW = svg(line('M5 12h14M13 6l6 6-6 6'))
 
 /** The OS glyph for `mac`, `win` or `linux`. */

@@ -47,7 +47,7 @@
 - [Real answers, not guessed prompt volume](#real-answers-not-guessed-prompt-volume)
 - [How CiteFox compares](#how-citefox-compares) with Profound, Peec AI, Otterly.AI and others
 - [Download and install](#download-and-install) · [FAQ](#faq) · [Community and contributing](#community-and-contributing)
-- [Build from source](#build-from-source) · [Sponsors](#sponsors) · [License](#license) · [Contact](#contact)
+- [Help docs](https://github.com/spcaeo/citefox/blob/main/Docs/HELP.md) · [Build from source](#build-from-source) · [Sponsors](#sponsors) · [License](#license) · [About us](#about-us)
 
 ## Bring your own API keys
 
@@ -433,6 +433,7 @@ You pick the markets: a country and language pair, such as United States · Engl
 
 ## Community and contributing
 
+- **Help docs:** every screen and report explained, readable right here on GitHub: [Docs/HELP.md](https://github.com/spcaeo/citefox/blob/main/Docs/HELP.md)
 - **Questions, ideas and show-and-tell:** [GitHub Discussions][discussions]
 - **Bugs and feature requests:** [GitHub Issues][issues] (please use the forms)
 - **Code:** issues, ideas and pull requests are welcome. Read [CONTRIBUTING.md](https://github.com/spcaeo/citefox/blob/main/CONTRIBUTING.md) for the code layout, tests and the pull request checklist, and [CODE_OF_CONDUCT.md](https://github.com/spcaeo/citefox/blob/main/CODE_OF_CONDUCT.md).
@@ -482,6 +483,10 @@ CiteFox is **source-available** under the [CiteFox Source-Available License](htt
 
 Bundled fonts (Noto, Inter, Inter Tight, JetBrains Mono) are under the SIL Open Font License (`resources/fonts/OFL.txt`, `src/renderer/src/assets/fonts/OFL-*.txt`). The citation sound is CiteFox's own, synthesised by `scripts/sounds/make_jingles.py`. Sponsor names and logos, and the AI engines' names and logos, are trademarks of their owners.
 
+## About us
+
+CiteFox is made by Space-O Technologies, a software development company in Canada. We made CiteFox free and source-available so anyone can see where AI answers cite them, keep their data, and fix what is missing. We also make [Skald](https://github.com/spcaeo/skald), free analytics for AI crawlers and AI traffic that runs on your own server.
+
 ## Contact
 
 Questions, early access to the Server edition or the managed service, or sponsorship: **getcitifox@gmail.com**. Bugs and feature requests: [GitHub Issues][issues]. Questions and show-and-tell: [GitHub Discussions][discussions]. CiteFox is made by [Space-O Technologies](https://www.spaceo.ca).
@@ -495,8 +500,6 @@ Questions, early access to the Server edition or the managed service, or sponsor
 [demo]: https://spcaeo.github.io/citefox/demo/
 [samples]: https://spcaeo.github.io/citefox/samples/
 [docs]: https://spcaeo.github.io/citefox/docs/
-[demo]: https://spcaeo.github.io/citefox/demo/
-[samples]: https://spcaeo.github.io/citefox/samples/
 [glossary]: https://spcaeo.github.io/citefox/glossary/
 [doc-getting-started]: https://spcaeo.github.io/citefox/docs/getting-started/
 [doc-reports-branding]: https://spcaeo.github.io/citefox/docs/reports-branding/

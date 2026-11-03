@@ -1026,3 +1026,66 @@ tbody th {
     grid-template-columns: 1fr;
   }
 }
+
+/* Home › Source code, help and news on GitHub: icon tiles, the whole tile is the link target. */
+.link-tile {
+  position: relative;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  column-gap: 12px;
+  row-gap: 4px;
+  grid-template-rows: auto 1fr;
+  align-items: start;
+  align-content: start;
+}
+
+.link-tile > .icon {
+  grid-row: span 2;
+  width: 24px;
+  height: 24px;
+  color: var(--fox);
+  margin-top: 2px;
+}
+
+.link-tile h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.link-tile h3 a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+}
+
+.link-tile:hover,
+.link-tile:focus-within {
+  border-color: var(--line-strong);
+}
+
+.footer-grid nav.footer-cols {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px 24px;
+}
+
+.footer-cols .footer-head {
+  margin: 0 0 4px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+}
+
+.footer-cols div {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+@media (max-width: 640px) {
+  .footer-grid nav.footer-cols {
+    grid-template-columns: 1fr 1fr;
+  }
+}

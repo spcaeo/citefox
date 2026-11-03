@@ -1,12 +1,12 @@
 // Checks the public site (site/) and the README for search basics: every page has
 // a unique title and description, one H1, a canonical, share tags, alt texts,
 // JSON-LD that parses, headings in order, and internal links that resolve.
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { dirname, join, normalize } from 'node:path'
 import { Window } from 'happy-dom'
 import { describe, expect, it } from 'vitest'
 import { buildSite, MEDIA, REPO_ROOT } from './build-site.mjs'
-import { AFFILIATE_DISCLOSURE, SITE_URL } from './config.mjs'
+import { ABOUT_US, AFFILIATE_DISCLOSURE, SITE_URL } from './config.mjs'
 import { FAQ } from './content.mjs'
 
 const SITE = join(REPO_ROOT, 'site')
@@ -141,6 +141,28 @@ describe.each(Object.keys(docs))('%s', (file) => {
     const text = doc.body.textContent + doc.head.innerHTML
     expect(text).not.toMatch(PROVIDERS)
     expect(openSource(html)).toBe(false)
+  })
+})
+
+describe('about us', () => {
+  it('says the same words on the site and in the app', async () => {
+    const app = await import('../../src/shared/project-links.ts')
+    expect(app.ABOUT_US).toBe(ABOUT_US)
+    expect(docs['index.html'].querySelector('#about')?.textContent).toContain(ABOUT_US)
+  })
+})
+
+describe('Docs/HELP.md', () => {
+  const { help } = buildSite()
+  it('is up to date (run npm run site:build)', () => {
+    expect(readFileSync(join(REPO_ROOT, help.file), 'utf8')).toBe(help.content)
+  })
+  it('links every help topic to a file that exists', () => {
+    const links = [...help.content.matchAll(/\]\((help\/[^)]+\.md)\)/g)].map((m) => m[1])
+    const topics = readdirSync(join(REPO_ROOT, 'Docs', 'help')).filter((n) => n.endsWith('.md'))
+    // Every topic once, plus the "Start with Getting started" line.
+    expect(links.length).toBe(topics.length + 1)
+    for (const link of links) expect(existsSync(join(REPO_ROOT, 'Docs', link)), link).toBe(true)
   })
 })
 

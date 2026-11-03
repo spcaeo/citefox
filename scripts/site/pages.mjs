@@ -1,5 +1,6 @@
 // The pages of site/. Each returns `{ path, file, html }`.
 import {
+  ABOUT_US,
   CONTACT_EMAIL,
   LICENSE_URL,
   PUBLISHER,
@@ -32,7 +33,47 @@ import { absolute, breadcrumbData, breadcrumbs, faqData, page } from './layout.m
 import { SAMPLES } from './samples.mjs'
 import { escapeHtml as e } from './markdown.mjs'
 import { cta, downloadPage, heroActions, homeDownload } from './download.mjs'
-import { ARROW, BROWSER, DOWNLOAD, REPORT } from './icons.mjs'
+import { ARROW, BOOK, BROWSER, CHAT, CODE, DOWNLOAD, NOTES, REPORT, SHIELD } from './icons.mjs'
+
+/** The GitHub tiles on the home page: where the code, help and news live. */
+const GITHUB_LINKS = [
+  {
+    icon: CODE,
+    title: 'Source code',
+    url: REPO_URL,
+    text: 'The whole app, its tests and how it is built. Star it to follow along.'
+  },
+  {
+    icon: BOOK,
+    title: 'Help docs',
+    url: `${REPO_URL}/blob/main/Docs/HELP.md`,
+    text: 'Every screen and report explained, the same help you see in the app.'
+  },
+  {
+    icon: NOTES,
+    title: "What's new",
+    url: `${REPO_URL}/blob/main/CHANGELOG.md`,
+    text: 'Each release and what changed, in plain words.'
+  },
+  {
+    icon: DOWNLOAD,
+    title: 'All downloads',
+    url: RELEASES_URL,
+    text: 'Every version for Mac, Windows and Linux, with SHA-256 checksums.'
+  },
+  {
+    icon: CHAT,
+    title: 'Ideas and problems',
+    url: `${REPO_URL}/discussions`,
+    text: 'Ask a question, suggest a feature, or report a bug in Issues.'
+  },
+  {
+    icon: SHIELD,
+    title: 'Licence and privacy',
+    url: `${REPO_URL}/blob/main/Docs/PRIVACY.md`,
+    text: 'Source-available licence, and exactly what stays on your computer.'
+  }
+]
 
 /** A screenshot from media (copied to site/media), or nothing if it is not made yet. */
 function figure(media, name, alt, root, { eager = false, caption = '' } = {}) {
@@ -250,6 +291,20 @@ ${CONTROL.map((t) => `          <li>${e(t)}</li>`).join('\n')}
 ${EDITIONS.map((x) => `          <li class="mini"><p class="status${x.status.startsWith('Free') ? ' now' : ''}">${e(x.status)}</p><h3>${e(x.name)}</h3><p>${e(x.text)}</p></li>`).join('\n')}
         </ul>
         <p>Want early access to Server, the managed service or the MCP server? Email <a href="mailto:${CONTACT_EMAIL}?subject=CiteFox%20early%20access" data-copy="${CONTACT_EMAIL}" data-what="email">${CONTACT_EMAIL}</a>.</p>
+      </section>
+
+      <section class="wrap" id="github" aria-labelledby="github-title">
+        <h2 id="github-title">Source code, help and news on GitHub</h2>
+        <p>Every line of CiteFox is on GitHub. Read it, check what it sends, build it yourself, or tell us what to build next.</p>
+        <ul class="cards three links">
+${GITHUB_LINKS.map((x) => `          <li class="mini link-tile">${x.icon}<h3><a href="${x.url}" target="_blank" rel="noopener">${e(x.title)}</a></h3><p>${e(x.text)}</p></li>`).join('\n')}
+        </ul>
+      </section>
+
+      <section class="wrap" id="about" aria-labelledby="about-title">
+        <h2 id="about-title">About us</h2>
+        <p>${e(ABOUT_US)}</p>
+        <p>We also make <a href="https://github.com/spcaeo/skald" target="_blank" rel="noopener">Skald</a>, free analytics for AI crawlers and AI traffic that runs on your own server. Say hello at <a href="mailto:${CONTACT_EMAIL}" data-copy="${CONTACT_EMAIL}" data-what="email">${CONTACT_EMAIL}</a> or visit <a href="${PUBLISHER.url}" target="_blank" rel="noopener">${PUBLISHER.name}</a>.</p>
       </section>
 
       <section class="band" id="faq" aria-labelledby="faq-title">

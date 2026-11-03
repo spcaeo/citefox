@@ -126,15 +126,31 @@ ${body}
           <p class="footer-brand"><strong>CiteFox</strong>, the free AI visibility tracker for Google AI Overviews, ChatGPT, Perplexity, Gemini, Copilot and AI Mode.</p>
           <p class="muted">Contact: <a href="mailto:${CONTACT_EMAIL}" data-copy="${CONTACT_EMAIL}" data-what="email">${CONTACT_EMAIL}</a></p>
         </div>
-        <nav aria-label="Footer">
-          <a href="${r}demo/">Live demo</a>
-          <a href="${r}samples/">Sample reports</a>
-          <a href="${r}docs/">Docs</a>
-          <a href="${r}glossary/">GEO and AEO glossary</a>
-          <a href="${r}compare/">CiteFox vs other AI visibility tools</a>
-          <a href="${r}docs/getting-started/">Getting started</a>
-          <a href="${REPO_URL}/blob/main/Docs/PRIVACY.md" target="_blank" rel="noopener">Privacy</a>
-          <a href="${REPO_URL}" target="_blank" rel="noopener">Source code</a>
+        <nav aria-label="Footer" class="footer-cols">
+          <div>
+            <p class="footer-head">Product</p>
+            <a href="${r}download/">Download</a>
+            <a href="${r}demo/">Live demo</a>
+            <a href="${r}samples/">Sample reports</a>
+            <a href="${r}compare/">CiteFox vs other tools</a>
+            <a href="${r}glossary/">GEO and AEO glossary</a>
+          </div>
+          <div>
+            <p class="footer-head">Help</p>
+            <a href="${r}docs/getting-started/">Getting started</a>
+            <a href="${r}docs/">Docs</a>
+            <a href="${REPO_URL}/blob/main/Docs/HELP.md" target="_blank" rel="noopener">Help docs on GitHub</a>
+            <a href="${REPO_URL}/discussions" target="_blank" rel="noopener">Ask a question</a>
+            <a href="${REPO_URL}/issues/new/choose" target="_blank" rel="noopener">Report a problem</a>
+          </div>
+          <div>
+            <p class="footer-head">Project</p>
+            <a href="${REPO_URL}" target="_blank" rel="noopener">Source code</a>
+            <a href="${REPO_URL}/blob/main/CHANGELOG.md" target="_blank" rel="noopener">What's new</a>
+            <a href="${REPO_URL}/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a>
+            <a href="${REPO_URL}/blob/main/Docs/PRIVACY.md" target="_blank" rel="noopener">Privacy</a>
+            <a href="${r}#about">About us</a>
+          </div>
         </nav>
       </div>
       <div class="wrap footer-row small">

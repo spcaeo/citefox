@@ -229,7 +229,7 @@ describe('SettingsScreen tabs', () => {
     expect(screen.queryByRole('tab', { name: 'Connections' })).toBeNull()
   })
 
-  test('Data & about shows the version, the licence, the sponsors, and testing under More', async () => {
+  test('Data & about shows the version, the licence, the sponsors, about us with links, and testing under More', async () => {
     await renderScreen()
     fireEvent.click(screen.getByRole('tab', { name: 'Data & about' }))
     const about = screen.getByRole('region', { name: 'About CiteFox' })
@@ -238,6 +238,16 @@ describe('SettingsScreen tabs', () => {
     const sponsors = screen.getByRole('region', { name: 'Sponsors' })
     expect(within(sponsors).getAllByRole('link').length).toBeGreaterThan(0)
     expect(sponsors.textContent).toContain('Why sponsors?')
+    const us = screen.getByRole('region', { name: 'About us' })
+    expect(us.textContent).toContain('Space-O Technologies')
+    for (const label of ['Source code', 'Help docs', "What's new", 'Report a problem']) {
+      expect(within(us).getByText(label)).toBeTruthy()
+    }
+    const opens = within(us)
+      .getAllByRole('link')
+      .map((a) => a.getAttribute('href'))
+    expect(opens).toContain('https://github.com/spcaeo/citefox')
+    expect(opens).toContain('https://github.com/spcaeo/citefox/blob/main/Docs/help/README.md')
     const more = screen.getByText('More').closest('details') as HTMLDetailsElement
     expect(more.open).toBe(false)
     expect(more.contains(screen.getByRole('region', { name: 'Testing' }))).toBe(true)

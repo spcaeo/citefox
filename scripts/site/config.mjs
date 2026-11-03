@@ -38,3 +38,7 @@ export const SAMPLES_URL = `${SITE_URL}samples/`
  */
 export const AFFILIATE_DISCLOSURE =
   'Affiliate disclosure: some links in CiteFox and on this site are affiliate or partner links. If you sign up through them we may earn a commission, at no extra cost to you. It helps keep CiteFox free.'
+
+/** The "about us" line: home page here, Settings › Data & about in the app (src/shared/project-links.ts, same words; build-site.test.mjs checks). */
+export const ABOUT_US =
+  'CiteFox is made by Space-O Technologies, a software development company in Canada. We made CiteFox free and source-available so anyone can see where AI answers cite them, keep their data, and fix what is missing.'
