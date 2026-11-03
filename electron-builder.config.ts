@@ -12,7 +12,8 @@ import { Arch, type AfterPackContext, type Configuration } from 'electron-builde
  * `--publish never`, and the release workflow uploads to a draft release.
  *
  * Signing only happens when credentials are in the environment:
- * - macOS: CSC_LINK (+ CSC_KEY_PASSWORD) or CSC_NAME. Without them the app is
+ * - macOS: CSC_NAME (the release workflow imports the certificate with
+ *   scripts/ci/mac-keychain.sh) or CSC_LINK (+ CSC_KEY_PASSWORD). Without them the app is
  *   ad-hoc signed (`identity: '-'`, no hardened runtime), never with a
  *   certificate that happens to be in the keychain. Ad-hoc signing seals the
  *   bundle, so macOS offers "Open Anyway" instead of calling the app damaged.
