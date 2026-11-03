@@ -859,7 +859,11 @@ function deleteReportByReference(refArg) {
   var ref = typeof refArg === 'string' ? refArg : null
   if (ref === null) {
     var ui = SpreadsheetApp.getUi()
-    var answer = ui.prompt('Delete a CiteFox report', 'Its reference (CF-XXXXXX):', ui.ButtonSet.OK_CANCEL)
+    var answer = ui.prompt(
+      'Delete a CiteFox report',
+      'Its reference (CF-XXXXXX):',
+      ui.ButtonSet.OK_CANCEL
+    )
     if (answer.getSelectedButton() !== ui.Button.OK) return 0
     ref = answer.getResponseText()
   }
