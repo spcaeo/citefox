@@ -12,6 +12,7 @@
 
 ### Fixed
 
+- **Join CiteFox works in downloaded apps:** version 0.13.0 was built without the sign-up address, so it never showed the Join step or sent the daily version ping. This version has it.
 - **Safer project import:** a project file from someone else can no longer set up emails to a stranger. Imported report schedules arrive paused, with no recipients, and alert emails come in switched off. After you move a project to a new computer, add the email recipients again.
 - **Windows:** exports now save correctly, Claude Code and Codex installed with npm are found and start, and database files are no longer locked.
 - **Windows update link:** CiteFox now points to the installer, not the portable app.

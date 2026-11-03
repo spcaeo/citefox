@@ -70,6 +70,17 @@ describe('release bundles carry no demo data', () => {
     expect(texts.some((entry) => entry.name.startsWith('out/renderer'))).toBe(true)
   })
 
+  test('the main bundle has the registration address built in (so Join CiteFox and the ping work)', () => {
+    // GitHub Actions passes an unset repository variable as an empty string. An empty
+    // CITEFOX_REGISTER_URL must fall back to the official address, never to "no address".
+    const config = readFileSync(resolve('electron.vite.config.ts'), 'utf8')
+    const official = /OFFICIAL_REGISTER_URL =\s*'([^']+)'/.exec(config)?.[1]
+    expect(official, 'OFFICIAL_REGISTER_URL not found in electron.vite.config.ts').toBeTruthy()
+    const expected = process.env.CITEFOX_REGISTER_URL || official
+    const main = texts.filter((entry) => entry.name.startsWith('out/main'))
+    expect(main.some((entry) => entry.text.includes(expected as string))).toBe(true)
+  })
+
   test('no bundle names TextBolt, in any case', () => {
     const hits = texts
       .filter((entry) => /textbolt/i.test(entry.text))

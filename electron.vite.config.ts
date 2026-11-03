@@ -75,8 +75,10 @@ export default defineConfig({
       // "Join CiteFox" and the daily ping go to the owner's Apps Script web app
       // (server/README.md). Unset: the app sends nothing (src/main/account/endpoint.ts).
       __CITEFOX_REGISTER__: JSON.stringify({
-        url: process.env.CITEFOX_REGISTER_URL ?? OFFICIAL_REGISTER_URL,
-        token: process.env.CITEFOX_REGISTER_TOKEN ?? null
+        // `||`, not `??`: GitHub Actions passes an unset repository variable as an empty
+        // string, which `??` would keep, leaving every released app without an address.
+        url: process.env.CITEFOX_REGISTER_URL || OFFICIAL_REGISTER_URL,
+        token: process.env.CITEFOX_REGISTER_TOKEN || null
       })
     },
     resolve: {
