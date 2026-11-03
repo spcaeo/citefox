@@ -258,7 +258,7 @@ export function freshnessLine(results: PageResults, now = new Date()): string {
   if (results.scope.stale) return 'Latest check is more than 7 days old'
   if (sameLocalDay(results.scope.checkedAt, now))
     return 'Up to date: the latest check is from today'
-  return `Up to date: the latest check is from ${formatDay(results.scope.checkedAt)}`
+  return `Up to date: the latest check is from ${formatMoment(results.scope.checkedAt)}`
 }
 
 export function brandName(results: PageResults): string {

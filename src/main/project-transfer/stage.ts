@@ -68,6 +68,15 @@ export function scrubRow(policy: TablePolicy, row: Row, includesResults: boolean
   return next
 }
 
+/** An imported row never carries an email address or switch from the file (see `onImport`). */
+export function quietRow(policy: TablePolicy, row: Row): Row {
+  const next: Row = { ...row }
+  for (const [column, value] of Object.entries(policy.onImport ?? {})) {
+    if (column in next) next[column] = value
+  }
+  return next
+}
+
 function parentNoun(table: string): string {
   const policy = policyFor(table)
   if (policy === undefined) return 'row'
@@ -145,7 +154,7 @@ function insertRows(
 ): void {
   const seen = new Set<string>()
   for (const original of rows) {
-    let row = scrubRow(policy, original, state.file.includesResults)
+    let row = quietRow(policy, scrubRow(policy, original, state.file.includesResults))
     if (info.table === 'project_settings') {
       row = mergeSettingsLists(row, null, state.tallies, !hasCatalog(state.file))
     }

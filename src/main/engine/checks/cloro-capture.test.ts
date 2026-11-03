@@ -165,7 +165,7 @@ describe('captureCloroGoogle', () => {
     const captured = await captureCloroGoogle(options(transport))
     expect(transport.calls).toHaveLength(1)
     expect(captured.errorCode).toBe('other')
-    expect(captured.message).toContain('Google AI Overview is not available at cloro')
+    expect(captured.message).toContain('Google AI Overview is not available')
     expect(captured.credits).toBe(0)
   })
 
@@ -180,8 +180,8 @@ describe('captureCloroGoogle', () => {
     expect(captured).toMatchObject({
       searches: 2,
       errorCode: 'rate_limited',
-      message: 'cloro is limiting this key.',
-      nextStep: 'Open Connections and check this cloro key.',
+      message: 'Your CiteFox credits key is being limited right now.',
+      nextStep: 'Open Connections and check your CiteFox credits key.',
       retryAfterMs: 3000,
       credits: 0
     })
@@ -234,7 +234,7 @@ describe('cloro retry rules', () => {
       outcome: 'error',
       searches: 2,
       errorCode: 'other',
-      message: 'cloro could not answer this call.',
+      message: 'The search service could not answer this call.',
       nextStep: null,
       credits: 0
     })
@@ -416,7 +416,7 @@ describe('captureCloroAnswer', () => {
       sources: []
     })
     expect(captured.message).toBe(
-      'Perplexity is not available at cloro right now. CiteFox tries again at the next check.'
+      'Perplexity is not available right now. CiteFox tries again at the next check.'
     )
   })
 

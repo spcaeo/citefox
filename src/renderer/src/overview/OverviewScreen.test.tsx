@@ -138,7 +138,9 @@ describe('OverviewScreen', () => {
     ).toBe('2')
     expect(view.getByText(/Faint bar: the previous check/)).toBeTruthy()
 
-    expect(view.getByText(/From setup on Oct 1: 1 topic, 10 questions checked/)).toBeTruthy()
+    expect(
+      view.getByText(/From setup on Oct 1, [^:]+:\d{2}[^:]*: 1 topic, 10 questions checked/)
+    ).toBeTruthy()
     expect(view.getByRole('link', { name: 'Track the 3 pages' }).getAttribute('href')).toBe(
       '#/start/plan'
     )

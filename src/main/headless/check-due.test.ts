@@ -500,7 +500,8 @@ describe('citefox --check-due', () => {
     expect(barrel.includes("from 'electron'")).toBe(false)
     const main = readFileSync(new URL('../index.ts', import.meta.url), 'utf8')
     const ready = main.indexOf('.whenReady()')
-    const flag = main.indexOf('isCheckDueFlag(process.argv)')
+    // The startup decision (after the app is ready); the crash guard above it also reads the flag.
+    const flag = main.indexOf('isCheckDueFlag(process.argv)', ready)
     const skip = main.indexOf('shouldSkipForRunningInstance(app)')
     const note = main.indexOf('noteCheckDueSecondInstance(launchRequest, argv)')
     const dock = main.indexOf('app.dock?.hide()')

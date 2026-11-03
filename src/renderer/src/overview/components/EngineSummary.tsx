@@ -5,7 +5,7 @@ import { pluralize } from '@shared/pluralize'
 import { DrillButton, DrillNumber, type ItemDrill } from '../../drill'
 import { ENGINE_PARAM, engineLabel } from '../../engines/model'
 import { sectionHash } from '../../shell/routes'
-import { formatDay } from '../../utils/dates'
+import { formatMoment } from '../../utils/dates'
 import { KpiStrip, KpiTile } from '../../ui'
 import type { EngineSet } from '../drills'
 import { kpiTrend } from '../model'
@@ -56,7 +56,7 @@ export function EngineSummaryKpis({
           value={number('checked', 'checked')}
           sub={
             count?.lastCheckedAt
-              ? `Checked ${formatDay(count.lastCheckedAt, { year: false })} · ${marketLabel}`
+              ? `Checked ${formatMoment(count.lastCheckedAt)} · ${marketLabel}`
               : `Not checked on ${label} yet`
           }
         />

@@ -67,9 +67,16 @@ export function startSitemapSyncLoop(
 
   function tick(): void {
     if (stopped) return
-    void runDue().finally(() => {
-      if (!stopped) handle = timers.set(tick, SYNC_TICK_MS)
-    })
+    void runDue()
+      .catch((error: unknown) => {
+        // Reading which projects are due can throw outside the per-project catch above.
+        runtime.host.logger.warn('scheduled sitemap sync could not start', {
+          message: error instanceof Error ? error.message : 'failed'
+        })
+      })
+      .finally(() => {
+        if (!stopped) handle = timers.set(tick, SYNC_TICK_MS)
+      })
   }
 
   return () => {

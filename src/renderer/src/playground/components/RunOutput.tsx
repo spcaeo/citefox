@@ -1,7 +1,7 @@
 import type { JSX } from 'react'
 import type { PlaygroundAioResult, PlaygroundRunResult } from '@shared/ipc'
 import { pluralize } from '@shared/pluralize'
-import { formatDay, shortHash } from '../../pageSetup/model'
+import { formatReadStamp, shortHash } from '../../pageSetup/model'
 import { AioPanel, CoverageMatrix } from '../OutputPanels'
 import type { parseCoverageMatrix, parseProfileParts, parsePromptLines } from '../output'
 import type { SaveNote } from '../saveNote'
@@ -38,7 +38,7 @@ export function RunOutput({
     <div className="tpl-editor-title">
       <p className="hint">This run is not saved.</p>
       {run.templateUpdatedAt ? (
-        <p className="hint">Edited {formatDay(run.templateUpdatedAt)}</p>
+        <p className="hint">Edited {formatReadStamp(run.templateUpdatedAt)}</p>
       ) : null}
       <details>
         <summary title={run.templateHash}>Wording hash {shortHash(run.templateHash)}</summary>

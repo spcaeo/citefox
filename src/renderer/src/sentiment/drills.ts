@@ -6,7 +6,7 @@ import type {
 } from '@shared/domain'
 import { formatNet } from '@shared/sentiment-metrics'
 import type { DrillItem, DrillScope, DrillTarget, ItemDrill } from '../drill'
-import { formatDay, formatMoment } from '../utils/dates'
+import { formatMoment } from '../utils/dates'
 import { SOURCE_KIND_LABEL, TONE_LABEL } from './constants'
 import type { SourceFilter } from './types'
 import { hostOf, mdLink, mdText, shortUrl } from './utils/markdown'
@@ -103,7 +103,7 @@ export function createSentimentDrills(input: {
       marketId: view.marketId,
       runId: view.latestRunId,
       marketLabel: input.marketLabel,
-      checkDateLabel: copy.checkDateLabel ?? formatDay(latest?.checkedAt ?? null),
+      checkDateLabel: copy.checkDateLabel ?? formatMoment(latest?.checkedAt ?? null),
       brand,
       domain: ''
     }

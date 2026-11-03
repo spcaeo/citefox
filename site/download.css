@@ -703,3 +703,16 @@ html.lb-locked {
     opacity: 0.4;
   }
 }
+
+/* The newest version, right under the download button (filled from the latest release). */
+.dl-version {
+  margin: 0.6rem 0 0;
+  color: var(--ink-3, #646464);
+}
+.dl-version strong {
+  color: var(--ink, #202020);
+  font-weight: 650;
+}
+.dl-version:empty {
+  display: none;
+}

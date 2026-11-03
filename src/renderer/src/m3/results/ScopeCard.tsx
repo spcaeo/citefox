@@ -7,7 +7,7 @@ import { marketLabel } from '../../shell/model'
 import { pageHash, readHash, runningHash } from '../../shell/routes'
 import { UrlText } from '../../ui'
 import { Sep } from '../bits'
-import { formatDay, formatStamp, freshnessLine } from '../model'
+import { formatStamp, freshnessLine } from '../model'
 import { promptSetVersionLabel } from '../promptSetVersion'
 import type { ResultsDrills } from './drills'
 
@@ -166,7 +166,7 @@ function ScopeDetails({
             {scope.promptSetSavedAt ? (
               <>
                 <Sep />
-                saved {formatDay(scope.promptSetSavedAt)}
+                saved {formatStamp(scope.promptSetSavedAt)}
               </>
             ) : null}
           </dd>

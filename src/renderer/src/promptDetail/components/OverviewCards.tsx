@@ -2,7 +2,7 @@ import { useMemo, type JSX, type ReactNode } from 'react'
 import { overviewFromSample } from '@shared/aio-overview'
 import type { BrandLens } from '@shared/brand-mentions'
 import type { SampleCapture } from '@shared/domain'
-import { formatDay } from '../../utils/dates'
+import { formatMoment } from '../../utils/dates'
 import { SegmentedControl } from '../../ui'
 import { sampleLabel } from '../utils/model'
 import { GoogleOverview } from './aio/GoogleOverview'
@@ -70,7 +70,7 @@ export function AioCard({
   return (
     <Card
       headingId="pd-aio-h"
-      title={`AI Overview · ${formatDay(checkedAt, { year: false })}`}
+      title={`AI Overview · ${formatMoment(checkedAt)}`}
       aside={
         <span className="pd2-aio-aside">
           {extra}

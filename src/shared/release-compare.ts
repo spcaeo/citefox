@@ -116,12 +116,12 @@ export function pickReleaseAsset(
     return list[0] ?? null
   }
   if (platform === 'darwin') return prefer(named(/\.dmg$/i), /universal/i, archWords)
-  if (platform === 'win32')
-    return prefer(
-      named(/\.exe$/i).filter((a) => !/blockmap/i.test(a.name)),
-      archWords,
-      /setup/i
-    )
+  if (platform === 'win32') {
+    // The installer wins over the portable build, which does not update itself.
+    const exes = named(/\.exe$/i).filter((a) => !/blockmap/i.test(a.name))
+    const installers = exes.filter((a) => !/portable/i.test(a.name))
+    return prefer(installers.length > 0 ? installers : exes, archWords, /setup/i)
+  }
   if (platform === 'linux') return prefer(named(/\.AppImage$/i), archWords)
   return null
 }

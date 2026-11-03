@@ -284,7 +284,7 @@ function nextStepFor(failure: CloroFailure | null, timedOut: boolean): string | 
   if (timedOut) return 'Check the network and try again.'
   const code = failure?.code
   if (code === 'rejected' || code === 'out_of_searches' || code === 'rate_limited') {
-    return 'Open Connections and check this cloro key.'
+    return 'Open Connections and check your CiteFox credits key.'
   }
   return null
 }

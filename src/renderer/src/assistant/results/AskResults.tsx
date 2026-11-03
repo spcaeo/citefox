@@ -5,7 +5,7 @@ import { DrillButton, DrillLink, DrillNumber, openTarget } from '../../drill'
 import { Movement } from '../../m3/bits'
 import { statusLabel } from '../../m3/model'
 import { SiteIcon } from '../../siteIcon/SiteIcon'
-import { Chip, ListGrid, type ChipTone, type ListColumn } from '../../ui'
+import { Chip, ListGrid, UrlText, type ChipTone, type ListColumn } from '../../ui'
 import {
   askChecksDrill,
   askDomainDrill,
@@ -164,14 +164,16 @@ function columns(rows: readonly AskRow[], projectId: AskProject): ListColumn<Ask
             {row.citedDomains.map((domain, at) => (
               <span key={domain}>
                 {at > 0 ? ', ' : ''}
-                <DrillButton
-                  drill={askDomainDrill(rows, domain, projectId)}
-                  untracked
-                  label={`Matching question checks citing ${domain}`}
-                >
-                  <SiteIcon domain={domain} spaced />
-                  {domain}
-                </DrillButton>
+                <UrlText domain={domain} icon={false}>
+                  <DrillButton
+                    drill={askDomainDrill(rows, domain, projectId)}
+                    untracked
+                    label={`Matching question checks citing ${domain}`}
+                  >
+                    <SiteIcon domain={domain} spaced />
+                    {domain}
+                  </DrillButton>
+                </UrlText>
               </span>
             ))}
           </span>

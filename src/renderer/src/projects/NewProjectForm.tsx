@@ -17,7 +17,7 @@ import { productsApi } from '../products/client'
 import { navigateHash, sectionHash, startHash } from '../shell/routes'
 import { noteProjectCreated } from '../start/createdNotice'
 import { ScreenHeader } from '../components/Header'
-import { addChips, Button, ChipInput, LinkButton, SectionHead } from '../ui'
+import { addChips, Button, ChipInput, CopyText, LinkButton, SectionHead } from '../ui'
 import type { ShellClient } from './client'
 import { createOptions, INITIAL_CHOICES, type NewProjectChoices } from './newProject/payload'
 import { ProjectChoices } from './newProject/ProjectChoices'
@@ -350,7 +350,7 @@ export function NewProjectForm({
           {created ? (
             <>
               {' '}
-              <span className="mono">{created.dbPath}</span>
+              <CopyText text={created.dbPath} className="mono" />
             </>
           ) : null}
         </p>

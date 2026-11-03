@@ -264,6 +264,20 @@ async function main() {
   renderCards(release)
   const meta = document.querySelector('[data-dl-meta]')
   if (meta) meta.textContent = `Latest: v${version} · ${formatDay(release.published_at)}`
+  // The version, near the top of the page: it is the newest published release, so it follows every update.
+  for (const line of document.querySelectorAll('[data-dl-version]')) {
+    const strong = document.createElement('strong')
+    strong.textContent = `Version ${version}`
+    line.replaceChildren(strong, ` · released ${formatDay(release.published_at)}`)
+    if (release.html_url) {
+      const link = document.createElement('a')
+      link.href = release.html_url
+      link.target = '_blank'
+      link.rel = 'noopener'
+      link.textContent = 'Release notes'
+      line.append(' · ', link)
+    }
+  }
   const notesLink = document.querySelector('[data-dl-notes]')
   if (notesLink && release.html_url) notesLink.href = release.html_url
   const footer = $('footer-release')

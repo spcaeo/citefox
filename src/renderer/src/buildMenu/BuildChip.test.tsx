@@ -75,14 +75,14 @@ describe('BuildChip', () => {
   it('shows the version, build date and commit, and opens the build menu', async () => {
     const view = renderChip(makeClient())
     const chip = await view.findByRole('button', { name: /v0\.11\.0/ })
-    expect(chip.textContent).toContain('v0.11.0 · 22 Oct · 1787acc')
+    expect(chip.textContent).toContain('v0.11.0 · Oct 22 · 1787acc')
     expect(chip.getAttribute('aria-haspopup')).toBe('menu')
     expect(chip.getAttribute('aria-expanded')).toBe('false')
     fireEvent.click(chip)
     const menu = view.getByRole('menu', { name: 'Build menu' })
     expect(chip.getAttribute('aria-expanded')).toBe('true')
     expect(menu.textContent).toContain('CiteFox 0.11.0')
-    expect(menu.textContent).toContain('Build 1787acc · 22 Oct 2026, 19:50')
+    expect(menu.textContent).toContain('Build 1787acc · Oct 22, 2026, 7:50 PM')
     expect(
       within(menu)
         .getAllByRole('menuitem')

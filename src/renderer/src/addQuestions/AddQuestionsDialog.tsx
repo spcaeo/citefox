@@ -5,6 +5,7 @@ import type { ImportCommitResult, ImportRow, QuestionTarget } from '@shared/ipc'
 import { pluralize, questionsAndKeywords } from '@shared/pluralize'
 import { useAiContext } from '../assistant/context/useAiContext'
 import { useBuildTools, type BuildTools } from '../buildMenu/buildClient'
+import { errorText } from '../components/errorText'
 import { handFile } from '../importFlow/handoff'
 import { checkError, checkStartMessage } from '../m3/source'
 import { Drawer } from '../ui'
@@ -142,6 +143,7 @@ export function AddQuestionsDialog({
   const [showMarket, setShowMarket] = useState(false)
   const [showTags, setShowTags] = useState(false)
   const [intervalPick, setIntervalPick] = useState<IntervalDays | null>(null)
+  const [intervalError, setIntervalError] = useState<string | null>(null)
   const intervalDays = intervalPick ?? target?.intervalDays ?? null
 
   const markets = useMemo(() => targetMarkets(data, target), [data, target])
@@ -246,11 +248,21 @@ export function AddQuestionsDialog({
 
   async function add(mode: 'later' | 'now'): Promise<void> {
     if (target === null) return
+    setIntervalError(null)
+    // The check rhythm is saved first: if it fails the drawer stays open with the rows
+    // untouched, and nothing is added twice when the person tries again.
+    if (intervalDays !== null && intervalDays !== target.intervalDays) {
+      try {
+        await source['pages:update']({ projectId, pageId: target.id, intervalDays })
+      } catch (cause) {
+        setIntervalError(
+          `Could not save how often this is checked, so nothing was added. ${errorText(cause, '', { sentence: true })}`.trim()
+        )
+        return
+      }
+    }
     const result = await actions.commit(mode)
     if (result === null) return
-    if (intervalDays !== null && intervalDays !== target.intervalDays) {
-      await source['pages:update']({ projectId, pageId: target.id, intervalDays }).catch(() => null)
-    }
     const ids = result.promptIds.flatMap((group) => group.promptIds)
     if (mode === 'now' && ids.length > 0) startCheck(source, tools, projectId, target, ids)
     announce(source, tools, projectId, target, result, mode === 'now')
@@ -416,6 +428,16 @@ export function AddQuestionsDialog({
           {state.error ? (
             <p className="aq-error" role="alert">
               {state.error}
+            </p>
+          ) : null}
+          {intervalError ? (
+            <p className="aq-error" role="alert" data-testid="aq-interval-error">
+              {intervalError}
+            </p>
+          ) : null}
+          {draft.saveFailed ? (
+            <p className="aq-notice" role="status" data-testid="aq-draft-failed">
+              Your rows could not be saved for later. We will try again.
             </p>
           ) : null}
           {state.notice ? (

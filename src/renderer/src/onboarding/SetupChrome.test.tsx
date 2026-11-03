@@ -101,7 +101,7 @@ describe('SetupChrome', () => {
     expect(within(nav).queryByRole('button', { name: /Buyers/ })).toBeNull()
     expect(view.getByText('Source-available · © Space-O Technologies')).toBeTruthy()
     const chip = await within(view.getByRole('banner')).findByRole('button', { name: /v1\.2\.3/ })
-    expect(chip.textContent).toContain('v1.2.3 · 22 Oct · abc1234')
+    expect(chip.textContent).toContain('v1.2.3 · Oct 22 · abc1234')
   })
 
   it('marks an earlier step that lost what it needs as not done', () => {

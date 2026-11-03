@@ -4,7 +4,7 @@ import type { AssistClient } from '../assist/client'
 import { Markdown } from '../components/Markdown'
 import { cleanError } from '../progress/model'
 import { Button, EmptyState, IconButton, Panel, useAssistMenu } from '../ui'
-import { formatDay } from '../utils/dates'
+import { formatMoment } from '../utils/dates'
 import { currentPlan, planFromAssist, planKey } from './model'
 
 /** Longest plan main accepts, in characters. */
@@ -102,7 +102,7 @@ export function RecoveryPlan({
             {plan.text}
           </Markdown>
           <p className="faint">
-            {plan.edited ? 'Edited' : 'Written by CiteFox AI'} · saved {formatDay(plan.savedAt)}
+            {plan.edited ? 'Edited' : 'Written by CiteFox AI'} · saved {formatMoment(plan.savedAt)}
           </p>
         </>
       ) : (

@@ -219,7 +219,7 @@ describe('Progress drills', () => {
     fireEvent.click(verdict)
     const dialog = await view.findByRole('dialog')
     expect(rowCount(dialog)).toBe(1)
-    expect(dialog.textContent).toContain('Oct 5, 2026')
+    expect(dialog.textContent).toMatch(/Oct 5(, 2026)?, \d{1,2}:\d{2}/)
     const link = within(dialog).getByRole('link', { name: /Open question 2/ })
     expect(link.getAttribute('href')).toBe('#/pages/alerts/prompt/tb-2?market=us&run=run-previous')
     closeDrawer()
@@ -248,7 +248,7 @@ describe('Progress drills', () => {
     fireEvent.click(others)
     const dialog = await view.findByRole('dialog')
     expect(rowCount(dialog)).toBe(3)
-    expect(dialog.textContent).toContain('Sep 21, 2026')
+    expect(dialog.textContent).toMatch(/Sep 21(, 2026)?, \d{1,2}:\d{2}/)
     closeDrawer()
   })
 
@@ -259,7 +259,7 @@ describe('Progress drills', () => {
     fireEvent.click(cited)
     const dialog = await view.findByRole('dialog')
     expect(rowCount(dialog)).toBe(figureOf(cited))
-    expect(dialog.textContent).toContain('Sep 21, 2026')
+    expect(dialog.textContent).toMatch(/Sep 21(, 2026)?, \d{1,2}:\d{2}/)
     for (const link of within(dialog).getAllByRole('link', { name: /^Open question/ })) {
       expect(link.getAttribute('href')).toContain('market=us&run=run-baseline')
     }

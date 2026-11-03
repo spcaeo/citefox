@@ -21,15 +21,15 @@ const INFO: AppInfo = {
 
 describe('build words', () => {
   it('writes the chip, the menu title and the build line', () => {
-    expect(chipText(INFO)).toBe('v0.11.0 · 22 Oct · 1787acc')
+    expect(chipText(INFO)).toBe('v0.11.0 · Oct 22 · 1787acc')
     expect(menuTitle(INFO)).toBe('CiteFox 0.11.0')
-    expect(buildLine(INFO)).toBe('Build 1787acc · 22 Oct 2026, 19:50')
+    expect(buildLine(INFO)).toBe('Build 1787acc · Oct 22, 2026, 7:50 PM')
   })
 
   it('leaves out what the build does not know', () => {
     const noCommit: AppInfo = { ...INFO, build: { commit: null, builtAt: BUILT.toISOString() } }
-    expect(chipText(noCommit)).toBe('v0.11.0 · 22 Oct')
-    expect(buildLine(noCommit)).toBe('Built 22 Oct 2026, 19:50')
+    expect(chipText(noCommit)).toBe('v0.11.0 · Oct 22')
+    expect(buildLine(noCommit)).toBe('Built Oct 22, 2026, 7:50 PM')
     const bare: AppInfo = { name: 'CiteFox', version: '0.11.0' }
     expect(chipParts(bare)).toEqual({ version: 'v0.11.0', date: null, commit: null })
     expect(buildLine(bare)).toBeNull()
@@ -54,7 +54,7 @@ describe('build words', () => {
     expect(text.split('\n')).toEqual([
       'CiteFox 0.11.0',
       'Commit: 1787acc',
-      `Built: 22 Oct 2026, 19:50 (${BUILT.toISOString()})`,
+      `Built: Oct 22, 2026, 7:50 PM (${BUILT.toISOString()})`,
       'OS: macOS',
       'Window: test profile'
     ])

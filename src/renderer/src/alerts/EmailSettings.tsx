@@ -3,7 +3,7 @@ import type { EmailMode, EmailTestResult } from '@shared/domain'
 import { Icon } from '../components/Icon'
 import { describedBy } from '../onboarding/copy'
 import { FieldError } from '../onboarding/parts'
-import { Button, Confirm, Panel, SecretField } from '../ui'
+import { Button, CopyText, Confirm, Panel, SecretField } from '../ui'
 import type { AlertsClient, EmailView } from './client'
 import { AccountSection } from './email/AccountSection'
 import { focusIssue } from './email/focusIssue'
@@ -457,7 +457,7 @@ export function EmailSettings({
                       <Icon name="check" />
                       <p>
                         <span className="st st-ok">Test sent to {testTo.trim()}</span> · delivered
-                        by <span className="mono">{testResult.host}</span>
+                        by <CopyText text={testResult.host} className="mono" />
                       </p>
                     </div>
                   ) : null}

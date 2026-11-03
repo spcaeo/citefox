@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-import { cleanup, fireEvent, render } from '@testing-library/react'
+import { act, cleanup, fireEvent, render } from '@testing-library/react'
 import axe from 'axe-core'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { FunnelChart, HistoryStripChart, RankedBarsChart } from './ReportCharts'
@@ -41,6 +41,24 @@ describe('report charts in the app', () => {
     expect(view.container.querySelector('.ui-rchart-card')).toBeNull()
     fireEvent.focus(marks(view.container)[2] as SVGGElement)
     expect(view.container.querySelector('.ui-rchart-card')?.textContent).toContain('g2.com')
+  })
+
+  it('keeps one mark in the Tab order and moves it with the arrow keys', () => {
+    const view = render(
+      <RankedBarsChart label="Most cited sites" items={ITEMS} previousLabel="Sep 16" />
+    )
+    const tabbable = (): string[] =>
+      marks(view.container).flatMap((node, at) =>
+        node.getAttribute('tabindex') === '0' ? [`${at}`] : []
+      )
+    expect(tabbable()).toEqual(['0'])
+    const all = marks(view.container)
+    act(() => all[0]?.focus())
+    fireEvent.keyDown(all[0] as SVGGElement, { key: 'ArrowRight' })
+    expect(document.activeElement).toBe(all[1])
+    expect(tabbable()).toEqual(['1'])
+    fireEvent.keyDown(all[1] as SVGGElement, { key: 'End' })
+    expect(tabbable()).toEqual(['2'])
   })
 
   it('drills on click, Enter and Space, and moves focus with the arrow keys', () => {

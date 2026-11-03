@@ -98,7 +98,7 @@ async function setup(): Promise<ReturnType<typeof harness> & { dir: string }> {
     slack: true,
     delivery: 'instant'
   })
-  return { ...h, dir }
+  return { ...h, storage, dir }
 }
 
 function savedFile(): ProjectFile {
@@ -455,6 +455,53 @@ describe('project import', () => {
       if (!picked.ok) expect(picked.reason).toMatch(reason)
     }
     expect((await handlers['projects:list']()).projects).toHaveLength(1)
+  })
+
+  test('a hostile file cannot make an active report or alert email an outside address', async () => {
+    const { handlers, storage } = await setup()
+    await handlers['transfer:exportProject']({ projectId: PROJECT_ID, includeResults: false })
+    const file = savedFile()
+    const attacker = '["evil@attacker.example"]'
+    file.reportSchedules[0] = {
+      ...file.reportSchedules[0]!,
+      recipients: attacker,
+      status: 'active'
+    }
+    const alertSettings = file.tables.alert_settings![0]!
+    alertSettings.email_after_check = 1
+    alertSettings.email_to = attacker
+    for (const rule of file.tables.alert_rules!) rule.email_to = attacker
+    openPath = join(folders[0]!, 'hostile.citefox-project.json')
+    writeFileSync(openPath, JSON.stringify(file))
+    const picked = await handlers['transfer:pickProject']()
+    if (!picked.ok) throw new Error(picked.reason)
+    const result = await handlers['transfer:importProject']({
+      token: picked.token,
+      mode: 'new',
+      replaceProjectId: null
+    })
+    const imported = storage.db
+      .prepare<unknown[], { status: string; recipients: string }>(
+        'SELECT status, recipients FROM report_schedules WHERE project_id = ?'
+      )
+      .all(result.projectId)
+    expect(imported).toEqual([{ status: 'paused', recipients: '[]' }])
+    const slug = storage.db
+      .prepare<unknown[], { slug: string }>('SELECT slug FROM projects WHERE id = ?')
+      .get(result.projectId)!.slug
+    const db = openProjectDatabase(storage.paths.projectsDirectory, slug)
+    try {
+      expect(
+        db.prepare('SELECT email_after_check, email_to FROM alert_settings WHERE id = 1').get()
+      ).toEqual({ email_after_check: 0, email_to: '[]' })
+      const rules = db
+        .prepare<unknown[], { email_to: string }>('SELECT email_to FROM alert_rules')
+        .all()
+      expect(rules.length).toBeGreaterThan(0)
+      for (const rule of rules) expect(rule.email_to).toBe('[]')
+    } finally {
+      closeProjectDatabase(db)
+    }
   })
 
   test('a closed dialog is a quiet cancel', async () => {

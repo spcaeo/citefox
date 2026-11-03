@@ -73,7 +73,7 @@ export function VersionsPanel({
           <span>{formatMoment(row.firstReadAt)}</span>
           <span className="faint">
             {row.reads > 1
-              ? `${pluralize(row.reads, 'read')}, last ${formatDay(row.lastReadAt, { year: false })}`
+              ? `${pluralize(row.reads, 'read')}, last ${formatMoment(row.lastReadAt)}`
               : '1 read'}
           </span>
         </span>

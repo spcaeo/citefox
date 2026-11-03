@@ -274,14 +274,17 @@ export function AppShell({
   // The first-run journey is focus mode: no sidebar, its own quiet top bar.
   if (location.kind === 'section' && location.section === 'start' && data.ready && !switchingName) {
     return (
-      <Suspense fallback={<p role="status">Loading…</p>}>
-        <StartRoute
-          step={location.focusId}
-          project={data.active}
-          searchesLeft={data.app.capsule?.searchesLeft ?? null}
-          client={journey}
-        />
-      </Suspense>
+      <>
+        <Suspense fallback={<p role="status">Loading…</p>}>
+          <StartRoute
+            step={location.focusId}
+            project={data.active}
+            searchesLeft={data.app.capsule?.searchesLeft ?? null}
+            client={journey}
+          />
+        </Suspense>
+        <ReleaseLine />
+      </>
     )
   }
 

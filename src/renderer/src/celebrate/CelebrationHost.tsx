@@ -168,6 +168,7 @@ export function CelebrationHost({
             <section
               className="celebrate-card"
               role="dialog"
+              aria-modal="true"
               aria-labelledby="celebrate-headline"
               aria-describedby="celebrate-line"
             >

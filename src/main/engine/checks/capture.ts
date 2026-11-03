@@ -242,7 +242,7 @@ async function callSerp(
     if (status === 200 && kind === 'empty') {
       last = failedCall(
         'empty',
-        'SerpApi returned an empty response, also on the retry.',
+        'The search service returned an empty response, also on the retry.',
         null,
         redact(body, secrets)
       )

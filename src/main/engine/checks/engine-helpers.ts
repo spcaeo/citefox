@@ -69,8 +69,8 @@ export function stopForCap(
   const message = projectCap
     ? "This check would pass the project's search cap."
     : cloro
-      ? 'Every cloro key is out of credits.'
-      : 'Every SerpApi key is out of searches.'
+      ? 'Your CiteFox credits are used up.'
+      : 'Your searches for this period are used up.'
   const nextStep = projectCap
     ? capNextStep(prepared.queueProject.capRule, prepared.month)
     : `Open Connections and add a ${cloro ? 'cloro' : 'SerpApi'} key.`

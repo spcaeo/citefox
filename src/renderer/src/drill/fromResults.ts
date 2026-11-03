@@ -3,7 +3,7 @@ import {
   brandName,
   displayUrl,
   drillFor,
-  formatDay,
+  formatStamp,
   ownDomain,
   rowsFor,
   type DrillSpec
@@ -27,7 +27,7 @@ export function resultsScope(
     marketId: results.run?.marketId ?? options.market?.id ?? null,
     runId: options.runId ?? null,
     marketLabel: options.market ? marketLabel(options.market) : '',
-    checkDateLabel: formatDay(results.scope.checkedAt),
+    checkDateLabel: formatStamp(results.scope.checkedAt),
     brand: brandName(results),
     domain: ownDomain(results)
   }

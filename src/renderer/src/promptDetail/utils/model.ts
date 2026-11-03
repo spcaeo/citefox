@@ -10,7 +10,7 @@ import type {
 } from '@shared/domain'
 import { knownPlatform, platformLabel } from '@shared/site-role'
 import { SITE_TYPE_LABELS, siteTypeOf } from '@shared/site-type'
-import { formatDay } from '../../utils/dates'
+import { formatMoment } from '../../utils/dates'
 import { marketLabel } from '../../shell/model'
 import { coverageLabel, displayUrl, statusLabel } from '../../m3/model'
 import type { CitationCounts, PromptNeighbours, PromptTimeRow, SourceKind } from '../types'
@@ -195,7 +195,7 @@ export function fixBrief(input: FixBriefInput): string {
     lines.push(`Question: ${plain(row.text)}`)
     const position = row.position === null ? '' : ` · position ${row.position}`
     lines.push(
-      `Checked ${formatDay(row.checkedAt)}: ${statusLabel(row.status)}${position}` +
+      `Checked ${formatMoment(row.checkedAt)}: ${statusLabel(row.status)}${position}` +
         (row.frequency.samples > 1
           ? ` (${row.frequency.matching} of ${row.frequency.samples} samples)`
           : '')

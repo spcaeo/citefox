@@ -103,6 +103,14 @@
     outline-offset: 2px;
   }
 
+  /* Windows high contrast: the palette is replaced, so the ring uses a system colour. */
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline: 2px solid Highlight;
+      outline-offset: 2px;
+    }
+  }
+
   .skip-link {
     position: absolute;
     left: var(--s-2);

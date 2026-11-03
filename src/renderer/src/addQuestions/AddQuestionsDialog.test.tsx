@@ -931,4 +931,24 @@ describe('AddQuestionsDialog', () => {
     await waitFor(() => expect(onClose).toHaveBeenCalled())
     expect(source.updates).toEqual([{ projectId: 'proj-1', pageId: TOPIC, intervalDays: 30 }])
   })
+
+  it('keeps the drawer open and adds nothing when the check frequency cannot be saved', async () => {
+    const source = fakeSource()
+    source['pages:update'] = async () => {
+      throw new Error('disk is full')
+    }
+    const { onClose } = renderDialog(source)
+    await ready()
+    fireEvent.click(screen.getByRole('button', { name: 'Expert options' }))
+    fireEvent.change(screen.getByLabelText('Check this topic every'), { target: { value: '30' } })
+    fireEvent.change(questionBox(1), {
+      target: { value: 'is there a replacement for vtext.com email to SMS' }
+    })
+    await waitFor(() => expect(footer().textContent).toContain('1 to add'))
+    fireEvent.click(screen.getByTestId('aq-add-later'))
+    const message = await screen.findByTestId('aq-interval-error')
+    expect(message.textContent).toContain('nothing was added')
+    expect(onClose).not.toHaveBeenCalled()
+    expect(questionBox(1).value).toBe('is there a replacement for vtext.com email to SMS')
+  })
 })

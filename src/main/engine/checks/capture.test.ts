@@ -278,7 +278,9 @@ describe('captureSerpApi', () => {
     const captured = await captureSerpApi({ transport: http, secret: SECRET, query })
     expect(captured.hasAio).toBe(false)
     expect(captured.errorCode).toBe('other')
-    expect(captured.message).toBe('SerpApi could not load the AI Overview for this search.')
+    expect(captured.message).toBe(
+      'The search service could not load the AI Overview for this search.'
+    )
     expect(http.calls).toHaveLength(1)
   })
 

@@ -4,7 +4,7 @@ import { MemorySecretStore } from '../../secrets/secret-store'
 import type { HttpRequest, HttpResponse } from '../http'
 import { interpretYouTube, testYouTubeKey, YOUTUBE_PROBE_VIDEO } from './data-api'
 
-const SECRET = 'AIzaSyFixtureYouTubeKey0123456789abcdef'
+const SECRET = 'fixture-youtube-key-0123456789abcdef'
 
 function run(response: HttpResponse): {
   result: ReturnType<typeof testYouTubeKey>

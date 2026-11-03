@@ -9,7 +9,7 @@ import type { ChangeLedger, ChangeRow } from '@shared/ipc'
 import { pluralize } from '@shared/pluralize'
 import { DrillButton, DrillNumber } from '../drill'
 import { DrawerSection, MarkerDot } from '../ui'
-import { formatDay } from '../utils/dates'
+import { formatMoment } from '../utils/dates'
 import { fixQuestionsDrill } from './drills'
 import { citedQuestions, measuredQuestions, questionsIn, updateLine } from './verdict'
 import { VerdictPill } from './VerdictCells'
@@ -54,7 +54,7 @@ export function DidItWork({
           <div className="chg-work-boxes">
             <div className="chg-work-box">
               <span className="chg-work-when">
-                {beforeAt ? `Before · ${formatDay(beforeAt, { year: false })}` : 'Before'}
+                {beforeAt ? `Before · ${formatMoment(beforeAt)}` : 'Before'}
               </span>
               <span className="chg-work-count">
                 <DrillNumber drill={before} />
@@ -68,7 +68,7 @@ export function DidItWork({
             </span>
             <div className="chg-work-box">
               <span className="chg-work-when">
-                {nowAt ? `Now · ${formatDay(nowAt, { year: false })}` : 'Now'}
+                {nowAt ? `Now · ${formatMoment(nowAt)}` : 'Now'}
               </span>
               <span className="chg-work-count">
                 <DrillNumber drill={now} />

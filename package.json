@@ -1,7 +1,7 @@
 {
   "name": "citefox",
   "productName": "CiteFox",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "private": true,
   "description": "Desktop app that tracks whether Google AI Overviews cite a website's pages.",
   "license": "SEE LICENSE IN LICENSE",
@@ -56,6 +56,7 @@
     "dist:linux": "npm run build && electron-builder --config electron-builder.config.ts --linux --publish never && node scripts/clean-release.mjs && node scripts/checksums.mjs",
     "release": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/release.ts",
     "icon": "electron scripts/render-icon.mjs",
+    "dmg:background": "electron scripts/render-dmg-background.mjs",
     "postinstall": "install-electron",
     "prepare": "node scripts/hooks/install.mjs",
     "secrets:scan": "node scripts/hooks/secret-scan.mjs --staged",

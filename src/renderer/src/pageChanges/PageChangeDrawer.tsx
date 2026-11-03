@@ -224,7 +224,7 @@ export function PageChangeDrawer({
                     </span>
                   )
                 },
-                ...(change ? [{ label: 'Went live', value: formatDay(change.changedAt) }] : [])
+                ...(change ? [{ label: 'Went live', value: formatMoment(change.changedAt) }] : [])
               ]}
             />
             {error ? (
@@ -242,8 +242,8 @@ export function PageChangeDrawer({
               items={shown.items}
               view={view}
               all={all}
-              fromLabel={`Before · ${formatDay(shown.from.readAt, { year: false })}`}
-              toLabel={`After · ${formatDay(shown.to.readAt, { year: false })}`}
+              fromLabel={`Before · ${formatMoment(shown.from.readAt)}`}
+              toLabel={`After · ${formatMoment(shown.to.readAt)}`}
               onShowAll={() => setDrawerParams(depth, { 'pc.all': '1' })}
             />
           </DrawerSection>
@@ -289,7 +289,7 @@ function footerFor(
   return {
     cancel: 'Close',
     secondary: {
-      label: `Log as fix, live ${formatDay(diff.to.readAt, { year: false })}`,
+      label: `Log as fix, live ${formatMoment(diff.to.readAt)}`,
       onClick: on.logAsFix
     }
   }

@@ -16,6 +16,10 @@ import { join } from 'node:path'
 import appIcon from '../../resources/icon.png?asset'
 import { backgroundTestMode, revealWindow } from './background-mode'
 import { windowBackground } from './theme'
+import { debounce } from './debounce'
+
+/** Moving or resizing fires many events a second; the file is written once the window settles. */
+const SAVE_BOUNDS_AFTER_MS = 400
 
 export interface MainWindowOptions {
   /** `window-state.json` in the app data folder. Omit to skip persistence. */
@@ -58,11 +62,17 @@ export async function createMainWindow(options?: MainWindowOptions): Promise<Bro
     }
   }
 
-  win.on('resize', persist)
-  win.on('move', persist)
-  win.on('maximize', persist)
-  win.on('unmaximize', persist)
-  win.on('close', persist)
+  const settled = debounce(persist, SAVE_BOUNDS_AFTER_MS)
+  win.on('resize', settled.schedule)
+  win.on('move', settled.schedule)
+  win.on('maximize', settled.schedule)
+  win.on('unmaximize', settled.schedule)
+  // On close the final position is written at once, so a quit never loses it.
+  win.on('close', () => {
+    settled.cancel()
+    persist()
+  })
+  win.on('closed', settled.cancel)
 
   win.on('ready-to-show', () => {
     const background = backgroundTestMode(app.isPackaged)

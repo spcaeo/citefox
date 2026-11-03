@@ -3,7 +3,7 @@ import { CLORO_CREDITS, ENGINE_IDS, ENGINE_LABEL, type EngineId, type Market } f
 import type { PromptTextRules, PromptVersionStep } from '@shared/ipc'
 import { drawerHref } from '../../shell/drawers'
 import { promptHash } from '../../shell/routes'
-import { formatDay } from '../../utils/dates'
+import { formatMoment } from '../../utils/dates'
 import {
   Drawer,
   DrawerFacts,
@@ -357,7 +357,7 @@ export function PromptEditDrawer(props: PromptEditDrawerProps): JSX.Element {
                       v{step.promptSetVersion}
                       {index === 0 ? ' · this one' : ''}
                     </strong>{' '}
-                    · saved {formatDay(step.savedAt)}
+                    · saved {formatMoment(step.savedAt)}
                     <span className="pd2-edit-version-text">{stepText(step, marketId)}</span>
                   </li>
                 ))}

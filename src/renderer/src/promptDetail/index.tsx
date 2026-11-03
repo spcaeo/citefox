@@ -12,7 +12,7 @@ import { formatMonthDay, formatStamp, statusLabel } from '../m3/model'
 import { pageLabel } from '../projects/copy'
 import { useQuestionItems } from '../questionEdit/useQuestionItems'
 import { pageHash, promptHash, runningHash } from '../shell/routes'
-import { formatDay } from '../utils/dates'
+import { formatMoment } from '../utils/dates'
 import { useHashQuery } from '../utils/hashQuery'
 import { Button, EmptyState, ToolButton, LinkButton, Panel, TabPanel, Tabs } from '../ui'
 import { FixBrief, FixMoreMenu } from './components/FixActions'
@@ -505,7 +505,7 @@ function PromptDetailBody({
                           })}
                           size="sm"
                         >
-                          Show the check from {formatDay(recheckRow.finishedAt, { year: false })}
+                          Show the check from {formatMoment(recheckRow.finishedAt)}
                         </LinkButton>
                       ) : null}
                       <Button

@@ -1,27 +1,13 @@
 import type { AppInfo } from '@shared/ipc'
 import { releaseLine } from '@shared/release-line'
+import { formatClock, formatDay } from '../utils/dates'
 
 /**
  * Words for the build chip and its menu (owner feedback batch 2, item 1):
- * `v0.11.0 · 22 Oct · 1787acc` on the chip, "CiteFox 0.11.0" and
- * "Build 1787acc · 22 Oct 2026, 19:50" in the menu, and the text that
+ * `v0.11.0 · Oct 22 · 1787acc` on the chip, "CiteFox 0.11.0" and
+ * "Build 1787acc · Oct 22, 2026, 7:50 PM" in the menu, and the text that
  * "Copy build info" puts on the clipboard. Times are local.
  */
-
-const MONTHS = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec'
-] as const
 
 function builtDate(info: AppInfo): Date | null {
   const iso = info.build?.builtAt
@@ -30,24 +16,21 @@ function builtDate(info: AppInfo): Date | null {
   return Number.isNaN(date.getTime()) ? null : date
 }
 
-function pad(value: number): string {
-  return String(value).padStart(2, '0')
-}
-
-/** "22 Oct". */
+/** "Oct 22": the day in the computer's own order and zone, like every other date. */
 export function shortDate(date: Date): string {
-  return `${date.getDate()} ${MONTHS[date.getMonth()]}`
+  return formatDay(date.toISOString(), { year: false })
 }
 
-/** "22 Oct 2026, 19:50". */
+/** "Oct 22, 2026, 7:50 PM": the computer's own day order, zone and clock (never a forced 24-hour clock). */
 export function longDateTime(date: Date): string {
-  return `${shortDate(date)} ${date.getFullYear()}, ${pad(date.getHours())}:${pad(date.getMinutes())}`
+  const iso = date.toISOString()
+  return `${formatDay(iso)}, ${formatClock(iso)}`
 }
 
 export interface ChipParts {
   /** "v0.11.0". */
   version: string
-  /** "22 Oct", or null without a build time. */
+  /** "Oct 22", or null without a build time. */
   date: string | null
   /** "1787acc", or null when the build was made outside git. */
   commit: string | null
@@ -62,7 +45,7 @@ export function chipParts(info: AppInfo): ChipParts {
   }
 }
 
-/** The chip as one line: `v0.11.0 · 22 Oct · 1787acc`. */
+/** The chip as one line: `v0.11.0 · Oct 22 · 1787acc`. */
 export function chipText(info: AppInfo): string {
   const parts = chipParts(info)
   return [parts.version, parts.date, parts.commit].filter(Boolean).join(' · ')
@@ -73,7 +56,7 @@ export function menuTitle(info: AppInfo): string {
   return `${info.name} ${info.version}`
 }
 
-/** "Build 1787acc · 22 Oct 2026, 19:50"; "Built 22 Oct 2026, 19:50" without a commit; null without a build. */
+/** "Build 1787acc · Oct 22, 2026, 7:50 PM"; "Built Oct 22, 2026, 7:50 PM" without a commit; null without a build. */
 export function buildLine(info: AppInfo): string | null {
   const date = builtDate(info)
   const commit = info.build?.commit ?? null

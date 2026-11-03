@@ -83,6 +83,8 @@ describe('CelebrationHost', () => {
     expect(fired).toHaveLength(1)
     expect(played).toHaveLength(1)
     const dialog = screen.getByRole('dialog', { name: 'TextBolt was cited!' })
+    expect(dialog.getAttribute('aria-modal')).toBe('true')
+    expect(dialog.contains(document.activeElement)).toBe(true)
     expect(dialog.textContent).toContain('Google AI Overview linked your page as link #1')
     expect(dialog.textContent).toContain('“nagios email to sms replacement”')
     expect(dialog.textContent).toContain('/nagios-sms/')

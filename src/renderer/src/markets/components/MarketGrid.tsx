@@ -7,7 +7,7 @@ import { countNoun } from '../../m3/model'
 import { marketLabel } from '../../shell/model'
 import { pageHash } from '../../shell/routes'
 import { EmptyState, ListGrid, type ListColumn, type MenuItem } from '../../ui'
-import { formatDay } from '../../utils/dates'
+import { formatMoment } from '../../utils/dates'
 import type { MarketResults } from '../types'
 import { marketCitationsDrill, marketResultsDrill } from '../utils/drills'
 import {
@@ -179,9 +179,9 @@ function marketColumns(
           <a
             className="m3-link"
             href={pageHash(pageId, 'history', { marketId: market.id })}
-            aria-label={`Last checked ${formatDay(run.finishedAt)}: open History for ${marketLabel(market)}`}
+            aria-label={`Last checked ${formatMoment(run.finishedAt)}: open History for ${marketLabel(market)}`}
           >
-            {formatDay(run.finishedAt)}
+            {formatMoment(run.finishedAt)}
           </a>
         )
       }

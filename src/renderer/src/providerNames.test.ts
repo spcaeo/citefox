@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest'
 
 /**
  * R12 and owner decision 3 (Nov 2026): users never see the providers behind CiteFox
- * (Claude, Codex, cloro, SerpApi, Jina) outside the API keys and AI connection
+ * (Claude, Codex, cloro, SerpApi, Jina, Anthropic, OpenAI) outside the API keys and AI connection
  * settings, where they paste a key or connect (and the status of those connections).
  * What an AI does is "CiteFox AI"; searches are "searches" and "CiteFox credits".
  *
@@ -15,7 +15,7 @@ import { describe, expect, it } from 'vitest'
  */
 
 const ROOT = path.resolve(__dirname)
-const PROVIDER = /\b(?:Claude|Codex|cloro|SerpApi|Jina)\b/
+const PROVIDER = /\b(?:Claude|Codex|cloro|SerpApi|Jina|Anthropic|OpenAI)\b/
 
 /** Where the names may show: connecting, checking and paying for each service. */
 const ALLOWED_PLACES: readonly RegExp[] = [

@@ -1,7 +1,7 @@
 import { useEffect, useState, type JSX } from 'react'
 import type { ContentDiff, DiffLine } from '@shared/domain'
 import { useAiContext } from '../assistant/context/useAiContext'
-import { formatDay } from '../utils/dates'
+import { formatMoment } from '../utils/dates'
 import type { CompareSource } from './client'
 import { changeCount, collapseDiff, foldText } from './model'
 import { errorText } from '../components/errorText'
@@ -37,7 +37,7 @@ export function CompareDialog({
     screenLabel: 'Compare content',
     pageId,
     facts: diff
-      ? [`Page read ${formatDay(diff.from.fetchedAt)} → ${formatDay(diff.to.fetchedAt)}`]
+      ? [`Page read ${formatMoment(diff.from.fetchedAt)} → ${formatMoment(diff.to.fetchedAt)}`]
       : [],
     numbers: diff ? [{ label: 'Changes', value: String(changes) }] : []
   })
@@ -67,7 +67,7 @@ export function CompareDialog({
       title="Compare content"
       subtitle={
         diff
-          ? `What changed: ${formatDay(diff.from.fetchedAt)} → ${formatDay(diff.to.fetchedAt)}`
+          ? `What changed: ${formatMoment(diff.from.fetchedAt)} → ${formatMoment(diff.to.fetchedAt)}`
           : 'Two reads of this page, side by side.'
       }
       testId="compare-drawer"
@@ -78,7 +78,7 @@ export function CompareDialog({
         summary: diff ? (
           <>
             <strong>
-              {formatDay(diff.from.fetchedAt)} → {formatDay(diff.to.fetchedAt)}
+              {formatMoment(diff.from.fetchedAt)} → {formatMoment(diff.to.fetchedAt)}
             </strong>
             {` · ${changes} ${changes === 1 ? 'change' : 'changes'}`}
           </>

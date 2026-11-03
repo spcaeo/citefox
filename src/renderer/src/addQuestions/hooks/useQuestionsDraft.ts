@@ -6,6 +6,8 @@ import { isBlank } from '../utils/rows'
 
 /** Wait after the last change before the rows are saved to main. */
 export const DRAFT_SAVE_DELAY_MS = 400
+/** Wait before a failed save is tried again. */
+export const DRAFT_RETRY_DELAY_MS = 3000
 
 /**
  * Add questions' unsaved rows, kept in main until they are added or discarded
@@ -30,6 +32,8 @@ export interface QuestionsDraftState {
   discard: () => void
   /** The rows were added or discarded: forget the draft and save nothing more. */
   clear: () => void
+  /** The last save failed; it is tried again soon. */
+  saveFailed: boolean
 }
 
 type Phase = 'loading' | 'offer' | 'free' | 'done'
@@ -64,6 +68,10 @@ export function useQuestionsDraft(
   const phase: Phase = status.projectId === projectId ? status.phase : 'loading'
   const offer = status.projectId === projectId ? status.offer : null
   const saved = useRef('')
+  const mounted = useRef(true)
+  const retryTimer = useRef<number | null>(null)
+  const [retry, setRetry] = useState(0)
+  const [saveFailed, setSaveFailed] = useState(false)
   const pending = useRef<(() => void) | null>(null)
   const phaseNow = useRef<Phase>(phase)
   useEffect(() => {
@@ -102,22 +110,40 @@ export function useQuestionsDraft(
     // Nothing typed yet and nothing saved: no file to write.
     if (saved.current === '' && empty) return
     const send = (): void => {
-      saved.current = text
       pending.current = null
-      void save(JSON.parse(text) as SaveQuestionsDraftRequest).catch(() => undefined)
+      // Only a save that went through counts as saved; a failed one stays dirty and is retried.
+      void Promise.resolve()
+        .then(() => save(JSON.parse(text) as SaveQuestionsDraftRequest))
+        .then(
+          () => {
+            saved.current = text
+            if (mounted.current) setSaveFailed(false)
+          },
+          () => {
+            if (!mounted.current || phaseNow.current !== 'free') return
+            setSaveFailed(true)
+            if (retryTimer.current !== null) window.clearTimeout(retryTimer.current)
+            retryTimer.current = window.setTimeout(() => {
+              retryTimer.current = null
+              setRetry((value) => value + 1)
+            }, DRAFT_RETRY_DELAY_MS)
+          }
+        )
     }
     pending.current = send
     const timer = window.setTimeout(send, DRAFT_SAVE_DELAY_MS)
     return () => window.clearTimeout(timer)
-  }, [source, free, text, empty])
+  }, [source, free, text, empty, retry])
 
   // The drawer going away (Back, a link elsewhere) saves the last change at once.
-  useEffect(
-    () => () => {
+  useEffect(() => {
+    mounted.current = true
+    return () => {
       if (phaseNow.current === 'free') pending.current?.()
-    },
-    []
-  )
+      mounted.current = false
+      if (retryTimer.current !== null) window.clearTimeout(retryTimer.current)
+    }
+  }, [])
 
   const take = useCallback((): QuestionsDraft | null => {
     setStatus({ projectId, phase: 'free', offer: null })
@@ -139,5 +165,5 @@ export function useQuestionsDraft(
     void source['import:clearDraft']?.({ projectId }).catch(() => undefined)
   }, [source, projectId])
 
-  return { offer, take, discard, clear }
+  return { offer, take, discard, clear, saveFailed }
 }

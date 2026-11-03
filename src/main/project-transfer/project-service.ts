@@ -314,7 +314,11 @@ export function createProjectTransferService(host: TransferHost): ProjectTransfe
     }
   }
 
-  /** Report schedules get a new id, this project, and no email account (accounts are this Mac's). */
+  /**
+   * Report schedules get a new id, this project, and no email account (accounts are this Mac's).
+   * They also come in paused with no recipients: a file from outside must never start mail
+   * to an address through the user's own sending account.
+   */
   function addSchedules(
     rows: readonly Row[],
     projectId: string,
@@ -356,6 +360,8 @@ export function createProjectTransferService(host: TransferHost): ProjectTransfe
         id: host.createId(),
         project_id: projectId,
         account_id: null,
+        status: 'paused',
+        recipients: '[]',
         deleted_at: null
       }
       const keys = Object.keys(row).filter((column) => columns.has(column))

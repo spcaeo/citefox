@@ -62,7 +62,7 @@ export function interpretSearch(
       : { failure: null, expired: false, pageToken: null, overview: null }
   }
   if (overview.error !== null) {
-    return failure('other', 'SerpApi could not load the AI Overview for this search.')
+    return failure('other', 'The search service could not load the AI Overview for this search.')
   }
   if (overviewHasContent(overview)) {
     return { failure: null, expired: false, pageToken: null, overview }
@@ -74,7 +74,7 @@ export function interpretSearch(
     'empty',
     followUp
       ? 'The AI Overview follow-up came back empty.'
-      : 'SerpApi returned an empty AI Overview.'
+      : 'The search service returned an empty AI Overview.'
   )
 }
 

@@ -156,6 +156,7 @@ function mergeSingleton(
   if (current !== null) {
     for (const column of [
       ...Object.keys(policy.local ?? {}),
+      ...Object.keys(policy.onImport ?? {}),
       ...(KEEP_ON_REPLACE[info.table] ?? [])
     ]) {
       if (column in current) next[column] = current[column] ?? null

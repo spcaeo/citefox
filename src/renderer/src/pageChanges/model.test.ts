@@ -41,7 +41,7 @@ function change(over: Partial<PageChange> = {}): PageChange {
 describe('page change banner words', () => {
   it('asks "Is this a fix?" with the path, the day and what the page says', () => {
     const text = bannerText(change())
-    expect(text.lead).toMatch(/^\/blog\/alerts\/? changed on Oct 28\.$/)
+    expect(text.lead).toMatch(/^\/blog\/alerts\/? changed on Oct 28, 12:00 PM\.$/)
     expect(text.detail).toBe(
       'The page says "Updated Oct 28". 2 sections are new, 1 heading changed. Is this a fix?'
     )

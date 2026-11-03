@@ -1,7 +1,7 @@
 import type { JSX, ReactNode } from 'react'
 import type { AioReference, PageResults, PromptCheckRow } from '@shared/domain'
 import type { ProjectCheck } from '@shared/ipc'
-import { formatDay } from '../../../utils/dates'
+import { formatMoment } from '../../../utils/dates'
 import { Chip, DrawerGrid, DrawerSection, EmptyState, ListGrid, UrlText } from '../../../ui'
 import { changeText, changeTone } from '../model'
 import {
@@ -44,8 +44,8 @@ export function CompareResults({
   const a = totalsOf(before, topic)
   const b = totalsOf(after, topic)
   const moves = moveCounts(questions)
-  const olderDay = formatDay(older.startedAt)
-  const newerDay = formatDay(newer.startedAt)
+  const olderDay = formatMoment(older.startedAt)
+  const newerDay = formatMoment(newer.startedAt)
   const rows: readonly { label: string; older: number | null; newer: number | null }[] = [
     { label: 'Score', older: a.score, newer: b.score },
     { label: 'Questions checked', older: a.questions, newer: b.questions },

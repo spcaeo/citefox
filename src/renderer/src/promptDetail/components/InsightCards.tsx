@@ -7,7 +7,7 @@ import { StatusChip } from '../../m3/bits'
 import { coverageLabel } from '../../m3/model'
 import { planFixHash } from '../../progress/model'
 import { navigateHash, pageHash, promptHash, readHash, sectionHash } from '../../shell/routes'
-import { formatDay } from '../../utils/dates'
+import { formatMoment } from '../../utils/dates'
 import { Chip, EmptyState, LinkButton, ListGrid, type ListColumn, type MenuItem } from '../../ui'
 import type { PromptTimeRow } from '../types'
 import { contentLabel, sourceFor } from '../utils/model'
@@ -161,7 +161,7 @@ export function TimelineCard({
       sort: (row) => row.finishedAt,
       render: (row) => {
         const href = linkFor(row)
-        const day = formatDay(row.finishedAt, { year: false })
+        const day = formatMoment(row.finishedAt)
         return (
           <span className="pd2-check-cell">
             {href ? (
@@ -275,9 +275,9 @@ export function TimelineCard({
     <Card headingId="pd-time-h" title="This question over time" className="pd2-grid-card">
       {wording ? (
         <p className="pd2-wording" role="note">
-          <strong>Wording changed on {formatDay(wording.changedAt, { year: false })}.</strong>{' '}
-          Checks before then asked “{wording.previous}”; their rows say Earlier wording. The old
-          wording’s results are not counted for the new one.
+          <strong>Wording changed on {formatMoment(wording.changedAt)}.</strong> Checks before then
+          asked “{wording.previous}”; their rows say Earlier wording. The old wording’s results are
+          not counted for the new one.
         </p>
       ) : null}
       {error ? (
@@ -292,7 +292,7 @@ export function TimelineCard({
           noun={['check', 'checks']}
           rows={rows}
           rowKey={(row) => row.runId}
-          rowLabel={(row) => `check on ${formatDay(row.finishedAt, { year: false })}`}
+          rowLabel={(row) => `check on ${formatMoment(row.finishedAt)}`}
           columns={columns}
           rowMenu={menu}
           isRowCurrent={(row) => row.runId === currentRunId}

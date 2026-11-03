@@ -1,7 +1,7 @@
 import { useMemo, type JSX } from 'react'
 import { pluralize } from '@shared/pluralize'
 import { DrillButton, DrillNumber, type ItemDrill } from '../../drill'
-import { formatDay } from '../../utils/dates'
+import { formatMoment } from '../../utils/dates'
 import { KpiStrip, KpiTile } from '../../ui'
 import { kpiTrend } from '../model'
 import { useWidgetMetrics, type WidgetEnv } from './env'
@@ -115,7 +115,7 @@ export function AllHeadline({ env }: { env: WidgetEnv }): JSX.Element {
         sub={
           lastAt === null
             ? 'Not checked yet'
-            : `Checked ${formatDay(lastAt, { year: false })} · ${env.marketLabel}`
+            : `Checked ${formatMoment(lastAt)} · ${env.marketLabel}`
         }
       />
       <KpiTile

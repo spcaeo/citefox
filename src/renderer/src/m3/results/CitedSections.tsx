@@ -58,10 +58,12 @@ export function CitedInsteadCard({
           return (
             <div key={row.domain} className="m3-cited">
               {drill ? (
-                <DrillButton drill={drill}>
-                  <SiteIcon domain={row.domain} spaced />
-                  <span className="mono">{row.domain}</span>
-                </DrillButton>
+                <UrlText domain={row.domain} icon={false}>
+                  <DrillButton drill={drill}>
+                    <SiteIcon domain={row.domain} spaced />
+                    <span className="mono">{row.domain}</span>
+                  </DrillButton>
+                </UrlText>
               ) : (
                 <UrlText domain={row.domain} variant="url" />
               )}

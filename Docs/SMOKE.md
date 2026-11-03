@@ -12,7 +12,7 @@ It does not run in CI, `npm test`, `npm run test:unit`, or `npm run test:e2e`. T
 
 ## Env file
 
-The env file lives outside the repo, in the parent project folder. Copy `.env.example` there and fill in values. Do not commit that copy.
+The env file lives in `.secrets/.env`, a git-ignored folder inside the project. Copy `.env.example` there and fill in values. Do not commit that copy.
 
 `SERPAPI_API_KEY` is required. `SERPAPI_API_KEY_2` and `SERPAPI_API_KEY_3` are optional. They are printed as `set` or `missing`, then stored in that order as in-memory keys. Nothing is written to the system keychain, and the values are not copied into the process environment. The search uses the first key that is still under its cap. The page-token follow-up uses the same key as the search that returned it. `JINA_API_KEY` is optional: Reader works without a key. `ANTHROPIC_API_KEY`, `YOUTUBE_API_KEY`, each `SMTP_*` name in the file, and `SLACK_WEBHOOK_URL` are printed as `set` or `missing` and are not used.
 

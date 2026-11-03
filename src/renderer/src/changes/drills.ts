@@ -16,7 +16,7 @@ import type { GridCellDrill } from '../grid/types'
 import { countNoun } from '../m3/model'
 import { changeRowHash } from '../fixes/views'
 import { marketLabel } from '../shell/model'
-import { formatDay } from '../utils/dates'
+import { formatMoment } from '../utils/dates'
 import { citedRows, daysLabel, INDEX_LABELS, indexBucket, topSpotRows } from './model'
 
 /**
@@ -34,7 +34,7 @@ export function checkScope(ledger: LedgerContext, pageId: string, check: ChangeC
     marketId: check.marketId,
     runId: check.runId,
     marketLabel: market ? marketLabel(market) : '',
-    checkDateLabel: formatDay(check.checkedAt),
+    checkDateLabel: formatMoment(check.checkedAt),
     brand: ledger.brand,
     domain: ledger.domain
   }
@@ -68,8 +68,8 @@ export function citedDrill(
     title: which === 'before' ? `Cited before the change · ${path}` : `Cited now · ${path}`,
     description:
       which === 'before'
-        ? `Questions that cited this page in the last full check before the change went live, on ${formatDay(check.checkedAt)}.`
-        : `Questions that cite this page in the latest full check, on ${formatDay(check.checkedAt)}.`,
+        ? `Questions that cited this page in the last full check before the change went live, on ${formatMoment(check.checkedAt)}.`
+        : `Questions that cite this page in the latest full check, on ${formatMoment(check.checkedAt)}.`,
     rows: citedRows(check),
     scope: checkScope(ledger, row.pageId, check)
   }

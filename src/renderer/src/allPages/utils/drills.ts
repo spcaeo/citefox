@@ -12,7 +12,7 @@ import {
 } from '../../drill'
 import { countNoun, displayUrl } from '../../m3/model'
 import { marketLabel } from '../../shell/model'
-import { formatDay } from '../../utils/dates'
+import { formatMoment } from '../../utils/dates'
 import { pathOf } from './format'
 import { rowName } from './text'
 
@@ -150,7 +150,7 @@ export function wrongPageDrill(
       cells: {
         market: market ? marketLabel(market) : item.marketId,
         position: item.position === null ? null : Math.round(item.position),
-        checked: item.checkedAt ? formatDay(item.checkedAt) : null
+        checked: item.checkedAt ? formatMoment(item.checkedAt) : null
       },
       group: item.pageId
     }

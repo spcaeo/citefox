@@ -77,6 +77,18 @@ describe('the download for this computer', () => {
     expect(pickReleaseAsset(assets, 'win32', 'x64')?.url).toBe('https://github.com/a/win')
   })
 
+  it('prefers the installer over a portable build listed first', () => {
+    const withPortable = [
+      { name: 'CiteFox-0.13.0-x64-portable.exe', url: 'https://github.com/a/portable' },
+      ...assets
+    ]
+    expect(pickReleaseAsset(withPortable, 'win32', 'x64')?.url).toBe('https://github.com/a/win')
+    const onlyPortable = withPortable.filter((a) => /portable/.test(a.name))
+    expect(pickReleaseAsset(onlyPortable, 'win32', 'x64')?.url).toBe(
+      'https://github.com/a/portable'
+    )
+  })
+
   it('picks the AppImage for the Linux arch', () => {
     expect(pickReleaseAsset(assets, 'linux', 'x64')?.url).toBe('https://github.com/a/linux-x64')
     expect(pickReleaseAsset(assets, 'linux', 'arm64')?.url).toBe('https://github.com/a/linux-arm')

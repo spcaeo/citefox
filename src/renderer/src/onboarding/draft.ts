@@ -133,7 +133,7 @@ export function restoredSetupView(draft: OnboardingDraft | null): SetupView {
 /**
  * Saves `draft` after it stops changing for {@link DRAFT_SAVE_DELAY_MS}, and at
  * once when the window closes. `stop()` cancels any pending save for good (Finish).
- * A failed save is ignored: the draft is a convenience, never a blocker.
+ * A failed save never blocks the person; it is tried again at the next change or when the window closes.
  */
 export function useDraftAutosave(
   save: (draft: OnboardingDraft) => Promise<unknown>,
@@ -159,8 +159,12 @@ export function useDraftAutosave(
       timer.current = null
     }
     if (stopped.current || latest.current.serialized === lastSaved.current) return
-    lastSaved.current = latest.current.serialized
-    void saveRef.current(latest.current.draft).catch(() => undefined)
+    const sent = latest.current.serialized
+    lastSaved.current = sent
+    // A failed save is not "saved": forget it so the next change or the window closing tries again.
+    void saveRef.current(latest.current.draft).catch(() => {
+      if (lastSaved.current === sent) lastSaved.current = ''
+    })
   }, [])
 
   useEffect(() => {

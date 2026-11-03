@@ -101,7 +101,19 @@ const config: Configuration = {
     entitlementsInherit: 'build/entitlements.mac.plist'
   },
   dmg: {
-    artifactName
+    artifactName,
+    // The installer window: our artwork (build/dmg-background.svg, npm run dmg:background) with
+    // the app on the left and an Applications shortcut on the right, so "drag it over" is obvious.
+    // electron-builder joins build/dmg-background.png and build/dmg-background@2x.png for Retina.
+    title: '${productName} ${version}',
+    background: 'build/dmg-background.png',
+    window: { width: 660, height: 400 },
+    iconSize: 128,
+    iconTextSize: 13,
+    contents: [
+      { x: 180, y: 190, type: 'file' },
+      { x: 480, y: 190, type: 'link', path: '/Applications' }
+    ]
   },
   win: {
     // Build one arch per electron-builder run (`--win --x64`, then

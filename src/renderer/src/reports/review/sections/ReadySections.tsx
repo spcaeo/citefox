@@ -1,7 +1,7 @@
 import { useState, type JSX } from 'react'
 import { pathOf, type ContentRow, type ReviewReport, type RivalRow } from '@shared/report/review'
 import { copyText } from '../../../components/clipboard'
-import { ToolButton } from '../../../ui'
+import { ToolButton, UrlText } from '../../../ui'
 import { ReportLink, ReportPage, ReportSite, ReportText } from '../copyCells'
 import { Fig, Parts } from '../Figures'
 import { CopyTool } from '../toolParts'
@@ -222,7 +222,9 @@ export function H2hSection({ report }: { report: ReviewReport }): JSX.Element {
               <thead>
                 <tr>
                   <th>Question</th>
-                  <th className="rv-r">{rival.domain}</th>
+                  <th className="rv-r">
+                    <UrlText domain={rival.domain} icon={false} />
+                  </th>
                   <th className="rv-r">You</th>
                   <th>Winner</th>
                 </tr>

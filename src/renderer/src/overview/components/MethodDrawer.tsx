@@ -5,7 +5,7 @@ import { agreementLine, METHOD_COPY } from '@shared/report/method'
 import { marketLabel } from '../../shell/model'
 import { ScreenDrawerLevel } from '../../shell/DrawerLevel'
 import { Drawer, DrawerFacts, DrawerGrid, DrawerMain, DrawerRail, DrawerSection } from '../../ui'
-import { formatDay } from '../../utils/dates'
+import { formatMoment } from '../../utils/dates'
 import { DrillNumber } from '../../drill'
 import { compareLabel, trackedDrill } from '../compare'
 
@@ -36,14 +36,14 @@ export function MethodDrawer({
     method.firstCheckAt === null || method.lastCheckAt === null
       ? 'No check has finished yet.'
       : sameDay
-        ? `Checked on ${formatDay(method.lastCheckAt)}.`
-        : `Checks from ${formatDay(method.firstCheckAt)} to ${formatDay(method.lastCheckAt)}.`
+        ? `Checked on ${formatMoment(method.lastCheckAt)}.`
+        : `Checks from ${formatMoment(method.firstCheckAt)} to ${formatMoment(method.lastCheckAt)}.`
   const checks =
     method.firstCheckAt === null || method.lastCheckAt === null
       ? 'None yet'
       : sameDay
-        ? formatDay(method.lastCheckAt)
-        : `${formatDay(method.firstCheckAt)} to ${formatDay(method.lastCheckAt)}`
+        ? formatMoment(method.lastCheckAt)
+        : `${formatMoment(method.firstCheckAt)} to ${formatMoment(method.lastCheckAt)}`
   return (
     <ScreenDrawerLevel onClose={onClose}>
       <Drawer

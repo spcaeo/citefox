@@ -5,7 +5,7 @@ import { AnswerView } from '../../../components/answer/AnswerView'
 import { EngineDot } from '../../../engines/EngineDots'
 import { spendText, statusText } from '../../../engines/model'
 import { formatStamp } from '../../../m3/model'
-import { formatDay } from '../../../utils/dates'
+import { formatMoment } from '../../../utils/dates'
 import { Chip } from '../../../ui'
 import { NO_SOURCE_ACTIONS, type SourceActions } from '../../../sites/useSourceActions'
 import { markdownCitations, sourceLines } from '../../../sites/sources'
@@ -44,11 +44,7 @@ export function EngineAnswer({
     <div className="pd2-stack" data-testid="engine-answer" data-engine={answer.engine}>
       <Card
         headingId="pd-eng-h"
-        title={
-          answer.checkedAt === null
-            ? label
-            : `${label} · ${formatDay(answer.checkedAt, { year: false })}`
-        }
+        title={answer.checkedAt === null ? label : `${label} · ${formatMoment(answer.checkedAt)}`}
         aside={<StatusBadge answer={answer} />}
       >
         {hasAnswer && body.trim() !== '' ? (

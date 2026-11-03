@@ -45,7 +45,7 @@ describe('Jina keys for page reads (FR-11.5, FR-11.10)', () => {
     const events = listConnectionEventsForKey(opened.storage.db, a.id)
     expect(events.map((event) => event.kind)).toEqual(['failover'])
     expect(events[0]?.detail).toBe(
-      'Jina Reader did not accept "Key A", so CiteFox read the page without a key at the lower rate limit.'
+      'The page reader did not accept "Key A", so CiteFox read the page without a key at the lower rate limit.'
     )
     expect(latestActivityNotice(opened.storage.db)).toMatchObject({
       kind: 'jina_failover',

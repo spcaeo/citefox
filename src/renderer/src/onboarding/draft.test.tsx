@@ -173,4 +173,23 @@ describe('useDraftAutosave', () => {
     act(() => vi.advanceTimersByTime(DRAFT_SAVE_DELAY_MS * 2))
     expect(save).toHaveBeenCalledTimes(1)
   })
+
+  it('does not count a failed save as saved: the window closing tries again', async () => {
+    vi.useFakeTimers()
+    const save = vi.fn().mockRejectedValueOnce(new Error('disk is full')).mockResolvedValue(null)
+    const hook = renderHook(({ value }) => useDraftAutosave(save, value), {
+      initialProps: { value: draft() }
+    })
+    hook.rerender({ value: draft({ view: 'serpapi' }) })
+    act(() => vi.advanceTimersByTime(DRAFT_SAVE_DELAY_MS))
+    expect(save).toHaveBeenCalledTimes(1)
+    await act(async () => {
+      await Promise.resolve()
+    })
+    act(() => {
+      window.dispatchEvent(new Event('pagehide'))
+    })
+    expect(save).toHaveBeenCalledTimes(2)
+    expect(save).toHaveBeenLastCalledWith(draft({ view: 'serpapi' }))
+  })
 })

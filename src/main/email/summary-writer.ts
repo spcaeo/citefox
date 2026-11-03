@@ -37,7 +37,7 @@ export function claudeSummaryWriter(open: () => ClaudeProvider | undefined): Sum
   return {
     async write({ style, facts }) {
       const provider = open()
-      if (provider === undefined) throw new Error('Claude is not set up.')
+      if (provider === undefined) throw new Error('CiteFox AI is not set up.')
       const reply = await provider.complete({
         prompt: summaryPrompt(style, facts),
         trace: {
@@ -51,7 +51,7 @@ export function claudeSummaryWriter(open: () => ClaudeProvider | undefined): Sum
         schema: null
       })
       const text = reply.text.trim()
-      if (text === '') throw new Error('Claude returned no summary.')
+      if (text === '') throw new Error('CiteFox AI returned no summary.')
       return unknownNumbers(text, allowedNumbers(facts)).length > 0 ? facts : text
     }
   }

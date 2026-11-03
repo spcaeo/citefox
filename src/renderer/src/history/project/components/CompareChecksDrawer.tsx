@@ -4,7 +4,7 @@ import type { HistorySubject, ProjectCheck } from '@shared/ipc'
 import { errorText } from '../../../components/errorText'
 import { marketLabel } from '../../../shell/model'
 import { closeDrawersThen } from '../../../shell/drawers'
-import { formatDay, formatMoment } from '../../../utils/dates'
+import { formatMoment } from '../../../utils/dates'
 import { Drawer, Tabs } from '../../../ui'
 import type { CompareSource } from '../../client'
 import { DiffBody } from '../../CompareDialog'
@@ -133,8 +133,8 @@ export function CompareChecksDrawer({
         <>
           <p className="faint hp-cmp-diff-line">
             {changeCount(diff.diff)} {changeCount(diff.diff) === 1 ? 'change' : 'changes'} between
-            the page reads of {formatDay(diff.diff.from.fetchedAt)} and{' '}
-            {formatDay(diff.diff.to.fetchedAt)}.
+            the page reads of {formatMoment(diff.diff.from.fetchedAt)} and{' '}
+            {formatMoment(diff.diff.to.fetchedAt)}.
           </p>
           <DiffBody diff={diff.diff} />
         </>

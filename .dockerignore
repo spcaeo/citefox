@@ -1,6 +1,7 @@
 # scripts/e2e-docker.mjs builds docker/e2e.Dockerfile from the docker/
 # directory and never sends the source as build context. This file guards any
 # build that uses the repository root as context: secrets and local state stay out.
+.secrets
 .env
 .env.*
 **/.env

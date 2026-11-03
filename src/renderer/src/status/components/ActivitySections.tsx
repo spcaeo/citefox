@@ -11,7 +11,7 @@ import type { CheckJob } from '@shared/ipc'
 import { DrillButton, DrillNumber, useDrill } from '../../drill'
 import { alertsHash, appSettingsHash, navigateHash, sectionHash } from '../../shell/routes'
 import { Button, Chip, EmptyState, ListGrid, SectionHead, type ListColumn } from '../../ui'
-import { formatDay } from '../../utils/dates'
+import { formatMoment } from '../../utils/dates'
 import {
   checksState,
   count,
@@ -102,7 +102,7 @@ export function EmailSection({
       <span className="faint sts-small">
         {last ? (
           <>
-            Last report sent {formatDay(last.at, { year: false })} ·{' '}
+            Last report sent {formatMoment(last.at)} ·{' '}
             <DrillNumber
               drill={sent}
               className="m3-link"
@@ -129,7 +129,7 @@ export function EmailSection({
         <div key={record.id} className="st-issue" role="note">
           <span>
             <span className="sts-warn">Warning:</span> {triggerLabel(record)} failed{' '}
-            {formatDay(record.at, { year: false })}
+            {formatMoment(record.at)}
             {record.reason ? `: ${record.reason}` : ''}
           </span>
           <span className="st-buttons">

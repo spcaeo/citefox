@@ -1,4 +1,11 @@
-import { useRef, useState, type JSX, type KeyboardEvent, type SyntheticEvent } from 'react'
+import {
+  useLayoutEffect,
+  useRef,
+  useState,
+  type JSX,
+  type KeyboardEvent,
+  type SyntheticEvent
+} from 'react'
 import type { ChartMarkup } from '@shared/charts'
 
 interface Readout {
@@ -18,7 +25,8 @@ const MOVE_KEYS: Record<string, -1 | 1> = {
  * Draws one report chart from its shared SVG markup (src/shared/charts) and makes
  * it live: a hover or focus card from each mark's `data-tip`, Enter/Space or a
  * click on a mark calls `onDrill` with its `data-drill` id, and the arrow keys
- * (Home/End too) move focus between the chart's marks. The markup is escaped by
+ * (Home/End too) move focus between the chart's marks (one mark is in the Tab
+ * order at a time, the rest are reached with the arrows). The markup is escaped by
  * the builders, so it goes in as HTML.
  */
 export function ChartFrame({
@@ -35,6 +43,16 @@ export function ChartFrame({
 }): JSX.Element {
   const box = useRef<HTMLDivElement | null>(null)
   const [readout, setReadout] = useState<Readout | null>(null)
+  /** Which mark is the one Tab reaches; it survives a redraw of the chart. */
+  const tabStop = useRef(0)
+
+  // Roving tabindex: the markup gives every drill mark tabindex 0 (a static export has no
+  // script), so here only the current one keeps it.
+  useLayoutEffect(() => {
+    const marks = [...(box.current?.querySelectorAll<SVGGElement>('[data-drill]') ?? [])]
+    if (tabStop.current >= marks.length) tabStop.current = 0
+    marks.forEach((node, at) => node.setAttribute('tabindex', at === tabStop.current ? '0' : '-1'))
+  }, [markup.svg])
 
   function setBox(node: HTMLDivElement | null): void {
     box.current = node
@@ -109,7 +127,16 @@ export function ChartFrame({
       className={`ui-rchart${className ? ` ${className}` : ''}`}
       onPointerOver={(event) => show(event.target)}
       onPointerLeave={() => setReadout(null)}
-      onFocus={(event) => show(event.target)}
+      onFocus={(event) => {
+        show(event.target)
+        const marks = [...(box.current?.querySelectorAll<SVGGElement>('[data-drill]') ?? [])]
+        const at = marks.findIndex(
+          (node) => node === (event.target as Element).closest('[data-drill]')
+        )
+        if (at < 0) return
+        tabStop.current = at
+        marks.forEach((node, index) => node.setAttribute('tabindex', index === at ? '0' : '-1'))
+      }}
       onBlur={() => setReadout(null)}
       onClick={onClick}
       onKeyDown={onKeyDown}

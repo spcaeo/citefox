@@ -128,8 +128,11 @@ describe('Communities screen', () => {
     expect(
       within(dialog).getByRole('heading', { name: 'Reddit citations · 2 citations' })
     ).toBeTruthy()
-    const external = dialog.querySelectorAll(`a[href="${THREAD}"][target="_blank"]`)
-    expect(external).toHaveLength(2)
+    // Each link is a title that opens in the browser, with its own Copy and Open icons.
+    const links = [...dialog.querySelectorAll(`a[href="${THREAD}"][target="_blank"]`)]
+    const icons = links.filter((link) => link.closest('.ui-url-actions') !== null)
+    expect(links.length - icons.length).toBe(2)
+    expect(icons).toHaveLength(2)
     const href = promptHash('page-1', 'p2', { marketId: 'mkt-us', runId: 'r1' })
     expect(dialog.querySelector(`a[href="${href}"]`)).not.toBeNull()
     // Enter on a row opens that answer's Prompt detail.

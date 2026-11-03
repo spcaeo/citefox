@@ -160,7 +160,10 @@ export function ChangeTargetDrawer({
   // The example uses this project's own pages: your picks, else the AI's pick and the
   // next pages in the list. Never a fixed site.
   const example = useMemo(() => {
-    const pathOf = (url: string): string => urlPath(url) ?? url
+    const pathOf = (url: string): { url: string; path: string } => ({
+      url,
+      path: urlPath(url) ?? url
+    })
     const primary = picked !== NO_PAGE ? picked : (aiPick ?? list?.[0]?.url ?? null)
     if (primary === null) return null
     const others = alsoNow
@@ -280,14 +283,15 @@ export function ChangeTargetDrawer({
               </p>
               {example ? (
                 <p className="tv-muted">
-                  Example from this question: Primary <code>{example.primary}</code>
+                  Example from this question: Primary{' '}
+                  <UrlText url={example.primary.url} label={example.primary.path} icon={false} />
                   {example.also.length > 0 ? (
                     <>
                       , Also OK{' '}
                       {example.also.map((path, index) => (
-                        <span key={path}>
+                        <span key={path.url}>
                           {index > 0 ? (index === example.also.length - 1 ? ' and ' : ', ') : ''}
-                          <code>{path}</code>
+                          <UrlText url={path.url} label={path.path} icon={false} />
                         </span>
                       ))}
                     </>

@@ -28,6 +28,8 @@ import {
   teeSinks,
   writeLogToConsole
 } from './logging'
+import { offerMoveToApplications } from './move-to-applications'
+import { installProcessGuards } from './process-guards'
 import { createFetchHttpTransport, createSpawnCommandTransport } from './providers'
 import { createFsBinaryProbe, fakeAiOnlyRoots } from './providers/claude/binary'
 import { onClaudeCodePauseChange } from './providers/claude/shared-gate'
@@ -128,6 +130,10 @@ const logFile = appLogFilePath(app.getPath('userData'))
 const logger = createLogger({
   secrets: () => appSecretRegistry().list(),
   write: teeSinks(writeLogToConsole, createRotatingFileSink({ file: logFile }))
+})
+// Nothing that fails in the background may vanish. A `--check-due` run ends with its error code.
+installProcessGuards(process, logger, () => {
+  if (isCheckDueFlag(process.argv)) app.exit(CHECK_DUE_EXIT_ERROR)
 })
 let storage: AppStorage | undefined
 let host: EngineHost | undefined
@@ -281,6 +287,8 @@ void app
       app.exit(CHECK_DUE_EXIT_OK)
       return
     }
+    // A copy opened from the .dmg or Downloads offers to move itself into Applications first.
+    if (offerMoveToApplications(app, { headless, logger })) return
     if (!headless && !acquirePrimaryInstance(app)) return
     logger.info(
       `CiteFox ${appInfo.version} (${appInfo.build.commit ?? 'no commit'}, built ${appInfo.build.builtAt}) starting${headless ? ' (--check-due)' : ''}${testProfile ? ' as the test profile' : ''} on ${process.platform}-${process.arch}, Electron ${process.versions.electron}`

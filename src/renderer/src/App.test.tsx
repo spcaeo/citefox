@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, waitFor } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import type { CiteFoxApi, OnboardingState } from '@shared/ipc'
 import { App } from './App'
+import { resetAppInfoCache } from './buildMenu/appInfoStore'
 
 const NOT_FINISHED: OnboardingState = {
   finished: false,
@@ -13,6 +14,7 @@ const NOT_FINISHED: OnboardingState = {
 
 afterEach(() => {
   cleanup()
+  resetAppInfoCache()
   Reflect.deleteProperty(window, 'citefox')
   localStorage.clear()
 })
@@ -91,6 +93,58 @@ describe('Join CiteFox at start-up', () => {
       expect(view.queryByRole('heading', { name: 'Join CiteFox' })).toBeNull()
       cleanup()
     }
+  })
+})
+
+describe('the release line on every gate', () => {
+  const line = (view: ReturnType<typeof render>): HTMLElement =>
+    view.getByLabelText('Release', { selector: 'footer' })
+  const RELEASE = {
+    name: 'CiteFox',
+    version: '0.13.0',
+    build: { commit: 'fae9b4e', number: 1424, builtAt: '2026-11-02T13:49:00.000Z' }
+  }
+  const TEXT = 'v0.13.0 · build 1424 · Nov 2, 2026 8:49 AM EST'
+
+  it('shows under the loading screen and the failed screen', async () => {
+    install({
+      'app:getInfo': () => Promise.resolve(RELEASE),
+      'onboarding:getState': () => Promise.reject(new Error('The database is locked.'))
+    })
+    const view = render(<App />)
+    await view.findByRole('alert')
+    await waitFor(() => {
+      expect(line(view).textContent).toContain(TEXT)
+    })
+    expect(line(view).closest('main')?.className).toContain('ob-loading')
+  })
+
+  it('shows on the Join screen', async () => {
+    install({
+      'app:getInfo': () => Promise.resolve(RELEASE),
+      'account:get': () =>
+        Promise.resolve({ enabled: true, joined: false, waiting: false, details: null }),
+      'onboarding:getState': () => Promise.resolve(NOT_FINISHED)
+    })
+    const view = render(<App />)
+    await view.findByRole('heading', { name: 'Join CiteFox' })
+    await waitFor(() => {
+      expect(line(view).textContent).toContain(TEXT)
+    })
+  })
+
+  it('shows on the setup (onboarding) screen', async () => {
+    install({
+      'app:getInfo': () => Promise.resolve(RELEASE),
+      'onboarding:getState': () => Promise.resolve(NOT_FINISHED)
+    })
+    const view = render(<App />)
+    await waitFor(() => {
+      expect(view.container.textContent).not.toContain('Loading setup')
+    })
+    await waitFor(() => {
+      expect(line(view).textContent).toContain(TEXT)
+    })
   })
 })
 

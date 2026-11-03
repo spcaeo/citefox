@@ -49,7 +49,7 @@ export const COMMUNITY_SEED = {
   ukPrompt: 'How do I alert the crew in the UK without a developer?',
   pageUrl: 'https://textbolt.com/blog/how-to-set-up-text-alerts-for-business/',
   youtubeKeyRef: 'citefox.youtube.seed-key',
-  youtubeSecret: 'AIzaFAKE-youtube-fixture-key-0000000000',
+  youtubeSecret: 'fixture-youtube-seed-key-0000000000',
   redditOpen:
     'https://reddit.com/r/sysadmin/comments/1abc23x/vtext_shutting_down_what_are_you_using',
   redditArchived:

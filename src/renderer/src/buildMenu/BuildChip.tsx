@@ -12,7 +12,7 @@ import {
 
 /**
  * The build chip in every top bar (owner feedback batch 2): `v0.11.0 ·
- * 22 Oct · 1787acc`, with a "Test profile" badge in a test window. It opens
+ * Oct 22 · 1787acc`, with a "Test profile" badge in a test window. It opens
  * the build menu: the full version and build, Copy build info, Reset keeping
  * the keys, and the two test-profile actions. Nothing shows until the app
  * info is read.

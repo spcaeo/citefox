@@ -91,7 +91,7 @@ describe('readCloroFailure', () => {
   test('401 is a rejected key, never retried', () => {
     expect(readCloroFailure('chatgpt', 401, errorBody('INVALID_API_KEY'))).toEqual({
       code: 'rejected',
-      message: 'cloro rejected this key.',
+      message: 'Your CiteFox credits key was not accepted.',
       retryable: false
     })
     expect(readCloroFailure('chatgpt', 401, '')).toMatchObject({ code: 'rejected' })
@@ -107,7 +107,7 @@ describe('readCloroFailure', () => {
   test('403 and INSUFFICIENT_CREDITS are out of credits, never retried', () => {
     expect(readCloroFailure('chatgpt', 403, '')).toEqual({
       code: 'out_of_searches',
-      message: 'This cloro key is out of credits.',
+      message: 'Your CiteFox credits are used up.',
       retryable: false
     })
     expect(readCloroFailure('chatgpt', 402, errorBody('INSUFFICIENT_CREDITS'))).toMatchObject({
@@ -119,7 +119,7 @@ describe('readCloroFailure', () => {
   test('429 is rate limited and may be retried', () => {
     expect(readCloroFailure('chatgpt', 429, errorBody('RATE_LIMITED'))).toEqual({
       code: 'rate_limited',
-      message: 'cloro is limiting this key.',
+      message: 'Your CiteFox credits key is being limited right now.',
       retryable: true
     })
   })
@@ -127,7 +127,7 @@ describe('readCloroFailure', () => {
   test.each([500, 502, 503, 504])('%i is not billed and may be retried', (status) => {
     expect(readCloroFailure('perplexity', status, '<html>bad gateway</html>')).toEqual({
       code: 'other',
-      message: 'cloro could not answer this call.',
+      message: 'The search service could not answer this call.',
       retryable: true
     })
   })
@@ -136,8 +136,7 @@ describe('readCloroFailure', () => {
     const failure = readCloroFailure('perplexity', 503, errorBody('MODEL_UNAVAILABLE'))
     expect(failure).toEqual({
       code: 'unavailable',
-      message:
-        'Perplexity is not available at cloro right now. CiteFox tries again at the next check.',
+      message: 'Perplexity is not available right now. CiteFox tries again at the next check.',
       retryable: false
     })
   })
@@ -155,12 +154,12 @@ describe('readCloroFailure', () => {
   test('400 and other statuses are not retried', () => {
     expect(readCloroFailure('chatgpt', 400, errorBody('VALIDATION'))).toEqual({
       code: 'other',
-      message: 'cloro did not accept this request.',
+      message: 'The search service did not accept this request.',
       retryable: false
     })
     expect(readCloroFailure('chatgpt', 418, '')).toEqual({
       code: 'other',
-      message: 'cloro did not answer this call.',
+      message: 'The search service did not answer this call.',
       retryable: false
     })
   })

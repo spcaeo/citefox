@@ -33,6 +33,11 @@ export interface TablePolicy {
   singleton?: boolean
   /** Values that belong to this Mac (key ids, keychain refs, timers): written as given. */
   local?: Readonly<Record<string, Value>>
+  /**
+   * Values forced on import only (export keeps what the user typed): anything that could send
+   * mail to an address from a file. A file from outside must never turn on an email.
+   */
+  onImport?: Readonly<Record<string, Value>>
   /** Links to stored checks, cleared when check results are left out. */
   resultLinks?: Readonly<Record<string, Value>>
   /** Columns of raw provider JSON: credential fields are removed on export. */
@@ -95,7 +100,8 @@ export const TABLE_POLICIES: readonly TablePolicy[] = [
     table: 'alert_settings',
     noun: 'notification setting',
     // The Slack webhook is a keychain item and the email account is this Mac's.
-    local: { slack_enabled: 0, slack_keychain_ref: null, email_account_id: null }
+    local: { slack_enabled: 0, slack_keychain_ref: null, email_account_id: null },
+    onImport: { email_after_check: 0, email_to: '[]' }
   },
   { ...SETTINGS_ROW, table: 'community_settings', noun: 'community setting' },
   { ...SETTINGS_ROW, table: 'engine_settings', noun: 'engine setting' },
@@ -220,6 +226,7 @@ export const TABLE_POLICIES: readonly TablePolicy[] = [
     section: 'alertRules',
     noun: 'alert rule',
     counts: always,
+    onImport: { email_to: '[]' },
     key: (row) => plainText(row.name)
   },
   // ---- Notes, fixes and other things people wrote. ----

@@ -5,7 +5,7 @@ import { pageHash } from '../../shell/routes'
 import { ListGrid, SectionHead, type ListColumn } from '../../ui'
 import { Dotted } from '../bits'
 import { comparisonViews, type ComparisonViewRow } from '../comparison'
-import { formatDay } from '../model'
+import { formatStamp } from '../model'
 import type { ResultsDrills } from './drills'
 
 type Column = 'baseline' | 'previous' | 'current'
@@ -74,7 +74,7 @@ export function BaselineSection({
       return (
         <a
           href={pageHash(pageId, 'results', { runId: run.runId, marketId })}
-          aria-label={`${text}: open the results of the check on ${formatDay(run.finishedAt)}`}
+          aria-label={`${text}: open the results of the check on ${formatStamp(run.finishedAt)}`}
         >
           <Dotted text={text} />
         </a>
@@ -87,7 +87,7 @@ export function BaselineSection({
       at: number
     ): ListColumn<ComparisonViewRow> => ({
       id: which,
-      label: `${label} · ${formatDay(results.comparison[at]?.finishedAt ?? null)}`,
+      label: `${label} · ${formatStamp(results.comparison[at]?.finishedAt ?? null)}`,
       width: 152,
       numeric: true,
       sort: (row) => row.sort[which],

@@ -73,6 +73,34 @@ describe('scheduled sitemap sync (FR-19.2)', () => {
     stop()
   })
 
+  test('a failure while reading what is due is logged and the next tick is still planned', async () => {
+    const warnings: string[] = []
+    const runtime = {
+      host: {
+        now: () => {
+          throw new Error('clock broke')
+        },
+        logger: { warn: (message: string) => warnings.push(message) }
+      },
+      sync: async () => undefined
+    } as unknown as Parameters<typeof startSitemapSyncLoop>[0]
+    const scheduled: Array<{ run: () => void; ms: number }> = []
+    const stop = startSitemapSyncLoop(runtime, {
+      set: (run, ms) => {
+        scheduled.push({ run, ms })
+        return scheduled.length
+      },
+      clear: () => undefined
+    })
+    scheduled[0]?.run()
+    for (let i = 0; i < 20 && scheduled.length < 2; i += 1) {
+      await new Promise((resolve) => setTimeout(resolve, 10))
+    }
+    expect(warnings).toEqual(['scheduled sitemap sync could not start'])
+    expect(scheduled[1]?.ms).toBe(SYNC_TICK_MS)
+    stop()
+  })
+
   test('the e2e sitemap folder is honoured only in unpackaged builds', () => {
     expect(e2eSitemapFetch(true, { CITEFOX_E2E_SITEMAP_DIR: '/tmp/x' })).toBeUndefined()
     expect(e2eSitemapFetch(false, {})).toBeUndefined()

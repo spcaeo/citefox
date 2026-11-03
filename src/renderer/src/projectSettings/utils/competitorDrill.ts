@@ -1,6 +1,6 @@
 import type { CompetitorFindings, CompetitorOverviewRef, Market } from '@shared/domain'
 import type { ItemDrill } from '../../drill'
-import { displayUrl, formatDay } from '../../m3/model'
+import { displayUrl, formatStamp } from '../../m3/model'
 import { marketLabel } from '../../shell/model'
 
 /** The bare host of a listed competitor: "https://www.Twilio.com/" → "twilio.com". */
@@ -64,7 +64,7 @@ export function competitorDrill(
         primary: displayUrl(ref.url),
         mono: true,
         url: ref.url,
-        secondary: `Question ${ref.promptPosition} · ${ref.promptLabel} · ${formatDay(ref.checkedAt)}`,
+        secondary: `Question ${ref.promptPosition} · ${ref.promptLabel} · ${formatStamp(ref.checkedAt)}`,
         target: {
           kind: 'prompt',
           pageId: ref.pageId,
@@ -88,7 +88,7 @@ export function competitorDrill(
       marketId: null,
       runId: null,
       marketLabel: '',
-      checkDateLabel: found.latestCheckAt ? formatDay(found.latestCheckAt) : '',
+      checkDateLabel: found.latestCheckAt ? formatStamp(found.latestCheckAt) : '',
       brand: options.brand,
       domain: found.domain
     }

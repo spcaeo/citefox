@@ -12,7 +12,7 @@ import type {
   TemplateVersionEntry,
   TryTemplateResult
 } from '@shared/ipc'
-import { formatDay } from '../../pageSetup/model'
+import { formatReadStamp } from '../../pageSetup/model'
 
 /** Copy for the step list and the step editor (Templates.dc.html, FR-26.1 to FR-26.8). */
 
@@ -109,13 +109,13 @@ export function versionShort(template: Pick<EffectiveTemplate, 'version'>): stri
 
 /** "Oct 19" for the Last run cell, or null before the step has run in this project. */
 export function lastRunDay(step: TemplateStep): string | null {
-  return step.lastRunAt === null ? null : formatDay(step.lastRunAt)
+  return step.lastRunAt === null ? null : formatReadStamp(step.lastRunAt)
 }
 
 export function lastRunLine(step: TemplateStep, projectOpen: boolean): string | null {
   if (!projectOpen) return null
   if (step.lastRunAt === null) return 'Not run in this project yet'
-  return `Last run ${formatDay(step.lastRunAt)}`
+  return `Last run ${formatReadStamp(step.lastRunAt)}`
 }
 
 /** The row's second line: version, then last run when a project is open. */
@@ -136,7 +136,7 @@ export function stepListLabel(shown: number, total: number, filtering: boolean):
 }
 
 export function versionEntryLine(entry: TemplateVersionEntry): string {
-  return `v${entry.version} · hash ${hashPrefix(entry.hash)} · Saved ${formatDay(entry.savedAt)}`
+  return `v${entry.version} · hash ${hashPrefix(entry.hash)} · Saved ${formatReadStamp(entry.savedAt)}`
 }
 
 /** "Uses your Claude plan · about 15 s" */

@@ -11,7 +11,7 @@ import { ScreenDrawerLevel } from '../shell/DrawerLevel'
 import { openDrawer } from '../shell/drawers'
 import { marketLabel } from '../shell/model'
 import { botParam, Button, Confirm, TabPanel, Tabs, useAssistMenu, wayParam } from '../ui'
-import { formatDay } from '../utils/dates'
+import { formatMoment } from '../utils/dates'
 import { useHashQuery } from '../utils/hashQuery'
 import { AddMarketDrawer } from './components/AddMarketDrawer'
 import { CitedInstead } from './components/CitedInstead'
@@ -147,7 +147,7 @@ export function MarketsScreen({
       <div className="page-stack mk-screen" data-testid="markets-tab">
         <p className="muted mk-intro">
           Each market is checked and scored on its own, with its own baseline.
-          {latest ? ` Last checked ${formatDay(latest)}.` : ''}
+          {latest ? ` Last checked ${formatMoment(latest)}.` : ''}
         </p>
         {error ? (
           <p className="bridge-alert" role="alert">

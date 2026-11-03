@@ -90,7 +90,7 @@ export function GoogleUpdatesWidget({ widget, env, tools }: WidgetProps): JSX.El
                 {
                   id: `w:google:${widget.engine}:${update.id}:${when}`,
                   title: `Cited ${words} ${when} the ${update.name}`,
-                  description: `Questions citing you ${words} at the check of ${formatDay(rows.at)}, ${when} the update.`
+                  description: `Questions citing you ${words} at the check of ${formatMoment(rows.at)}, ${when} the update.`
                 },
                 scope
               )

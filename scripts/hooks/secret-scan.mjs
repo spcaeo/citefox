@@ -58,7 +58,7 @@ function main() {
     [
       '',
       'Commit blocked: the staged changes look like they contain a secret (shown above, masked).',
-      'Keep keys in the OS keychain (the app) or in a .env file outside the repo, never in code.',
+      'Keep keys in the OS keychain (the app) or in the git-ignored .secrets/ folder, never in code.',
       'A test value: make it plainly fake (for example "fake-key-0001"), or end the line with',
       '"// gitleaks:allow". To skip once on purpose: git commit --no-verify'
     ].join('\n')

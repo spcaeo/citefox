@@ -49,11 +49,13 @@ function Primary({ item }: { item: DrillItem }): JSX.Element {
         <UrlText url={url} label={item.primary} className="drill-primary" />
       ) : url ? (
         // A title that links to its page: the title wraps, the site's icon in front.
-        <a className={primaryClass} href={url} target="_blank" rel="noopener noreferrer">
-          <SiteIcon domain={url} spaced />
-          {item.primary}
-          <span className="sr-only"> (opens in your browser)</span>
-        </a>
+        <UrlText url={url} icon={false} plain>
+          <a className={primaryClass} href={url} target="_blank" rel="noopener noreferrer">
+            <SiteIcon domain={url} spaced />
+            {item.primary}
+            <span className="sr-only"> (opens in your browser)</span>
+          </a>
+        </UrlText>
       ) : item.target ? (
         <TargetLink target={item.target} className={primaryClass}>
           {item.primary}

@@ -1,6 +1,6 @@
 import type { PageResults, PromptCheckRow } from '@shared/domain'
 import type { DrillItem, DrillRequest, DrillScope, ItemDrill } from '../drill'
-import { countNoun, formatDay, hasAio, hostFromUrl, statusLabel } from '../m3/model'
+import { countNoun, formatStamp, hasAio, hostFromUrl, statusLabel } from '../m3/model'
 import type { LiveMarketRow } from './promptHistory'
 
 /**
@@ -61,7 +61,7 @@ export function runScope(results: PageResults | null | undefined, context: RunCo
     marketId: context.marketId,
     runId: context.runId,
     marketLabel: context.marketLabel,
-    checkDateLabel: results?.scope.checkedAt ? formatDay(results.scope.checkedAt) : '',
+    checkDateLabel: results?.scope.checkedAt ? formatStamp(results.scope.checkedAt) : '',
     brand: results ? (results.scope.brands[0] ?? hostFromUrl(results.scope.pageUrl)) : '',
     domain: results ? hostFromUrl(results.scope.pageUrl) : ''
   }

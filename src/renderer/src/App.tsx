@@ -17,6 +17,7 @@ import { BuildToolsHost, loadAppInfo } from './buildMenu'
 import { WorkConsoleHost } from './console'
 import { ACCOUNT_OFF, ipcAccountClient, type AccountClient } from './account/client'
 import { JoinScreen } from './account/JoinScreen'
+import { ReleaseLine } from './shell/ReleaseLine'
 import type { AccountStatus } from '@shared/ipc'
 
 type Gate =
@@ -152,6 +153,7 @@ export function App(): JSX.Element {
           <p>CiteFox could not load your setup. {gate.message}</p>
         </div>
         <Button onClick={retry}>Try again</Button>
+        <ReleaseLine />
       </main>
     )
   }
@@ -160,12 +162,18 @@ export function App(): JSX.Element {
     return (
       <main className="ob-loading" aria-live="polite">
         <p>Loading setup…</p>
+        <ReleaseLine />
       </main>
     )
   }
 
   if (accountClient && account.enabled && !account.joined) {
-    return <JoinScreen client={accountClient} onJoined={setAccount} />
+    return (
+      <>
+        <JoinScreen client={accountClient} onJoined={setAccount} />
+        <ReleaseLine />
+      </>
+    )
   }
 
   // "What CiteFox needs" and the Claude status, shared by onboarding and every screen,
@@ -179,20 +187,23 @@ export function App(): JSX.Element {
 
   if (gate.kind === 'onboarding') {
     return withPermissions(
-      <OnboardingApp
-        client={clients.shell}
-        initialState={gate.state}
-        initialDraft={gate.draft}
-        {...(setupClients
-          ? { sections: setupClients.sections, services: setupClients.services }
-          : {})}
-        onFinished={(landing) => {
-          // Setup made a topic and started its first check: open it. Otherwise let the
-          // user pick how to start (owner feedback 6), never force setup.
-          navigateHash(landing ?? afterOnboardingHash())
-          setGate({ kind: 'shell' })
-        }}
-      />
+      <>
+        <OnboardingApp
+          client={clients.shell}
+          initialState={gate.state}
+          initialDraft={gate.draft}
+          {...(setupClients
+            ? { sections: setupClients.sections, services: setupClients.services }
+            : {})}
+          onFinished={(landing) => {
+            // Setup made a topic and started its first check: open it. Otherwise let the
+            // user pick how to start (owner feedback 6), never force setup.
+            navigateHash(landing ?? afterOnboardingHash())
+            setGate({ kind: 'shell' })
+          }}
+        />
+        <ReleaseLine />
+      </>
     )
   }
 

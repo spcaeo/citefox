@@ -71,7 +71,7 @@ describe('ClaudeUsage', () => {
     expect(requests).toEqual([{}])
     expect(card.getByText(/1 failed today/)).toBeTruthy()
     expect(card.getByText('CiteFox AI on this computer')).toBeTruthy()
-    expect(card.getByText('Anthropic API key')).toBeTruthy()
+    expect(card.getByText('Your AI key')).toBeTruthy()
     expect(card.getByText('377 calls · 1M in / 158.2k out')).toBeTruthy()
     fireEvent.click(card.getByText('By step (6)'))
     expect(card.getByText('Buyer questions')).toBeTruthy()
@@ -99,7 +99,7 @@ describe('ClaudeUsage', () => {
       within(errors).getByText('CiteFox AI hit its usage limit. Try again after it resets.')
     ).toBeTruthy()
     fireEvent.click(card.getByRole('tab', { name: /^By connection/ }))
-    expect(card.getByText('Anthropic API key')).toBeTruthy()
+    expect(card.getByText('Your AI key')).toBeTruthy()
   })
 
   it('reads one project when given a project id', async () => {

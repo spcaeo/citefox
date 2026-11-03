@@ -2,6 +2,47 @@
 
 ## Unreleased
 
+## 0.13.1 — 2026-11-03
+
+### New
+
+- **A nicer Mac installer:** the disk image now shows the fox, an arrow and your Applications folder, so it is clear what to drag. The first time you open CiteFox from the disk image or Downloads, it offers to move itself into Applications.
+- **About us, GitHub and help links** in Settings and on the home page.
+- **The release line** (version, build and time) now shows on every screen, including the first-run and loading screens.
+
+### Fixed
+
+- **Safer project import:** a project file from someone else can no longer set up emails to a stranger. Imported report schedules arrive paused, with no recipients, and alert emails come in switched off. After you move a project to a new computer, add the email recipients again.
+- **Windows:** exports now save correctly, Claude Code and Codex installed with npm are found and start, and database files are no longer locked.
+- **Windows update link:** CiteFox now points to the installer, not the portable app.
+- **"13 days left"** showed the wrong number in the evening.
+- **Times:** check, save and change times now show the date and the time, in your computer's clock.
+- **Questions you type** are no longer lost when a save fails. CiteFox tells you and tries again. Changing how often a page is checked no longer adds the same rows twice if the first save fails.
+- **Charts and keyboard:** a chart is one stop for the Tab key, with the arrow keys moving between points. Focus outlines stay visible in Windows high-contrast mode.
+- **Copy and open icons** on more page titles, domains, paths and addresses.
+- **Plain wording:** messages talk about CiteFox credits and CiteFox AI instead of naming the companies behind them.
+- **Smoother window:** dragging or resizing the window no longer stutters, and background errors are written to the log instead of being lost.
+
+### Fixed
+
+- Close database files before deleting them, so Windows can remove them
+- A fix published today shows 14 days left all evening (count the computer's calendar days); tests run on one clock; download page test for the new layout; keep the sync test private
+
+### Other changes
+
+- Review fixes: safer import, event times, lost saves, nicer Mac installer, cleanup
+- Keep the owner's _handover folder (chats, notes, certificates) out of git, lint and format
+- Fix Windows: find Claude Code and Codex installed with npm (claude.cmd/codex.cmd on PATH or in AppData\Roaming\npm); CI e2e retries once on shared runners
+- E2e on Windows: our PATH replaces the inherited Path (case-insensitive names); data folder check accepts the 8.3 temp name
+- Fix Windows: Claude Code and Codex installed with npm (claude.cmd, codex.cmd) now start (node runs the npm script directly; other batch files go through cmd.exe with escaped arguments); e2e fake claude is a .cmd on Windows
+- Chart date links: 24 px tall, never wider than the gap to the next check, below the plot layer (WCAG 2.5.8); CI: 90 minutes for the Mac e2e run; axe messages say why
+- Fix Windows exports: flush the finished file through a read-write handle (Windows refuses fsync on read-only, EPERM)
+- GitHub, help and About us everywhere: home page tiles + About us + three-column footer, Docs/HELP.md (every help topic, rendered on GitHub), app Settings › Data & about gets About us with links, README About us
+- Sample reports: say the data is an example, drop open buttons on made-up page links
+- Mac first-open steps for macOS 15+: Open Anyway in Privacy & Security, or one Terminal command
+- Live demo in the browser (site/demo) and six sample reports (site/samples)
+- Public sync never publishes Docs/outreach (private partner drafts)
+
 ## 0.13.0 — 2026-11-02
 
 The first public release of CiteFox: a free, local AI visibility tracker. Bring your own API keys; your data stays on your computer.

@@ -99,31 +99,45 @@ export function readCloroFailure(
   if (code === 'MODEL_UNAVAILABLE' || /not available in this country/i.test(message)) {
     return {
       code: 'unavailable',
-      message: `${ENGINE_LABEL[engine]} is not available at cloro right now. CiteFox tries again at the next check.`,
+      message: `${ENGINE_LABEL[engine]} is not available right now. CiteFox tries again at the next check.`,
       retryable: false
     }
   }
   if (status === 401 || /API_KEY/.test(code)) {
-    return { code: 'rejected', message: 'cloro rejected this key.', retryable: false }
+    return {
+      code: 'rejected',
+      message: 'Your CiteFox credits key was not accepted.',
+      retryable: false
+    }
   }
   if (status === 403 || code === 'INSUFFICIENT_CREDITS') {
     return {
       code: 'out_of_searches',
-      message: 'This cloro key is out of credits.',
+      message: 'Your CiteFox credits are used up.',
       retryable: false
     }
   }
   if (status === 429) {
-    return { code: 'rate_limited', message: 'cloro is limiting this key.', retryable: true }
+    return {
+      code: 'rate_limited',
+      message: 'Your CiteFox credits key is being limited right now.',
+      retryable: true
+    }
   }
   if (status === 500 || status === 502 || status === 503 || status === 504) {
-    return { code: 'other', message: 'cloro could not answer this call.', retryable: true }
+    return {
+      code: 'other',
+      message: 'The search service could not answer this call.',
+      retryable: true
+    }
   }
   if (status !== 200) {
     return {
       code: 'other',
       message:
-        status === 400 ? 'cloro did not accept this request.' : 'cloro did not answer this call.',
+        status === 400
+          ? 'The search service did not accept this request.'
+          : 'The search service did not answer this call.',
       retryable: false
     }
   }

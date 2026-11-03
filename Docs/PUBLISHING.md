@@ -89,7 +89,7 @@ A failed check stops the sync; nothing is committed (fix it in the private repo,
 ## Keys
 
 - User keys live in the OS keychain (`src/main/secrets/`); the database keeps only a masked hint.
-- Developer keys for `smoke:live` go in a `.env` outside the repo (`.env.example` lists the names).
+- Developer keys for `smoke:live` go in `.secrets/.env`, a git-ignored folder inside the project (`.env.example` lists the names).
 - Never put a key in code, a test or a doc. If one is ever committed, **rotate it**, even after it is removed:
   private history keeps it.
 

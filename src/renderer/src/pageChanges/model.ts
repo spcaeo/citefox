@@ -5,7 +5,7 @@ import { pathOf } from '../fixes/model'
 import { todayInput } from '../progress/model'
 import type { DrawerParamPatch } from '../shell/drawerUrl'
 import type { ChartEvent } from '../ui'
-import { formatDay } from '../utils/dates'
+import { formatDay, formatMoment } from '../utils/dates'
 
 /**
  * Page change history in the renderer, pure: the Pages banner's words, the fix a
@@ -28,9 +28,9 @@ export function changePath(change: Pick<PageChange, 'url'>): string {
   return pathOf(change.url)
 }
 
-/** "Oct 28": the day the change went live. */
+/** "Oct 28, 12:00 PM": when the change went live, in the computer's own zone and clock. */
 export function changeDay(change: Pick<PageChange, 'changedAt'>): string {
-  return formatDay(change.changedAt, { year: false })
+  return formatMoment(change.changedAt)
 }
 
 /**

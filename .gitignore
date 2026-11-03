@@ -1,4 +1,5 @@
-# Secrets (keys live in the OS keychain or in a .env outside the repo)
+# Secrets (keys live in the OS keychain, or in .secrets/ inside this folder: never committed)
+/.secrets/
 .env
 .env.*
 !.env.example
@@ -96,3 +97,5 @@ scripts/media/video/output/
 # The live demo and the sample reports, built by npm run site:build (Docs/DEMO.md)
 site/demo/
 site/samples/*/
+
+# Owner handover bundle: chat history, notes, Apple certificates. Never commit.

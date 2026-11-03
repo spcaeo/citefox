@@ -13,7 +13,7 @@ import {
   textboltJob,
   textboltResults
 } from './fixtures'
-import { formatClock, formatDay } from './model'
+import { formatClock, formatStamp } from './model'
 import { PageResultsScreen } from './PageResultsScreen'
 import { PromptGrid } from './PromptGrid'
 import { RunningScreen } from './RunningScreen'
@@ -372,8 +372,8 @@ describe('Page results screen', () => {
 
   it('opens a drawer whose row count is the bucket that was clicked', async () => {
     const results = textboltResults()
-    const baseline = formatDay(results.comparison[0].finishedAt)
-    const saved = formatDay(results.scope.promptSetSavedAt)
+    const baseline = formatStamp(results.comparison[0].finishedAt)
+    const saved = formatStamp(results.scope.promptSetSavedAt)
     const view = render(
       <>
         <PageResultsScreen

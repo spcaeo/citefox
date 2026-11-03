@@ -44,8 +44,8 @@ export function jinaHooks(host: EngineHost, projectId: string | null): JinaReadH
         const at = host.now().toISOString()
         const sentence =
           to === null
-            ? `Jina Reader did not accept "${from.name}", so CiteFox read the page without a key at the lower rate limit.`
-            : `Jina Reader did not accept "${from.name}", so CiteFox moved the read to "${to.name}".`
+            ? `The page reader did not accept "${from.name}", so CiteFox read the page without a key at the lower rate limit.`
+            : `The page reader did not accept "${from.name}", so CiteFox moved the read to "${to.name}".`
         insertConnectionEvent(host.storage.db, {
           id: host.createId(),
           keyId: from.id,

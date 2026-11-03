@@ -123,7 +123,9 @@ describe('overview model', () => {
         suggestedPages: 3,
         untrackedSuggested: 3
       })
-    ).toBe('From setup on Oct 23: 1 topic, 10 questions checked, 3 pages suggested to track.')
+    ).toBe(
+      'From setup on Oct 23, 12:00 PM: 1 topic, 10 questions checked, 3 pages suggested to track.'
+    )
     expect(searchesText({ min: 46, max: 92 })).toBe('about 46–92 searches')
     expect(searchesText({ min: 1, max: 1 })).toBe('about 1 search')
   })

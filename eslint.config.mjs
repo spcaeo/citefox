@@ -11,6 +11,7 @@ export default defineConfig(
       '**/node_modules/**',
       '.public-export/**',
       '.claude/**',
+      '.secrets/**',
       '**/out/**',
       '**/dist/**',
       '**/release/**',

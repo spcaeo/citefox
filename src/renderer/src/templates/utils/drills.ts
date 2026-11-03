@@ -9,7 +9,7 @@ import type {
   TemplateVersionEntry
 } from '@shared/ipc'
 import type { DrillItem, DrillScope, ItemDrill } from '../../drill'
-import { formatDay } from '../../pageSetup/model'
+import { formatReadStamp } from '../../pageSetup/model'
 import { formatMoment } from '../../utils/dates'
 import type { PageTabId } from '../../shell/routes'
 import { hashPrefix } from './stepCopy'
@@ -83,7 +83,7 @@ export function usageDrill(
         : `${ITEM_NOUN[item.kind]} · in ${item.projectName}. Open that project to see it.`,
       target: here ? { kind: 'page', pageId: item.pageId, tab: ITEM_TAB[item.kind] } : null,
       cells: {
-        saved: formatDay(item.savedAt),
+        saved: formatReadStamp(item.savedAt),
         hash: item.templateHash ? hashPrefix(item.templateHash) : '—',
         project: item.projectName
       }
@@ -138,7 +138,7 @@ export function versionsDrill(
       mono: true,
       secondary: `${entry.source === 'project' ? 'Project version' : 'App template'} · hash ${entry.hash}`,
       cells: {
-        saved: formatDay(entry.savedAt),
+        saved: formatReadStamp(entry.savedAt),
         hash: hashPrefix(entry.hash),
         calls: calls === null ? '—' : used.length
       },
@@ -183,7 +183,7 @@ export function callsDrill(
     id: call.id,
     primary: dateTime(call.startedAt),
     secondary: [
-      call.connection === 'anthropic-api' ? 'Anthropic API' : 'CiteFox AI',
+      call.connection === 'anthropic-api' ? 'CiteFox AI · your AI key' : 'CiteFox AI',
       call.model,
       call.source
     ]

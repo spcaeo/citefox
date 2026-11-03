@@ -199,7 +199,10 @@ describe('SerpApi key rotation in a check (FR-11.3, SERP-6)', () => {
     updateApiKey(storage.db, { ...key, cap: 0 })
     const job = await start(handlers)
     expect(calls).toEqual([])
-    expect(job).toMatchObject({ status: 'error', message: 'Every SerpApi key is out of searches.' })
+    expect(job).toMatchObject({
+      status: 'error',
+      message: 'Your searches for this period are used up.'
+    })
   })
 })
 

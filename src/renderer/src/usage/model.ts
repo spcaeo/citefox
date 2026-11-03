@@ -19,7 +19,7 @@ export function usageSummary(usage: LlmUsage): string {
 }
 
 export function connectionLabel(connection: LlmUsageByConnection['connection']): string {
-  return connection === 'claude-code' ? 'CiteFox AI on this computer' : 'Anthropic API key'
+  return connection === 'claude-code' ? 'CiteFox AI on this computer' : 'Your AI key'
 }
 
 /**

@@ -14,7 +14,7 @@ import { pluralize } from '@shared/pluralize'
 import { promptHash } from '../shell/routes'
 import type { KpiTrend } from '../ui'
 import type { ResultBucket, ResultCounts } from '../ui/resultTones'
-import { formatDay } from '../utils/dates'
+import { formatDay, formatMoment } from '../utils/dates'
 
 /** Pure helpers for the AI visibility home: its URL state, labels and chart. */
 
@@ -270,7 +270,7 @@ export function firstReportLine(report: OverviewFirstReport): string {
     `${pluralize(report.questions, 'question')} checked`,
     `${pluralize(report.suggestedPages, 'page')} suggested to track`
   ]
-  return `From setup on ${formatDay(report.checkedAt, { year: false })}: ${parts.join(', ')}.`
+  return `From setup on ${formatMoment(report.checkedAt)}: ${parts.join(', ')}.`
 }
 
 /** "about 46–92 searches", or "about 46 searches" when both ends match. */

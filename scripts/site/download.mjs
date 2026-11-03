@@ -46,7 +46,8 @@ function mainButton() {
 
 /** The state line under the big button and the phone note. */
 function statusLines() {
-  return `<p class="dl-status" data-dl-status aria-live="polite"></p>
+  return `<p class="dl-version small" data-dl-version aria-live="polite"></p>
+          <p class="dl-status" data-dl-status aria-live="polite"></p>
           <p class="note" data-dl-mobile hidden>CiteFox is a desktop app. Open this page on your Mac or PC to download it, or pick a file below.</p>`
 }
 

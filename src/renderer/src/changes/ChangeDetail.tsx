@@ -19,7 +19,7 @@ import {
   UrlText,
   type ListColumn
 } from '../ui'
-import { formatDay } from '../utils/dates'
+import { formatDay, formatMoment } from '../utils/dates'
 import { IndexPill } from './cells'
 import { DidItWork } from './DidItWork'
 import { topSpotsDrill } from './drills'
@@ -123,13 +123,13 @@ function ChangeDrawer({
     },
     {
       id: 'before',
-      label: row.before ? `Before · ${formatDay(row.before.checkedAt, { year: false })}` : 'Before',
+      label: row.before ? `Before · ${formatMoment(row.before.checkedAt)}` : 'Before',
       width: 128,
       render: (move) => stateText(move.before, row.before !== null)
     },
     {
       id: 'now',
-      label: row.now ? `Now · ${formatDay(row.now.checkedAt, { year: false })}` : 'Now',
+      label: row.now ? `Now · ${formatMoment(row.now.checkedAt)}` : 'Now',
       width: 128,
       render: (move) => stateText(move.now, row.now !== null)
     }
