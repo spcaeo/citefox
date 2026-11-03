@@ -93,7 +93,7 @@ test('the downloaded report drills three levels, goes back, and reopens from a c
     await expect(drawer).toBeVisible()
     const listTitle = (await title.textContent()) ?? ''
     await expect(page.locator('#drawer-back')).toBeHidden()
-    expect(decodeURIComponent(new URL(page.url()).hash)).toBe('#d=l:all')
+    expect(drillHash(page.url())).toBe('#d=l:all')
     await page.screenshot({ path: path.join(SHOTS, '1-list.png') })
 
     // Level 2: one prompt's answer, with every site it cites.
@@ -110,9 +110,7 @@ test('the downloaded report drills three levels, goes back, and reopens from a c
     await expect(title).toHaveText(target.domain)
     await expect(page.locator('#drawer-trail li')).toHaveCount(3)
     await expect(page.locator(`#drawer-body tr[data-row-id="${target.id}"]`)).toHaveCount(1)
-    expect(decodeURIComponent(new URL(page.url()).hash)).toBe(
-      `#d=l:all&d=q:${target.id}&d=dom:${target.domain}`
-    )
+    expect(drillHash(page.url())).toBe(`#d=l:all&d=q:${target.id}&d=dom:${target.domain}`)
     await page.screenshot({ path: path.join(SHOTS, '3-site.png') })
 
     // The panel's Back pops one level and returns focus to what opened the step.
@@ -292,4 +290,16 @@ async function openReport(
   await page.goto(url)
   await expect(page.locator('html.js')).toHaveCount(1)
   return { page, problems, requests }
+}
+
+/**
+ * The drawer part of the report's URL (`d=` levels). The report may also keep the section
+ * in view (`s=`) while you scroll, which depends on the window size, so it is left out.
+ */
+function drillHash(url: string): string {
+  const params = new URLSearchParams(new URL(url).hash.slice(1))
+  return `#${params
+    .getAll('d')
+    .map((d) => `d=${d}`)
+    .join('&')}`
 }

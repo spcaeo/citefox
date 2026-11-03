@@ -461,6 +461,7 @@ describe('citation grid scale', () => {
     const painted = view.container.querySelectorAll('[data-row]').length
     expect(painted).toBeGreaterThan(0)
     expect(painted).toBeLessThan(40)
-    expect(elapsed).toBeLessThan(300)
+    // Windows CI runners are about twice as slow; the point is "no full 2,000-row render".
+    expect(elapsed).toBeLessThan(process.platform === 'win32' ? 600 : 300)
   })
 })

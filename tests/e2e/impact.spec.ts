@@ -138,7 +138,8 @@ test('Reports: ready reports, the Impact review, its drills and the downloaded f
     // changes the URL before the next key.
     for (
       let step = 0;
-      step < 4 && (await page.locator('[data-drawer^="report-"]').count()) > 0;
+      // The URL, not the DOM: a closing drawer stays in the page while it animates out.
+      step < 4 && (await page.evaluate(() => window.location.hash)).includes('drawer=');
       step += 1
     ) {
       const before = await page.evaluate(() => window.location.hash)

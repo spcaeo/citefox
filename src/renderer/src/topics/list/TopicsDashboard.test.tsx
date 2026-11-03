@@ -64,7 +64,7 @@ describe('Topics dashboard', () => {
   it('opens on the List, with List · Tree · Grid tabs', async () => {
     at('')
     const { view } = await shown()
-    const tabs = view.getByRole('tablist', { name: 'Topics views' })
+    const tabs = await view.findByRole('tablist', { name: 'Topics views' })
     expect(
       within(tabs)
         .getAllByRole('tab')
