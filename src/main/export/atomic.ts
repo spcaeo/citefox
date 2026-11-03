@@ -80,8 +80,9 @@ export async function publishReadyFile(
   }
 }
 
+/** Flush a finished file to disk. Opened read-write: Windows refuses fsync on a read-only handle (EPERM). */
 export function fsyncFile(filePath: string): void {
-  const fd = openSync(filePath, 'r')
+  const fd = openSync(filePath, 'r+')
   try {
     fsyncSync(fd)
   } finally {

@@ -80,6 +80,8 @@ export interface AxisControlArgs {
   dateY: number
   /** Top of the row under the dates. */
   y: number
+  /** Px to the nearest other check (Infinity when alone): a control wider than this overlaps its neighbour. */
+  room: number
   onFocus: () => void
   onBlur: () => void
 }
@@ -447,6 +449,12 @@ export function TrendChart({
                   x: x(check.t),
                   dateY,
                   y: axisRowY,
+                  room: Math.min(
+                    index > 0 ? x(check.t) - x(checks[index - 1]?.t ?? check.t) : Infinity,
+                    index < checks.length - 1
+                      ? x(checks[index + 1]?.t ?? check.t) - x(check.t)
+                      : Infinity
+                  ),
                   onFocus: () => setHover(index),
                   onBlur: () => setHover(null)
                 })}

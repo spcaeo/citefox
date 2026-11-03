@@ -115,10 +115,11 @@ export function ProgressChart({
           })
         }
         axisRoom={8}
-        axisControl={({ key, at, x, dateY, onFocus, onBlur }) => (
+        axisControl={({ key, at, x, dateY, room, onFocus, onBlur }) => (
           <span
             className="tr-hit"
-            style={{ left: x, top: dateY - 16 }}
+            // Never wider than the gap to the next check, so close checks do not overlap.
+            style={{ left: x, top: dateY - 14, width: Math.min(56, Math.max(24, room)) }}
             onFocus={onFocus}
             onBlur={onBlur}
           >

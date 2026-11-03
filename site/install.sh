@@ -6,7 +6,7 @@
 # Downloads the latest CiteFox release from GitHub (https://github.com/spcaeo/citefox/releases),
 # checks its SHA-256 against the release's SHA256SUMS.txt, and installs it:
 #   macOS  → /Applications/CiteFox.app (or ~/Applications if /Applications is not writable)
-#   Linux  → ~/Applications/CiteFox.AppImage, plus a menu entry
+#   Linux  → ~/Applications/CiteFox.AppImage (or unpacked in ~/Applications/CiteFox without FUSE 2), plus a menu entry
 # Nothing else on your computer is changed. Source: site/install.sh in the repo.
 set -euo pipefail
 
@@ -40,7 +40,8 @@ sums_url="$(printf '%s' "$release" | grep '"browser_download_url"' | sed -E 's/.
 [ -n "$url" ] || fail "No download for this computer in release ${tag:-latest}."
 file="${url##*/}"
 
-tmp="$(mktemp -d)"
+# Work in the home folder: /tmp is often small or held in memory.
+tmp="$(mktemp -d "$HOME/.citefox-install.XXXXXX")"
 trap 'rm -rf "$tmp"' EXIT
 
 say "Downloading ${file} (${tag})…"
@@ -85,10 +86,16 @@ else
       icon="$data/icons/citefox.png"
     fi
   fi
-  # AppImages mount with FUSE 2; without it, the app unpacks itself at each start instead.
+  # AppImages mount with FUSE 2. Without it, unpack the app once into ~/Applications/CiteFox
+  # (not into /tmp at every start, which on many systems lives in memory).
   run="$dest/CiteFox.AppImage"
   if ! ldconfig -p 2>/dev/null | grep -q 'libfuse\.so\.2'; then
-    run="env APPIMAGE_EXTRACT_AND_RUN=1 $dest/CiteFox.AppImage"
+    say "Unpacking (this computer has no FUSE 2)…"
+    rm -rf "$tmp/squashfs-root" "$dest/CiteFox"
+    (cd "$tmp" && "$dest/CiteFox.AppImage" --appimage-extract >/dev/null)
+    mv "$tmp/squashfs-root" "$dest/CiteFox"
+    rm -f "$dest/CiteFox.AppImage"
+    run="$dest/CiteFox/citefox"
   fi
   cat >"$apps/citefox.desktop" <<EOF
 [Desktop Entry]

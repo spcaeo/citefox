@@ -73,7 +73,8 @@ async function expectAccessible(page: Page, include = '#main'): Promise<void> {
     .analyze()
   expect(
     results.violations.map(
-      (item) => `${item.id}: ${item.nodes.map((node) => node.target.join(' ')).join(', ')}`
+      (item) =>
+        `${item.id}: ${item.nodes.map((node) => `${node.target.join(' ')} (${node.any[0]?.message ?? node.failureSummary ?? ''})`).join(', ')}`
     )
   ).toEqual([])
 }
