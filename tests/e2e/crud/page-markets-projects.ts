@@ -115,7 +115,9 @@ export function pageMarketsProjectsCrud(): void {
       expect(await page.evaluate(() => window.location.hash)).toContain('drawer=add-market')
       const country = add.getByLabel('Country')
       await expect(country).toHaveValue('CA')
-      await expect(country.locator('option', { hasText: 'United States (tracked)' })).toHaveCount(1)
+      await expect(
+        country.locator('option', { hasText: /United States.*\(tracked\)/ })
+      ).toHaveCount(1)
       await expect(add.getByTestId('add-market-cost')).toContainText('more searches per check')
       await drawerShots(page, 'crud-add-market')
       await add.getByRole('button', { name: 'Add market', exact: true }).click()

@@ -14,8 +14,13 @@ export const DEFAULT_COUNTRY = 'US'
 /** The language every new market starts with. */
 export const DEFAULT_LANGUAGE = 'en'
 
+/**
+ * "India · IN 🇮🇳". The name comes first on purpose: a dropdown finds an option by the first
+ * letters of its text, so typing "Ind" must land on India. A flag in front would break that
+ * (owner feedback 2026-11-03: "India is not in the countries"; it was, but typing found nothing).
+ */
 function countryOption(code: string): CountryOption {
-  return { value: code, label: `${flagFor(code)} ${code} · ${countryName(code)}` }
+  return { value: code, label: `${countryName(code)} · ${code} ${flagFor(code)}`.trim() }
 }
 
 function byLabelName(a: { name: string }, b: { name: string }): number {
@@ -48,7 +53,8 @@ function languageOption(code: string): CountryOption {
   const entry = LANGUAGES.find((language) => language.code === code)
   const name = entry?.name ?? code
   const flag = entry ? flagFor(entry.flag) : ''
-  return { value: code, label: `${flag} ${code.toUpperCase()} · ${name}`.trim() }
+  // Name first, so typing the language name finds it (see countryOption).
+  return { value: code, label: `${name} · ${code.toUpperCase()} ${flag}`.trim() }
 }
 
 /** The most used languages, in this order. */

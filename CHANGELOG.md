@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+
+- **Finding a country or language by typing:** the lists now start with the name ("India · IN 🇮🇳"), so typing "Ind" lands on India. Before, the flag came first and typing found nothing. India was in the list all along, fifth from the top.
+
 ## 0.13.3 — 2026-11-03
 
 ### New
