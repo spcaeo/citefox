@@ -34,9 +34,9 @@ esac
 
 say "Finding the latest CiteFox release…"
 release="$(curl -fsSL -H 'Accept: application/vnd.github+json' "$API")" || fail "Could not reach GitHub."
-tag="$(printf '%s' "$release" | grep -m1 '"tag_name"' | sed -E 's/.*"tag_name": *"([^"]+)".*/\1/')"
-url="$(printf '%s' "$release" | grep '"browser_download_url"' | sed -E 's/.*"(https:[^"]+)".*/\1/' | grep -E "$pattern" | head -1)"
-sums_url="$(printf '%s' "$release" | grep '"browser_download_url"' | sed -E 's/.*"(https:[^"]+)".*/\1/' | grep -E 'SHA256SUMS\.txt$' | head -1)"
+tag="$(printf '%s' "$release" | grep '"tag_name"' | sed -n 1p | sed -E 's/.*"tag_name": *"([^"]+)".*/\1/')"
+url="$(printf '%s' "$release" | grep '"browser_download_url"' | sed -E 's/.*"(https:[^"]+)".*/\1/' | grep -E "$pattern" | sed -n 1p)"
+sums_url="$(printf '%s' "$release" | grep '"browser_download_url"' | sed -E 's/.*"(https:[^"]+)".*/\1/' | grep -E 'SHA256SUMS\.txt$' | sed -n 1p)"
 [ -n "$url" ] || fail "No download for this computer in release ${tag:-latest}."
 file="${url##*/}"
 
@@ -72,16 +72,35 @@ else
   dest="$HOME/Applications"
   mkdir -p "$dest"
   install -m 755 "$tmp/$file" "$dest/CiteFox.AppImage"
-  apps="${XDG_DATA_HOME:-$HOME/.local/share}/applications"
+  data="${XDG_DATA_HOME:-$HOME/.local/share}"
+  apps="$data/applications"
   mkdir -p "$apps"
+  # The app icon, taken from inside the AppImage, so the menu shows the fox.
+  icon="citefox"
+  if (cd "$tmp" && "$dest/CiteFox.AppImage" --appimage-extract 'usr/share/icons/*' >/dev/null 2>&1); then
+    png="$(find "$tmp/squashfs-root/usr/share/icons" -name '*.png' 2>/dev/null | sort | sed -n 1p)"
+    if [ -n "$png" ]; then
+      mkdir -p "$data/icons"
+      cp -L "$png" "$data/icons/citefox.png"
+      icon="$data/icons/citefox.png"
+    fi
+  fi
+  # AppImages mount with FUSE 2; without it, the app unpacks itself at each start instead.
+  run="$dest/CiteFox.AppImage"
+  if ! ldconfig -p 2>/dev/null | grep -q 'libfuse\.so\.2'; then
+    run="env APPIMAGE_EXTRACT_AND_RUN=1 $dest/CiteFox.AppImage"
+  fi
   cat >"$apps/citefox.desktop" <<EOF
 [Desktop Entry]
 Type=Application
 Name=CiteFox
 Comment=Free AI visibility tracker
-Exec=$dest/CiteFox.AppImage
+Exec=$run %U
+Icon=$icon
 Terminal=false
+StartupWMClass=CiteFox
 Categories=Office;Utility;
 EOF
-  say "Done. CiteFox is in your app menu, or run: $dest/CiteFox.AppImage"
+  command -v update-desktop-database >/dev/null 2>&1 && update-desktop-database "$apps" >/dev/null 2>&1 || true
+  say "Done. CiteFox is in your app menu, or run: $run"
 fi
