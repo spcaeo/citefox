@@ -19,6 +19,8 @@ export interface AiCliCopy {
   binaryName: string
   /** "Claude plan" or "ChatGPT plan". */
   plan: string
+  /** Help for someone who only has the desktop app, shown when the program is not found. */
+  desktopHint: string
   installUrl: string
   installLabel: string
   pathPlaceholder: string
@@ -32,6 +34,8 @@ const COPY: Readonly<Record<AiCliProvider, AiCliCopy>> = {
     loginCommand: 'claude',
     binaryName: 'claude',
     plan: 'Claude plan',
+    desktopHint:
+      'Use the Claude desktop app? Open its Code tab once and sign in. CiteFox then finds Claude Code inside the app, with no Terminal needed. Then check again.',
     installUrl: 'https://code.claude.com/docs',
     installLabel: 'How to install Claude Code',
     pathPlaceholder: '/usr/local/bin/claude'
@@ -43,6 +47,8 @@ const COPY: Readonly<Record<AiCliProvider, AiCliCopy>> = {
     loginCommand: 'codex login',
     binaryName: 'codex',
     plan: 'ChatGPT plan',
+    desktopHint:
+      'The Codex desktop app cannot be used by other apps. Install the free Codex command-line tool instead (one command: npm install -g @openai/codex), or go back and choose Claude Code or an API key.',
     installUrl: 'https://developers.openai.com/codex/cli',
     installLabel: 'How to install Codex',
     pathPlaceholder: '/usr/local/bin/codex'

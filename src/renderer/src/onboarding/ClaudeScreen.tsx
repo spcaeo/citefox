@@ -357,8 +357,9 @@ export function ClaudeScreen({
               <PanelIcon name="warning" tone="warn" />
               <div className="field ob-tight">
                 <p className="ob-strong">{result.message}</p>
+                <p className="muted">{copy.desktopHint}</p>
                 <p className="muted">
-                  After installing, open Terminal once, run{' '}
+                  Or install it: after installing, open Terminal once, run{' '}
                   <span className="code">{copy.loginCommand}</span> and log in. Then check again.
                 </p>
               </div>

@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## 0.13.2 — 2026-11-03
+
+### New
+
+- **Works with the Claude desktop app:** if you use Claude Desktop and never installed the command-line tool, CiteFox now finds the Claude Code inside the app and uses it. You are already signed in there, and no Terminal is needed. Mac and Windows.
+- **Clearer setup help:** when Claude Code or Codex is not found, the screen now says what to do if you only have the desktop app. The Codex desktop app cannot be used by other apps, so it points to the free Codex command-line tool, or to Claude Code or an API key.
+- **Copyright line:** © 2026 Space-O Technologies (and vBridge Technologies, a division of Space-O).
+
 ## 0.13.1 — 2026-11-03
 
 ### New

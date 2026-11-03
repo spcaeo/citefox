@@ -167,3 +167,38 @@ describe('ClaudeScreen checkup progress', () => {
     expect(within(reply).getByRole('button', { name: 'Check again' })).toBeTruthy()
   })
 })
+
+describe('ClaudeScreen when the program is not found', () => {
+  it('tells a desktop-app user what to do, before the Terminal steps', async () => {
+    const base = createMockOnboardingClient({ paceMs: 0 })
+    const client: OnboardingClient = {
+      ...base,
+      runCheckup: async (request) => {
+        const result = await base.runCheckup(request)
+        return {
+          ...result,
+          ready: false,
+          message: 'Claude Code was not found on this computer.',
+          rows: { ...result.rows, binary: { ...result.rows.binary, state: 'warning' } }
+        }
+      }
+    }
+    const view = render(
+      <ClaudeScreen
+        client={client}
+        onAnnounce={() => undefined}
+        onBack={() => undefined}
+        onContinue={() => undefined}
+        onChecked={() => undefined}
+        onAnthropic={() => Promise.resolve({ error: null, hint: null })}
+      />
+    )
+    await waitFor(() => {
+      expect(view.container.querySelector('.panel-warn')).not.toBeNull()
+    })
+    const text = view.container.querySelector('.panel-warn')?.textContent ?? ''
+    expect(text).toContain('Claude desktop app')
+    expect(text).toContain('Code tab')
+    expect(text.indexOf('Claude desktop app')).toBeLessThan(text.indexOf('open Terminal once'))
+  })
+})

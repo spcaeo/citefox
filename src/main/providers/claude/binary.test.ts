@@ -4,6 +4,7 @@ import { join } from 'node:path'
 import { afterEach, describe, expect, test } from 'vitest'
 import {
   claudeBinaryPathProblem,
+  claudeDesktopBinaryCandidates,
   createFsBinaryProbe,
   fakeAiOnlyRoots,
   isClaudeInstallTarget,
@@ -168,5 +169,72 @@ describe('Windows: npm installs claude.cmd and codex.cmd', () => {
       path: `${NPM}\\codex.cmd`,
       source: 'path'
     })
+  })
+})
+
+describe('Claude Code inside the Claude desktop app', () => {
+  const home = join('/Users', 'a')
+  const macBase = join(home, 'Library', 'Application Support', 'Claude', 'claude-code')
+  const macExe = (...folders: string[]): string =>
+    join(macBase, ...folders, 'claude.app', 'Contents', 'MacOS', 'claude')
+  const fakeDisk = (tree: Record<string, readonly string[]>) => (directory: string) =>
+    tree[directory] ?? []
+  const probeFor = (files: readonly string[]): BinaryProbe => ({
+    exists: (file) => files.includes(file),
+    searchPath: () => null
+  })
+
+  test('lists the newest desktop copy first, for every id folder', () => {
+    const readDir = fakeDisk({
+      [macBase]: ['2.1.9', '2.1.308', '2.0.1'],
+      [join(macBase, '2.1.308')]: ['a93ded4b1b47'],
+      [join(macBase, '2.1.9')]: ['ffff00001111']
+    })
+    const found = claudeDesktopBinaryCandidates(home, 'darwin', readDir)
+    expect(found[0]).toBe(macExe('2.1.308'))
+    expect(found[1]).toBe(macExe('2.1.308', 'a93ded4b1b47'))
+    expect(found.indexOf(macExe('2.1.9', 'ffff00001111'))).toBeGreaterThan(1)
+    expect(found.some((file) => file.includes('2.0.1'))).toBe(true)
+  })
+
+  test('finds the desktop copy when there is no command-line install', () => {
+    const readDir = fakeDisk({
+      [macBase]: ['2.1.308'],
+      [join(macBase, '2.1.308')]: ['a93ded4b1b47']
+    })
+    const exe = macExe('2.1.308', 'a93ded4b1b47')
+    expect(
+      locateClaudeBinary(null, probeFor([exe]), { home, platform: 'darwin', pathEnv: '', readDir })
+    ).toEqual({ path: exe, source: 'usual' })
+  })
+
+  test('a normal install on PATH or in the usual folders still wins', () => {
+    const readDir = fakeDisk({
+      [macBase]: ['2.1.308'],
+      [join(macBase, '2.1.308')]: ['a93ded4b1b47']
+    })
+    const desktop = macExe('2.1.308', 'a93ded4b1b47')
+    const cli = join(home, '.local', 'bin', 'claude')
+    expect(
+      locateClaudeBinary(null, probeFor([desktop, cli]), {
+        home,
+        platform: 'darwin',
+        pathEnv: '',
+        readDir
+      }).path
+    ).toBe(cli)
+  })
+
+  test('Windows keeps claude.exe under AppData Roaming', () => {
+    const base = join('C:\\Users\\a', 'AppData', 'Roaming', 'Claude', 'claude-code')
+    const readDir = fakeDisk({ [base]: ['2.1.308'] })
+    expect(claudeDesktopBinaryCandidates('C:\\Users\\a', 'win32', readDir)).toContain(
+      join(base, '2.1.308', 'claude.exe')
+    )
+  })
+
+  test('nothing to find on Linux, and nothing when the folder is missing', () => {
+    expect(claudeDesktopBinaryCandidates(home, 'linux', () => ['2.1.308'])).toEqual([])
+    expect(claudeDesktopBinaryCandidates(home, 'darwin', () => [])).toEqual([])
   })
 })
