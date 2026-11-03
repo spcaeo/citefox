@@ -1,7 +1,7 @@
 {
   "name": "citefox",
   "productName": "CiteFox",
-  "version": "0.13.5",
+  "version": "0.13.6",
   "private": true,
   "description": "Desktop app that tracks whether Google AI Overviews cite a website's pages.",
   "license": "SEE LICENSE IN LICENSE",

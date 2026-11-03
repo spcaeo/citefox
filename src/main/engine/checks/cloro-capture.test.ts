@@ -203,6 +203,34 @@ describe('captureCloroGoogle', () => {
       credits: 0
     })
   })
+
+  test('a failed call leaves one log line with the status and reason, and no key', async () => {
+    const lines: Array<{ message: string; extra: unknown }> = []
+    const logger = {
+      warn: (message: string, extra?: unknown) => {
+        lines.push({ message, extra })
+      }
+    }
+    const transport = scripted(() => respond(429, errorBody('RATE_LIMITED')))
+    await captureCloroGoogle(options(transport, { logger }))
+    expect(lines).toHaveLength(1)
+    expect(lines[0]?.message).toBe('search call failed')
+    expect(lines[0]?.extra).toMatchObject({
+      provider: 'cloro',
+      status: 429,
+      reason: 'rate_limited',
+      tries: RATE_LIMIT_ATTEMPTS
+    })
+    expect(JSON.stringify(lines)).not.toContain(KEY)
+  })
+
+  test('a call that succeeds writes nothing to the log', async () => {
+    const lines: string[] = []
+    const logger = { warn: (message: string) => void lines.push(message) }
+    const transport = scripted(() => respond(200, fixture('google-overview.json')))
+    await captureCloroGoogle(options(transport, { logger }))
+    expect(lines).toEqual([])
+  })
 })
 
 describe('cloro retry rules', () => {

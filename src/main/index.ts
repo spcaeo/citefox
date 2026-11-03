@@ -637,7 +637,8 @@ void app
           shutdown,
           focusWindow: showMainWindow
         })
-      })
+      }),
+      logger
     )
     trayReady.current = installMainTray({
       schedule: scheduleQueueTray.schedule,

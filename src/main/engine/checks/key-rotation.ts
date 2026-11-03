@@ -452,6 +452,7 @@ export function createKeyRotation(
     beforeRequest: gate.allow,
     stopRequested: gate.stopRequested,
     now: () => deps.now().getTime(),
+    logger: deps.logger,
     // Every call to the provider shares one pace: a 429 slows all of them down.
     pacer: providerPacer(deps.storage.db, provider, {
       sleep: deps.sleep,

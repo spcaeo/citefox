@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.13.6 — 2026-11-03
+
+### Improved
+
+- **Clearer logs for problems:** when a search fails, or any action fails, the log now says which one and why (the engine, the status, the reason, how many tries). It never records your keys, your questions or the answer text. **Report a problem** carries these lines, so a failed check can be understood from one report.
+
 ## 0.13.5 — 2026-11-03
 
 ### New

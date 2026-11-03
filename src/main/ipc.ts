@@ -8,6 +8,7 @@ import {
 } from '@shared/ipc'
 import { BrowserWindow, ipcMain, type IpcMainInvokeEvent } from 'electron'
 import { progressScope, runWithProgress } from './assist/progress'
+import type { Logger } from './logging/logger'
 import { emitIpcEvent } from './ipc-events'
 import { isTrustedIpcSender } from './navigation'
 import { urlPolicy } from './security'
@@ -28,7 +29,7 @@ export function broadcastIpcEvent<E extends IpcEventChannel>(
  * NFR-16: a call is served only when the sending frame is app content (the
  * renderer files, or the dev server in an unpackaged build).
  */
-export function registerIpcHandlers(handlers: IpcHandlerMap): void {
+export function registerIpcHandlers(handlers: IpcHandlerMap, logger?: Pick<Logger, 'warn'>): void {
   const policy = urlPolicy()
   for (const channel of IPC_INVOKE_CHANNELS) {
     ipcMain.handle(channel, (event: IpcMainInvokeEvent, ...args: unknown[]) => {
@@ -45,7 +46,7 @@ export function registerIpcHandlers(handlers: IpcHandlerMap): void {
           scope: progressScope(args),
           emit: (progress) => broadcastIpcEvent('assist:progress', progress)
         },
-        () => callIpcHandler(handlers, channel, args)
+        () => logIpcFailure(logger, channel, () => callIpcHandler(handlers, channel, args))
       )
     })
   }
@@ -58,4 +59,45 @@ function senderUrl(event: IpcMainInvokeEvent): string | null {
   } catch {
     return null
   }
+}
+
+/**
+ * One log line when a handler throws or answers `ok: false`, so a tester's log shows which
+ * action failed and why. It records the channel and the reason only: never the request,
+ * and never the message text, which can carry a page or a question.
+ */
+export async function logIpcFailure<T>(
+  logger: Pick<Logger, 'warn'> | undefined,
+  channel: string,
+  run: () => T | Promise<T>
+): Promise<T> {
+  let result: T
+  try {
+    result = await run()
+  } catch (error) {
+    logger?.warn('action failed', {
+      channel,
+      threw: error instanceof Error ? error.name : typeof error
+    })
+    throw error
+  }
+  if (logger !== undefined && typeof result === 'object' && result !== null) {
+    const record = result as Record<string, unknown>
+    if (record.ok === false) {
+      const code = ['code', 'errorCode', 'reason', 'kind']
+        .map((key) => record[key])
+        .find(isShortCode)
+      logger.warn('action did not finish', { channel, reason: code ?? null })
+    }
+  }
+  return result
+}
+
+function isShortCode(value: unknown): value is string {
+  return (
+    typeof value === 'string' &&
+    value.length > 0 &&
+    value.length <= 40 &&
+    /^[a-z0-9_.:-]+$/i.test(value)
+  )
 }

@@ -21,6 +21,7 @@ import { readCloroAnswer, readCloroGoogle } from '../../providers/cloro/read'
 import { withTimeout } from '../../providers/timeout'
 import type { CaptureQuery, SerpCapture } from './capture'
 import { redactSerpBody } from './redact'
+import type { Logger } from '../../logging/logger'
 import { createCallPacer, RATE_LIMIT_ATTEMPTS, type CallPacer } from './provider-pacer'
 
 /**
@@ -48,6 +49,8 @@ export interface CloroCaptureOptions {
    * every call, and a 429 is retried on it. Without one the call paces itself.
    */
   pacer?: CallPacer
+  /** Gets one line when a call ends in a failure, so a tester's log shows why a check failed. */
+  logger?: Pick<Logger, 'warn'>
 }
 
 interface CallOutcome {
@@ -73,6 +76,25 @@ function failedOutcome(searches: number, failure: CloroFailure): CallOutcome {
     timedOut: false,
     retryAfterMs: null
   }
+}
+
+/** One log line for a call that ended in a failure: no key, no answer text. */
+function logGaveUp(
+  options: CloroCaptureOptions,
+  engine: EngineId,
+  status: number,
+  tries: number,
+  outcome: CallOutcome
+): CallOutcome {
+  options.logger?.warn('search call failed', {
+    provider: 'cloro',
+    engine,
+    status,
+    reason: outcome.failure?.code ?? 'other',
+    tries,
+    retryAfterMs: outcome.retryAfterMs
+  })
+  return outcome
 }
 
 async function callCloro(engine: EngineId, options: CloroCaptureOptions): Promise<CallOutcome> {
@@ -179,14 +201,23 @@ async function callCloro(engine: EngineId, options: CloroCaptureOptions): Promis
       const retryAfterMs = parseRetryAfter(headerValue(response.headers, 'retry-after'), now())
       const verdict = pacer.rateLimited(ticket, retryAfterMs)
       rateLimitedTries += 1
-      if (verdict.giveUp) return { ...last, retryAfterMs }
-      if (rateLimitedTries >= RATE_LIMIT_ATTEMPTS) return last
+      if (verdict.giveUp) {
+        return logGaveUp(options, engine, response.status, rateLimitedTries, {
+          ...last,
+          retryAfterMs
+        })
+      }
+      if (rateLimitedTries >= RATE_LIMIT_ATTEMPTS) {
+        return logGaveUp(options, engine, response.status, rateLimitedTries, last)
+      }
       if (options.stopRequested?.() === true) return { ...last, kind: 'halted', failure: null }
       afterRateLimit = true
       continue
     }
     otherTries += 1
-    if (!failure.retryable || otherTries >= CLORO_ATTEMPTS) return last
+    if (!failure.retryable || otherTries >= CLORO_ATTEMPTS) {
+      return logGaveUp(options, engine, response.status, otherTries, last)
+    }
     if (options.stopRequested?.() === true) return { ...last, kind: 'halted', failure: null }
     await sleep(retryDelayMs(otherTries))
   }
