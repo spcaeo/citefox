@@ -361,8 +361,11 @@ describe('FixDrawer', () => {
     expect(kind.disabled).toBe(false)
     fireEvent.change(kind, { target: { value: 'new_page' } })
     fireEvent.click(view.getByRole('button', { name: 'Save changes' }))
-    await waitFor(() =>
-      expect(calls.updates).toEqual([{ projectId: 'proj-1', fixId: 'fix-1', kind: 'new_page' }])
+    await waitFor(
+      () =>
+        expect(calls.updates).toEqual([{ projectId: 'proj-1', fixId: 'fix-1', kind: 'new_page' }]),
+      // A slow Windows runner needs more than the default second.
+      { timeout: 8000 }
     )
   })
 

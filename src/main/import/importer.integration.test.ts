@@ -127,7 +127,7 @@ describe('import questions from a paste', () => {
     expect(preview.rows[0]?.match).toMatchObject({ text: existing, sameTarget: true })
     expect(preview.rows[2]?.reason).toBe('Same question as row 2 · merged.')
     expect(preview.counts).toMatchObject({ duplicate: 2, merged: 2, new: 1, similar: 1, total: 4 })
-  })
+  }, 120_000) // the first run on a slow Windows runner took 43 s
 
   test('every row gets a result, the counts add up, and the batch can be undone', async () => {
     const { handlers, projectDb, topicId, topicTexts } = await seeded()
