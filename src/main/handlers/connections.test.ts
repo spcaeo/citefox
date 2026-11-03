@@ -60,7 +60,7 @@ describe('IPC handlers: connections, settings, and status', () => {
 
     progress.length = 0
     command.auth = JSON.stringify({ loggedIn: true, authMethod: 'api_key' })
-    const keyed = await handlers['claudeCode:runCheckup']({ binaryPath: null })
+    const keyed = await handlers['claudeCode:runCheckup']({ binaryPath: BINARY })
     expect(keyed.login).toBe('api_key')
     expect(keyed.rows.login.statusLabel).toBe('API key only')
     expect(keyed.roundTrip).toBe('skipped')

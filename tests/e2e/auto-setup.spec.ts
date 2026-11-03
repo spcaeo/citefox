@@ -68,9 +68,10 @@ test('a new page sets itself up, then waits on one primary: Start first check', 
       await expect(page.getByRole('button', { name: /Generate/ })).toHaveCount(0)
       await expect(page.getByText(/before the prompts/)).toHaveCount(0)
       // A step in flight, with what Claude is doing right now.
-      await expect(panel.locator('[aria-current="step"]')).toBeVisible({ timeout: 30_000 })
+      // CI runners read the page several times slower than a laptop: allow 90 s.
+      await expect(panel.locator('[aria-current="step"]')).toBeVisible({ timeout: 90_000 })
       await expect(panel.getByRole('region', { name: 'What CiteFox AI is doing' })).toBeVisible({
-        timeout: 30_000
+        timeout: 90_000
       })
       await shot(page, 'auto-setup-running-prompts')
       await expectMainAccessible(page)

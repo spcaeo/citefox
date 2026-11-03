@@ -210,6 +210,8 @@ async function shots(drawer: Locator, name: string, focus: Locator): Promise<voi
 async function promptText(helper: Locator): Promise<string> {
   const prompt = helper.getByTestId('hf-prompt')
   await expect(prompt).not.toBeEmpty()
+  // Slow runners show the placeholder for a moment before the prompt arrives.
+  await expect(prompt).not.toHaveText(/Writing the prompt/u, { timeout: 30_000 })
   const text = (await prompt.textContent()) ?? ''
   expect(text).not.toMatch(/@|\/Users\/|\/root\/|sk-ant-/u)
   return text
