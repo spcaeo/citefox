@@ -1,3 +1,4 @@
+import { RATE_LIMITED_MESSAGE } from '../../providers/cloro/api'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, test } from 'vitest'
@@ -332,7 +333,7 @@ describe('captureSerpApi', () => {
 
   test('a cancel between retries is halted, not an error sample', async () => {
     let opens = 0
-    const http = scripted(() => envelope('google-rate-limited.json'))
+    const http = scripted(() => envelope('google-empty.json'))
     const captured = await captureSerpApi({
       transport: http,
       secret: SECRET,
@@ -379,7 +380,7 @@ describe('captureSerpApi', () => {
     expect(captured).toMatchObject({ errorCode: 'out_of_searches', searches: 1 })
   })
 
-  test('a rate limit waits at least Retry-After before the next attempt', async () => {
+  test('a rate limit waits the Retry-After before the same search is sent again', async () => {
     const waits: number[] = []
     let calls = 0
     const http = scripted(() => {
@@ -397,15 +398,16 @@ describe('captureSerpApi', () => {
         waits.push(ms)
       }
     })
-    expect(waits).toEqual([2000])
-    expect(captured).toMatchObject({ errorCode: null, hasAio: true, searches: 2 })
+    expect(waits.reduce((sum, ms) => sum + ms, 0)).toBe(2000)
+    // The refused try is not counted again.
+    expect(captured).toMatchObject({ errorCode: null, hasAio: true, searches: 1 })
   })
 
-  test('a Retry-After longer than the retry cap stops retrying this key at once', async () => {
+  test('a Retry-After of an hour stops retrying at once', async () => {
     const waits: number[] = []
     const http = scripted(() => ({
       ...envelope('google-rate-limited.json'),
-      headers: { 'retry-after': '120' }
+      headers: { 'retry-after': '3600' }
     }))
     const captured = await captureSerpApi({
       transport: http,
@@ -420,22 +422,36 @@ describe('captureSerpApi', () => {
     expect(captured).toMatchObject({
       errorCode: 'rate_limited',
       searches: 1,
-      retryAfterMs: 120_000
+      retryAfterMs: 3_600_000
     })
   })
 
-  test('a rate limit without Retry-After backs off exponentially', async () => {
+  test('a rate limit without Retry-After backs off, six tries in all, then fails plainly', async () => {
     const waits: number[] = []
+    // A clock that moves only when the search sleeps, so a wait is as long as it says.
+    let clock = Date.parse('2026-10-24T12:00:00Z')
     const http = scripted(() => envelope('google-rate-limited.json'))
     const captured = await captureSerpApi({
       transport: http,
       secret: SECRET,
       query,
+      now: () => clock,
       sleep: async (ms) => {
         waits.push(ms)
+        clock += ms
       }
     })
-    expect(waits).toEqual([200])
-    expect(captured).toMatchObject({ errorCode: 'rate_limited', searches: 2, retryAfterMs: null })
+    expect(http.calls).toHaveLength(6)
+    // 2 s, 4 s, 8 s, 16 s, 32 s, each a bit shorter or longer by the jitter.
+    const total = waits.reduce((sum, ms) => sum + ms, 0)
+    expect(total).toBeGreaterThan(62_000 * 0.8)
+    expect(total).toBeLessThan(62_000 * 1.2 + 1000)
+    expect(captured).toMatchObject({
+      errorCode: 'rate_limited',
+      searches: 1,
+      retryAfterMs: null,
+      message: RATE_LIMITED_MESSAGE,
+      nextStep: null
+    })
   })
 })

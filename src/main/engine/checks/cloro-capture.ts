@@ -6,7 +6,7 @@ import {
 } from '@shared/domain'
 import { ProviderTimeoutError } from '../../providers/errors'
 import { CITEFOX_USER_AGENT, type HttpResponse, type HttpTransport } from '../../providers/http'
-import { parseRetryAfter, RETRY_DELAY_CAP_MS, retryDelayMs } from '../../providers/retry'
+import { parseRetryAfter, retryDelayMs } from '../../providers/retry'
 import {
   CLORO_TIMEOUT_MS,
   cloroEngineUrl,
@@ -21,11 +21,13 @@ import { readCloroAnswer, readCloroGoogle } from '../../providers/cloro/read'
 import { withTimeout } from '../../providers/timeout'
 import type { CaptureQuery, SerpCapture } from './capture'
 import { redactSerpBody } from './redact'
+import { createCallPacer, RATE_LIMIT_ATTEMPTS, type CallPacer } from './provider-pacer'
 
 /**
- * HTTP attempts per cloro call. A second try is made only after a failure cloro does not
- * bill (a 429 or a 5xx). A timeout is never tried again: cloro keeps running a call whose
- * connection closed and bills it if it succeeds (the paid-call rule in providers/retry).
+ * HTTP attempts per cloro call for a failure cloro does not bill and that waiting cannot
+ * fix by itself (a 5xx): the first try and one more. A timeout is never tried again:
+ * cloro keeps running a call whose connection closed and bills it if it succeeds (the
+ * paid-call rule in providers/retry).
  */
 export const CLORO_ATTEMPTS = 2
 
@@ -41,6 +43,11 @@ export interface CloroCaptureOptions {
   /** Checked before a retry wait, so a cancel does not start another call. */
   stopRequested?: () => boolean
   now?: () => number
+  /**
+   * The provider's shared pace (provider-pacer.ts): its cooldown and start gap apply to
+   * every call, and a 429 is retried on it. Without one the call paces itself.
+   */
+  pacer?: CallPacer
 }
 
 interface CallOutcome {
@@ -52,7 +59,20 @@ interface CallOutcome {
   failure: CloroFailure | null
   /** A timeout: cloro may still finish and bill the call. */
   timedOut: boolean
+  /** Retry-After of a 429 the call gave up on because it is too long to wait for. */
   retryAfterMs: number | null
+}
+
+function failedOutcome(searches: number, failure: CloroFailure): CallOutcome {
+  return {
+    kind: 'failure',
+    searches,
+    credits: 0,
+    body: null,
+    failure,
+    timedOut: false,
+    retryAfterMs: null
+  }
 }
 
 async function callCloro(engine: EngineId, options: CloroCaptureOptions): Promise<CallOutcome> {
@@ -60,6 +80,7 @@ async function callCloro(engine: EngineId, options: CloroCaptureOptions): Promis
   const sleep = options.sleep ?? (async () => undefined)
   const timeoutMs = options.timeoutMs ?? CLORO_TIMEOUT_MS
   const now = options.now ?? Date.now
+  const pacer = options.pacer ?? createCallPacer('cloro', { now, sleep })
   const query: CloroQuery = {
     q: options.query.q,
     gl: options.query.gl,
@@ -68,25 +89,32 @@ async function callCloro(engine: EngineId, options: CloroCaptureOptions): Promis
     device: options.query.device
   }
   let searches = 0
-  let last: CallOutcome = {
-    kind: 'failure',
-    searches: 0,
-    credits: 0,
-    body: null,
-    failure: {
-      code: 'other',
-      message: 'The search service did not answer this call.',
-      retryable: false
-    },
-    timedOut: false,
-    retryAfterMs: null
-  }
-  for (let attempt = 1; attempt <= CLORO_ATTEMPTS; attempt += 1) {
-    // A cancel or cap stop before a retry is a halt, never an error sample (as SerpApi).
-    if (options.beforeRequest !== undefined && !(await options.beforeRequest())) {
-      return { ...last, kind: 'halted', searches, failure: null }
+  let last: CallOutcome = failedOutcome(0, {
+    code: 'other',
+    message: 'The search service did not answer this call.',
+    retryable: false
+  })
+  let rateLimitedTries = 0
+  let otherTries = 0
+  let afterRateLimit = false
+  for (;;) {
+    // Wait out the shared cooldown and the gap since the last call to cloro.
+    const ticket = await pacer.begin(options.stopRequested)
+    if (ticket === null) return { ...last, kind: 'halted', searches, failure: null }
+    if (afterRateLimit) {
+      // The same search again after a 429: not billed, so not counted or checked against
+      // the cap a second time. A cancel still stops it.
+      if (options.stopRequested?.() === true) {
+        return { ...last, kind: 'halted', searches, failure: null }
+      }
+    } else {
+      // A cancel or cap stop before a retry is a halt, never an error sample (as SerpApi).
+      if (options.beforeRequest !== undefined && !(await options.beforeRequest())) {
+        return { ...last, kind: 'halted', searches, failure: null }
+      }
+      searches += 1
     }
-    searches += 1
+    afterRateLimit = false
     let response: HttpResponse
     try {
       response = await withTimeout(
@@ -111,24 +139,20 @@ async function callCloro(engine: EngineId, options: CloroCaptureOptions): Promis
     } catch (error) {
       const timeout = error instanceof ProviderTimeoutError
       return {
-        kind: 'failure',
-        searches,
-        credits: 0,
-        body: null,
-        failure: {
+        ...failedOutcome(searches, {
           code: 'other',
           message: timeout
             ? 'The cloro call timed out. cloro may still charge it.'
             : 'CiteFox could not reach cloro.',
           retryable: false
-        },
-        timedOut: timeout,
-        retryAfterMs: null
+        }),
+        timedOut: timeout
       }
     }
     const body = redactSerpBody(response.body, secrets)
     const failure = readCloroFailure(engine, response.status, response.body)
     if (failure === null) {
+      pacer.succeeded()
       return {
         kind: 'ok',
         searches,
@@ -139,7 +163,6 @@ async function callCloro(engine: EngineId, options: CloroCaptureOptions): Promis
         retryAfterMs: null
       }
     }
-    const retryAfterMs = parseRetryAfter(headerValue(response.headers, 'retry-after'), now())
     last = {
       kind: 'failure',
       searches,
@@ -148,14 +171,25 @@ async function callCloro(engine: EngineId, options: CloroCaptureOptions): Promis
       body,
       failure,
       timedOut: false,
-      retryAfterMs
+      retryAfterMs: null
     }
-    const tooLong = retryAfterMs !== null && retryAfterMs > RETRY_DELAY_CAP_MS
-    if (!failure.retryable || tooLong || attempt === CLORO_ATTEMPTS) return last
+    if (failure.code === 'rate_limited') {
+      // Slow every worker down, then try this call again; only a Retry-After too long to
+      // wait for, or the sixth refusal, ends it.
+      const retryAfterMs = parseRetryAfter(headerValue(response.headers, 'retry-after'), now())
+      const verdict = pacer.rateLimited(ticket, retryAfterMs)
+      rateLimitedTries += 1
+      if (verdict.giveUp) return { ...last, retryAfterMs }
+      if (rateLimitedTries >= RATE_LIMIT_ATTEMPTS) return last
+      if (options.stopRequested?.() === true) return { ...last, kind: 'halted', failure: null }
+      afterRateLimit = true
+      continue
+    }
+    otherTries += 1
+    if (!failure.retryable || otherTries >= CLORO_ATTEMPTS) return last
     if (options.stopRequested?.() === true) return { ...last, kind: 'halted', failure: null }
-    await sleep(Math.max(retryDelayMs(attempt), retryAfterMs ?? 0))
+    await sleep(retryDelayMs(otherTries))
   }
-  return last
 }
 
 /** A Google AI Overview capture through cloro: the SerpApi capture's shape, plus credits. */
@@ -283,7 +317,8 @@ function googleErrorCode(failure: CloroFailure | null, timedOut: boolean): Check
 function nextStepFor(failure: CloroFailure | null, timedOut: boolean): string | null {
   if (timedOut) return 'Check the network and try again.'
   const code = failure?.code
-  if (code === 'rejected' || code === 'out_of_searches' || code === 'rate_limited') {
+  // A rate limit is about the plan, not the key: the message says what to do.
+  if (code === 'rejected' || code === 'out_of_searches') {
     return 'Open Connections and check your CiteFox credits key.'
   }
   return null

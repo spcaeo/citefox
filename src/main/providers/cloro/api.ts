@@ -75,6 +75,13 @@ export interface CloroFailure {
   retryable: boolean
 }
 
+/**
+ * A 429 that stayed after every retry. Plain words, no provider name: it is about the
+ * plan (how many searches at once), not about the key.
+ */
+export const RATE_LIMITED_MESSAGE =
+  'Your CiteFox credits plan limited too many searches at once, so these were not checked. Run them again in a minute, or upgrade your plan to check faster.'
+
 const UNREADABLE = 'cloro returned a response CiteFox could not read.'
 
 /**
@@ -120,7 +127,7 @@ export function readCloroFailure(
   if (status === 429) {
     return {
       code: 'rate_limited',
-      message: 'Your CiteFox credits key is being limited right now.',
+      message: RATE_LIMITED_MESSAGE,
       retryable: true
     }
   }

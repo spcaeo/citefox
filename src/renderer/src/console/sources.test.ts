@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { CHECK_SLOWED_NOTICE } from '@shared/domain'
 import type { AssistProgress, CheckProgress, PageReadProgress } from '@shared/ipc'
 import { fromAssist, fromCheckProgress, fromPageRead } from './sources'
 
@@ -59,6 +60,19 @@ describe('console sources: checks', () => {
       final: false,
       stop: { kind: 'check', jobId: 'j1' }
     })
+  })
+
+  it('says it is going slower, and that nothing is lost, while a rate limit holds it back', () => {
+    const update = fromCheckProgress(
+      check({ inFlight: 3, slowedNotice: CHECK_SLOWED_NOTICE, detail: CHECK_SLOWED_NOTICE }),
+      AT
+    )
+    expect(update.stageText).toBe(`3 of 12 questions · 3 searches used · ${CHECK_SLOWED_NOTICE}`)
+    expect(update.state).toBe('running')
+    expect(CHECK_SLOWED_NOTICE).toBe(
+      'Going slower: your CiteFox credits plan allows only a few searches at a time. CiteFox keeps going, nothing is lost.'
+    )
+    expect(CHECK_SLOWED_NOTICE).not.toMatch(/cloro|serpapi/i)
   })
 
   it('ends the job on the last question, and offers retry on an error', () => {

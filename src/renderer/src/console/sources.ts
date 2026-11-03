@@ -55,6 +55,8 @@ function checkScope(progress: CheckProgress): string {
 
 /** What the check is doing now, in plain words. */
 function checkActivity(progress: CheckProgress): string {
+  // A rate limit has the check running slower: say so, and that nothing is lost.
+  if (progress.slowedNotice !== undefined) return progress.slowedNotice
   // Several questions at once: one question's words would hide the others.
   if ((progress.inFlight ?? 0) > 1 && progress.phase !== 'reread') {
     return `searching ${progress.inFlight}`

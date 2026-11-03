@@ -6,6 +6,7 @@ import type { SecretStore } from '../../secrets/secret-store'
 import type { AppStorage } from '../../storage/app-storage'
 import type { SqliteDatabase } from '../../storage/database'
 import { insertApiKey } from '../../storage/records'
+import { createCallPacer, PACING, setProviderPacer } from './provider-pacer'
 
 /**
  * cloro fixtures and raw row reads for the multi-engine check tests. Every response is
@@ -41,6 +42,17 @@ export function addCloroKey(
     plan: null
   })
   secrets.set(`citefox.cloro.${id}`, secret)
+  // A key that has proven itself: all calls at once, no waits. Tests of a new key on a
+  // limited plan start it again with `setProviderPacer(storage.db, 'cloro', null)`.
+  setProviderPacer(
+    storage.db,
+    'cloro',
+    createCallPacer(
+      'cloro',
+      { sleep: async () => undefined },
+      { ...PACING.cloro, initialLimit: 4, minGapMs: 0 }
+    )
+  )
   return secret
 }
 

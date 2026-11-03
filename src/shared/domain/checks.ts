@@ -98,6 +98,13 @@ export const CHECK_ERROR_CODES = [
 
 export type CheckErrorCode = (typeof CHECK_ERROR_CODES)[number]
 
+/**
+ * Shown while a rate-limited search service has the check running slower. No provider
+ * name: the plan allows only a few searches at a time, and the check keeps going.
+ */
+export const CHECK_SLOWED_NOTICE =
+  'Going slower: your CiteFox credits plan allows only a few searches at a time. CiteFox keeps going, nothing is lost.'
+
 /** Section 7.1. Page cited is 3. Other own page and brand mentioned are 1. Not cited is 0. */
 export const VISIBILITY_POINT_PAGE_CITED = 3
 

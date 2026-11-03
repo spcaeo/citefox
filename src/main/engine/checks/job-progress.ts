@@ -1,3 +1,4 @@
+import { CHECK_SLOWED_NOTICE } from '@shared/domain'
 import type { CheckJob, CheckMarketProgress, CheckProgress, CheckStepSnapshot } from '@shared/ipc'
 import {
   insertStoredCheckStep,
@@ -219,6 +220,14 @@ export function rememberStep(
   }
 }
 
+/** Jobs that run slower for now (a rate limit), until this time in milliseconds. */
+const slowedUntil = new WeakMap<CheckJob, number>()
+
+/** The check runs slower until `untilMs`; progress events carry the notice meanwhile. */
+export function markSlowed(job: CheckJob, untilMs: number): void {
+  slowedUntil.set(job, Math.max(untilMs, slowedUntil.get(job) ?? 0))
+}
+
 export function emit(
   deps: ProgressDeps,
   job: CheckJob,
@@ -258,6 +267,9 @@ export function emit(
     ...(promptText ? { promptText } : {}),
     ...(job.mix ? { mix: job.mix } : {}),
     ...(job.creditsUsed !== undefined ? { creditsUsed: job.creditsUsed } : {}),
+    ...((slowedUntil.get(job) ?? 0) > deps.now().getTime()
+      ? { slowedNotice: CHECK_SLOWED_NOTICE }
+      : {}),
     ...inFlightFields(job)
   })
 }

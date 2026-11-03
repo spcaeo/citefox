@@ -37,7 +37,7 @@ export function marketPicks(rows: readonly HelpFillRow[], fallbackLanguage = 'en
 /** "English" for "en"; the code in capitals when the runtime has no name for it. */
 export function languageName(code: string): string {
   const listed = LANGUAGE_OPTIONS.find((option) => option.value === code)
-  if (listed) return listed.label.split(' · ')[1] ?? listed.label
+  if (listed) return listed.label.split(' · ')[0] ?? listed.label
   try {
     const name = new Intl.DisplayNames(['en'], { type: 'language' }).of(code)
     if (name && name !== code) return name

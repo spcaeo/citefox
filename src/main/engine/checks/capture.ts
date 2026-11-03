@@ -2,6 +2,7 @@ import type { CheckErrorCode, SearchProvider } from '@shared/domain'
 import type { MarketDevice } from '@shared/domain'
 import type { GoogleExtras } from '../../providers/serpapi/extras'
 import { serpApiGl } from '@shared/domain'
+import { RATE_LIMITED_MESSAGE } from '../../providers/cloro/api'
 import { ProviderTimeoutError } from '../../providers/errors'
 import { CITEFOX_USER_AGENT, type HttpResponse, type HttpTransport } from '../../providers/http'
 import { isRecord } from '../../providers/json-schema'
@@ -14,6 +15,7 @@ import {
 } from '../../providers/retry'
 import { SERPAPI_SEARCH_URL, interpretSearch } from '../../providers/serpapi/search'
 import { withTimeout } from '../../providers/timeout'
+import { createCallPacer, RATE_LIMIT_ATTEMPTS, type CallPacer } from './provider-pacer'
 import { redactSerpBody } from './redact'
 
 /**
@@ -91,6 +93,11 @@ export interface CaptureOptions {
   stopRequested?: () => boolean
   /** Clock for an HTTP-date Retry-After. Defaults to `Date.now`. */
   now?: () => number
+  /**
+   * SerpApi's shared pace (provider-pacer.ts): its cooldown applies to every search, and
+   * a 429 is retried on it. Without one the search paces itself.
+   */
+  pacer?: CallPacer
 }
 
 /**
@@ -197,10 +204,23 @@ async function callSerp(
     'SerpApi did not return an AI Overview CiteFox could read.',
     null
   )
+  const pacer = options.pacer ?? createCallPacer('serpapi', { now, sleep })
+  let rateLimitedTries = 0
+  let afterRateLimit = false
   for (let attempt = 1; attempt <= SERP_SEARCH_ATTEMPTS; attempt += 1) {
-    // A cancel or cap stop between retries is a halt, never an error sample.
-    if (!(await admitted(options))) return haltedCall()
-    count(1)
+    // Wait out the shared cooldown first.
+    const ticket = await pacer.begin(options.stopRequested)
+    if (ticket === null) return haltedCall()
+    if (afterRateLimit) {
+      // The same search again after a 429: refused before it ran, so not counted or
+      // checked against the cap a second time. A cancel still stops it.
+      if (options.stopRequested?.() === true) return haltedCall()
+    } else {
+      // A cancel or cap stop between retries is a halt, never an error sample.
+      if (!(await admitted(options))) return haltedCall()
+      count(1)
+    }
+    afterRateLimit = false
     let response: HttpResponse
     try {
       response = await withTimeout(
@@ -255,6 +275,7 @@ async function callSerp(
     }
     const interpreted = interpretSearch(status, body, secrets, followUp)
     const raw = redact(body, secrets)
+    if (interpreted.failure === null) pacer.succeeded()
     if (interpreted.expired) return { ...failedCall('other', '', null, raw), outcome: 'expired' }
     if (interpreted.failure !== null) {
       const code = interpreted.failure.code
@@ -265,6 +286,24 @@ async function callSerp(
       last = {
         ...failedCall(code, interpreted.failure.message, nextFor(code), raw),
         retryAfterMs
+      }
+      if (code === 'rate_limited') {
+        // Slow every worker down and send this search again; only a Retry-After too long
+        // to wait for, or the sixth refusal, ends it.
+        const verdict = pacer.rateLimited(ticket, retryAfterMs)
+        rateLimitedTries += 1
+        if (!verdict.giveUp && rateLimitedTries < RATE_LIMIT_ATTEMPTS) {
+          if (options.stopRequested?.() === true) return haltedCall()
+          afterRateLimit = true
+          attempt -= 1
+          continue
+        }
+        return {
+          ...last,
+          message: RATE_LIMITED_MESSAGE,
+          nextStep: null,
+          retryAfterMs: verdict.giveUp ? retryAfterMs : null
+        }
       }
       // A rejected key or an account out of searches never recovers by waiting, whatever
       // the HTTP status (SerpApi can send a 429 for both). An empty call is retried (FR-5.5).
@@ -423,7 +462,8 @@ function failedCall(
 
 function nextFor(code: CheckErrorCode): string | null {
   if (code === 'timeout') return 'Check the network and try again.'
-  if (code === 'rejected' || code === 'out_of_searches' || code === 'rate_limited') {
+  // A rate limit is about the plan, not the key: the message says what to do.
+  if (code === 'rejected' || code === 'out_of_searches') {
     return 'Open Connections and check this SerpApi key.'
   }
   return null

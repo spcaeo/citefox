@@ -201,8 +201,8 @@ describe('AddMarketDrawer', () => {
     const country = (await screen.findByLabelText('Country')) as HTMLSelectElement
     expect(country.value).toBe('CA')
     const labels = [...country.options].map((option) => option.textContent)
-    expect(labels).toContain('🇺🇸 US · United States (tracked)')
-    expect(labels).toContain('🇨🇦 CA · Canada')
+    expect(labels).toContain('United States · US 🇺🇸 (tracked)')
+    expect(labels).toContain('Canada · CA 🇨🇦')
     // 10 + 10 + 4×2 searches, up to twice that.
     expect(screen.getByTestId('add-market-cost').textContent).toContain('About 28–56 more searches')
     await act(async () => {

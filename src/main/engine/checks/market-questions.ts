@@ -1,4 +1,5 @@
 import {
+  CHECK_SLOWED_NOTICE,
   ENGINE_LABEL,
   ENGINE_SHORT_LABEL,
   unitsCostMicros,
@@ -27,11 +28,12 @@ import {
   itemNumbers,
   startQuestion
 } from './in-flight'
-import { bumpMarket, emit, promptKey, rememberStep, skipPrompt } from './job-progress'
+import { bumpMarket, emit, markSlowed, promptKey, rememberStep, skipPrompt } from './job-progress'
 import { emptyCapture, type CapGate, type EngineRotation } from './key-rotation'
 import { markSearching, questionSaved } from './live-results'
 import { wordingFor, type MarketPlan, type PagePlan, type PromptPlan } from './plan'
 import { competitorsOf, type Prepared } from './prepare'
+import { providerPacer } from './provider-pacer'
 import { filterFor } from './results'
 
 /**
@@ -66,6 +68,9 @@ export interface MarketQuestionsInput {
   /** Questions at once. Tests pass 1 for a strict order. */
   atOnce?: number
 }
+
+/** The "going slower" line stays on the screens this long after a cooldown ends. */
+const SLOWED_NOTICE_LINGER_MS = 15_000
 
 type SampleOutcome = 'ok' | 'error' | 'stop'
 
@@ -468,11 +473,38 @@ export async function checkMarketQuestions(input: MarketQuestionsInput): Promise
     if (control.requested) stop('cancel')
   }
 
-  await runPool(
-    page.prompts,
-    input.atOnce ?? CHECK_QUESTIONS_AT_ONCE,
-    () => halt !== null || control.requested,
-    checkQuestion
-  )
+  // A rate limit slows the whole run down (provider-pacer.ts): tell the screens why it
+  // is slower, so a long wait does not look stuck. Nothing is lost; the run carries on.
+  const hush = [prepared.provider, 'cloro' as const]
+    .filter((provider, index, all) => all.indexOf(provider) === index)
+    .map((provider) =>
+      providerPacer(deps.storage.db, provider).onSlowed((event) => {
+        markSlowed(prepared.job, deps.now().getTime() + event.waitMs + SLOWED_NOTICE_LINGER_MS)
+        emit(
+          deps,
+          prepared.job,
+          page.pageId,
+          market.id,
+          null,
+          null,
+          'search',
+          'running',
+          CHECK_SLOWED_NOTICE,
+          null,
+          null,
+          0
+        )
+      })
+    )
+  try {
+    await runPool(
+      page.prompts,
+      input.atOnce ?? CHECK_QUESTIONS_AT_ONCE,
+      () => halt !== null || control.requested,
+      checkQuestion
+    )
+  } finally {
+    for (const stopListening of hush) stopListening()
+  }
   return halt ?? (control.requested ? 'cancel' : 'done')
 }

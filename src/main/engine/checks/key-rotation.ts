@@ -23,6 +23,7 @@ import {
   type AnswerCapture,
   type CloroCaptureOptions
 } from './cloro-capture'
+import { providerPacer } from './provider-pacer'
 
 /** FR-11.3. These move the search to the next key. A timeout or a bad body does not. */
 const FAILOVER = new Set(['rejected', 'rate_limited', 'out_of_searches'])
@@ -450,7 +451,12 @@ export function createKeyRotation(
     sleep: deps.sleep,
     beforeRequest: gate.allow,
     stopRequested: gate.stopRequested,
-    now: () => deps.now().getTime()
+    now: () => deps.now().getTime(),
+    // Every call to the provider shares one pace: a 429 slows all of them down.
+    pacer: providerPacer(deps.storage.db, provider, {
+      sleep: deps.sleep,
+      now: () => deps.now().getTime()
+    })
   })
 
   return {

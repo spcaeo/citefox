@@ -1,5 +1,8 @@
 import type { SearchProvider } from '@shared/domain'
 import type { EngineRotation } from './key-rotation'
+import { PROVIDER_CALLS_AT_ONCE, providerPacer } from './provider-pacer'
+
+export { PROVIDER_CALLS_AT_ONCE }
 
 /**
  * How many things a check does at once (owner, 2026-10-29: a 12-question check took over
@@ -11,13 +14,6 @@ import type { EngineRotation } from './key-rotation'
 
 /** Questions of one market checked at the same time. */
 export const CHECK_QUESTIONS_AT_ONCE = 3
-
-/**
- * Calls in flight per provider (cloro or SerpApi) across the app, retries included.
- * Neither provider publishes a concurrency limit we rely on; 4 keeps well clear of a
- * 429 while letting a question's Google search and its answer engines overlap.
- */
-export const PROVIDER_CALLS_AT_ONCE = 4
 
 export interface Limiter {
   run<T>(work: () => Promise<T>): Promise<T>
@@ -61,17 +57,12 @@ export function createLimiter(limit: number, firstAlone = false): Limiter {
   }
 }
 
-/** One limiter per provider for each app database, shared by every job. */
-const shared = new WeakMap<object, Map<SearchProvider, Limiter>>()
-
+/**
+ * The provider's shared limit on calls at once. It is adaptive (provider-pacer.ts): it
+ * starts careful for a new key, opens while calls succeed and halves on a 429.
+ */
 export function providerLimiter(app: object, provider: SearchProvider): Limiter {
-  const byProvider = shared.get(app) ?? new Map<SearchProvider, Limiter>()
-  shared.set(app, byProvider)
-  const found = byProvider.get(provider)
-  if (found !== undefined) return found
-  const created = createLimiter(PROVIDER_CALLS_AT_ONCE)
-  byProvider.set(provider, created)
-  return created
+  return providerPacer(app, provider).limiter
 }
 
 /**

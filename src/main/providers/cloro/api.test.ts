@@ -6,6 +6,7 @@ import {
   cloroEngineUrl,
   cloroRequestBody,
   creditsCharged,
+  RATE_LIMITED_MESSAGE,
   readCloroFailure,
   readCloroSources,
   type CloroQuery
@@ -119,7 +120,7 @@ describe('readCloroFailure', () => {
   test('429 is rate limited and may be retried', () => {
     expect(readCloroFailure('chatgpt', 429, errorBody('RATE_LIMITED'))).toEqual({
       code: 'rate_limited',
-      message: 'Your CiteFox credits key is being limited right now.',
+      message: RATE_LIMITED_MESSAGE,
       retryable: true
     })
   })

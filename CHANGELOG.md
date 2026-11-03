@@ -2,9 +2,12 @@
 
 ## Unreleased
 
+## 0.13.4 — 2026-11-03
+
 ### Fixed
 
-- **Finding a country or language by typing:** the lists now start with the name ("India · IN 🇮🇳"), so typing "Ind" lands on India. Before, the flag came first and typing found nothing. India was in the list all along, fifth from the top.
+- **Free search plans no longer fail most questions:** when the search service said "too many requests", CiteFox used to send everything at once and mark most questions "Check failed". Now it starts with one search at a time, speeds up only while the service accepts them, and when it says "too fast" every search waits together and tries again (up to 6 times). You will see "Going slower… nothing is lost" instead of failures. Searches that were refused cost no credits. If some still fail after all tries, the message says so plainly, and **Retry failed questions** in History runs them again.
+- **Finding a country or language by typing:** the lists now start with the name ("India · IN 🇮🇳"), so typing "Ind" lands on India, and every country (India included) is now also in the full A to Z list, not only in "Most used". Before, the flag came first and typing found nothing.
 
 ## 0.13.3 — 2026-11-03
 

@@ -7,6 +7,14 @@ import {
   type CountryOption
 } from './markets'
 
+/**
+ * The full list A to Z by name, the most used ones included: someone looking for India under
+ * "I" must find it there too (tester feedback 2026-11-03), not only in "Most used".
+ */
+function inAlphabeticalOrder(options: readonly CountryOption[]): readonly CountryOption[] {
+  return [...options].sort((a, b) => a.label.localeCompare(b.label, 'en'))
+}
+
 function Groups({
   options,
   topCount,
@@ -24,7 +32,7 @@ function Groups({
   return (
     <>
       <optgroup label="Most used">{options.slice(0, topCount).map(render)}</optgroup>
-      <optgroup label={rest}>{options.slice(topCount).map(render)}</optgroup>
+      <optgroup label={rest}>{inAlphabeticalOrder(options).map(render)}</optgroup>
     </>
   )
 }

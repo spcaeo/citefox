@@ -183,6 +183,8 @@ export interface CheckProgress {
   lastDone?: CheckLastDone
   /** The project's own domain, for "… to see whether they cite example.com". */
   domain?: string
+  /** Set while the search service has the check running slower (a rate limit). */
+  slowedNotice?: string
 }
 
 /** Which question a check item is, numbered as the topic screen numbers it (Q9, K3). */

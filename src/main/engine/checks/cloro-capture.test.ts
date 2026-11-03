@@ -5,12 +5,9 @@ import { CLORO_CREDITS } from '@shared/domain'
 import { ProviderTimeoutError } from '../../providers/errors'
 import type { HttpRequest, HttpResponse, HttpTransport } from '../../providers/http'
 import type { CaptureQuery } from './capture'
-import {
-  CLORO_ATTEMPTS,
-  captureCloroAnswer,
-  captureCloroGoogle,
-  type CloroCaptureOptions
-} from './cloro-capture'
+import { RATE_LIMITED_MESSAGE } from '../../providers/cloro/api'
+import { createCallPacer, PACING, RATE_LIMIT_ATTEMPTS } from './provider-pacer'
+import { captureCloroAnswer, captureCloroGoogle, type CloroCaptureOptions } from './cloro-capture'
 
 const FIXTURES = join(process.cwd(), 'src/main/providers/fixtures/cloro')
 const KEY = 'cloro-test-key-0000'
@@ -63,18 +60,35 @@ function options(
   extra: Partial<CloroCaptureOptions> = {}
 ): CloroCaptureOptions & { sleeps: number[] } {
   const sleeps: number[] = []
+  // A clock that moves only when the call sleeps, so a wait is as long as it says.
+  let clock = Date.parse('2026-10-24T12:00:00Z')
+  const sleep = async (ms: number): Promise<void> => {
+    sleeps.push(ms)
+    clock += ms
+  }
+  const now = (): number => clock
   return {
     transport,
     secret: KEY,
     query,
     secrets: [KEY],
-    sleep: async (ms) => {
-      sleeps.push(ms)
-    },
-    now: () => Date.parse('2026-10-24T12:00:00Z'),
+    sleep,
+    now,
+    // The shared pace, with no gap between starts and no jitter: a 429 without a
+    // Retry-After waits exactly 2 s, 4 s, 8 s ...
+    pacer: createCallPacer(
+      'cloro',
+      { now, sleep, random: () => 0.5 },
+      { ...PACING.cloro, minGapMs: 0 }
+    ),
     sleeps,
     ...extra
   }
+}
+
+/** Time waited in total; a wait is slept in slices of at most a second. */
+function waited(sleeps: readonly number[]): number {
+  return sleeps.reduce((sum, ms) => sum + ms, 0)
 }
 
 describe('captureCloroGoogle', () => {
@@ -169,27 +183,30 @@ describe('captureCloroGoogle', () => {
     expect(captured.credits).toBe(0)
   })
 
-  test('a rate limit carries Retry-After and the Connections next step', async () => {
+  test('a rate limit is retried on the shared cooldown, then ends with the plan message', async () => {
     const transport = scripted(() =>
       respond(429, errorBody('RATE_LIMITED'), { 'Retry-After': '3' })
     )
     const opts = options(transport)
     const captured = await captureCloroGoogle(opts)
-    expect(transport.calls).toHaveLength(CLORO_ATTEMPTS)
-    expect(opts.sleeps).toEqual([3000])
+    expect(transport.calls).toHaveLength(RATE_LIMIT_ATTEMPTS)
+    // Five waits of the Retry-After, one before each new try.
+    expect(waited(opts.sleeps)).toBe(5 * 3000)
     expect(captured).toMatchObject({
-      searches: 2,
+      // A refused try is not billed or counted again: one search.
+      searches: 1,
       errorCode: 'rate_limited',
-      message: 'Your CiteFox credits key is being limited right now.',
-      nextStep: 'Open Connections and check your CiteFox credits key.',
-      retryAfterMs: 3000,
+      message: RATE_LIMITED_MESSAGE,
+      // It is about the plan, not the key: no "Open Connections".
+      nextStep: null,
+      retryAfterMs: null,
       credits: 0
     })
   })
 })
 
 describe('cloro retry rules', () => {
-  test('the gate is asked before every HTTP attempt', async () => {
+  test('the gate admits a search once, also when a 429 sends it again', async () => {
     const events: string[] = []
     const transport = scripted(
       sequence(
@@ -205,14 +222,16 @@ describe('cloro retry rules', () => {
       }
     })
     const captured = await captureCloroAnswer('chatgpt', opts)
-    expect(events).toEqual(['gate', 'request', 'gate', 'request'])
-    expect(captured.searches).toBe(2)
+    // The gate admits the search once; the same search sent again after a 429 is not
+    // admitted (or counted) a second time.
+    expect(events).toEqual(['gate', 'request', 'request'])
+    expect(captured.searches).toBe(1)
     expect(captured.outcome).toBe('answer')
     expect(captured.credits).toBe(7)
-    expect(opts.sleeps).toEqual([200])
+    expect(waited(opts.sleeps)).toBe(2000)
   })
 
-  test('429 then success counts two searches and succeeds', async () => {
+  test('429 then success is one search and succeeds', async () => {
     const transport = scripted(
       sequence(
         respond(429, errorBody('RATE_LIMITED')),
@@ -221,7 +240,7 @@ describe('cloro retry rules', () => {
     )
     const captured = await captureCloroGoogle(options(transport))
     expect(transport.calls).toHaveLength(2)
-    expect(captured).toMatchObject({ searches: 2, hasAio: true, errorCode: null, credits: 7 })
+    expect(captured).toMatchObject({ searches: 1, hasAio: true, errorCode: null, credits: 7 })
   })
 
   test('a 5xx is retried once, then the failure stands', async () => {
@@ -285,15 +304,19 @@ describe('cloro retry rules', () => {
     expect(captured.message).not.toContain(KEY)
   })
 
-  test('a Retry-After past the cap is not waited for', async () => {
+  test('a Retry-After of an hour is not waited for', async () => {
     const transport = scripted(() =>
-      respond(429, errorBody('RATE_LIMITED'), { 'retry-after': '60' })
+      respond(429, errorBody('RATE_LIMITED'), { 'retry-after': '3600' })
     )
     const opts = options(transport)
     const captured = await captureCloroAnswer('chatgpt', opts)
     expect(transport.calls).toHaveLength(1)
     expect(opts.sleeps).toEqual([])
-    expect(captured).toMatchObject({ searches: 1, errorCode: 'rate_limited', retryAfterMs: 60_000 })
+    expect(captured).toMatchObject({
+      searches: 1,
+      errorCode: 'rate_limited',
+      retryAfterMs: 3_600_000
+    })
   })
 
   test('a gate that refuses the first attempt halts with no call and no search', async () => {
