@@ -135,7 +135,7 @@ test('the downloaded report drills three levels, goes back, and reopens from a c
     const copied = await copiedText(page)
     expect(copied).toBe(page.url())
     expect(copied.startsWith('file://')).toBe(true)
-    expect(decodeURIComponent(new URL(copied).hash)).toBe(`#d=l:all&d=q:${target.id}`)
+    expect(drillHash(copied)).toBe(`#d=l:all&d=q:${target.id}`)
 
     // CSV of the panel's rows.
     const [download] = await Promise.all([
