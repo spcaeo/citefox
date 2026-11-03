@@ -98,7 +98,8 @@ test('Check now: scope drawer, #/check picker, page menu, Add a page and Pin', a
         await expect(dialog.getByRole('radio', { name: /Pages I pick/ })).toBeChecked()
       }
       // The scope chips hide their radio under the label: check it through the label.
-      await dialog.getByRole('radio', { name: /Every tracked page/ }).check({ force: true })
+      // (Without topics, "Everything again" is the same choice as every tracked page.)
+      await dialog.getByRole('radio', { name: /Everything again/ }).check({ force: true })
       await expect(dialog.getByTestId('check-now-cost')).toContainText('1 page · every market')
       await shots(page, 'scope-tracked')
       await page.keyboard.press('Escape')

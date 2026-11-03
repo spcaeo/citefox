@@ -213,9 +213,12 @@ test('step 1 asks only the basics and Continue stays off until they are valid', 
     await expect(go).toBeEnabled()
     // The name is optional.
     await expect(page.getByLabel(/Your name/)).toHaveValue('')
-    // The United Kingdom is offered once, as GB.
+    // The United Kingdom is offered as GB, once in the common countries and once in the
+    // full A to Z list, never under a second code.
     const country = page.getByLabel(/Where are your buyers/)
-    await expect(country.locator('option', { hasText: 'United Kingdom' })).toHaveCount(1)
+    await expect(country.locator('option', { hasText: 'United Kingdom' })).toHaveCount(2)
+    await expect(country.locator('option', { hasText: 'United Kingdom · GB' })).toHaveCount(2)
+    await expect(country.locator('option', { hasText: 'United Kingdom · UK' })).toHaveCount(0)
     // A later step cannot be opened before the earlier ones are done: the URL falls
     // back to the furthest open step (Claude is optional, so that is Read).
     await page.evaluate(() => {

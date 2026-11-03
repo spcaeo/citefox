@@ -113,8 +113,11 @@ test('Communities tab: source mix, cited sources, drill, Check threads and oppor
     await main.getByRole('button', { name: `${redditLinks} citations: Reddit` }).click()
     await expect(dialog.locator('[data-drill-row]')).toHaveCount(redditLinks)
     // Every link opens in the browser (the main process opens it).
+    // (A row also carries the shared copy / open icons, so count rows, not anchors.)
     await expect(
-      dialog.locator('[data-drill-row] a[target="_blank"][href*="reddit.com"]')
+      dialog
+        .locator('[data-drill-row]')
+        .filter({ has: page.locator('a[target="_blank"][href*="reddit.com"]') })
     ).toHaveCount(redditLinks)
     await shoot(page, 'communities-links-drill.png')
     // Enter on a row opens that answer's Prompt detail, pinned to its market and check.
