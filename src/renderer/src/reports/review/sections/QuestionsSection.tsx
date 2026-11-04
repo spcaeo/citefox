@@ -83,7 +83,7 @@ export function QuestionsSection({
         fromLabel={report.fromLabel}
         toLabel={report.toLabel}
         label="Every question"
-        options={{ targets: true, funnel: true, knownPages: known }}
+        options={{ targets: true, funnel: true, knownPages: known, sortKey: 'qsort' }}
       />
     </section>
   )

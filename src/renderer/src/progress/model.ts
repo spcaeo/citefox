@@ -11,7 +11,7 @@ import {
   type LoggedFix
 } from '@shared/domain'
 import { pluralize } from '@shared/pluralize'
-import { formatMonthDay } from '../m3/model'
+import { formatMoment, formatWhen } from '../m3/model'
 import type { LocalChartMarker } from '../visibility/trends'
 import { errorText } from '../components/errorText'
 import { withDrawerOpened } from '../shell/drawerUrl'
@@ -93,13 +93,13 @@ export function fixSummaryParts(
 ): { live: string; rest: readonly string[] } {
   const live =
     Date.parse(fix.goLiveAt) > now.getTime()
-      ? `Goes live ${formatMonthDay(fix.goLiveAt)}`
-      : `Live ${formatMonthDay(fix.goLiveAt)}`
+      ? `Goes live ${formatWhen(fix.goLiveAt)}`
+      : `Live ${formatWhen(fix.goLiveAt)}`
   const rest: string[] = []
   if (outcome?.afterAt) {
     const days = daysBetween(fix.goLiveAt, outcome.afterAt)
     rest.push(
-      `checked ${formatMonthDay(outcome.afterAt)}, ${pluralize(days, 'day')} later${outcome.afterPartial ? ' (follow-up)' : ''}`
+      `checked ${formatMoment(outcome.afterAt)}, ${pluralize(days, 'day')} later${outcome.afterPartial ? ' (follow-up)' : ''}`
     )
   } else {
     rest.push(followUpPhrase(fix))
@@ -129,7 +129,7 @@ export function followUpPhrase(fix: LoggedFix): string {
   if (fix.status === 'started') return 'follow-up check running'
   if (fix.status === 'completed') return 'follow-up checked'
   if (fix.followUpAt === null) return 'follow-up at the next scheduled check'
-  return `follow-up check planned for ${formatMonthDay(fix.followUpAt)}`
+  return `follow-up check planned for ${formatWhen(fix.followUpAt)}`
 }
 
 /**
@@ -241,7 +241,7 @@ export function fixMarkers(
   for (const fix of fixes) {
     if (marketId !== null && !fix.marketIds.includes(marketId)) continue
     const planned = Date.parse(fix.goLiveAt) > now.getTime()
-    const day = formatMonthDay(fix.goLiveAt)
+    const day = formatWhen(fix.goLiveAt)
     const short = shortText(fix.description)
     markers.push({
       at: fix.goLiveAt,
@@ -305,7 +305,7 @@ export const RECRAWL_REMINDER =
 /** Re-check option text with its date, such as "3 days after it goes live (Oct 24)". */
 export function ruleOption(rule: FixRecheckRule, preview: FixPlanPreview | null): string {
   const at = preview?.followUpAt[rule] ?? null
-  const day = at === null ? '' : ` (${formatMonthDay(at)})`
+  const day = at === null ? '' : ` (${formatWhen(at)})`
   if (rule === 'after_3_days') return `3 days after it goes live${day}`
   if (rule === 'after_7_days') return `7 days after it goes live${day}`
   return at === null
@@ -380,7 +380,7 @@ export function cleanError(cause: unknown, fallback = 'Could not save the fix.')
 export function savedLine(fix: LoggedFix): string {
   if (fix.followUpAt === null)
     return `Saved Fix ${fix.number} · follow-up at the next scheduled check`
-  return `Saved Fix ${fix.number} · follow-up check ${formatMonthDay(fix.followUpAt)}`
+  return `Saved Fix ${fix.number} · follow-up check ${formatWhen(fix.followUpAt)}`
 }
 
 /**

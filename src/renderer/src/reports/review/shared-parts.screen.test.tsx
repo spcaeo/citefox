@@ -140,8 +140,25 @@ describe('Reports › shared parts', () => {
     const lost = within(tabs).getByRole('button', { name: /^Lost/ })
     fireEvent.click(lost)
     const count = Number(lost.textContent?.replace(/\D+/g, '') ?? '0')
-    expect(within(drawer).queryAllByRole('row').length).toBe(count === 0 ? 0 : 1 + count)
+    // The tab is on the URL, so a copied link opens the same list.
+    await waitFor(() => expect(window.location.hash).toContain('rdt=lost'))
+    await waitFor(() =>
+      expect(within(drawer).queryAllByRole('row').length).toBe(count === 0 ? 0 : 1 + count)
+    )
     expect(count).toBeLessThan(all)
+    // All, the first tab, leaves no value behind.
+    fireEvent.click(within(tabs).getByRole('button', { name: /^All/ }))
+    await waitFor(() => expect(window.location.hash).not.toContain('rdt='))
+  })
+
+  it('opens a drawer on the change tab named in the link', async () => {
+    window.location.hash = '#/?report=impact&drawer=report-drill&rd=dom%3Atwilio.com%3Aa&rdt=lost'
+    const view = screen()
+    const drawer = await view.findByRole('dialog', { name: /twilio\.com/ })
+    const tabs = within(drawer).getByTestId('rv-dtabs')
+    expect(within(tabs).getByRole('button', { name: /^Lost/ }).getAttribute('aria-pressed')).toBe(
+      'true'
+    )
   })
 
   it('the header search opens a question, a site or a page in its drawer', async () => {

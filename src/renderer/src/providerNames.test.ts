@@ -28,7 +28,7 @@ const ALLOWED_PLACES: readonly RegExp[] = [
   /^shell\/StatusPopover\.tsx$/,
   /^shell\/pickerDrawers\//,
   // First run: picking and connecting the AI and the search keys.
-  /^onboarding\/(?:WelcomeScreen|AiPicker|ClaudeScreen|validate|OnboardingApp)\.tsx?$/,
+  /^onboarding\/(?:AiPicker|ClaudeScreen|validate|OnboardingApp)\.tsx?$/,
   /^onboarding\/steps\/(?:ClaudeStep|EnginesStep|EnginesRail|useEngineChoices|ShapesStep)\.tsx?$/,
   // A project's own AI connection and search key (Project settings › CiteFox AI).
   /^projectSettings\/components\/(?:ClaudeSection|SearchesSection)\.tsx$/,
@@ -106,5 +106,100 @@ describe('provider names (R12)', () => {
       }
     }
     expect(leaks).toEqual([])
+  }, 60_000)
+})
+
+/**
+ * The same rule for the words the main process sends the user (errors, notices, report
+ * text, progress lines). Not scanned: the provider code itself, stored SQL, live smoke runs,
+ * the eval harness and log lines (a logger call is for the owner, not the customer).
+ */
+const MAIN_ROOT = path.resolve(__dirname, '../../main')
+const MAIN_SKIPPED: readonly RegExp[] = [
+  /^providers\//,
+  /^storage\//,
+  /^smoke\//,
+  /^eval\//,
+  /^handlers\/test-harness\.ts$/,
+  // SQL that compares a stored provider id.
+  /^engine\/progress\/project-history\.ts$/
+]
+/**
+ * Main-process files that still name a provider in text the user can see, because it is a
+ * connection or key message (Settings > Connections, key entry, Status). The owner has not
+ * decided the wording for these yet; do not add to this list for any other screen.
+ */
+const MAIN_UNDECIDED: readonly RegExp[] = [
+  // Key and connection messages: add, test, rotate, run out, rate limit.
+  /^engine\/(?:checks\/(?:prepare|engine-helpers|key-rotation|capture|market-questions|cloro-capture)|claude|claude-fallback|jina-keys|project-settings\/(?:activity|search|settings|usage))\.ts$/,
+  /^(?:ipc-project-settings|handlers\/(?:keys|onboarding))\.ts$/,
+  /^notices\/claude-ask\.ts$/,
+  /^queue\/check-queue\.ts$/,
+  // What the connection settings are called in a settings export.
+  /^project-transfer\/settings-transfer\.ts$/,
+  // The Status screen's AI explanations of usage and failed calls.
+  /^assist\/definitions\/status\.ts$/
+]
+const LOG_CALL = /(?:logger|\blog)\b|\.(?:warn|info|debug|error)$/
+
+function mainSourceFiles(dir: string, out: string[] = []): string[] {
+  for (const name of readdirSync(dir)) {
+    const full = path.join(dir, name)
+    if (statSync(full).isDirectory()) {
+      if (name !== 'fixtures') mainSourceFiles(full, out)
+    } else if (/\.ts$/.test(name) && !/\.test\.|test-helper|\.d\.ts$/.test(name)) out.push(full)
+  }
+  return out
+}
+
+function mainShownStrings(file: string): { line: number; text: string }[] {
+  const source = readFileSync(file, 'utf8')
+  const sf = ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS)
+  const found: { line: number; text: string }[] = []
+  const inLogCall = (node: ts.Node): boolean => {
+    for (let parent = node.parent; parent !== undefined; parent = parent.parent) {
+      if (ts.isCallExpression(parent) && LOG_CALL.test(parent.expression.getText(sf))) return true
+      if (ts.isImportDeclaration(parent) || ts.isExportDeclaration(parent)) return true
+      if (ts.isLiteralTypeNode(parent) || ts.isCaseClause(parent)) return true
+    }
+    return false
+  }
+  const visit = (node: ts.Node): void => {
+    const isText =
+      ts.isStringLiteral(node) ||
+      ts.isNoSubstitutionTemplateLiteral(node) ||
+      ts.isTemplateHead(node) ||
+      ts.isTemplateMiddle(node) ||
+      ts.isTemplateTail(node)
+    if (isText && PROVIDER.test(node.text) && !inLogCall(node)) {
+      const text = node.text.trim()
+      if (!ALLOWED_TEXT.some((allowed) => allowed.test(text))) {
+        found.push({ line: sf.getLineAndCharacterOfPosition(node.getStart(sf)).line + 1, text })
+      }
+    }
+    ts.forEachChild(node, visit)
+  }
+  visit(sf)
+  return found
+}
+
+describe('provider names in main-process messages (R12)', () => {
+  it('no report, notice or error outside the connection messages names Claude, cloro, SerpApi or Jina', () => {
+    const leaks: string[] = []
+    const used = new Set<RegExp>()
+    for (const file of mainSourceFiles(MAIN_ROOT)) {
+      const rel = path.relative(MAIN_ROOT, file).split(path.sep).join('/')
+      if (MAIN_SKIPPED.some((skip) => skip.test(rel))) continue
+      const hits = mainShownStrings(file)
+      const place = MAIN_UNDECIDED.find((item) => item.test(rel))
+      if (place !== undefined) {
+        if (hits.length > 0) used.add(place)
+        continue
+      }
+      for (const hit of hits) leaks.push(`${rel}:${hit.line}: ${hit.text.slice(0, 100)}`)
+    }
+    expect(leaks).toEqual([])
+    // A fixed file leaves the list, so the list only ever gets shorter.
+    expect(MAIN_UNDECIDED.filter((place) => !used.has(place)).map(String)).toEqual([])
   }, 60_000)
 })

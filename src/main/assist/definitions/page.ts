@@ -342,7 +342,7 @@ Do not list opinions, marketing claims or steps that cannot go out of date. Give
       ])
       if (findings.length === 0) return null
       return {
-        summary: `${findings.length} ${findings.length === 1 ? 'thing' : 'things'} to re-check, from the content check saved for this version of the page. Ask Claude to look again with an instruction.`,
+        summary: `${findings.length} ${findings.length === 1 ? 'thing' : 'things'} to re-check, from the content check saved for this version of the page. Ask CiteFox AI to look again with an instruction.`,
         caution:
           'Dates, prices and limits can change. Check them at the source, or run "Check the claims online".',
         items: findings.map((finding) => {

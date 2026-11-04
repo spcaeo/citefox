@@ -34,6 +34,9 @@ export {
 } from './schedules/utils/deliveryRows'
 export { formatDayHeading, formatInstant, localDayKey } from './schedules/utils/zoned'
 
+/** The preview's To line before anyone is added: plain text, nothing to copy. */
+export const NO_RECIPIENTS_YET = 'No recipients yet'
+
 export const SCHEDULE_NOT_FOUND = 'That schedule is not on this computer.'
 
 const NO_ACCOUNT = /no sending account/i
@@ -539,7 +542,7 @@ export function mailPreview(
   return {
     subject,
     from: fromLabel,
-    to: draft.recipients.length > 0 ? draft.recipients.join(', ') : 'No recipients yet',
+    to: draft.recipients.length > 0 ? draft.recipients.join(', ') : NO_RECIPIENTS_YET,
     greeting: greetingLine(allProjects, projectName, marketText, scopeText),
     lines: picked,
     source,

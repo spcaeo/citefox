@@ -5,6 +5,7 @@ import {
   type MatchState,
   type TopicResultRow
 } from '@shared/domain'
+import { formatMoment } from '@shared/moment'
 import {
   WRITE_WITH_URL,
   type DraftFixResult,
@@ -137,7 +138,7 @@ async function diagnose(
     prompt: row.text,
     stage: stageLine(row.stage),
     market_block: topicMarketBlock(db, results.topic.marketId),
-    checked_at: row.checkedAt?.slice(0, 10) ?? 'Not checked',
+    checked_at: row.checkedAt ? formatMoment(row.checkedAt, { year: true }) : 'Not checked',
     status: standingLine(row, overview.references),
     page: row.targetUrl ?? 'No page yet',
     page_text: fence('page_text', pageText),
@@ -367,7 +368,7 @@ export function resultsText(results: TopicResults): string {
     // so plainly, matching the template's "First check:" rule.
     results.summaryInputs.sinceAt === null
       ? 'First check: there is no earlier check to compare with, so nothing is newly or no longer cited.'
-      : `Since ${results.summaryInputs.sinceAt.slice(0, 10)}: newly cited ${names(results.summaryInputs.gained)}; no longer cited ${names(results.summaryInputs.lost)}.`,
+      : `Since ${formatMoment(results.summaryInputs.sinceAt, { year: true })}: newly cited ${names(results.summaryInputs.gained)}; no longer cited ${names(results.summaryInputs.lost)}.`,
     `Likeliest next: ${names(results.summaryInputs.next)}`
   ]
   return lines.filter(Boolean).join('\n')

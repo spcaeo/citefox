@@ -8,6 +8,7 @@ import { navigateHash, sectionHash } from '../shell/routes'
 import type { StructureClient } from '../structure/client'
 import { EmptyState, LinkButton, SectionHead, Stepper, WizardFooter, type StepperStep } from '../ui'
 import { formatDay } from '../utils/dates'
+import { useQueryChoice } from '../utils/queryState'
 import { ChooseStep } from './components/ChooseStep'
 import { ClaudePick } from './components/ClaudePick'
 import { CostEstimate } from './components/CostEstimate'
@@ -27,6 +28,9 @@ import './importPages.css'
 const NO_MARKETS: readonly Market[] = []
 
 type StepId = 'pages' | 'preview' | 'track'
+
+/** The open step is `?step=` in the route; Pages, the first, has none. */
+const STEP_IDS: readonly StepId[] = ['pages', 'preview', 'track']
 
 const STEPS: readonly StepperStep[] = [
   { id: 'pages', label: 'Pages' },
@@ -108,7 +112,7 @@ function ImportFlow({
   const candidates = useImportCandidates(client, projectId)
   const [state, actions] = useSelection()
   const markets = useMarketChoices(candidates.list?.markets ?? NO_MARKETS)
-  const [step, setStep] = useState<StepId>('pages')
+  const [step, setStep] = useQueryChoice('step', STEP_IDS, 'pages')
   const [settings, setSettings] = useState<TrackSettings>(DEFAULT_TRACK)
   const [promptText, setPromptText] = useState(String(DEFAULT_TRACK.promptCount))
   const [busy, setBusy] = useState(false)

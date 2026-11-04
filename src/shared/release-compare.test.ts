@@ -89,6 +89,22 @@ describe('the download for this computer', () => {
     )
   })
 
+  it('picks the right Windows installer from a real release list, never the portable build', () => {
+    const real = [
+      'CiteFox-0.13.7-win-arm64-portable.exe',
+      'CiteFox-0.13.7-win-arm64.exe',
+      'CiteFox-0.13.7-win-arm64.exe.blockmap',
+      'CiteFox-0.13.7-win-x64-portable.exe',
+      'CiteFox-0.13.7-win-x64.exe',
+      'CiteFox-0.13.7-win-x64.exe.blockmap'
+    ].map((name) => ({ name, url: `https://example.com/download/${name}` }))
+    expect(pickReleaseAsset(real, 'win32', 'x64')?.name).toBe('CiteFox-0.13.7-win-x64.exe')
+    expect(pickReleaseAsset(real, 'win32', 'arm64')?.name).toBe('CiteFox-0.13.7-win-arm64.exe')
+    const flipped = [...real].reverse()
+    expect(pickReleaseAsset(flipped, 'win32', 'x64')?.name).toBe('CiteFox-0.13.7-win-x64.exe')
+    expect(pickReleaseAsset(flipped, 'win32', 'arm64')?.name).toBe('CiteFox-0.13.7-win-arm64.exe')
+  })
+
   it('picks the AppImage for the Linux arch', () => {
     expect(pickReleaseAsset(assets, 'linux', 'x64')?.url).toBe('https://github.com/a/linux-x64')
     expect(pickReleaseAsset(assets, 'linux', 'arm64')?.url).toBe('https://github.com/a/linux-arm')

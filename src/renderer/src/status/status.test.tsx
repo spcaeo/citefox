@@ -29,6 +29,7 @@ import {
 
 afterEach(() => {
   cleanup()
+  window.history.replaceState(null, '', '#/')
 })
 
 const NOW = new Date(2026, 9, 19, 14, 0)
@@ -459,6 +460,20 @@ describe('StatusScreen', () => {
     expect(within(panel).getByText(/no searches/)).toBeTruthy()
   })
 
+  it('keeps the tab in the URL and opens it from a link', async () => {
+    window.history.replaceState(null, '', '#/status')
+    const first = render(<StatusScreen {...CLIENTS} source={source()} now={NOW} />)
+    fireEvent.click(await first.findByRole('tab', { name: 'Checks' }))
+    expect(window.location.hash).toBe('#/status?tab=checks')
+    fireEvent.click(first.getByRole('tab', { name: 'Connections' }))
+    expect(window.location.hash).toBe('#/status')
+    cleanup()
+    window.history.replaceState(null, '', '#/status?tab=email')
+    const again = render(<StatusScreen {...CLIENTS} source={source()} now={NOW} />)
+    const email = await again.findByRole('tab', { name: 'Email' })
+    expect(email.getAttribute('aria-selected')).toBe('true')
+  })
+
   it('pauses and resumes checks and follows queue pushes', async () => {
     const fake = source()
     const view = render(<StatusScreen {...CLIENTS} source={fake} now={NOW} />)
@@ -719,6 +734,7 @@ describe('Status drill-downs', () => {
     expect(
       within(email).getByRole('link', { name: /you@textbolt\.com.*edit in Email setup/ })
     ).toBeTruthy()
+    expect(within(email).getByRole('button', { name: 'Copy you@textbolt.com' })).toBeTruthy()
   })
 
   it('opens the issue list when the popover asks for it', async () => {

@@ -22,7 +22,13 @@ import { usePermissions } from '../ui'
 import { normalizeCountry, normalizeDomain, normalizeLanguageTag } from './validate'
 import type { OnboardingClient } from './client'
 import { safeClientMessage } from './copy'
-import { restoredSetup, restoredSetupView, toOnboardingDraft, useDraftAutosave } from './draft'
+import {
+  DRAFT_SAVE_FAILED_NOTICE,
+  restoredSetup,
+  restoredSetupView,
+  toOnboardingDraft,
+  useDraftAutosave
+} from './draft'
 import { createIpcSectionClient, type SetupSectionClient } from './sectionClient'
 import { finishRequest, profileRequest } from './setupApply'
 import { createIpcSetupServices, type SetupServices } from './setupServices'
@@ -382,6 +388,7 @@ export function OnboardingApp({
       progress={progress}
       announcement={announcement}
       announcementLog={announcementLog}
+      notice={autosave.saveFailed ? DRAFT_SAVE_FAILED_NOTICE : null}
       onWelcome={() => go('welcome')}
       client={client}
       onStep={(step) => {

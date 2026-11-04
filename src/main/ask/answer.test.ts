@@ -160,7 +160,7 @@ describe('ask:question', () => {
       'UK · EN'
     ])
     expect(answer.answer).toBe(
-      '2 of 4 prompt checks match in UK · EN: your page is not cited for 1 prompt and another of your pages is cited for 1 prompt. Sites cited most in these, besides yours: simpletexting.com (1 of 2). Latest check Oct 19, 2026.'
+      '2 of 4 prompt checks match in UK · EN: your page is not cited for 1 prompt and another of your pages is cited for 1 prompt. Sites cited most in these, besides yours: simpletexting.com (1 of 2). Latest check Oct 19, 2026, 12:00 PM.'
     )
     expect(answer.rows.map((row) => [row.marketId, row.promptId, row.status])).toEqual([
       ['mkt-uk', 'prompt-1', 'not_cited'],
@@ -320,7 +320,7 @@ describe('ask:filter', () => {
     expect(answer.label).toBeNull()
     expect(answer.total).toBe(3)
     expect(answer.answer).toBe(
-      '3 of 4 prompt checks match in UK · EN and US · EN: your page is not cited for 1 prompt and another of your pages is cited for 2 prompts. Most misses: Alerts in UK · EN (2 of its 2 prompts). Sites cited most in these, besides yours: simpletexting.com (1 of 3). Latest check Oct 19, 2026.'
+      '3 of 4 prompt checks match in UK · EN and US · EN: your page is not cited for 1 prompt and another of your pages is cited for 2 prompts. Most misses: Alerts in UK · EN (2 of its 2 prompts). Sites cited most in these, besides yours: simpletexting.com (1 of 3). Latest check Oct 19, 2026, 12:00 PM.'
     )
     expect(claude.requests).toHaveLength(0)
     expect(
@@ -358,7 +358,7 @@ describe('ask:filter', () => {
     expect(answer.total).toBe(0)
     expect(answer.rows).toEqual([])
     expect(answer.answer).toBe(
-      'No stored results match: no saved prompt check lost a citation since the check before. Searched 4 prompt checks. Remove a filter to see more. Latest check Oct 19, 2026.'
+      'No stored results match: no saved prompt check lost a citation since the check before. Searched 4 prompt checks. Remove a filter to see more. Latest check Oct 19, 2026, 12:00 PM.'
     )
   })
 })

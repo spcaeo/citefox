@@ -1,3 +1,4 @@
+import { safeExternalUrl } from '../../drill/targets'
 import { urlPath } from '../../topics/results/model/scoring'
 import type { JSX } from 'react'
 import type { AioGapFact, AioReference, PromptCheckRow, SampleCapture } from '@shared/domain'
@@ -8,7 +9,15 @@ import { coverageLabel } from '../../m3/model'
 import { planFixHash } from '../../progress/model'
 import { navigateHash, pageHash, promptHash, readHash, sectionHash } from '../../shell/routes'
 import { formatMoment } from '../../utils/dates'
-import { Chip, EmptyState, LinkButton, ListGrid, type ListColumn, type MenuItem } from '../../ui'
+import {
+  Chip,
+  EmptyState,
+  UrlText,
+  LinkButton,
+  ListGrid,
+  type ListColumn,
+  type MenuItem
+} from '../../ui'
 import type { PromptTimeRow } from '../types'
 import { contentLabel, sourceFor } from '../utils/model'
 import { Card } from './OverviewCards'
@@ -227,7 +236,11 @@ export function TimelineCard({
                 className={page.target ? 'pd2-own-page is-target' : 'pd2-own-page'}
                 title={page.target ? 'One of your target pages' : 'Another page of yours'}
               >
-                <span className="mono">{urlPath(page.url) ?? page.url}</span>
+                {safeExternalUrl(page.url) ? (
+                  <UrlText url={page.url} label={urlPath(page.url) ?? page.url} icon={false} />
+                ) : (
+                  <span className="mono">{page.url}</span>
+                )}
                 <span className="pd2-faint"> #{page.position}</span>
               </span>
             ))}

@@ -117,7 +117,7 @@ describe('What changed: pairs counted in code', () => {
     expect(facts).toContain('Compared: 1 ')
     expect(facts).toContain('Better: 1 · Worse: 0 · Same: 0 · One check only: 1')
     expect(facts).toContain(
-      '- "Alerts" (page, https://x.com/a) · US · en · desktop: Oct 5, 2026 → Oct 19, 2026, better. Score 44 → 78 (change +34). AI Overviews 3 of 3 → 3 of 3 questions. Page cited 1 → 2. Brand named 0 → 0.'
+      '- "Alerts" (page, https://x.com/a) · US · en · desktop: Oct 5, 2026, 12:00 PM → Oct 19, 2026, 12:00 PM, better. Score 44 → 78 (change +34). AI Overviews 3 of 3 → 3 of 3 questions. Page cited 1 → 2. Brand named 0 → 0.'
     )
     expect(facts).toContain('One check only (nothing to compare yet):\n- "Texting" (topic) · US')
 

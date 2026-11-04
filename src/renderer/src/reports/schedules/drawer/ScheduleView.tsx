@@ -3,7 +3,7 @@ import type { DeliveryRecord, ReportScheduleListItem } from '@shared/domain'
 import type { ProjectDetail } from '@shared/ipc'
 import { pluralize } from '@shared/pluralize'
 import type { ScopeOptions } from '../../../scope'
-import { Button, DrawerFacts, DrawerGrid, DrawerSection } from '../../../ui'
+import { Button, CopyText, DrawerFacts, DrawerGrid, DrawerSection } from '../../../ui'
 import {
   accountLabel,
   formatLabel,
@@ -127,14 +127,16 @@ export function ScheduleView({
               value: (
                 <ul className="rpt-plain mono">
                   {item.recipients.map((address) => (
-                    <li key={address}>{address}</li>
+                    <li key={address}>
+                      <CopyText text={address} />
+                    </li>
                   ))}
                 </ul>
               )
             },
             { label: 'Send from', value: accountLabel(item.accountId, accounts) },
             { label: 'Time zone', value: zoneLabel(item.timeZone) },
-            { label: 'Subject', value: <span className="mono">{item.subject}</span> }
+            { label: 'Subject', value: <CopyText text={item.subject} /> }
           ]}
         />
       </DrawerSection>

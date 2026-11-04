@@ -14,10 +14,10 @@ import type {
 import { pluralize } from '@shared/pluralize'
 import { REPORT_DEFINITIONS, REPORT_KPI_LABELS } from '@shared/report-copy'
 import { promptSetVersionLabel } from './promptSetVersion'
-import { formatClock, formatDay, formatMoment } from '../utils/dates'
+import { formatClock, formatDay, formatMoment, formatWhen } from '../utils/dates'
 import { cycleSort, type SortSpec } from '../utils/sort'
 
-export { cycleSort, formatClock, formatDay, type SortSpec }
+export { cycleSort, formatClock, formatDay, formatMoment, formatWhen, type SortSpec }
 
 /** Order arrays. The matching consts in `src/shared` are not exported. */
 export const FUNNEL_STEPS: readonly FunnelStepId[] = [

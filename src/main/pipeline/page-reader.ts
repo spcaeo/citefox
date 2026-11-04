@@ -526,7 +526,7 @@ function readJinaSecrets(options: ReadPageOptions): JinaSecret[] {
     options.jinaKeys ??
     (options.jinaKeychainRef === null
       ? []
-      : [{ id: '', name: 'Jina', keychainRef: options.jinaKeychainRef }])
+      : [{ id: '', name: 'Page reader', keychainRef: options.jinaKeychainRef }])
   const found: JinaSecret[] = []
   for (const ref of refs) {
     try {
@@ -546,23 +546,23 @@ function readJinaSecrets(options: ReadPageOptions): JinaSecret[] {
 function failureMessage(options: ReadPageOptions): string {
   if (options.reader === 'file') return 'The supplied page text was empty.'
   if (options.reader === 'jina' || (options.reader === 'auto' && options.jinaMode === 'always')) {
-    return 'Could not read the page with Jina Reader.'
+    return 'Could not read the page with the page reader.'
   }
   if (options.reader === 'direct' || (options.reader === 'auto' && options.jinaMode === 'never')) {
-    return 'Could not read the page. Jina Reader is off, and the direct fetch failed.'
+    return 'Could not read the page. the page reader is off, and the direct fetch failed.'
   }
-  return 'Could not read the page. The direct fetch and Jina Reader both failed.'
+  return 'Could not read the page. The direct fetch and the page reader both failed.'
 }
 
 function failureNextStep(options: ReadPageOptions): string {
   if (options.reader === 'file') return 'Choose a file that contains the page text and read again.'
   if (options.reader === 'jina' || (options.reader === 'auto' && options.jinaMode === 'always')) {
-    return 'Check the Jina key and read the page again.'
+    return 'Check the page reader key in Connections and read the page again.'
   }
   if (options.reader === 'direct' || (options.reader === 'auto' && options.jinaMode === 'never')) {
-    return 'Turn Jina Reader on as a fallback, or read the page again.'
+    return 'Turn the page reader on as a fallback, or read the page again.'
   }
-  return 'Check the URL and the Jina key, then read the page again.'
+  return 'Check the URL and the page reader key, then read the page again.'
 }
 
 function delay(ms: number): Promise<void> {

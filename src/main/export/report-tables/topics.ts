@@ -32,7 +32,9 @@ function topicTables(topic: TopicCoverageTopic, index: number | null): DraftTabl
           text(topic.sourceLine),
           topic.checkedAt === null ? { kind: 'blank' } : { kind: 'date', value: topic.checkedAt },
           text(topic.executive),
-          text(topic.executiveSaved ? 'Claude, from saved results' : 'CiteFox, from the numbers')
+          text(
+            topic.executiveSaved ? 'CiteFox AI, from saved results' : 'CiteFox, from the numbers'
+          )
         ]
       ]
     ),

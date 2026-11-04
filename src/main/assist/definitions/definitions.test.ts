@@ -101,7 +101,10 @@ const CASES: readonly Case[] = [
     extra: { promptId: 'prompt-2' },
     facts: ['Never names the plan', SEED.prompts[1]]
   },
-  { id: 'results.explainChange', facts: ['Previous check: 2026-10-05', 'Fix 1, live 2026-10-10'] },
+  {
+    id: 'results.explainChange',
+    facts: ['Previous check: Oct 5, 2026, 12:00 PM', 'Fix 1, live Oct 10, 2026, 9:00 AM']
+  },
   { id: 'results.topActions', facts: ['Open coverage gaps:', 'Never names the plan'] },
   {
     id: 'results.whyNotFirst',
@@ -118,20 +121,20 @@ const CASES: readonly Case[] = [
       'Verdict: Cited once but never named — listed 2nd of 3 sources.'
     ]
   },
-  { id: 'progress.nextFix', facts: ['Fix 2, live 2026-10-20', 'Never names the plan'] },
+  { id: 'progress.nextFix', facts: ['Fix 2, live Oct 20, 2026, 9:00 AM', 'Never names the plan'] },
   {
     id: 'progress.otherMarkets',
     extra: { inputs: { fixNumber: 1 } },
     facts: [
-      'Before the fix (check of 2026-10-05)',
-      'After the fix (check of 2026-10-19)',
+      'Before the fix (check of Oct 5, 2026, 12:00 PM)',
+      'After the fix (check of Oct 19, 2026, 12:00 PM)',
       'Market mkt-uk'
     ]
   },
   {
     id: 'progress.otherMarkets',
     extra: { inputs: { fixNumber: '2' } },
-    facts: ['After the fix: no check since it went live on 2026-10-20']
+    facts: ['After the fix: no check since it went live on Oct 20, 2026, 9:00 AM']
   },
   {
     id: 'progress.draftFix',

@@ -159,3 +159,40 @@ export function useGridQueryState(prefix: string): GridQueryState {
     }
   }
 }
+
+/**
+ * One choice from a fixed list (a tab, a filter chip, a view switch) in the
+ * hash query. The default has no value in the URL, so it adds no noise. An
+ * unknown value in a pasted link falls back to the default. A change is a new
+ * history entry by default, so Back undoes it.
+ *
+ *   const [filter, setFilter] = useQueryChoice('perm.f', FILTERS, 'all')
+ */
+export function useQueryChoice<T extends string>(
+  key: string,
+  ids: readonly T[],
+  fallback: T,
+  options: { history?: QueryHistory } = {}
+): [T, (value: T) => void] {
+  const [raw, setRaw] = useQueryState(key, { history: options.history ?? 'push' })
+  const value = ids.find((id) => id === raw) ?? fallback
+  const set = useCallback((next: T) => setRaw(next === fallback ? null : next), [setRaw, fallback])
+  return [value, set]
+}
+
+/** A `{ key, down }` sort in the hash query (`name:asc` or `name:desc`); null is the default order. */
+export function useQuerySortChoice<K extends string>(
+  key: string,
+  ids: readonly K[]
+): [{ key: K; down: boolean } | null, (sort: { key: K; down: boolean } | null) => void] {
+  const [raw, setRaw] = useQueryState(key)
+  const [name, dir] = (raw ?? '').split(':')
+  const picked = ids.find((id) => id === name)
+  const sort = useMemo(() => (picked ? { key: picked, down: dir === 'desc' } : null), [picked, dir])
+  const set = useCallback(
+    (next: { key: K; down: boolean } | null) =>
+      setRaw(next ? `${next.key}:${next.down ? 'desc' : 'asc'}` : null),
+    [setRaw]
+  )
+  return [sort, set]
+}

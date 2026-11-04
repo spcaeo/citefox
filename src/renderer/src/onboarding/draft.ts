@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   isSetupStep,
   type OnboardingDraft,
@@ -25,6 +25,12 @@ import { emptyProfileDraft } from './validate'
 
 /** Long enough to batch typing, short enough that a quit rarely loses a keystroke. */
 export const DRAFT_SAVE_DELAY_MS = 400
+/** Wait before a failed save is tried again. */
+export const DRAFT_RETRY_DELAY_MS = 3000
+
+/** Shown while the last save failed. The typed answers stay on screen. */
+export const DRAFT_SAVE_FAILED_NOTICE =
+  'Your answers could not be saved on this computer just now. They are still on the screen, so keep going. We will try again, and if this stays, check that the disk is not full.'
 
 /** What autosave sends: the v2 setup, with the v1 fields at their empty defaults. */
 export function toOnboardingDraft(view: SetupView, setup: SetupDraft): OnboardingDraft {
@@ -133,19 +139,24 @@ export function restoredSetupView(draft: OnboardingDraft | null): SetupView {
 /**
  * Saves `draft` after it stops changing for {@link DRAFT_SAVE_DELAY_MS}, and at
  * once when the window closes. `stop()` cancels any pending save for good (Finish).
- * A failed save never blocks the person; it is tried again at the next change or when the window closes.
+ * A failed save never blocks the person or clears what they typed. It says so (`saveFailed`)
+ * and is tried again a few seconds later, at the next change, and when the window closes.
  */
 export function useDraftAutosave(
   save: (draft: OnboardingDraft) => Promise<unknown>,
   draft: OnboardingDraft,
   delayMs = DRAFT_SAVE_DELAY_MS
-): { stop: () => void } {
+): { stop: () => void; saveFailed: boolean } {
+  const [saveFailed, setSaveFailed] = useState(false)
+  const mounted = useRef(true)
+  const retryTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const serialized = JSON.stringify(draft)
   const latest = useRef({ draft, serialized })
   const lastSaved = useRef(serialized)
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const stopped = useRef(false)
   const saveRef = useRef(save)
+  const flushRef = useRef<() => void>(() => undefined)
 
   // Runs before the effects below, so a flush always sends the newest draft.
   useEffect(() => {
@@ -158,14 +169,34 @@ export function useDraftAutosave(
       clearTimeout(timer.current)
       timer.current = null
     }
+    if (retryTimer.current !== null) {
+      clearTimeout(retryTimer.current)
+      retryTimer.current = null
+    }
     if (stopped.current || latest.current.serialized === lastSaved.current) return
     const sent = latest.current.serialized
     lastSaved.current = sent
-    // A failed save is not "saved": forget it so the next change or the window closing tries again.
-    void saveRef.current(latest.current.draft).catch(() => {
-      if (lastSaved.current === sent) lastSaved.current = ''
-    })
+    // A failed save is not "saved": forget it, tell the person, and try again soon.
+    void saveRef.current(latest.current.draft).then(
+      () => {
+        if (mounted.current && lastSaved.current === sent) setSaveFailed(false)
+      },
+      () => {
+        if (lastSaved.current === sent) lastSaved.current = ''
+        if (!mounted.current || stopped.current) return
+        setSaveFailed(true)
+        if (retryTimer.current !== null) clearTimeout(retryTimer.current)
+        retryTimer.current = setTimeout(() => {
+          retryTimer.current = null
+          flushRef.current()
+        }, DRAFT_RETRY_DELAY_MS)
+      }
+    )
   }, [])
+
+  useEffect(() => {
+    flushRef.current = flush
+  }, [flush])
 
   useEffect(() => {
     if (stopped.current || serialized === lastSaved.current) return
@@ -174,12 +205,15 @@ export function useDraftAutosave(
   }, [serialized, delayMs, flush])
 
   useEffect(() => {
+    mounted.current = true
     window.addEventListener('pagehide', flush)
     window.addEventListener('beforeunload', flush)
     return () => {
       window.removeEventListener('pagehide', flush)
       window.removeEventListener('beforeunload', flush)
       flush()
+      mounted.current = false
+      if (retryTimer.current !== null) clearTimeout(retryTimer.current)
     }
   }, [flush])
 
@@ -187,7 +221,10 @@ export function useDraftAutosave(
     stopped.current = true
     if (timer.current !== null) clearTimeout(timer.current)
     timer.current = null
+    if (retryTimer.current !== null) clearTimeout(retryTimer.current)
+    retryTimer.current = null
+    setSaveFailed(false)
   }, [])
 
-  return { stop }
+  return { stop, saveFailed }
 }

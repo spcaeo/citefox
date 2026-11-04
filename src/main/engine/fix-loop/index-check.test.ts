@@ -149,7 +149,7 @@ describe('fixes:checkIndex on recorded SerpApi bodies', () => {
       }
     ])
     expect(result.stoppedReason).toBe(
-      'No SerpApi key can search right now (out of searches or refused). The rest were not checked.'
+      'No search key can search right now (out of searches or refused). The rest were not checked.'
     )
     expect(queries).toHaveLength(1)
     expect(result.searchesUsed).toBe(1)
@@ -225,11 +225,11 @@ describe('fixes:indexPreview accounting', () => {
     const noKey = await seed.handlers['fixes:indexPreview']({ projectId, pageIds: [alerts.id] })
     expect(noKey).toMatchObject({
       canRun: false,
-      reason: 'Turn on a SerpApi key in Connections first. No search was sent.'
+      reason: 'Turn on a search key in Connections first. No search was sent.'
     })
     await expect(
       seed.handlers['fixes:checkIndex']({ projectId, pageIds: [alerts.id], confirmedSearches: 2 })
-    ).rejects.toThrow('Turn on a SerpApi key')
+    ).rejects.toThrow('Turn on a search key')
     const { seed: keyed } = recordedSeed({})
     const none = await keyed.handlers['fixes:indexPreview']({ projectId, pageIds: ['page-gone'] })
     expect(none).toMatchObject({ pages: 0, searchesMax: 0, canRun: false })

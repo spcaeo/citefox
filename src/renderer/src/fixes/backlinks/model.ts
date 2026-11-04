@@ -8,7 +8,7 @@ import {
 import type { ChangeLedger, ChangeRow, GridCsvRequest } from '@shared/ipc'
 import { INDEX_LABELS, indexBucket, latestRows, rowFacts } from '../../changes/model'
 import { csvFileName } from '../../grid/model/labels'
-import { formatDay } from '../../utils/dates'
+import { formatWhen } from '../../utils/dates'
 import { pathOf } from '../model'
 
 /** The backlink ask list. Pure. */
@@ -79,7 +79,7 @@ export function backlinkCsv(
       row.url,
       anchor ?? '',
       fixKindLabel(row.kind),
-      formatDay(row.liveSince),
+      formatWhen(row.liveSince),
       INDEX_LABELS[indexBucket(row)],
       changeStatusLabel(row.status)
     ])

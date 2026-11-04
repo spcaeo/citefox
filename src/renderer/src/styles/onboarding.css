@@ -65,6 +65,15 @@
     background: var(--surface);
   }
 
+  .ob-save-notice {
+    margin: 0;
+    padding: var(--s-3) var(--page-pad);
+    border-bottom: 1px solid var(--line);
+    background: var(--warn-tint);
+    color: var(--warn);
+    font-size: var(--fs-ui);
+  }
+
   .ob-screen {
     flex: 1;
     display: flex;

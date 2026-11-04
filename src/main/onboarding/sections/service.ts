@@ -177,7 +177,7 @@ export async function runSection(
     throw new IpcRequestError(
       channel,
       'The prompt is empty.',
-      'Reset it, or write what Claude should do.'
+      'Reset it, or write what CiteFox AI should do.'
     )
   }
   const projectId = setupProjectId(host)
@@ -201,7 +201,7 @@ export async function runSection(
       ...(def.webSearch ? { webSearch: true } : {}),
       progress: {
         label: `${request.mode === 'more' ? 'Finding more' : 'Redoing'} ${def.noun[1]}`,
-        detail: def.webSearch ? 'Web search on for this step only' : 'One Claude call'
+        detail: def.webSearch ? 'Web search on for this step only' : 'One CiteFox AI call'
       },
       trace: {
         source: 'assist',

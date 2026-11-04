@@ -138,6 +138,8 @@ describe('Export screen', () => {
     expect(body.queryByRole('textbox', { name: 'Folder' })).toBeNull()
     fireEvent.click(body.getByRole('button', { name: 'Choose folder' }))
     expect(await body.findByText(SAMPLE_AUTO_EXPORT_FOLDER)).toBeTruthy()
+    // The folder is a path someone may paste elsewhere: the shared Copy button, nothing built here.
+    expect(body.getByRole('button', { name: `Copy ${SAMPLE_AUTO_EXPORT_FOLDER}` })).toBeTruthy()
     expect(body.getByRole('button', { name: 'Change folder' })).toBeTruthy()
     fireEvent.click(toggle)
     await waitFor(() => {

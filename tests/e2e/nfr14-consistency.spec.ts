@@ -663,6 +663,8 @@ async function show(chart: Locator, which: 'Table' | 'Chart'): Promise<void> {
   if ((await button.count()) === 0) return
   if ((await button.getAttribute('aria-pressed')) === 'true') return
   await button.click()
+  // The view is kept in the URL, so it lands a moment after the click.
+  await expect(button).toHaveAttribute('aria-pressed', 'true')
 }
 
 async function assertImages(root: Locator): Promise<void> {

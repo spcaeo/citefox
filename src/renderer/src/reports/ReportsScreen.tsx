@@ -74,8 +74,15 @@ const REPORT_VALUES = {
   show: null,
   pshow: null,
   q: null,
-  rival: null
+  rival: null,
+  qsort: null,
+  csort: null,
+  pq: null,
+  psort: null
 } as const
+
+/** Scheduled emails' list filters: they leave the URL when another list opens. */
+const LIST_VALUES = { sf: null, hf: null, hv: null, af: null } as const
 
 function tabOf(view: string | null | undefined): ReportsTab {
   return view === 'history' || view === 'sends' ? view : 'schedules'
@@ -143,10 +150,16 @@ export function ReportsScreen({
   const openReport = reportOf(query)
   const tab = tabOf(query.view)
   const setTab = (next: ReportsTab): void =>
-    setQuery({ tab: 'emails', view: next === 'schedules' ? null : next, delivery: null })
+    setQuery({
+      ...LIST_VALUES,
+      tab: 'emails',
+      view: next === 'schedules' ? null : next,
+      delivery: null
+    })
   const setHomeTab = (next: HomeTab): void =>
     setQuery({
       ...REPORT_VALUES,
+      ...LIST_VALUES,
       tab: next === 'ready' ? null : 'emails',
       view: null,
       delivery: null

@@ -1,7 +1,6 @@
 import { Fragment, type JSX } from 'react'
-import { formatMonthDay } from '../m3/model'
+import { formatMoment } from '../m3/model'
 import { rateTicks, TrendChart, type ChartEvent, type TrendSeries } from '../ui'
-import { formatMoment } from '../utils/dates'
 import { checkedIds, noOverviewIds } from './progressDrills'
 import { RunDrillButton, RunFigure } from './progressRuns'
 import { useProgressRuns } from './progressRunsContext'
@@ -86,7 +85,7 @@ export function RateChart({
         pointControl={({ point, x, y, onFocus, onBlur }) => {
           const bar = byId.get(point.key)
           if (!bar || bar.rate === null) return null
-          const day = formatMonthDay(bar.finishedAt)
+          const day = formatMoment(bar.finishedAt)
           return (
             <button
               type="button"
@@ -134,7 +133,7 @@ function CheckedTick({
   y: number
   runs: ReturnType<typeof useProgressRuns>
 }): JSX.Element {
-  const day = formatMonthDay(bar.finishedAt)
+  const day = formatMoment(bar.finishedAt)
   const results = runs ? runs.cached(runs.marketId, bar.runId) : undefined
   const text = `${bar.promptsChecked} of ${bar.promptsTotal}`
   if (!runs || !results) {

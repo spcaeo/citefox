@@ -7,7 +7,7 @@ import {
   type VerdictSet
 } from '@shared/report/verdict'
 import type { ItemDrill } from '../drill'
-import { formatDay } from '../utils/dates'
+import { formatDay, formatMoment } from '../utils/dates'
 import { questionsInsight } from './insights'
 import { countNoun, sourceText, youLabel } from './model'
 
@@ -29,14 +29,14 @@ export function compareLabel(data: Pick<VisibilityOverview, 'compare' | 'diff'>)
   if (data.diff === null || !data.compare.available) return null
   const { mode, at } = data.compare
   if (mode === 'previous' || at === null) return 'the previous check'
-  const day = formatDay(at, { year: false })
-  return mode === 'run' ? `the ${day} check` : day
+  // A check shows its time; a day picked in the address is a calendar day.
+  return mode === 'run' ? `the ${formatMoment(at)} check` : formatDay(at, { year: false })
 }
 
 /** A short form for small print: "previous check", "Oct 5". */
 export function compareShort(compare: OverviewCompare): string {
   if (compare.mode === 'previous' || compare.at === null) return 'previous check'
-  return formatDay(compare.at, { year: false })
+  return compare.mode === 'run' ? formatMoment(compare.at) : formatDay(compare.at, { year: false })
 }
 
 export interface CompareOption {
@@ -48,7 +48,7 @@ export interface CompareOption {
 export function compareOptions(compare: OverviewCompare): CompareOption[] {
   const options: CompareOption[] = [{ value: '', label: 'Previous check' }]
   for (const option of compare.options) {
-    options.push({ value: option.value, label: `${formatDay(option.at)} check` })
+    options.push({ value: option.value, label: `${formatMoment(option.at)} check` })
   }
   const vs = compare.vs
   if (vs !== null && !compare.unknown && !options.some((option) => option.value === vs)) {
@@ -57,7 +57,9 @@ export function compareOptions(compare: OverviewCompare): CompareOption[] {
       label:
         compare.at === null
           ? vs
-          : `${formatDay(compare.at)}${compare.mode === 'run' ? ' check' : ''}`
+          : compare.mode === 'run'
+            ? `${formatMoment(compare.at)} check`
+            : formatDay(compare.at)
     })
   }
   return options

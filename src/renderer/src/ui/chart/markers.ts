@@ -1,5 +1,5 @@
 import type { GoogleUpdate } from '@shared/google-updates'
-import { formatDay } from '../../utils/dates'
+import { formatDay, formatWhen } from '../../utils/dates'
 import { DAY_MS, dayStartIso, localDayKey } from './scale'
 
 /**
@@ -255,7 +255,7 @@ export function rolloutBands(
 /** The card's date: "Oct 29", or a rollout's "Mar 27 – Apr 8" / "Since Oct 2". */
 export function eventDay(event: Pick<ChartEvent, 'at' | 'span'>): string {
   const span = event.span
-  if (!span) return formatDay(event.at, { year: false })
+  if (!span) return formatWhen(event.at)
   const from = formatDay(span.from, { year: false })
   if (!span.to) return `Since ${from}`
   return span.to === span.from ? from : `${from} – ${formatDay(span.to, { year: false })}`

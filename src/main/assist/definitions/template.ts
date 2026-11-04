@@ -119,7 +119,7 @@ Keep {{ name }} variables exactly as written, and add only variables the templat
       if (instruction.length === 0 && runs.length === 0 && calls.length === 0) {
         throw new AssistInputError(
           'This template has not run yet.',
-          'Run it once, or tell Claude what to change.'
+          'Run it once, or tell CiteFox AI what to change.'
         )
       }
       return [
@@ -132,7 +132,7 @@ Keep {{ name }} variables exactly as written, and add only variables the templat
         `Last ${LAST_RUNS} runs:`,
         runs.join('\n\n') || 'none saved in this project',
         '',
-        'Last Claude calls for this step:',
+        'Last AI calls for this step:',
         calls.join('\n') || 'none'
       ].join('\n')
     },

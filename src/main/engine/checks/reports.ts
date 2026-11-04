@@ -160,7 +160,7 @@ export async function writeCheckReports(
       prompts.push({
         ...prompt,
         compared: false,
-        skipReason: 'Claude did not return facts that matched the schema.'
+        skipReason: 'CiteFox AI did not return facts that matched the schema.'
       })
       continue
     }
@@ -320,15 +320,15 @@ function toLine(
 
 function skipReason(status: PromptCheckStatus, overview: string | null): string | null {
   if (status === 'page_cited') {
-    return 'the target page is cited, so Claude did not compare this overview with the snapshot.'
+    return 'the target page is cited, so CiteFox AI did not compare this overview with the snapshot.'
   }
   if (status === 'error') {
-    return 'the search was recorded as an error, so Claude did not compare it.'
+    return 'the search was recorded as an error, so CiteFox AI did not compare it.'
   }
   if (status === 'no_aio' || overview === null || overview.trim().length === 0) {
     return 'there is no overview text to compare with the snapshot.'
   }
-  if (!GAP_STATUSES.has(status)) return 'Claude did not compare this prompt.'
+  if (!GAP_STATUSES.has(status)) return 'CiteFox AI did not compare this prompt.'
   return null
 }
 
@@ -399,7 +399,7 @@ async function askForSummary(
   const reply = value?.value as { headline: string; body: string } | undefined
   const claudeBody =
     reply === undefined
-      ? 'Claude did not return a summary that matched the schema.'
+      ? 'CiteFox AI did not return a summary that matched the schema.'
       : summaryBodyText(
           `**${reply.headline.replace(/\*+/gu, '').replace(/\s+/gu, ' ').trim()}**\n\n${reply.body}`
         )

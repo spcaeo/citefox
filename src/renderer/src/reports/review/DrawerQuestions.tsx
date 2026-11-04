@@ -1,12 +1,14 @@
-import { useMemo, useState, type JSX } from 'react'
+import { useMemo, type JSX } from 'react'
 import type { MetricsResult } from '@shared/metrics'
 import {
+  CHANGE_TABS,
   changeTabs,
   inChangeTab,
   type ChangeTab,
   type QuestionItem,
   type ReviewReport
 } from '@shared/report/review'
+import { useQueryChoice } from '../../utils/queryState'
 import { engineColumns, knownPagesOf, stripStats } from './drawerModel'
 import { QuestionList } from './QuestionList'
 
@@ -21,16 +23,21 @@ export function DrawerQuestions({
   metrics,
   rows,
   label,
-  withYou = false
+  withYou = false,
+  tabKey = 'rdt'
 }: {
   report: ReviewReport
   metrics: MetricsResult
   rows: readonly QuestionItem[]
   label: string
   withYou?: boolean
+  /** The URL key of the change tab: `rdt` in the first drawer, `rdt2` over it. */
+  tabKey?: 'rdt' | 'rdt2'
 }): JSX.Element {
-  const [tab, setTab] = useState<ChangeTab>('all')
+  const [picked, setTab] = useQueryChoice<ChangeTab>(tabKey, CHANGE_TABS, 'all')
   const tabs = changeTabs(rows)
+  // A pasted tab this list does not offer opens All.
+  const tab = tabs.some((item) => item.id === picked) ? picked : 'all'
   const shown = tabs.length === 0 ? rows : rows.filter((row) => inChangeTab(row.change, tab))
   const known = useMemo(() => knownPagesOf(report), [report])
   return (

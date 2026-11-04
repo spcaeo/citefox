@@ -7,7 +7,7 @@ import { pathOf } from '../fixes/model'
 import { lostHash } from '../fixes/views'
 import { SponsorLink } from '../sponsors'
 import { Chip, UrlText, type ChipTone } from '../ui'
-import { formatDay } from '../utils/dates'
+import { formatWhen } from '../utils/dates'
 import {
   daysLabel,
   INDEX_LABELS,
@@ -112,7 +112,7 @@ export function LiveSinceCell({ row }: { row: ChangeRow }): JSX.Element {
   return (
     <span className="chg-two">
       <span className="chg-two-main num">
-        {formatDay(row.liveSince, { year: false })} · {daysLabel(row.daysLive)}
+        {formatWhen(row.liveSince, { year: false })} · {daysLabel(row.daysLive)}
       </span>
       {line ? <span className="chg-two-sub">{line}</span> : null}
     </span>

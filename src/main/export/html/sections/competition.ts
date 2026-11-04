@@ -116,7 +116,7 @@ export function renderCompetition(ctx: RenderContext): RenderedSection {
     subHeading(
       'cp-kinds',
       'Who else is cited, by kind of site',
-      'Citations (links) to other sites in the latest full check and the one before it. A saved competitor counts as Competitors; other sites are sorted by a built-in list of well-known sites, else by Claude, once per domain.'
+      'Citations (links) to other sites in the latest full check and the one before it. A saved competitor counts as Competitors; other sites are sorted by a built-in list of well-known sites, else by CiteFox AI, once per domain.'
     ) + kindTable(ctx, section.byKind)
 
   const leaderboard =

@@ -207,6 +207,12 @@
     line-height: var(--lh-small);
   }
 
+  .st-problem .ui-url-value {
+    font-family: var(--font-ui);
+    font-size: inherit;
+    line-height: inherit;
+  }
+
   .st-issue {
     display: flex;
     flex-direction: column;

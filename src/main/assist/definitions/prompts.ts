@@ -1,4 +1,5 @@
 import type { CoverageMatrix, PromptSetView } from '@shared/domain'
+import { formatMoment } from '@shared/moment'
 import { getLatestBuyerProfile } from '../../storage/content-records'
 import { COVERAGE_RUBRIC, DATA_FENCE_RULE, fence, NO_REPEAT_RULE } from '../../prompts/blocks'
 import type { AssistContext, AssistDefinition, AssistReply } from '../types'
@@ -225,7 +226,7 @@ detail names where the page covers it, copied exactly as written on the page (a 
           }
         })
       return {
-        summary: `From the coverage check saved on ${matrix.recordedAt.slice(0, 10)} for this version of the page: ${counts.strong} strong, ${counts.partial} partial, ${counts.weak} weak, ${counts.none} none. No new Claude call.`,
+        summary: `From the coverage check saved on ${formatMoment(matrix.recordedAt, { year: true })} for this version of the page: ${counts.strong} strong, ${counts.partial} partial, ${counts.weak} weak, ${counts.none} none. No new CiteFox AI call.`,
         items,
         caution: null
       }

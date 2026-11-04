@@ -1,4 +1,4 @@
-import { useMemo, useState, type JSX } from 'react'
+import { useMemo, type JSX } from 'react'
 import {
   Button,
   Chip,
@@ -9,9 +9,13 @@ import {
   type MenuItem,
   type SegmentOption
 } from '../../ui'
+import { useQueryChoice } from '../../utils/queryState'
 import { sendsCountLine, type SendRow } from './sendsModel'
 
 type OnFilter = 'all' | 'on' | 'off'
+
+/** The On or Off filter is `?af=` in the route; All has none. */
+const ON_FILTERS: readonly OnFilter[] = ['all', 'on', 'off']
 
 function passes(row: SendRow, filter: OnFilter): boolean {
   if (filter === 'on') return row.on
@@ -43,7 +47,7 @@ export function AllSendsSection({
   /** "Acme: Could not read the notifications." One per project that could not be read. */
   problems: readonly string[]
 }): JSX.Element {
-  const [filter, setFilter] = useState<OnFilter>('all')
+  const [filter, setFilter] = useQueryChoice('af', ON_FILTERS, 'all')
   const shown = useMemo(() => rows.filter((row) => passes(row, filter)), [rows, filter])
   const on = rows.filter((row) => row.on).length
 

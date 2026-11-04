@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type JSX } from 'react'
+import { useEffect, useMemo, useRef, type JSX } from 'react'
 import type { GridCsvExport } from '../../../grid'
 import { alertsHash } from '../../../shell/routes'
 import {
@@ -14,6 +14,7 @@ import {
   type SegmentOption
 } from '../../../ui'
 import { resendLabel, timelineDays, type DeliveryRow } from '../../scheduleModel'
+import { useQueryChoice } from '../../../utils/queryState'
 import { deliveriesCsv } from '../utils/csv'
 import { deliveryText } from '../utils/gridRows'
 import { CsvButton } from './CsvButton'
@@ -28,6 +29,10 @@ export interface DeliveryOpeners {
 
 type ResultFilter = 'all' | 'sent' | 'failed'
 type View = 'table' | 'days'
+
+/** `?hf=` is the result filter and `?hv=` the view; All and the table have none. */
+const RESULT_FILTERS: readonly ResultFilter[] = ['all', 'sent', 'failed']
+const VIEW_IDS: readonly View[] = ['table', 'days']
 
 const VIEWS: readonly SegmentOption<View>[] = [
   { value: 'table', label: 'Table' },
@@ -65,8 +70,8 @@ export function HistorySection({
   open: DeliveryOpeners
   exportCsv?: GridCsvExport | null
 }): JSX.Element {
-  const [filter, setFilter] = useState<ResultFilter>('all')
-  const [view, setView] = useState<View>('table')
+  const [filter, setFilter] = useQueryChoice('hf', RESULT_FILTERS, 'all')
+  const [view, setView] = useQueryChoice('hv', VIEW_IDS, 'table')
   const handlers = useRef({ open, onResend })
   useEffect(() => {
     handlers.current = { open, onResend }
@@ -217,6 +222,7 @@ export function HistorySection({
   return (
     <div className="rpt-list">
       <ListGrid<DeliveryRow>
+        urlKey="rdel"
         label="Delivery history"
         noun={['delivery', 'deliveries']}
         rows={shown}

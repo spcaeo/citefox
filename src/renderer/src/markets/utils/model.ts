@@ -5,7 +5,7 @@ import {
   type PageResults
 } from '@shared/domain'
 import type { MarketDraft } from '@shared/ipc'
-import { formatMonthDay, signed, statusLabel } from '../../m3/model'
+import { formatMoment, signed, statusLabel } from '../../m3/model'
 import type { MarketForm, MarketResults, MatrixCell, MatrixRow } from '../types'
 import { TOP_DOMAINS } from '../constants'
 
@@ -51,7 +51,7 @@ export function scoreChangeLabel(results: PageResults): string {
   const change = results.scoreChange.sincePrevious
   const previous = results.comparison.find((column) => column.which === 'previous')
   if (change === null || !previous?.finishedAt) return 'First check in this market'
-  const since = formatMonthDay(previous.finishedAt)
+  const since = formatMoment(previous.finishedAt)
   if (change === 0) return `No change since ${since}`
   return `${signed(change)} since ${since}`
 }

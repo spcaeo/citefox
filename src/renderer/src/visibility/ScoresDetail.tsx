@@ -3,7 +3,7 @@ import type { PageResults } from '@shared/domain'
 import { pluralize } from '@shared/pluralize'
 import { Markdown } from '../components/Markdown'
 import { DrillNumber, ownLinksDrill } from '../drill'
-import { aiOverviewLabel, formatMonthDay } from '../m3/model'
+import { aiOverviewLabel, formatMoment } from '../m3/model'
 import { SegmentKey } from './ChartKey'
 import { checkedIds, runScope } from './progressDrills'
 import { RunDrillButton, RunFigure } from './progressRuns'
@@ -28,7 +28,7 @@ export function ScoresDetail({
   score: number | null | undefined
 }): JSX.Element {
   const runs = useProgressRuns()
-  const day = formatMonthDay(bar.finishedAt)
+  const day = formatMoment(bar.finishedAt)
   const marketId = runs?.marketId ?? null
   const cited = citedPromptIds(bar)
   const checked = checkedIds(results)

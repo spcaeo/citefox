@@ -19,7 +19,7 @@ import {
   UrlText,
   type ListColumn
 } from '../ui'
-import { formatDay, formatMoment } from '../utils/dates'
+import { formatMoment, formatWhen } from '../utils/dates'
 import { IndexPill } from './cells'
 import { DidItWork } from './DidItWork'
 import { topSpotsDrill } from './drills'
@@ -194,7 +194,7 @@ function ChangeDrawer({
                   label: 'Live since',
                   value: (
                     <span className="num">
-                      {formatDay(row.liveSince)} · {daysLabel(row.daysLive)}
+                      {formatWhen(row.liveSince)} · {daysLabel(row.daysLive)}
                     </span>
                   )
                 },

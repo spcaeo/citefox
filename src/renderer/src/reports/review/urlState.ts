@@ -26,9 +26,14 @@ import {
  *   qt       the Questions topic filter;  kind  the Competitors kind of site
  *   layout   the Reports home view: goals (default, absent) or reports
  *   rival    Head-to-head: the rival's domain (absent: the top competitor)
+ *   qsort    the Questions table sort (`now:desc`);  csort  the Competitors table sort
+ *   pq       the Published pages search;  psort  the Published pages sort
+ *   sf       the Schedules filter;  hf  the History result filter;  hv  its table or days view
+ *   af       the Sends on or off filter
  *
  * The open drawers are `drawer=report-drill&rd=<drill>` and, over it,
- * `drawer=report-detail&rd2=<item>` (shell/drawerUrl).
+ * `drawer=report-detail&rd2=<item>` (shell/drawerUrl). A drawer's change tab is `rdt`
+ * (over the report) or `rdt2` (the second level).
  */
 export const REVIEW_KEYS = [
   'tab',
@@ -47,8 +52,24 @@ export const REVIEW_KEYS = [
   'qt',
   'kind',
   'layout',
-  'rival'
+  'rival',
+  'qsort',
+  'csort',
+  'pq',
+  'psort',
+  'sf',
+  'hf',
+  'hv',
+  'af'
 ] as const
+
+/** A tab's own table sorts and search: they leave the URL when another tab opens. */
+export const SECTION_VALUES = {
+  qsort: null,
+  csort: null,
+  pq: null,
+  psort: null
+} as const
 
 export type ReviewKey = (typeof REVIEW_KEYS)[number]
 export type ReviewQuery = Partial<Record<ReviewKey, string | null | undefined>>

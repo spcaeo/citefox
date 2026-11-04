@@ -12,6 +12,8 @@ export interface CopyTextProps {
    * it keeps its own focus and Enter, so the value is not a second tab stop.
    */
   interactiveLabel?: boolean
+  /** A sentence (an error, a claim): wraps over lines instead of being cut with an ellipsis. */
+  wrap?: boolean
   className?: string
 }
 
@@ -26,6 +28,7 @@ export function CopyText({
   text,
   label,
   interactiveLabel = false,
+  wrap = false,
   className
 }: CopyTextProps): JSX.Element {
   const feedback = useCopyFeedback(text)
@@ -36,6 +39,7 @@ export function CopyText({
     feedback.state === 'copied' ? 'ui-url-copied' : '',
     feedback.state === 'failed' ? 'ui-url-failed' : '',
     feedback.done ? 'ui-url-done' : '',
+    wrap ? 'ui-url-wrap' : '',
     className ?? ''
   ]
     .filter(Boolean)

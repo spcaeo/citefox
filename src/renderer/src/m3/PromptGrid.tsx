@@ -1,4 +1,4 @@
-import { useCallback, useContext, useMemo, useState, type JSX } from 'react'
+import { useCallback, useContext, useMemo, type JSX } from 'react'
 import type { IntentStage, PromptCheckRow, PromptCheckStatus } from '@shared/domain'
 import { pluralize } from '@shared/pluralize'
 import { AiSelection } from '../assistant/context/AiSelection'
@@ -11,7 +11,7 @@ import { planFixHash } from '../progress/model'
 import { openQuestionEditor } from '../questionEdit/open'
 import { SourceQuestionsBulk } from '../questionEdit/SourceQuestionsBulk'
 import { navigateHash, pageHash } from '../shell/routes'
-import { useQueryList } from '../utils/queryState'
+import { useQueryList, useQueryState } from '../utils/queryState'
 import {
   Button,
   ListGrid,
@@ -94,7 +94,10 @@ export function PromptGrid({
   questions?: { projectId: string; samples: number }
   onOpen: (promptId: string) => void
 }): JSX.Element {
-  const [stage, setStage] = useState<string>('all')
+  // The buyer-stage filter is `?pstage=<stage>`; All has none.
+  const [stageValue, setStageValue] = useQueryState('pstage', { history: 'push' })
+  const stage = stageValue ?? 'all'
+  const setStage = (value: string): void => setStageValue(value === 'all' ? null : value)
   const drillApi = useContext(DrillContext)
   const pageId = drills?.scope.pageId ?? null
   // The ticked rows live on the URL, so the header's Check now can check exactly them.

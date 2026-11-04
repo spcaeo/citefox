@@ -89,8 +89,11 @@ test('Overview: the Impact review line, Compare with, change chips, market and m
 
     // Compare with the Oct 5 check: the same comparison, named by its date.
     const compare = main.getByRole('combobox', { name: 'Compare with' })
-    await expect(compare.locator('option')).toHaveText(['Previous check', 'Oct 5, 2026 check'])
-    await compare.selectOption({ label: 'Oct 5, 2026 check' })
+    await expect(compare.locator('option')).toHaveText([
+      'Previous check',
+      /^Oct 5, \d{1,2}:\d{2}\s?[AP]M check$/
+    ])
+    await compare.selectOption({ index: 1 })
     await expect(page).toHaveURL(/vs=/)
 
     // The market picker (two markets) reads the UK checks.

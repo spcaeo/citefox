@@ -3,7 +3,7 @@ import type { FixMarketOutcome, FixPromptOutcome, LoggedFix, Market } from '@sha
 import { Markdown } from '../components/Markdown'
 import { DrillLink, openTarget, type DrillTarget } from '../drill'
 import { Button, ListGrid, SectionHead, type ListColumn, type MenuItem } from '../ui'
-import { formatMonthDay } from '../m3/model'
+import { formatMoment } from '../m3/model'
 import { marketLabel } from '../shell/model'
 import { fixAnchorId } from '../visibility/progressRunsContext'
 import type { ProgressAssists } from './assists'
@@ -87,7 +87,7 @@ export function FixCard({
     },
     {
       id: 'before',
-      label: `Before · ${formatMonthDay(outcome?.beforeAt ?? null)}`,
+      label: `Before · ${formatMoment(outcome?.beforeAt ?? null)}`,
       width: 160,
       render: (prompt) =>
         prompt.before && outcome?.beforeRunId
@@ -96,7 +96,7 @@ export function FixCard({
     },
     {
       id: 'after',
-      label: `After · ${waiting ? 'not yet' : formatMonthDay(outcome?.afterAt ?? null)}`,
+      label: `After · ${waiting ? 'not yet' : formatMoment(outcome?.afterAt ?? null)}`,
       width: 160,
       render: (prompt) =>
         waiting
@@ -134,7 +134,7 @@ export function FixCard({
       ? [
           {
             id: 'before',
-            label: `Open the result before (${formatMonthDay(outcome.beforeAt)})`,
+            label: `Open the result before (${formatMoment(outcome.beforeAt)})`,
             onSelect: () => openTarget(target(prompt.promptId, outcome.beforeRunId))
           }
         ]
@@ -143,7 +143,7 @@ export function FixCard({
       ? [
           {
             id: 'after',
-            label: `Open the follow-up result (${formatMonthDay(outcome.afterAt)})`,
+            label: `Open the follow-up result (${formatMoment(outcome.afterAt)})`,
             onSelect: () => openTarget(target(prompt.promptId, outcome.afterRunId))
           }
         ]

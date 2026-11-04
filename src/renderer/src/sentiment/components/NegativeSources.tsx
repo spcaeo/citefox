@@ -129,6 +129,7 @@ export function NegativeSources({
         }
       />
       <ListGrid
+        urlKey="negsrc"
         label="Negative sources table"
         noun={['source', 'sources']}
         rows={rows}

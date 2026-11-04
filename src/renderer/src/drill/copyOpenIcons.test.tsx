@@ -30,6 +30,37 @@ describe('every URL and domain gets Copy and Open (owner rule)', () => {
     expect(url.querySelector('.ui-url-actions a[target="_blank"]')).not.toBeNull()
   })
 
+  it('a plain value (an email address) gets Copy only', () => {
+    const view = render(
+      <ItemList
+        label="Recipients"
+        primaryLabel="Address"
+        columns={[]}
+        items={[{ id: 'r', primary: 'ana@example.com', mono: true }]}
+        onOpen={() => undefined}
+      />
+    )
+    const copy = view.container.querySelector('[data-copy-text]') as HTMLElement
+    expect(copy).not.toBeNull()
+    expect(within(copy).getByRole('button', { name: 'Copy ana@example.com' })).toBeTruthy()
+    expect(copy.querySelector('a[target="_blank"]')).toBeNull()
+  })
+
+  it('a row that opens a screen keeps its link and gets Copy beside it', () => {
+    const view = render(
+      <ItemList
+        label="Claims"
+        primaryLabel="Claim"
+        columns={[]}
+        items={[{ id: 'c', primary: 'Pricing starts at $9', target: { kind: 'hash', hash: '#x' } }]}
+        onOpen={() => undefined}
+      />
+    )
+    const copy = view.container.querySelector('[data-copy-text]') as HTMLElement
+    expect(within(copy).getByRole('link', { name: 'Pricing starts at $9' })).toBeTruthy()
+    expect(within(copy).getByRole('button', { name: 'Copy Pricing starts at $9' })).toBeTruthy()
+  })
+
   it('a cited domain in the Ask CiteFox list has both icons', () => {
     setFetchIconsForTests(() => Promise.resolve({ icons: [] }))
     const answer = askMockQuestion({ projectId: 'proj-1', question: 'Where am I not cited?' })

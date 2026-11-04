@@ -19,9 +19,9 @@ import type { ListSectionDef, SectionDef, SiteGround, TextSectionDef } from './t
  */
 
 export const NOTHING_NEW = 'Nothing new came back. Try other words, or edit the prompt.'
-/** An in-app run with no rows: Claude answered, it had nothing to add (not a bad paste). */
-export const CLAUDE_NOTHING_NEW = 'Claude found nothing new to add.'
-export const CLAUDE_NO_TEXT = 'Claude sent no text back. Try again, or edit the prompt.'
+/** An in-app run with no rows: the AI answered, it had nothing to add (not a bad paste). */
+export const CLAUDE_NOTHING_NEW = 'CiteFox AI found nothing new to add.'
+export const CLAUDE_NO_TEXT = 'CiteFox AI sent no text back. Try again, or edit the prompt.'
 
 /**
  * `run`: Claude's own reply in the app. `paste`: a chatbot answer pasted back, where

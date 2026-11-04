@@ -8,6 +8,7 @@ import {
 } from '@shared/domain'
 import type { TopicDraftPatch, TopicProfileSuggestions } from '@shared/ipc'
 import { AiMenu, Button, Chip, ListGrid, Panel, type ListColumn, type MenuItem } from '../../../ui'
+import { formatMoment } from '../../../utils/dates'
 import { AiCard } from '../components/AiCard'
 import { LineEditor } from '../components/LineEditor'
 import { StepFrame } from '../components/StepFrame'
@@ -46,7 +47,7 @@ function writtenLabel(iso: string | undefined): string {
   if (Number.isNaN(date.getTime())) return '—'
   const minutes = Math.round((Date.now() - date.getTime()) / 60000)
   if (minutes < 2) return 'Just now'
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  return formatMoment(iso)
 }
 
 /** Buyer profile (Seed-Profile.png): points by section, versioned, with section AI menus. */

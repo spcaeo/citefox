@@ -11,6 +11,7 @@ import { useDialog } from '../../components/useDialog'
 import { useLatest } from '../../components/useLatest'
 import { Button } from '../Button'
 import { Confirm } from '../Confirm'
+import { CopyText } from '../CopyText'
 import { IconButton } from '../IconButton'
 import { ToolButton } from '../Tools'
 import { Breadcrumbs } from './Breadcrumbs'
@@ -197,7 +198,9 @@ export function Drawer({
           <div className="ui-drawer-body">
             {error ? (
               <div className="ui-drawer-failed" role="alert">
-                <p>{error.message}</p>
+                <p>
+                  <CopyText text={error.message} wrap />
+                </p>
                 {error.onRetry ? (
                   <Button variant="secondary" onClick={error.onRetry}>
                     Try again

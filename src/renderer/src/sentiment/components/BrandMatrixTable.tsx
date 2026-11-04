@@ -101,6 +101,7 @@ export function BrandMatrixTable({
         description={`Net sentiment per theme, with claim counts. Below ${SENTIMENT_CELL_MIN_CLAIMS} claims a cell shows only its count and sorts last. Sort by a brand to rank themes.`}
       />
       <ListGrid
+        urlKey="brands"
         label={`Net sentiment per theme for ${brand} and ${pluralize(competitors.length, 'competitor')}`}
         noun={['theme', 'themes']}
         rows={matrix.rows}

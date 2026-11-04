@@ -115,6 +115,9 @@ describe('Schedule drawer', () => {
     expect(form.getByRole('option', { name: 'All my projects (one email each)' })).toBeTruthy()
     expect(dialog.querySelector('aside[aria-label="Email preview"] .rpt-mail')).toBeTruthy()
     expect(dialog.querySelector('.rpt-mail')?.getAttribute('data-theme')).toBe('light')
+    // From and To in the preview each have Copy.
+    // From can be copied; To is plain text ('No recipients yet') until someone is added.
+    expect(dialog.querySelectorAll('.rpt-mail-head [data-copy-text]')).toHaveLength(1)
     expect(form.getByText(/Change or stop this report in CiteFox › Reports/)).toBeTruthy()
     expect((form.getByLabelText('Time zone') as HTMLInputElement).value).toMatch(
       /^Europe\/London · UTC/
@@ -180,6 +183,10 @@ describe('Schedule drawer', () => {
     expect(within(dialog).getByTestId('sd-send-now')).toBeTruthy()
     expect(within(dialog).getAllByRole('button', { name: 'Duplicate' }).length).toBeGreaterThan(0)
     expect(within(dialog).getByText('Whole project')).toBeTruthy()
+    // Recipients and the subject are values someone may paste: the shared Copy button.
+    expect(
+      within(dialog).getByRole('button', { name: 'Copy marketing@acmeclinics.example' })
+    ).toBeTruthy()
   })
 })
 

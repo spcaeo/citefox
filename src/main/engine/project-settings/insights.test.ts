@@ -268,7 +268,7 @@ describe('Connections: last 24 hours and the latest failover (FR-11.10)', () => 
     expect(read).toMatchObject({ searches: 18, claudeCalls: 1, jinaReads: 1 })
     expect(read.latestEvent?.provider).toBe('serpapi')
     expect(read.latestEvent?.sentence).toMatch(
-      /^(At|On Oct \d+ at) \d{2}:\d{2}, SerpApi rate-limited "My plan"\. 3 searches moved to the next key\.$/
+      /^(At|On [A-Z][a-z]{2} \d+,(?: \d{4},)?) \d{1,2}:\d{2} [AP]M, SerpApi rate-limited "My plan"\. 3 searches moved to the next key\.$/
     )
     // A failover recorded after the limit is still told by its cause.
     insertConnectionEvent(opened.storage.db, {
@@ -296,7 +296,7 @@ describe('Connections: last 24 hours and the latest failover (FR-11.10)', () => 
     const newer = await opened.handlers['connections:activity']()
     expect(newer.latestEvent?.provider).toBe('claude')
     expect(newer.latestEvent?.sentence).toMatch(
-      /^(At|On Oct \d+ at) \d{2}:\d{2}, Claude Code hit its limit/
+      /^(At|On [A-Z][a-z]{2} \d+,(?: \d{4},)?) \d{1,2}:\d{2} [AP]M, Claude Code hit its limit/
     )
   })
 
@@ -391,7 +391,11 @@ describe('Connections: last 24 hours and the latest failover (FR-11.10)', () => 
 
   test('times read "At" today and "On <date> at" before that', () => {
     const now = new Date('2026-10-19T15:00:00.000Z')
-    expect(when('2026-10-19T14:02:00.000Z', now, 'UTC')).toBe('At 14:02')
-    expect(when('2026-10-18T09:05:00.000Z', now, 'UTC')).toBe('On Oct 18 at 09:05')
+    expect(when('2026-10-19T14:02:00.000Z', now, 'UTC', 'en-US')).toBe('At 2:02 PM')
+    expect(when('2026-10-18T09:05:00.000Z', now, 'UTC', 'en-US')).toBe('On Oct 18, 9:05 AM')
+    // The computer's own clock style: a 24-hour locale reads 24-hour.
+    expect(when('2026-10-19T14:02:00.000Z', now, 'UTC', 'en-GB')).toBe('At 14:02')
+    // The zone moves the time.
+    expect(when('2026-10-19T14:02:00.000Z', now, 'America/Toronto', 'en-US')).toBe('At 10:02 AM')
   })
 })

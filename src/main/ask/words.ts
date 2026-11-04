@@ -1,5 +1,6 @@
 import type { PromptCheckStatus } from '@shared/domain'
 import type { AskChip, AskFilters, AskOption } from '@shared/ipc'
+import { formatMoment } from '@shared/moment'
 import { focusSentence, noMatchText, sitesSentence } from './answer-facts'
 import type { AskQueryResult, AskScope, StoredAskRow } from './query'
 import { MOVEMENT_WORDS, STAGE_WORDS, STATUS_WORDS } from './vocabulary'
@@ -110,14 +111,11 @@ function joinWords(words: readonly string[]): string {
   return `${words.slice(0, -1).join(', ')} and ${words[words.length - 1] ?? ''}`
 }
 
-/** "Oct 19, 2026", read in UTC so the same check reads the same everywhere. */
-export function day(iso: string): string {
-  const date = new Date(iso)
-  if (Number.isNaN(date.getTime())) return iso
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'UTC'
-  })
+/**
+ * "Oct 19, 2026, 3:12 PM": when a check ran, in the computer's own zone and clock
+ * (owner rule: an event always shows its time). `options` is for tests.
+ */
+export function day(iso: string, options: { timeZone?: string; locale?: string } = {}): string {
+  if (Number.isNaN(new Date(iso).getTime())) return iso
+  return formatMoment(iso, { ...options, year: true })
 }

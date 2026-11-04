@@ -1,7 +1,7 @@
 import type { JSX } from 'react'
 import type { LoggedFix } from '@shared/domain'
 import { pluralize } from '@shared/pluralize'
-import { formatMonthDay } from '../m3/model'
+import { formatMoment } from '../m3/model'
 import type { WhatChangedModel } from '../progress/changes'
 import { outcomeFor } from '../progress/model'
 import { KpiStrip, KpiTile, type KpiTrend } from '../ui'
@@ -42,7 +42,7 @@ export function ProgressKpis({
   marketId: string | null
   changed: WhatChangedModel | null
 }): JSX.Element {
-  const since = previous ? formatMonthDay(previous.finishedAt) : ''
+  const since = previous ? formatMoment(previous.finishedAt) : ''
   const cited = latest ? citedPromptIds(latest) : []
   const rate = latest?.rate ?? null
   const ratePts =
@@ -73,7 +73,7 @@ export function ProgressKpis({
               copy={{
                 id: `kpi:cited:${latest.runId}`,
                 title: 'Page cited',
-                description: `${latest.citedLine} on ${formatMonthDay(latest.finishedAt)}.`
+                description: `${latest.citedLine} on ${formatMoment(latest.finishedAt)}.`
               }}
               ids={cited}
               marketId={marketId}
@@ -91,7 +91,7 @@ export function ProgressKpis({
         trend={trendOf(ratePts, ' pts', since)}
         sub={
           latest
-            ? `${rate === null ? 'No AI Overview' : `${Math.round(rate * 100)}%`} of AI Overviews · ${formatMonthDay(latest.finishedAt)}`
+            ? `${rate === null ? 'No AI Overview' : `${Math.round(rate * 100)}%`} of AI Overviews · ${formatMoment(latest.finishedAt)}`
             : 'No check in this market yet'
         }
       />
@@ -100,7 +100,7 @@ export function ProgressKpis({
         value={score ?? '—'}
         suffix={score != null ? '/ 100' : undefined}
         trend={trendOf(scoreChange, '', since)}
-        sub={latest ? `Latest full check · ${formatMonthDay(latest.finishedAt)}` : 'No score yet'}
+        sub={latest ? `Latest full check · ${formatMoment(latest.finishedAt)}` : 'No score yet'}
       />
       <KpiTile
         label="Fixes logged"
@@ -121,7 +121,7 @@ export function ProgressKpis({
               copy={{
                 id: `kpi:changed:${latest.runId}`,
                 title: 'Questions that changed',
-                description: `Questions whose result changed between ${since} and ${formatMonthDay(latest.finishedAt)}.`
+                description: `Questions whose result changed between ${since} and ${formatMoment(latest.finishedAt)}.`
               }}
               ids={changedIds}
               marketId={marketId}
@@ -137,7 +137,7 @@ export function ProgressKpis({
         }
         sub={
           changed && latest
-            ? `${since} → ${formatMonthDay(latest.finishedAt)}`
+            ? `${since} → ${formatMoment(latest.finishedAt)}`
             : 'Needs two full checks'
         }
       />

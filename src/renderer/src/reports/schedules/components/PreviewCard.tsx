@@ -1,9 +1,9 @@
 import { useState, type JSX } from 'react'
 import type { AssistClient } from '../../../assist/client'
 import { Markdown } from '../../../components/Markdown'
-import { AiMenu, SuggestionCard } from '../../../ui'
+import { AiMenu, CopyText, SuggestionCard } from '../../../ui'
 import { useAiSuggestion } from '../../../ui/useAiSuggestion'
-import type { mailPreview } from '../../scheduleModel'
+import { NO_RECIPIENTS_YET, type mailPreview } from '../../scheduleModel'
 import type { SummaryPage } from '../utils/summaryPage'
 import { OwnVoiceSummary, type OwnVoiceState } from './OwnVoiceSummary'
 
@@ -129,11 +129,15 @@ export function PreviewCard({
           <span className="rpt-mail-subject">{preview.subject}</span>
           <span>
             <span className="rpt-k">From </span>
-            <span className="mono">{preview.from}</span>
+            <CopyText text={preview.from} />
           </span>
           <span>
             <span className="rpt-k">To </span>
-            <span className="mono">{preview.to}</span>
+            {preview.to === NO_RECIPIENTS_YET ? (
+              <span className="muted">{preview.to}</span>
+            ) : (
+              <CopyText text={preview.to} />
+            )}
           </span>
         </div>
         <div className="rpt-mail-body">
@@ -153,7 +157,7 @@ export function PreviewCard({
           </ul>
           <p>
             {preview.attachLabel}{' '}
-            {preview.attachFile ? <span className="mono">{preview.attachFile}</span> : null}
+            {preview.attachFile ? <CopyText text={preview.attachFile} /> : null}
           </p>
           <p className="rpt-muted">{REPORT_EMAIL_FOOTER}</p>
         </div>

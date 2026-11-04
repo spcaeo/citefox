@@ -1,6 +1,6 @@
 import type { PageResults, PromptCheckRow } from '@shared/domain'
 import { pluralize } from '@shared/pluralize'
-import { citedInstanceNames, formatMonthDay, statusLabel } from '../m3/model'
+import { citedInstanceNames, formatMoment, formatWhen, statusLabel } from '../m3/model'
 import type { ChangeGroup, ChangeItem, UnchangedPrompt } from '../visibility/progress'
 
 /**
@@ -95,8 +95,8 @@ export function buildWhatChanged(
     group('No longer named', 'flat', unnamed),
     group('Moved', 'flat', moved)
   ]
-  const from = formatMonthDay(previous.run?.finishedAt ?? null)
-  const to = formatMonthDay(current.run?.finishedAt ?? null)
+  const from = formatMoment(previous.run?.finishedAt ?? null)
+  const to = formatMoment(current.run?.finishedAt ?? null)
   return {
     heading: `What changed since the last check (${from} → ${to})`,
     intro: `${place} · ${coverage} · ${pluralize(changed, 'question')} changed, ${unchanged.length} didn’t. ${content} CiteFox shows both side by side and doesn’t claim one caused the other.`,
@@ -130,7 +130,7 @@ function contentSentence(
   const to = run?.finishedAt ?? ''
   const live = fixes
     .filter((fix) => fix.goLiveAt > from && fix.goLiveAt <= to)
-    .map((fix) => `Fix ${fix.number}, ${formatMonthDay(fix.goLiveAt)}`)
+    .map((fix) => `Fix ${fix.number}, ${formatWhen(fix.goLiveAt)}`)
   const fixText = live.length > 0 ? ` (${live.join('; ')})` : ''
   if (run?.contentChanged) {
     const summary = run.contentChange?.summary

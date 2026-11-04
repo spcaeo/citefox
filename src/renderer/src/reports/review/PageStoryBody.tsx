@@ -1,4 +1,4 @@
-import { useState, type JSX } from 'react'
+import type { JSX } from 'react'
 import {
   PAGE_STATUS_LABELS,
   type PageStory,
@@ -6,7 +6,8 @@ import {
   type StoryTile
 } from '@shared/report/review'
 import { UrlText } from '../../ui'
-import { formatDay } from '../../utils/dates'
+import { formatWhen } from '../../utils/dates'
+import { useQueryChoice } from '../../utils/queryState'
 import { ReportPage } from './copyCells'
 import { openReportDetail, siteDetail } from './drill'
 import { QuestionTable } from './tables'
@@ -32,6 +33,8 @@ function Delta({ tile }: { tile: StoryTile }): JSX.Element | null {
 
 type TabId = 'now' | 'newly' | 'kept' | 'dropped'
 
+const TAB_IDS: readonly TabId[] = ['now', 'newly', 'kept', 'dropped']
+
 const TAB_WORDS: Readonly<Record<TabId, string>> = {
   now: 'Citing it now',
   newly: 'New',
@@ -48,12 +51,14 @@ export function PageStoryBody({
 }): JSX.Element {
   const { page } = story
   const comparing = story.tiles[0]?.before !== null
-  const [tab, setTab] = useState<TabId>(
+  // The open tab is `?rdt2=` (this page drawer is the second level); the first tab has none.
+  const firstTab: TabId =
     story.tabs.now.length === 0 && story.tabs.dropped.length > 0 ? 'dropped' : 'now'
-  )
+  const [picked, setTab] = useQueryChoice('rdt2', TAB_IDS, firstTab)
   const total = story.split.newly + story.split.kept + story.split.dropped
   const spreadMax = Math.max(1, ...story.spread.map((b) => Math.max(b.now, b.before ?? 0)))
   const tabs: TabId[] = comparing ? ['now', 'newly', 'kept', 'dropped'] : ['now']
+  const tab = tabs.includes(picked) ? picked : firstTab
   return (
     <div className="rv-story" data-testid="rv-page-story">
       <div className="rv-dstats">
@@ -221,7 +226,7 @@ export function PageStoryBody({
         />
       </section>
       {page.liveSince ? (
-        <p className="rv-muted rv-small">Live since {formatDay(page.liveSince)}.</p>
+        <p className="rv-muted rv-small">Live since {formatWhen(page.liveSince)}.</p>
       ) : null}
     </div>
   )

@@ -15,9 +15,9 @@ import { useVideoScreen } from './hooks/useVideoScreen'
 import { createVideosSource, type VideosSource } from './source'
 import type { VideoAssistSlot } from './types'
 import { videoDrills } from './utils/drill'
+import { formatMoment } from '../utils/dates'
 import {
   defaultFlowStep,
-  formatDate,
   marketName,
   pageName,
   scopePages,
@@ -160,7 +160,7 @@ function VideosBody({
           id="yt-numbers-h"
           title="Videos in AI Overviews"
           description={`${marketText} · ${scopeText}${
-            screen.checkedAt ? ` · checked ${formatDate(screen.checkedAt)}` : ''
+            screen.checkedAt ? ` · checked ${formatMoment(screen.checkedAt)}` : ''
           }`}
         />
         {screen.checkedAt === null ? (

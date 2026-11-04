@@ -9,6 +9,8 @@ import {
   parseSort,
   readQueryValue,
   useGridQueryState,
+  useQueryChoice,
+  useQuerySortChoice,
   useQueryState,
   writeQuery
 } from './queryState'
@@ -102,5 +104,67 @@ describe('useGridQueryState', () => {
     expect(grid?.filter).toBe('cited')
     act(() => grid?.setSearch(''))
     expect(window.location.hash).not.toContain('drill.q')
+  })
+})
+
+describe('useQueryChoice', () => {
+  const IDS = ['all', 'open', 'done'] as const
+  function Probe(): JSX.Element {
+    const [value, setValue] = useQueryChoice('x.f', IDS, 'all')
+    return (
+      <div>
+        <p>{value}</p>
+        <button type="button" onClick={() => setValue('open')}>
+          open
+        </button>
+        <button type="button" onClick={() => setValue('all')}>
+          all
+        </button>
+      </div>
+    )
+  }
+
+  it('keeps the default out of the URL and steps through Back', async () => {
+    render(<Probe />)
+    expect(screen.getByText('all', { selector: 'p' })).toBeTruthy()
+    const length = window.history.length
+    act(() => screen.getByText('open', { selector: 'button' }).click())
+    await settle()
+    expect(window.location.hash).toBe('#/pages?view=grid&x.f=open')
+    expect(window.history.length).toBe(length + 1)
+    act(() => screen.getByText('all', { selector: 'button' }).click())
+    await settle()
+    expect(window.location.hash).toBe('#/pages?view=grid')
+  })
+
+  it('opens the value in a pasted link and ignores an unknown one', async () => {
+    window.location.hash = '#/pages?x.f=done'
+    render(<Probe />)
+    expect(screen.getByText('done', { selector: 'p' })).toBeTruthy()
+    window.location.hash = '#/pages?x.f=nonsense'
+    await settle()
+    expect(screen.getByText('all', { selector: 'p' })).toBeTruthy()
+  })
+})
+
+describe('useQuerySortChoice', () => {
+  const KEYS = ['rank', 'name'] as const
+  let current: ReturnType<typeof useQuerySortChoice<(typeof KEYS)[number]>> | null = null
+  function Probe(): JSX.Element {
+    current = useQuerySortChoice('x.sort', KEYS)
+    return <p>{current[0] ? `${current[0].key}/${current[0].down}` : 'none'}</p>
+  }
+
+  it('writes name:dir, reads it back and clears it', async () => {
+    render(<Probe />)
+    expect(screen.getByText('none')).toBeTruthy()
+    act(() => current?.[1]({ key: 'name', down: true }))
+    expect(window.location.hash).toBe('#/pages?view=grid&x.sort=name%3Adesc')
+    expect(screen.getByText('name/true')).toBeTruthy()
+    window.location.hash = '#/pages?x.sort=bad%3Aasc'
+    await settle()
+    expect(screen.getByText('none')).toBeTruthy()
+    act(() => current?.[1](null))
+    expect(window.location.hash).not.toContain('x.sort')
   })
 })

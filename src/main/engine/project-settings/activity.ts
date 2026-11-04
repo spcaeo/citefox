@@ -6,6 +6,7 @@ import type {
   ConnectionActivityLog,
   KeyProjectUsage
 } from '@shared/domain'
+import { formatMoment } from '@shared/moment'
 import {
   countActivitySince,
   latestActivityNotice,
@@ -241,13 +242,15 @@ function latestSerpEvent(
   return { event: { at: latest.at, provider: 'serpapi', sentence }, events }
 }
 
-/** "At 14:02" today, "On Oct 19 at 14:02" before that, in the computer's timezone. */
-export function when(iso: string, now: Date, timeZone: string): string {
+/**
+ * "At 2:02 PM" today, "On Oct 19, 2:02 PM" before that, in the computer's zone and
+ * clock style (never a forced 24-hour clock). `locale` is for tests.
+ */
+export function when(iso: string, now: Date, timeZone: string, locale?: string): string {
   const date = new Date(iso)
-  const time = new Intl.DateTimeFormat('en-GB', {
-    hour: '2-digit',
+  const time = new Intl.DateTimeFormat(locale, {
+    hour: 'numeric',
     minute: '2-digit',
-    hourCycle: 'h23',
     timeZone
   }).format(date)
   const day = (value: Date): string =>
@@ -258,12 +261,7 @@ export function when(iso: string, now: Date, timeZone: string): string {
       day: '2-digit'
     }).format(value)
   if (day(date) === day(now)) return `At ${time}`
-  const label = new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-    timeZone
-  }).format(date)
-  return `On ${label} at ${time}`
+  return `On ${formatMoment(iso, { timeZone, locale, now })}`
 }
 
 function lowerFirst(text: string): string {

@@ -5,6 +5,7 @@ import { pathOf, positionMove, type QuestionItem } from '@shared/report/review'
 import { EngineLogo } from '../../engines/EngineLogo'
 import { engineLabel } from '../../engines/model'
 import { Button } from '../../ui'
+import { useQuerySortChoice } from '../../utils/queryState'
 import { ReportPage, ReportText } from './copyCells'
 import { openReportDetail, questionDetail } from './drill'
 import { ResultTag } from './Figures'
@@ -28,10 +29,24 @@ export interface QuestionListOptions {
   }
   /** Pages the report knows, by page key: those open the page drawer. */
   knownPages?: ReadonlySet<string>
+  /** Keeps the sort in the URL under this key (`?qsort=now:desc`); without it the sort is local. */
+  sortKey?: string
 }
 
 type SortKey =
   'text' | 'topic' | 'target' | 'funnel' | 'intent' | 'before' | 'now' | 'position' | 'page'
+
+const SORT_KEYS: readonly SortKey[] = [
+  'text',
+  'topic',
+  'target',
+  'funnel',
+  'intent',
+  'before',
+  'now',
+  'position',
+  'page'
+]
 
 const RESULT_ORDER: Readonly<Record<MetricResult, number>> = {
   target: 0,
@@ -140,7 +155,10 @@ export function QuestionList({
   label: string
   options?: QuestionListOptions
 }): JSX.Element {
-  const [sort, setSort] = useState<{ key: SortKey; down: boolean } | null>(null)
+  const [localSort, setLocalSort] = useState<{ key: SortKey; down: boolean } | null>(null)
+  const [urlSort, setUrlSort] = useQuerySortChoice(options.sortKey ?? 'qsort.local', SORT_KEYS)
+  const sort = options.sortKey ? urlSort : localSort
+  const setSort = options.sortKey ? setUrlSort : setLocalSort
   const [all, setAll] = useState(false)
   if (rows.length === 0) return <p className="rv-muted">Nothing here.</p>
   const comparing = fromLabel !== null

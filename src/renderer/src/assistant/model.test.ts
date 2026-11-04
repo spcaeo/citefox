@@ -148,7 +148,7 @@ describe('the request and the answer copy', () => {
       label: { connectionText: 'CiteFox AI · on your plan' }
     } as AssistantAnswer
     expect(basedOnText(answer)).toBe(
-      'Based on 4 stored checks in 2 markets · checked through Oct 19 · CiteFox AI · on your plan · no searches'
+      'Based on 4 stored checks in 2 markets · checked through Oct 19, 12:00 PM · CiteFox AI · on your plan · no searches'
     )
   })
 

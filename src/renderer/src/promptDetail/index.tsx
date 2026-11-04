@@ -8,7 +8,7 @@ import { DrillHost, resultsScope } from '../drill'
 import { EngineDot } from '../engines/EngineDots'
 import { ENGINE_TAB_PARAM } from '../engines/model'
 import { buildResultsDrills } from '../m3/results/drills'
-import { formatMonthDay, formatStamp, statusLabel } from '../m3/model'
+import { formatStamp, statusLabel } from '../m3/model'
 import { pageLabel } from '../projects/copy'
 import { useQuestionItems } from '../questionEdit/useQuestionItems'
 import { pageHash, promptHash, runningHash } from '../shell/routes'
@@ -248,7 +248,7 @@ function PromptDetailBody({
   )
   const nav = neighbours(results.prompts, promptId)
   const previous = results.comparison.find((column) => column.which === 'previous')
-  const sinceLabel = previous?.finishedAt ? formatMonthDay(previous.finishedAt) : null
+  const sinceLabel = previous?.finishedAt ? formatMoment(previous.finishedAt) : null
   const saved = versions?.steps[0]
   const fallback =
     saved?.texts.find((item) => item.marketId === detail.marketId)?.text ??

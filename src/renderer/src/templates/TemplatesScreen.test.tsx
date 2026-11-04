@@ -106,6 +106,27 @@ async function editBody(next: (current: string) => string): Promise<void> {
 // Each test drives the whole screen (three mounted tabs, 23 steps, async mock
 // client), so give it room on a loaded machine instead of the 5 s default.
 describe('TemplatesScreen', { timeout: 20_000 }, () => {
+  it('keeps the Status filter in the URL and opens it from a link', async () => {
+    window.location.hash = '#/templates'
+    renderScreen()
+    await waitFor(() => expect(stepButtons()).toHaveLength(LISTED_KINDS.length))
+    const filter = document.querySelector('[role="group"][aria-label="Status"]') as HTMLElement
+    fireEvent.click(within(filter).getByRole('button', { name: /^Default/ }))
+    await waitFor(() => expect(window.location.hash).toBe('#/templates?status=shipped'))
+    fireEvent.click(within(filter).getByRole('button', { name: /^All/ }))
+    await waitFor(() => expect(window.location.hash).toBe('#/templates'))
+    cleanup()
+    window.location.hash = '#/templates?status=shipped'
+    renderScreen()
+    await waitFor(() => expect(stepButtons()).toHaveLength(LISTED_KINDS.length))
+    const again = document.querySelector('[role="group"][aria-label="Status"]') as HTMLElement
+    expect(
+      within(again)
+        .getByRole('button', { name: /^Default/ })
+        .getAttribute('aria-pressed')
+    ).toBe('true')
+  })
+
   it('lists every AI step in run order with its status', async () => {
     renderScreen()
     await waitFor(() => expect(stepButtons()).toHaveLength(LISTED_KINDS.length))

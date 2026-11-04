@@ -1,7 +1,7 @@
 import { useMemo, useState, type JSX } from 'react'
 import { Markdown } from '../components/Markdown'
 import { SiteIcon } from '../siteIcon/SiteIcon'
-import { Button, ListGrid, UrlText, type ListColumn } from '../ui'
+import { Button, CopyText, ListGrid, UrlText, type ListColumn } from '../ui'
 import { FIRST_ROWS, isExternal, safeExternalUrl, targetHref } from './targets'
 import type { DrillItem, DrillItemColumn, DrillTarget } from './types'
 
@@ -42,6 +42,7 @@ function TargetLink({
 function Primary({ item }: { item: DrillItem }): JSX.Element {
   const url = safeExternalUrl(item.url)
   const primaryClass = item.mono ? 'mono drill-primary' : 'drill-primary'
+  const copyClass = item.mono ? 'drill-copy-mono' : ''
   return (
     <span className="drill-cell-stack">
       {url && item.mono ? (
@@ -57,11 +58,21 @@ function Primary({ item }: { item: DrillItem }): JSX.Element {
           </a>
         </UrlText>
       ) : item.target ? (
-        <TargetLink target={item.target} className={primaryClass}>
-          {item.primary}
-        </TargetLink>
+        // Opens a screen: the link keeps its own focus; Copy sits after it.
+        <CopyText
+          text={item.primary}
+          interactiveLabel
+          className={copyClass}
+          wrap
+          label={
+            <TargetLink target={item.target} className={primaryClass}>
+              {item.primary}
+            </TargetLink>
+          }
+        />
       ) : (
-        <span className={primaryClass}>{item.primary}</span>
+        // A plain value (an email address, a claim, a market code): Copy on hover or focus.
+        <CopyText text={item.primary} className={copyClass} wrap />
       )}
       {item.secondary ? (
         url && item.target ? (

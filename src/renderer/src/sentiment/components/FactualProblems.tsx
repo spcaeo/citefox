@@ -168,6 +168,7 @@ export function FactualProblems({
         }
       />
       <ListGrid
+        urlKey="facts"
         label="Factual problems table"
         noun={['problem', 'problems']}
         rows={problems.filter((claim) => claim.factProblem !== null)}

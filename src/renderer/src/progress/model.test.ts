@@ -34,7 +34,7 @@ describe('fix labels', () => {
     expect(daysBetween('2026-10-08T12:00:00.000Z', '2026-10-12T09:00:00.000Z')).toBe(4)
     expect(daysBetween('2026-10-12T09:00:00.000Z', '2026-10-08T12:00:00.000Z')).toBe(0)
     expect(fixSummaryLine(fix(), outcome(), [4, 6, 9], '🇺🇸 US · EN', NOW)).toBe(
-      'Live Oct 8 · targets questions 4, 6 and 9 · checked Oct 19, 11 days later · 🇺🇸 US · EN'
+      'Live Oct 8, 12:00 PM · targets questions 4, 6 and 9 · checked Oct 19, 12:00 PM, 11 days later · 🇺🇸 US · EN'
     )
     const planned = fix({
       status: 'planned',
@@ -43,7 +43,7 @@ describe('fix labels', () => {
       markets: [outcome({ verdict: 'waiting', afterAt: null, afterRunId: null })]
     })
     expect(fixSummaryLine(planned, planned.markets[0], [4, 5], '🇺🇸 US · EN', NOW)).toBe(
-      'Goes live Oct 21 · targets questions 4 and 5 · follow-up check planned for Oct 24 · 🇺🇸 US · EN'
+      'Goes live Oct 21, 12:00 PM · targets questions 4 and 5 · follow-up check planned for Oct 24, 12:00 PM · 🇺🇸 US · EN'
     )
   })
 
@@ -70,7 +70,7 @@ describe('fix labels', () => {
         next_scheduled: null
       }
     }
-    expect(ruleOption('after_3_days', preview)).toBe('3 days after it goes live (Oct 24)')
+    expect(ruleOption('after_3_days', preview)).toBe('3 days after it goes live (Oct 24, 12:00 PM)')
     expect(ruleOption('next_scheduled', preview)).toBe(
       'At the next scheduled check (none planned for this page)'
     )
@@ -109,8 +109,8 @@ describe('chart markers and question marks (FR-14.3, FR-14.8)', () => {
     })
     const markers = fixMarkers([planned, fix()], 'mkt-us', 10, NOW)
     expect(markers.map((marker) => [marker.chartTitle, marker.band, marker.planned])).toEqual([
-      ['Fix 1 · Oct 8', 'fix', false],
-      ['Fix 2 · Oct 21', 'fix', true],
+      ['Fix 1 · Oct 8, 12:00 PM', 'fix', false],
+      ['Fix 2 · Oct 21, 12:00 PM', 'fix', true],
       ['Follow-up', 'plan', true]
     ])
     expect(markers[0]?.chartDetail).toBe('Added 5 FAQs')
@@ -187,7 +187,7 @@ describe('error and saved lines', () => {
 
   test('says when the follow-up runs', () => {
     expect(savedLine(fix({ followUpAt: '2026-10-24T12:00:00.000Z' }))).toBe(
-      'Saved Fix 1 · follow-up check Oct 24'
+      'Saved Fix 1 · follow-up check Oct 24, 12:00 PM'
     )
     expect(savedLine(fix({ followUpAt: null }))).toBe(
       'Saved Fix 1 · follow-up at the next scheduled check'

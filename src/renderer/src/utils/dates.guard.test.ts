@@ -78,3 +78,34 @@ describe('event times use formatMoment, not formatDay', () => {
     expect(offenders).toEqual([])
   })
 })
+
+/**
+ * The same rule for the whole app, main process included: a date with `toLocaleDateString`
+ * or `toLocaleTimeString` is a hand-made label (often UTC or a forced clock). Events use
+ * formatMoment (src/shared/moment.ts). These files print calendar days that are not events:
+ * a plan's renewal day, a due day, a month name, a planned next check.
+ */
+const CALENDAR_DAY_FILES: readonly string[] = [
+  'renderer/src/videos/utils/model.ts',
+  'renderer/src/history/project/spend/model.ts',
+  'renderer/src/checkNow/model.ts',
+  'renderer/src/topics/wizard/steps/EstimateStep.tsx',
+  'main/topics/start.ts'
+]
+
+describe('hand-made date labels', () => {
+  it('only reviewed calendar-day files call toLocaleDateString or toLocaleTimeString', () => {
+    const src = join(__dirname, '..', '..', '..')
+    const offenders: string[] = []
+    for (const file of sourceFiles(src)) {
+      const rel = relative(src, file).split('\\').join('/')
+      if (CALENDAR_DAY_FILES.includes(rel)) continue
+      readFileSync(file, 'utf8')
+        .split('\n')
+        .forEach((line, index) => {
+          if (/\.toLocale(?:Date|Time)String\(/.test(line)) offenders.push(`${rel}:${index + 1}`)
+        })
+    }
+    expect(offenders).toEqual([])
+  })
+})

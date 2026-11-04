@@ -105,7 +105,7 @@ export async function writeProfile(
   const { kept } = checkProfilePoints(reply.value.points, sources, draft.brandNames)
   if (kept.length === 0) {
     throw new TopicInputError(
-      'Claude wrote no profile points that could be kept.',
+      'CiteFox AI wrote no profile points that could be kept.',
       'Try again, or add a line about the business.'
     )
   }

@@ -9,6 +9,7 @@ import { pluralize } from '@shared/pluralize'
 import { Icon } from '../../components/Icon'
 import { MD_BTN, SM_BTN } from '../buttons'
 import { openDrawer } from '../../shell/drawers'
+import { CopyText } from '../../ui'
 import { pagesHash, sectionHash } from '../../shell/routes'
 import type { StructureClient } from '../../structure/client'
 import { errorMessage } from '../hooks/useImportCandidates'
@@ -252,8 +253,8 @@ function ParseSummary({ outcome }: { outcome: ParseOutcome }): JSX.Element {
           <ul className="imp-rejects">
             {shown.map((item) => (
               <li key={`${item.line}-${item.value}`}>
-                <span className="mono">Line {item.line}</span>{' '}
-                <span className="mono">{item.value}</span> — {item.reason}
+                <span className="mono">Line {item.line}</span> <CopyText text={item.value} wrap /> —{' '}
+                {item.reason}
               </li>
             ))}
           </ul>

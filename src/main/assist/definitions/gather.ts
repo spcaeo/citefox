@@ -7,6 +7,7 @@ import type {
   PromptCheckRow,
   PromptSetView
 } from '@shared/domain'
+import { formatMoment, formatWhen } from '@shared/moment'
 import { checkReportsRoot, statusLabel } from '../../engine/checks/report-files'
 import { loadPageResults } from '../../engine/checks/results'
 import {
@@ -226,7 +227,7 @@ export function formatRun(results: PageResults): string {
   ]
   if (previous.runId !== null) {
     lines.push(
-      `Previous check: ${previous.finishedAt ?? 'unknown'}, score ${previous.score ?? 'none'}, page cited ${previous.pageCited ?? 0} of ${previous.aiosShown ?? 0} overviews.`
+      `Previous check: ${previous.finishedAt === null ? 'unknown' : formatMoment(previous.finishedAt, { year: true })}, score ${previous.score ?? 'none'}, page cited ${previous.pageCited ?? 0} of ${previous.aiosShown ?? 0} overviews.`
     )
   }
   if (baseline.runId !== null && baseline.runId !== run.runId) {
@@ -287,7 +288,7 @@ export function clip(text: string, max: number): string {
   return flat.length <= max ? flat : `${flat.slice(0, max - 1).trimEnd()}…`
 }
 
-/** YYYY-MM-DD of an ISO timestamp. */
+/** "Oct 19, 2026, 3:12 PM" in the computer's zone and clock: an event always shows its time. */
 export function day(iso: string | null): string {
-  return iso === null ? 'unknown' : iso.slice(0, 10)
+  return iso === null ? 'unknown' : formatWhen(iso, { year: true })
 }

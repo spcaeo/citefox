@@ -4,7 +4,7 @@ import { verdictOf } from '../../changes/verdict'
 import type { DrillItem, ItemDrill } from '../../drill'
 import { viewFixValues } from '../../fixes/drawer/model'
 import { changePath } from '../../pageChanges/model'
-import { formatDay } from '../../utils/dates'
+import { formatWhen } from '../../utils/dates'
 
 /** Fixes working: each logged fix in one of three groups by its verdict. Pure. */
 export type VerdictGroup = 'worked' | 'early' | 'none'
@@ -31,7 +31,7 @@ export function fixGroupDrills(ledger: ChangeLedger): Record<VerdictGroup, ItemD
       primary: `Fix ${row.number} · ${row.title ?? changePath(row)}`,
       secondary: row.url,
       target: { kind: 'drawer', id: 'fix', values: viewFixValues(row.fixId) },
-      cells: { verdict: verdictLabel(view), live: formatDay(row.liveSince) }
+      cells: { verdict: verdictLabel(view), live: formatWhen(row.liveSince) }
     })
   }
   const scope = {

@@ -1,7 +1,7 @@
 import { useState, type JSX, type KeyboardEvent } from 'react'
 import { PAGE_STATUS_LABELS, type PageItem, type QuestionItem } from '@shared/report/review'
 import { Button } from '../../ui'
-import { formatDay } from '../../utils/dates'
+import { formatWhen } from '../../utils/dates'
 import { openReportDetail, pageDetail } from './drill'
 import { ReportPage } from './copyCells'
 import { QuestionList } from './QuestionList'
@@ -123,7 +123,7 @@ export function PageTable({
                 </div>
               </td>
               <td>{row.kind === 'new' ? 'New' : row.kind === 'rewrite' ? 'Rewrite' : '—'}</td>
-              <td>{row.liveSince === null ? '—' : formatDay(row.liveSince)}</td>
+              <td>{row.liveSince === null ? '—' : formatWhen(row.liveSince)}</td>
               <td className="rv-r num">{row.daysLive ?? '—'}</td>
               <td>
                 {row.indexed === null ? (

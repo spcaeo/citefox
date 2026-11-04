@@ -168,6 +168,7 @@ export function StepGrid({
 
   return (
     <ListGrid<TemplateStep>
+      urlKey="steps"
       label="AI steps"
       noun={['step', 'steps']}
       rows={rows}

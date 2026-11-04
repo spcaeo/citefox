@@ -10,6 +10,7 @@ import {
   AiMenu,
   Chip,
   COPIED_MS,
+  CopyText,
   EmptyState,
   ListGrid,
   SectionMenu,
@@ -136,9 +137,7 @@ export function Backlinks({
       width: 200,
       render: (item) =>
         item.anchor ? (
-          <span className="mono bl-anchor" title={item.anchor}>
-            {item.anchor}
-          </span>
+          <CopyText text={item.anchor} className="bl-anchor" />
         ) : (
           <span className="faint" title="Use “Suggest anchor text” in the AI menu">
             —

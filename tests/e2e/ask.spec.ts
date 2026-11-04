@@ -69,7 +69,7 @@ test('Ask CiteFox answers a list question from stored results', async () => {
       await dialog.getByRole('button', { name: 'Ask', exact: true }).click()
       await expect(
         region.getByText(
-          '2 of 4 prompt checks match in UK · EN: your page is not cited for 1 prompt and another of your pages is cited for 1 prompt. Sites cited most in these, besides yours: simpletexting.com (1 of 2). Latest check Oct 19, 2026.'
+          /^2 of 4 prompt checks match in UK · EN: your page is not cited for 1 prompt and another of your pages is cited for 1 prompt\. Sites cited most in these, besides yours: simpletexting\.com \(1 of 2\)\. Latest check Oct 19, 2026, \d{1,2}:\d{2}\s?[AP]M\.$/
         )
       ).toBeVisible({ timeout: 60_000 })
       await expect(dialog.getByText(QUESTION, { exact: true })).toBeVisible()

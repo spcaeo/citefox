@@ -40,6 +40,6 @@ export async function searchProductCompetitors(
     productId: request.product.id,
     ok,
     competitors: found.competitors,
-    note: ok ? null : (note ?? 'Claude did not finish this search.')
+    note: ok ? null : (note ?? 'CiteFox AI did not finish this search.')
   }
 }

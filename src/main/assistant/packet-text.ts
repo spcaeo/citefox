@@ -1,4 +1,5 @@
 import type { AssistantContextInput, AssistantTurn } from '@shared/ipc'
+import { formatMoment } from '@shared/moment'
 import { MOVEMENT_WORDS, STAGE_WORDS, STATUS_WORDS } from '../ask/vocabulary'
 import { fence } from '../prompts/blocks'
 import type { ContextPacket } from './packet'
@@ -18,19 +19,26 @@ export function clean(value: string, max = MAX_FIELD): string {
   return flat.length > max ? `${flat.slice(0, max - 1)}…` : flat
 }
 
-/** "Oct 19, 2026 (2026-10-19)". */
-export function dayText(iso: string | null): string {
+/**
+ * "Oct 19, 2026, 3:12 PM (2026-10-19)": the moment in the computer's zone and clock
+ * (owner rule: an event always shows its time), plus that zone's day in numbers so the
+ * number check passes either way of writing it. `timeZone` and `locale` are for tests.
+ */
+export function dayText(
+  iso: string | null,
+  options: { timeZone?: string; locale?: string } = {}
+): string {
   if (iso === null) return 'unknown date'
-  const day = iso.slice(0, 10)
-  const date = new Date(`${day}T00:00:00Z`)
-  if (Number.isNaN(date.getTime())) return day
-  const words = date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
+  const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) return iso.slice(0, 10)
+  const words = formatMoment(iso, { ...options, year: true })
+  const numbers = new Intl.DateTimeFormat('en-CA', {
+    timeZone: options.timeZone,
     year: 'numeric',
-    timeZone: 'UTC'
-  })
-  return `${words} (${day})`
+    month: '2-digit',
+    day: '2-digit'
+  }).format(date)
+  return `${words} (${numbers})`
 }
 
 export function businessText(packet: ContextPacket): string {

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type JSX } from 'rea
 import type { LoggedFix, Market, PageResults } from '@shared/domain'
 import { useAiContext } from '../assistant/context/useAiContext'
 import { DrillHost, useDrill } from '../drill'
-import { formatMonthDay, type DrillSpec } from '../m3/model'
+import { formatMoment, type DrillSpec } from '../m3/model'
 import { LoadError } from '../components/LoadError'
 import { errorText } from '../components/errorText'
 import type { AssistClient } from '../assist/client'
@@ -419,7 +419,7 @@ function ScoresBody({
                     {
                       id: `point:${bar.runId}`,
                       title: 'Page cited',
-                      description: `${bar.citedLine} on ${formatMonthDay(bar.finishedAt)}.`
+                      description: `${bar.citedLine} on ${formatMoment(bar.finishedAt)}.`
                     },
                     citedPromptIds(bar),
                     ownMarket,

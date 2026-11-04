@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## 0.13.8 — 2026-11-03
+
+### Improved
+
+- **Times everywhere:** every date of something that happened now shows its time in your computer's zone and clock (for example "Oct 29, 3:12 PM"), in the screens, in Ask CiteFox answers, in reports and in the assistant. Calendar days, such as a renewal or a planned next check, stay as days.
+- **Links that open the same view:** tabs, filters, sorts and Chart or Table switches on Usage, Status, Permissions, Templates, Reports, Scheduled emails, Fixes, Projects, Import pages and the page Results screens are now in the address, so a copied link reopens the same view and Back undoes a change.
+- **Copy and open everywhere:** values you may want to paste elsewhere (error messages, email addresses, export paths and file names, report recipients, anchor text) show the small Copy icon on hover or focus, through one shared component, with a test that stops one-off copy buttons from coming back. Keys and form fields never get one.
+- **Plain words, no provider names:** the Welcome screen and about 35 messages no longer name the search or reading services. They say what happened and what to do next.
+- **Setup keeps your answers:** if CiteFox cannot save your onboarding answers, it says so in plain words, keeps what you typed and tries again by itself.
+
 ## 0.13.7 — 2026-11-03
 
 ### New

@@ -23,10 +23,20 @@ import {
   stateTone,
   stateWord
 } from './model'
+import { keepScreenQuery } from '../shell/routes'
+import { useQueryChoice } from '../utils/queryState'
 import { usePermissionAction } from './usePermissionAction'
 import './permissions.css'
 
 type Filter = 'all' | 'todo' | 'ready'
+
+/** The Show filter is `?show=` in the route; All, the first, has none. */
+const FILTERS: readonly Filter[] = ['all', 'todo', 'ready']
+
+/** The route of one item, keeping the Show filter that is in the address. */
+function itemHash(id: PermissionId): string {
+  return keepScreenQuery(permissionsHash(id), window.location.hash)
+}
 
 /**
  * Settings › What CiteFox needs (`#/permissions/<id>`): every permission and
@@ -46,7 +56,7 @@ export function PermissionsScreen({
   navigate?: (hash: string) => void
 }): JSX.Element {
   const permissions = usePermissions()
-  const [filter, setFilter] = useState<Filter>('all')
+  const [filter, setFilter] = useQueryChoice('show', FILTERS, 'all')
   const [confirmFor, setConfirmFor] = useState<PermissionId | null>(null)
   const snapshot = permissions?.snapshot ?? null
   const items = useMemo(() => snapshot?.items ?? [], [snapshot])
@@ -99,7 +109,7 @@ export function PermissionsScreen({
     }
     if (item.osPrompt !== null && item.id !== 'claude') {
       setConfirmFor(item.id)
-      navigate(permissionsHash(item.id))
+      navigate(itemHash(item.id))
       return
     }
     void permissions.request(item.id)
@@ -123,7 +133,7 @@ export function PermissionsScreen({
         id: 'details',
         label: 'Show details',
         icon: 'panel-left' as const,
-        onSelect: () => navigate(permissionsHash(row.id))
+        onSelect: () => navigate(itemHash(row.id))
       }
     ]
   }
@@ -137,7 +147,7 @@ export function PermissionsScreen({
       sort: (row) => row.title,
       render: (row) => (
         <span className="pm-cell-title">
-          <a href={permissionsHash(row.id)} aria-current={open?.id === row.id ? 'true' : undefined}>
+          <a href={itemHash(row.id)} aria-current={open?.id === row.id ? 'true' : undefined}>
             {row.title}
           </a>
           <span className="pm-cell-sub">{row.purpose}</span>
@@ -190,6 +200,7 @@ export function PermissionsScreen({
             </p>
           ) : null}
           <ListGrid<PermissionItem>
+            urlKey="perm"
             label="What CiteFox needs"
             noun={['item', 'items']}
             rows={rows}
@@ -222,7 +233,7 @@ export function PermissionsScreen({
               />
             }
             rowMenu={(row) => rowActions(row)}
-            onActivate={(row) => navigate(permissionsHash(row.id))}
+            onActivate={(row) => navigate(itemHash(row.id))}
             isRowCurrent={(row) => row.id === open?.id}
             pageSize="all"
             empty={

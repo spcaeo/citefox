@@ -3,6 +3,7 @@ import { act, cleanup, renderHook } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { FillFromWebsiteResult, OnboardingDraft, OnboardingState } from '@shared/ipc'
 import {
+  DRAFT_RETRY_DELAY_MS,
   DRAFT_SAVE_DELAY_MS,
   restoredSetup,
   restoredSetupView,
@@ -191,5 +192,28 @@ describe('useDraftAutosave', () => {
     })
     expect(save).toHaveBeenCalledTimes(2)
     expect(save).toHaveBeenLastCalledWith(draft({ view: 'serpapi' }))
+  })
+
+  it('says a save failed, tries again on its own, and clears the notice when it works', async () => {
+    vi.useFakeTimers()
+    const save = vi.fn().mockRejectedValueOnce(new Error('disk is full')).mockResolvedValue(null)
+    const hook = renderHook(({ value }) => useDraftAutosave(save, value), {
+      initialProps: { value: draft() }
+    })
+    expect(hook.result.current.saveFailed).toBe(false)
+    hook.rerender({ value: draft({ view: 'serpapi' }) })
+    await act(async () => {
+      vi.advanceTimersByTime(DRAFT_SAVE_DELAY_MS)
+      await Promise.resolve()
+    })
+    expect(save).toHaveBeenCalledTimes(1)
+    expect(hook.result.current.saveFailed).toBe(true)
+    await act(async () => {
+      vi.advanceTimersByTime(DRAFT_RETRY_DELAY_MS)
+      await Promise.resolve()
+    })
+    expect(save).toHaveBeenCalledTimes(2)
+    expect(save).toHaveBeenLastCalledWith(draft({ view: 'serpapi' }))
+    expect(hook.result.current.saveFailed).toBe(false)
   })
 })

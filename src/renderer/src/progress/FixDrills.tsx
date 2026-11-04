@@ -2,7 +2,7 @@ import { Fragment, type JSX } from 'react'
 import type { FixMarketOutcome, FixOtherPrompts, LoggedFix } from '@shared/domain'
 import { pluralize } from '@shared/pluralize'
 import { DrillLink } from '../drill'
-import { formatMonthDay } from '../m3/model'
+import { formatMoment } from '../m3/model'
 import { RunDrillButton, RunFigure } from '../visibility/progressRuns'
 import { fixSummaryParts, othersLine, outcomeLabel, verdictPromptIds } from './model'
 
@@ -31,7 +31,7 @@ export function FixVerdict({
   const copy = {
     id,
     title: `Fix ${fix.number} · ${label}`,
-    description: `Targeted questions with this result in the follow-up check on ${formatMonthDay(outcome.afterAt)}. One check is a signal, not proof.`
+    description: `Targeted questions with this result in the follow-up check on ${formatMoment(outcome.afterAt)}. One check is a signal, not proof.`
   }
   if (outcome.verdict === 'partly') {
     return (

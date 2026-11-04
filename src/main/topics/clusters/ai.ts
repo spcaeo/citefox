@@ -65,7 +65,7 @@ export const NO_SAVED_DATA_MESSAGE =
   'Add your products or track a page of your site first (Fill from my website), then suggest topics.'
 
 const NO_NEW_IDEAS_MESSAGE =
-  'Claude only suggested topics you already track or have seen. Try Suggest others.'
+  'CiteFox AI only suggested topics you already track or have seen. Try Suggest others.'
 
 // ---------------------------------------------------------------------------
 // Shared reads

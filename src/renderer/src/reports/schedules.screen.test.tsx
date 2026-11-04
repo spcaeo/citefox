@@ -56,7 +56,10 @@ describe('Scheduled reports screen', () => {
     expect(body.getAllByText('TextBolt weekly summary').length).toBeGreaterThan(0)
     openTab(body, 'Delivery history')
     fireEvent.click(body.getByRole('button', { name: 'By day' }))
-    expect(body.getAllByRole('button', { expanded: true }).length).toBeGreaterThan(0)
+    // The view is on the URL (`hv=days`), so it lands with the route event.
+    await waitFor(() =>
+      expect(body.getAllByRole('button', { expanded: true }).length).toBeGreaterThan(0)
+    )
     expect(menuItem(body, /^Actions for FieldPro after each check/, 'Retry')).toBeTruthy()
   })
 

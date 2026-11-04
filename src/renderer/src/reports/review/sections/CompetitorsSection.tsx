@@ -1,4 +1,4 @@
-import { useState, type JSX } from 'react'
+import type { JSX } from 'react'
 import type { ReportTable } from '@shared/ipc'
 import {
   moversChart,
@@ -8,6 +8,7 @@ import {
   type SiteRow
 } from '@shared/report/review'
 import { ToolButton, UrlText } from '../../../ui'
+import { useQuerySortChoice } from '../../../utils/queryState'
 import { DonutChart, GainersLosersChart, RankedBarsChart } from '../../../ui/chart/ReportCharts'
 import { ReportSite } from '../copyCells'
 import { Change, Fig } from '../Figures'
@@ -17,6 +18,20 @@ import { Chips, Tiles } from './ListSections'
 
 type SortKey =
   'rank' | 'domain' | 'kind' | 'before' | 'now' | 'change' | 'withYou' | 'gap' | 'position'
+
+const SORT_KEYS: readonly SortKey[] = [
+  'rank',
+  'domain',
+  'kind',
+  'before',
+  'now',
+  'change',
+  'withYou',
+  'gap',
+  'position'
+]
+
+const DEFAULT_SORT = { key: 'rank', down: false } as const
 
 function sortValue(site: SiteRow, key: SortKey): string | number {
   switch (key) {
@@ -58,7 +73,11 @@ export function CompetitorsSection({
   onCsv: (table: ReportTable) => void
 }): JSX.Element {
   const c = report.competition
-  const [sort, setSort] = useState<{ key: SortKey; down: boolean }>({ key: 'rank', down: false })
+  // The sort is `?csort=<column>:<asc|desc>`; the default order has none.
+  const [urlSort, pickSort] = useQuerySortChoice('csort', SORT_KEYS)
+  const sort: { key: SortKey; down: boolean } = urlSort ?? DEFAULT_SORT
+  const setSort = (next: { key: SortKey; down: boolean }): void =>
+    pickSort(next.key === DEFAULT_SORT.key && !next.down ? null : next)
   if (c.tiles.length === 0) {
     return (
       <p className="rv-note">

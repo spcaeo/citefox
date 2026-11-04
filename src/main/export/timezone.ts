@@ -1,3 +1,5 @@
+import { formatMoment } from '@shared/moment'
+
 const DAY_MS = 86_400_000
 
 /** True when `value` is an IANA zone `Intl` accepts, such as `America/Toronto`. */
@@ -90,24 +92,24 @@ function part(parts: Intl.DateTimeFormatPart[], type: Intl.DateTimeFormatPartTyp
 
 /**
  * A report date in `timeZone`, such as `Oct 19, 2026`.
- * With `withTime`, the clock is 24-hour `HH:mm` (`Oct 19, 2026, 22:00`).
- * Built from date parts so the string does not depend on the machine locale.
+ * With `withTime`, the clock follows the computer's own style, never a forced 24-hour
+ * clock (`Oct 19, 2026, 10:00 PM`; `locale` is for tests). The day alone is built from
+ * date parts so it does not depend on the machine locale.
  */
-export function formatExportDate(iso: string, timeZone: string, withTime = false): string {
+export function formatExportDate(
+  iso: string,
+  timeZone: string,
+  withTime = false,
+  locale?: string
+): string {
   const parsed = Date.parse(iso)
   if (Number.isNaN(parsed)) return iso
+  if (withTime) return formatMoment(iso, { timeZone, locale, year: true })
   const parts = new Intl.DateTimeFormat('en-US', {
     timeZone,
     month: 'short',
     day: 'numeric',
-    year: 'numeric',
-    ...(withTime
-      ? { hour: '2-digit' as const, minute: '2-digit' as const, hourCycle: 'h23' as const }
-      : {})
+    year: 'numeric'
   }).formatToParts(new Date(parsed))
-  const date = `${part(parts, 'month')} ${part(parts, 'day')}, ${part(parts, 'year')}`
-  if (!withTime) return date
-  let hour = part(parts, 'hour')
-  if (hour === '24') hour = '00'
-  return `${date}, ${hour}:${part(parts, 'minute')}`
+  return `${part(parts, 'month')} ${part(parts, 'day')}, ${part(parts, 'year')}`
 }

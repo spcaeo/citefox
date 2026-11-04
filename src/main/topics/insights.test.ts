@@ -20,7 +20,7 @@ describe('topic summary results text', () => {
       ...results,
       summaryInputs: { ...results.summaryInputs, sinceAt: '2026-10-12T09:00:00.000Z' }
     })
-    expect(later).toMatch(/^Since 2026-10-12: newly cited /mu)
+    expect(later).toMatch(/^Since Oct 12, 2026, 9:00 AM: newly cited /mu)
     expect(later).not.toContain('First check:')
   })
 })

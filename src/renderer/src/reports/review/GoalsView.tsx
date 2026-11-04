@@ -2,7 +2,7 @@ import { useState, type JSX } from 'react'
 import type { MetricsResult } from '@shared/metrics'
 import { isRivalSite, rivalOrder, type ReportKind, type ReviewReport } from '@shared/report/review'
 import type { BrandingMode } from '@shared/report/review/sender'
-import { formatDay } from '../../utils/dates'
+import { formatMoment } from '../../utils/dates'
 import { HomeCard, type CardEnv } from './HomeCard'
 
 /** Opens a report on one tab (and optionally one drawer), already filtered. */
@@ -160,7 +160,7 @@ export function GoalsView({
           waiting={metrics ? secondCheck : null}
           peek={
             metrics && checks < 2 ? (
-              <>One check so far{last ? ` (${formatDay(last)})` : ''}.</>
+              <>One check so far{last ? ` (${formatMoment(last)})` : ''}.</>
             ) : metrics?.comparison ? (
               <>
                 {metrics.comparison.movement.gained.n} gained · {metrics.comparison.movement.lost.n}{' '}

@@ -43,7 +43,9 @@ describe('fix', () => {
     )
     expect(prompt).toContain('Company: TextBolt (textbolt.com).')
     expect(prompt).toContain(`Question a buyer types into Google: "${SEED.ukPrompt}"`)
-    expect(prompt).toMatch(/Google's AI Overview for it \(check of \d{4}-\d{2}-\d{2}\) says:\n"""/u)
+    expect(prompt).toMatch(
+      /Google's AI Overview for it \(check of [A-Z][a-z]{2} \d{1,2}, \d{4}, \d{1,2}:\d{2} [AP]M\) says:\n"""/u
+    )
     expect(prompt).toContain('It cites these pages:\n- simpletexting.com')
     expect(prompt).toContain('My page /blog/how-to-set-up-text-alerts-for-business/ says now')
     expect(prompt).toContain('Rewrite my section so it answers the question first')

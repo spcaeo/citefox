@@ -10,7 +10,7 @@ import { DrawerLevel } from '../../shell/DrawerLevel'
 import { closeDrawer, useDrawerStack } from '../../shell/drawers'
 import { projectHash } from '../../shell/routes'
 import { Drawer, ToolButton, UrlText } from '../../ui'
-import { formatDay } from '../../utils/dates'
+import { formatMoment } from '../../utils/dates'
 import { ReportPage } from './copyCells'
 import { CopyTool } from './toolParts'
 import { DETAIL_DRAWER, DRILL_DRAWER, openReportDetail, siteDetail } from './drill'
@@ -212,6 +212,7 @@ function DetailDrawer({
             rows={view.rows}
             label={view.title}
             withYou
+            tabKey="rdt2"
           />
         </>
       )
@@ -343,7 +344,7 @@ function QuestionBody({
             <tbody>
               {detail.history.map((point) => (
                 <tr key={point.at}>
-                  <td>{formatDay(point.at)}</td>
+                  <td>{formatMoment(point.at)}</td>
                   <td>
                     <ResultTag result={point.result} />
                   </td>

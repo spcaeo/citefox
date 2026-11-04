@@ -119,12 +119,15 @@ describe('Page read drill-downs', () => {
     const all = rows().length
     const h3 = within(outline).getByRole('button', { name: /^H3 headings/ })
     fireEvent.click(h3)
-    expect(h3.getAttribute('aria-pressed')).toBe('true')
+    await waitFor(() => expect(h3.getAttribute('aria-pressed')).toBe('true'))
+    // The filter is on the URL; All, the first, leaves nothing behind.
+    expect(window.location.hash).toContain('outline=h3')
     const shown = rows()
     expect(shown.length).toBeLessThan(all)
     for (const row of shown) expect(row.textContent).toContain('H3')
     fireEvent.click(within(outline).getByRole('button', { name: /^All/ }))
-    expect(rows()).toHaveLength(all)
+    await waitFor(() => expect(rows()).toHaveLength(all))
+    expect(window.location.hash).not.toContain('outline=')
 
     const faqs = view.getByRole('region', { name: 'FAQs' })
     expect(view.getByRole('heading', { name: /^FAQs found \(\d+\)$/ })).toBeTruthy()

@@ -54,13 +54,18 @@ test('Progress logs a fix, shows its verdict and markers on real IPC', async () 
     await openHash(page, `#/pages/${PAGE}/progress`)
     const panel = page.locator('#page-tabpanel')
     await expect(
-      panel.getByRole('heading', { name: 'What changed since the last check (Oct 5 → Oct 19)' })
+      panel.getByRole('heading', {
+        name: /^What changed since the last check \(Oct 5(, [\d:]+\s?[AP]M)? → Oct 19(, [\d:]+\s?[AP]M)?\)$/
+      })
     ).toBeVisible()
     await expect(panel.getByText(/doesn’t claim one caused the other/)).toBeVisible()
 
     // FR-14.3: Fix 1 is a marker; the Oct 12 follow-up is a hollow point out of the trend line.
     const chart = panel.getByRole('img', { name: /Share of AI Overviews that cite this page/ })
-    await expect(chart).toHaveAttribute('aria-label', /Fix 1 · Oct 8 logged/)
+    await expect(chart).toHaveAttribute(
+      'aria-label',
+      /Fix 1 · Oct 8(, \d{1,2}:\d{2}\s?[AP]M)? logged/
+    )
     // The partial follow-up is the one hollow point (filled with the surface token by CSS).
     expect(await chart.locator('.ui-chart-dot-hollow').count()).toBe(1)
     // Fix 1 is a numbered marker on the baseline; a click opens it in its drawer, in place.
@@ -84,7 +89,9 @@ test('Progress logs a fix, shows its verdict and markers on real IPC', async () 
     const fix1 = panel.getByRole('article', { name: /^Fix 1 · / })
     await expect(fix1.locator('.fx-verdict')).toHaveText('Worked')
     await expect(fix1.getByRole('strong')).toHaveText('pricing')
-    await expect(fix1.getByText(/checked Oct 12, 4 days later \(follow-up\)/)).toBeVisible()
+    await expect(
+      fix1.getByText(/checked Oct 12(, \d{1,2}:\d{2}\s?[AP]M)?, 4 days later \(follow-up\)/)
+    ).toBeVisible()
     await expect(fix1.getByRole('gridcell', { name: /Other own page/ })).toBeVisible()
     await expect(fix1.getByRole('gridcell', { name: /Page cited/ })).toBeVisible()
     await expect(fix1.getByText(/1 of the 2 questions you didn’t target also moved/)).toBeVisible()

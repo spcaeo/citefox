@@ -10,7 +10,15 @@ import type {
 import type { CheckJob } from '@shared/ipc'
 import { DrillButton, DrillNumber, useDrill } from '../../drill'
 import { alertsHash, appSettingsHash, navigateHash, sectionHash } from '../../shell/routes'
-import { Button, Chip, EmptyState, ListGrid, SectionHead, type ListColumn } from '../../ui'
+import {
+  Button,
+  Chip,
+  CopyText,
+  EmptyState,
+  ListGrid,
+  SectionHead,
+  type ListColumn
+} from '../../ui'
 import { formatMoment } from '../../utils/dates'
 import {
   checksState,
@@ -83,16 +91,24 @@ export function EmailSection({
           {email.accounts.map((account) => (
             <li key={account.id} className="st-key">
               <div className="st-row">
-                <a className="muted" href={appSettingsHash('email', { account: account.id })}>
-                  {smtpName(account.provider)} · <span className="mono">{account.fromAddress}</span>
+                <span className="st-account">
+                  <a
+                    className="muted"
+                    href={appSettingsHash('email', { account: account.id })}
+                    aria-label={`${smtpName(account.provider)} · ${account.fromAddress}: edit in Email setup`}
+                  >
+                    {smtpName(account.provider)}
+                  </a>
+                  <span className="muted"> · </span>
+                  <CopyText text={account.fromAddress} />
                   {account.isDefault ? <span className="faint"> · default</span> : null}
-                  <span className="sr-only">: edit in Email setup</span>
-                </a>
+                </span>
                 <StateChip state={emailAccountState(account)} />
               </div>
               {account.lastTestOk === false && account.lastTestMessage ? (
                 <span className="st-problem">
-                  {account.lastTestMessage} {account.lastTestNextStep ?? ''}
+                  <CopyText text={account.lastTestMessage} wrap />
+                  {account.lastTestNextStep ? ` ${account.lastTestNextStep}` : ''}
                 </span>
               ) : null}
             </li>
@@ -398,6 +414,7 @@ export function UsageSection({
         }
       />
       <ListGrid<Row>
+        urlKey="sq"
         label="Projects"
         noun={['project', 'projects']}
         rows={queue.projects}

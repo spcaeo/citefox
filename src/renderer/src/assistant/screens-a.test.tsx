@@ -123,7 +123,7 @@ describe('Ask CiteFox context on the visibility screens', () => {
     ).toEqual([
       { kind: 'page', id: 'page-1', label: 'Pricing' },
       { kind: 'market', id: 'mkt-us', label: expect.stringContaining('US · EN') },
-      { kind: 'check', id: 'run-9', label: 'Oct 23' }
+      { kind: 'check', id: 'run-9', label: 'Oct 23, 9:00 AM' }
     ])
     expect(pageScopeRefs({ pageId: 'page-1' })).toEqual([])
 

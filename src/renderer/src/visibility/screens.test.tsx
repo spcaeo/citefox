@@ -262,7 +262,7 @@ describe('production scores without a fixture', () => {
     // FR-14.1: built from the two latest full checks the screen already loads.
     expect(
       await view.findByRole('heading', {
-        name: 'What changed since the last check (Oct 5 → Oct 19)'
+        name: 'What changed since the last check (Oct 5, 9:10 AM → Oct 19, 9:20 AM)'
       })
     ).toBeTruthy()
     expect(view.getByText(/doesn’t claim one caused the other/)).toBeTruthy()

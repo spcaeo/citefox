@@ -25,6 +25,10 @@ describe('LoadError', () => {
       'CiteFox could not load this page.'
     )
     expect(view.getByText(/database is locked/).textContent).not.toContain('invoking')
+    // The cleaned message gets Copy (never the raw invoke wrapper).
+    expect(
+      view.getByRole('button', { name: /^Copy .*database is locked/ }).getAttribute('aria-label')
+    ).not.toContain('invoking')
     fireEvent.click(view.getByRole('button', { name: 'Try again' }))
     expect(retry).toHaveBeenCalledTimes(1)
     expect(view.getByRole('link', { name: 'Go to All pages' })).toBeTruthy()

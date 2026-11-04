@@ -393,7 +393,7 @@ describe('E5b coverage, gaps, and playground', () => {
       runId: null
     })
     expect(noKey.prompts[0]).toMatchObject({ ok: false, keyId: null, reason: 'other' })
-    expect(noKey.prompts[0]?.message).toMatch(/No SerpApi key/)
+    expect(noKey.prompts[0]?.message).toMatch(/No search key/)
     expect(calls).toHaveLength(0)
 
     const project = await handlers['projects:create'](projectBody())

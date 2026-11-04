@@ -4,6 +4,7 @@ import { startHash } from '../../../shell/routes'
 import { readStartChoice, saveStartChoice } from '../../../start/choice'
 import type { StartWay } from '../../../start/examples'
 import { startWayOptions } from '../../../start/ways'
+import { formatMoment } from '../../../utils/dates'
 import { WayList, type WayOption } from '../../../ui'
 import type { WayToStart } from '../startWay'
 import type { TopicDraftSummary } from '@shared/domain'
@@ -45,9 +46,8 @@ const GIVES: readonly { icon: UiIconName; title: string; body: string }[] = [
 ]
 
 function relativeDay(iso: string): string {
-  const date = new Date(iso)
-  if (Number.isNaN(date.getTime())) return ''
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  if (Number.isNaN(new Date(iso).getTime())) return ''
+  return formatMoment(iso)
 }
 
 /**

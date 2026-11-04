@@ -408,5 +408,7 @@ describe('Fixes screen: Backlinks', () => {
     )
     expect(await view.findByText('Wrote anchor text for 1 page.')).toBeTruthy()
     expect(await view.findByText('anchor for page-alerts')).toBeTruthy()
+    // The anchor text is meant to be pasted into an email: it has the shared Copy button.
+    expect(view.getByRole('button', { name: 'Copy anchor for page-alerts' })).toBeTruthy()
   })
 })

@@ -57,6 +57,6 @@ function failureText(host: EngineHost, error: unknown): string {
   const plain = message.replace(/^[a-z]+:[A-Za-z]+:\s*/u, '').trim()
   const safe = redactString(plain, { secrets: host.knownSecrets() })
   return safe.length === 0 || safe !== plain
-    ? 'Claude could not suggest an anchor. Try again.'
+    ? 'CiteFox AI could not suggest an anchor. Try again.'
     : safe
 }

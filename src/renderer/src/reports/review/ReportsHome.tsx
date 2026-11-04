@@ -119,7 +119,7 @@ export function ReportsHome({
               }
               meta={
                 <>
-                  {last ? `Latest check, ${formatDay(last)}` : 'Latest check'} ·{' '}
+                  {last ? `Latest check, ${formatMoment(last)}` : 'Latest check'} ·{' '}
                   <a
                     className="rv-link"
                     href="#/export"
@@ -141,7 +141,7 @@ export function ReportsHome({
               waiting={checks < 2 ? 'Needs a 2nd check' : null}
               peek={
                 checks < 2 ? (
-                  <>One check so far{last ? ` (${formatDay(last)})` : ''}.</>
+                  <>One check so far{last ? ` (${formatMoment(last)})` : ''}.</>
                 ) : comparison ? (
                   <>
                     <b className="num">

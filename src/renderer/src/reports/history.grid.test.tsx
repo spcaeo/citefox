@@ -5,7 +5,10 @@ import { ReportsScreen } from './ReportsScreen'
 import { createMockSchedulesClient } from './schedulesMock'
 import { openTab } from './schedules.test-helper'
 
-afterEach(cleanup)
+afterEach(() => {
+  cleanup()
+  window.location.hash = ''
+})
 
 /**
  * Delivery history is a v2 list grid, like Schedules (search, result filter, CSV),
@@ -41,16 +44,43 @@ describe('Delivery history grid', () => {
       target: { value: 'FieldPro' }
     })
     fireEvent.click(scope.getByRole('button', { name: 'By day' }))
+    await waitFor(() => expect(window.location.hash).toContain('hv=days'))
     const grid = scope.getByRole('grid', { name: 'Delivery history' })
-    const days = within(grid).getAllByRole('button', { expanded: true })
+    const days = await waitFor(() => {
+      const found = within(grid).getAllByRole('button', { expanded: true })
+      expect(found.length).toBeGreaterThan(0)
+      return found
+    })
     expect(days.length).toBeGreaterThan(0)
     for (const row of grid.querySelectorAll('[data-row]')) {
       expect(row.textContent).toContain('FieldPro')
     }
 
     fireEvent.click(scope.getByRole('button', { name: 'Table' }))
+    await waitFor(() => expect(window.location.hash).not.toContain('hv='))
     expect(
       (scope.getByPlaceholderText('Search schedule, recipient or error') as HTMLInputElement).value
     ).toBe('FieldPro')
+  })
+
+  it('keeps the result filter on the URL and opens it from a link', async () => {
+    window.location.hash = '#/?tab=emails&view=history'
+    const first = render(
+      <ReportsScreen client={createMockSchedulesClient()} timeZone="America/Chicago" />
+    )
+    const group = await first.findByRole('group', { name: 'Result' })
+    fireEvent.click(within(group).getByRole('button', { name: /^Failed/ }))
+    await waitFor(() => expect(window.location.hash).toContain('hf=failed'))
+    fireEvent.click(within(group).getByRole('button', { name: /^All/ }))
+    await waitFor(() => expect(window.location.hash).not.toContain('hf='))
+    cleanup()
+    window.location.hash = '#/?tab=emails&view=history&hf=sent'
+    const again = render(
+      <ReportsScreen client={createMockSchedulesClient()} timeZone="America/Chicago" />
+    )
+    const sent = await again.findByRole('group', { name: 'Result' })
+    expect(within(sent).getByRole('button', { name: /^Sent/ }).getAttribute('aria-pressed')).toBe(
+      'true'
+    )
   })
 })

@@ -24,7 +24,9 @@ import './templates.css'
 
 type TemplatesTab = 'steps' | 'editor' | 'library'
 
-const TEMPLATES_QUERY = ['view', 'step'] as const
+const TEMPLATES_QUERY = ['view', 'step', 'status'] as const
+
+const STEP_STATUSES: readonly StepStatusFilter[] = ['all', 'shipped', 'edited', 'project']
 
 function isTemplatesTab(value: string | null): value is TemplatesTab {
   return value === 'steps' || value === 'editor' || value === 'library'
@@ -69,7 +71,12 @@ function TemplatesBody({
   const { steps, loading, error, reload, replace } = useSteps(client, projectId)
   const [query, setQuery] = useHashQuery(TEMPLATES_QUERY)
   const pickedKind = query.step as GenerationTemplateKind | null
-  const [status, setStatus] = useState<StepStatusFilter>('all')
+  // The Steps status filter is `?status=`; All has none.
+  const status: StepStatusFilter = STEP_STATUSES.find((item) => item === query.status) ?? 'all'
+  const setStatus = useCallback(
+    (next: StepStatusFilter) => setQuery({ status: next === 'all' ? null : next }),
+    [setQuery]
+  )
   const [stepDirty, setStepDirty] = useState(false)
   const [pendingSwitch, setPendingSwitch] = useState<GenerationTemplateKind | null>(null)
   const [revision, setRevision] = useState(0)

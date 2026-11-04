@@ -10,6 +10,7 @@ import { mockLlmUsage } from './mock'
 
 afterEach(() => {
   cleanup()
+  window.history.replaceState(null, '', '#/')
 })
 
 function clientOf(usage: (request: LlmUsageRequest) => Promise<LlmUsage>): {
@@ -94,12 +95,32 @@ describe('ClaudeUsage', () => {
     const steps = card.getByRole('grid', { name: 'CiteFox AI calls by step this month' })
     expect(within(steps).getByText('Buyer questions')).toBeTruthy()
     fireEvent.click(card.getByRole('tab', { name: /^Recent errors/ }))
-    const errors = card.getByRole('grid', { name: 'Recent CiteFox AI errors' })
+    const errors = await card.findByRole('grid', { name: 'Recent CiteFox AI errors' })
     expect(
       within(errors).getByText('CiteFox AI hit its usage limit. Try again after it resets.')
     ).toBeTruthy()
     fireEvent.click(card.getByRole('tab', { name: /^By connection/ }))
-    expect(card.getByText('Your AI key')).toBeTruthy()
+    expect(await card.findByText('Your AI key')).toBeTruthy()
+  })
+
+  it('keeps the tab in the URL and opens it from a link', async () => {
+    window.history.replaceState(null, '', '#/status')
+    const { client } = clientOf(mockLlmUsage)
+    const view = render(<ClaudeUsage client={client} variant="full" />)
+    const card = within(view.getByRole('region', { name: 'Calls and tokens' }))
+    await card.findByRole('region', { name: 'Calls today' })
+    fireEvent.click(card.getByRole('tab', { name: /^Recent errors/ }))
+    await waitFor(() => expect(window.location.hash).toBe('#/status?usage.tab=errors'))
+    fireEvent.click(card.getByRole('tab', { name: /^By step/ }))
+    await waitFor(() => expect(window.location.hash).toBe('#/status'))
+    cleanup()
+    window.history.replaceState(null, '', '#/status?usage.tab=connections')
+    const again = render(<ClaudeUsage client={client} variant="full" />)
+    const next = within(again.getByRole('region', { name: 'Calls and tokens' }))
+    await next.findByRole('region', { name: 'Calls today' })
+    expect(next.getByRole('tab', { name: /^By connection/ }).getAttribute('aria-selected')).toBe(
+      'true'
+    )
   })
 
   it('reads one project when given a project id', async () => {

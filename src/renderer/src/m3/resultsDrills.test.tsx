@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-import { cleanup, fireEvent, render, within } from '@testing-library/react'
+import { cleanup, fireEvent, render, waitFor, within } from '@testing-library/react'
 import axe from 'axe-core'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import type { PageResults } from '@shared/domain'
@@ -155,16 +155,18 @@ describe('Results drill-downs', () => {
     }
   })
 
-  it('the stage filter narrows the grid and groups follow the outcome', () => {
+  it('the stage filter narrows the grid and groups follow the outcome', async () => {
     const results = textboltResults()
     const view = screen(results)
     const section = view.getByRole('region', { name: 'Questions' })
     const stages = within(section).getByRole('group', { name: 'Buyer stage' })
     const problem = within(stages).getByRole('button', { name: /^Problem/ })
     fireEvent.click(problem)
+    // The stage is on the URL, so a copied link opens the same list.
+    await waitFor(() => expect(window.location.hash).toContain('pstage=problem'))
     const grid = view.getByRole('grid', { name: /Buyer questions from the/ })
     const expected = results.prompts.filter((row) => row.intentStage === 'problem').length
-    expect(grid.querySelectorAll('.ui-lg-row').length).toBe(expected)
+    await waitFor(() => expect(grid.querySelectorAll('.ui-lg-row').length).toBe(expected))
     const groups = [...grid.querySelectorAll('.ui-lg-group')].map((node) => node.textContent ?? '')
     expect(groups.length).toBeGreaterThan(0)
   })

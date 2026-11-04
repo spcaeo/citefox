@@ -171,14 +171,14 @@ describe('answerText', () => {
       statuses: ['not_cited', 'brand_mentioned']
     })
     expect(answerText(result)).toBe(
-      '2 of 4 prompt checks match in US · EN and UK · EN: your page is not cited for 1 prompt and your brand is named but your page is not linked for 1 prompt. Sites cited most in these, besides yours: twilio.com (2 of 2), simpletexting.com (1 of 2). Latest check Oct 19, 2026.'
+      '2 of 4 prompt checks match in US · EN and UK · EN: your page is not cited for 1 prompt and your brand is named but your page is not linked for 1 prompt. Sites cited most in these, besides yours: twilio.com (2 of 2), simpletexting.com (1 of 2). Latest check Oct 19, 2026, 12:00 PM.'
     )
   })
 
   it('names the page count when several pages match', () => {
     const result = queryScope(SCOPE, { ...EMPTY_ASK_FILTERS, marketIds: ['mkt-us'] })
     expect(answerText(result)).toBe(
-      '3 of 4 prompt checks match in US · EN: your page is not cited for 1 prompt, your page is cited for 1 prompt and Google shows no AI Overview for 1 prompt. They cover 2 pages. Sites cited most in these, besides yours: twilio.com (1 of 3), simpletexting.com (1 of 3). Latest check Oct 19, 2026.'
+      '3 of 4 prompt checks match in US · EN: your page is not cited for 1 prompt, your page is cited for 1 prompt and Google shows no AI Overview for 1 prompt. They cover 2 pages. Sites cited most in these, besides yours: twilio.com (1 of 3), simpletexting.com (1 of 3). Latest check Oct 19, 2026, 12:00 PM.'
     )
   })
 
@@ -190,7 +190,7 @@ describe('answerText', () => {
   it('says which filter found nothing', () => {
     const result = queryScope(SCOPE, { ...EMPTY_ASK_FILTERS, text: 'nothing like this' })
     expect(answerText(result)).toBe(
-      'No stored results match: no saved prompt check contains "nothing like this". Searched 4 prompt checks. Remove a filter to see more. Latest check Oct 19, 2026.'
+      'No stored results match: no saved prompt check contains "nothing like this". Searched 4 prompt checks. Remove a filter to see more. Latest check Oct 19, 2026, 12:00 PM.'
     )
     const stage = queryScope(SCOPE, {
       ...EMPTY_ASK_FILTERS,
@@ -209,7 +209,7 @@ describe('answerText', () => {
       statuses: ['page_cited']
     })
     expect(answerText(result)).toBe(
-      'No stored results match every filter. 1 prompt check cites simpletexting.com: your page is not cited for 1 prompt. Searched 4 prompt checks. Remove a filter to see them. Latest check Oct 19, 2026.'
+      'No stored results match every filter. 1 prompt check cites simpletexting.com: your page is not cited for 1 prompt. Searched 4 prompt checks. Remove a filter to see them. Latest check Oct 19, 2026, 12:00 PM.'
     )
   })
 
@@ -220,7 +220,7 @@ describe('answerText', () => {
       { ...EMPTY_ASK_FILTERS, movements: ['lost'] }
     )
     expect(answerText(result)).toBe(
-      'No stored results match. Movement needs two checks of a page in a market, and every saved result so far is a first check. Searched 4 prompt checks. Latest check Oct 19, 2026.'
+      'No stored results match. Movement needs two checks of a page in a market, and every saved result so far is a first check. Searched 4 prompt checks. Latest check Oct 19, 2026, 12:00 PM.'
     )
   })
 
@@ -245,7 +245,7 @@ describe('answerText', () => {
       { ...EMPTY_ASK_FILTERS, statuses: ['not_cited'] }
     )
     expect(answerText(result)).toBe(
-      '3 of 4 prompt checks match in US · EN: your page is not cited for 3 prompts. They cover 2 pages. Most misses: Alerts (2 of its 3 prompts). Sites cited most in these, besides yours: clicksend.com (2 of 3), textmagic.com (1 of 3). Latest check Oct 19, 2026.'
+      '3 of 4 prompt checks match in US · EN: your page is not cited for 3 prompts. They cover 2 pages. Most misses: Alerts (2 of its 3 prompts). Sites cited most in these, besides yours: clicksend.com (2 of 3), textmagic.com (1 of 3). Latest check Oct 19, 2026, 12:00 PM.'
     )
     const withDomain = queryScope(
       { ...SCOPE, rows, domain: 'textbolt.com' },

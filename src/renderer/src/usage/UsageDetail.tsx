@@ -1,6 +1,7 @@
-import { useState, type JSX } from 'react'
+import type { JSX } from 'react'
 import type { LlmCallRecord, LlmUsage, LlmUsageByConnection, LlmUsageByStep } from '@shared/ipc'
 import { formatClock, formatDay } from '../utils/dates'
+import { useQueryChoice } from '../utils/queryState'
 import {
   Chip,
   EmptyState,
@@ -21,6 +22,9 @@ import {
 } from './model'
 
 type UsageTab = 'steps' | 'connections' | 'errors'
+
+/** The tab is `?usage.tab=` in the route; By step, the first, has no value. */
+const USAGE_TABS: readonly UsageTab[] = ['steps', 'connections', 'errors']
 
 const STEP_COLUMNS: readonly ListColumn<LlmUsageByStep>[] = [
   {
@@ -126,7 +130,7 @@ const ERROR_COLUMNS: readonly ListColumn<LlmCallRecord>[] = [
  * errors as list grids under tabs.
  */
 export function UsageDetail({ usage, idBase }: { usage: LlmUsage; idBase: string }): JSX.Element {
-  const [tab, setTab] = useState<UsageTab>('steps')
+  const [tab, setTab] = useQueryChoice('usage.tab', USAGE_TABS, 'steps')
   const panels = `${idBase}-usage`
   return (
     <div className="cu-detail">
@@ -160,6 +164,7 @@ export function UsageDetail({ usage, idBase }: { usage: LlmUsage; idBase: string
       />
       <TabPanel panelId={panels} id="steps" hidden={tab !== 'steps'}>
         <ListGrid
+          urlKey="ustep"
           label="CiteFox AI calls by step this month"
           noun={['step', 'steps']}
           rows={usage.byStep}
@@ -173,6 +178,7 @@ export function UsageDetail({ usage, idBase }: { usage: LlmUsage; idBase: string
       </TabPanel>
       <TabPanel panelId={panels} id="connections" hidden={tab !== 'connections'}>
         <ListGrid
+          urlKey="uconn"
           label="CiteFox AI calls by connection this month"
           noun={['connection', 'connections']}
           rows={usage.byConnection}
@@ -184,6 +190,7 @@ export function UsageDetail({ usage, idBase }: { usage: LlmUsage; idBase: string
       </TabPanel>
       <TabPanel panelId={panels} id="errors" hidden={tab !== 'errors'}>
         <ListGrid
+          urlKey="uerr"
           label="Recent CiteFox AI errors"
           noun={['error', 'errors']}
           rows={usage.recentErrors}

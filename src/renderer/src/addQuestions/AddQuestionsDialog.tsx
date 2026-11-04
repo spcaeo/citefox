@@ -9,6 +9,7 @@ import { errorText } from '../components/errorText'
 import { handFile } from '../importFlow/handoff'
 import { checkError, checkStartMessage } from '../m3/source'
 import { Drawer } from '../ui'
+import { formatClock, formatMoment } from '../utils/dates'
 import { BulkBar, ExpertPanel } from './components/BulkBar'
 import { ImportBanner } from './components/ImportBanner'
 import { QuestionRail } from './components/QuestionRail'
@@ -578,18 +579,16 @@ function rowFromImport(row: ImportRow): Partial<DraftRow> {
   }
 }
 
-/** "today at 14:05", "yesterday" or "Oct 21": when a draft was saved. */
+/** "today at 2:05 PM", "yesterday at 2:05 PM" or "Oct 21, 2:05 PM": when a draft was saved. */
 function savedWhen(iso: string, today: Date): string {
   const at = new Date(iso)
   if (Number.isNaN(at.getTime())) return 'earlier'
   const day = (value: Date): number =>
     new Date(value.getFullYear(), value.getMonth(), value.getDate()).getTime()
   const days = Math.round((day(today) - day(at)) / 86_400_000)
-  if (days <= 0) {
-    return `today at ${at.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`
-  }
-  if (days === 1) return 'yesterday'
-  return at.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  if (days <= 0) return `today at ${formatClock(iso)}`
+  if (days === 1) return `yesterday at ${formatClock(iso)}`
+  return formatMoment(iso, { now: today })
 }
 
 function gapInstruction(thin: readonly { stage: TopicStage }[]): string | null {

@@ -157,8 +157,10 @@ async function toPreview(): Promise<HTMLElement> {
 }
 
 /** Preview → How to track. */
-function toTrack(): void {
+async function toTrack(): Promise<void> {
   fireEvent.click(screen.getByRole('button', { name: 'Choose how to track' }))
+  // The step is on the URL (`?step=track`), so it lands with the route event.
+  await screen.findByRole('button', { name: /^Track \d+ pages?$/ })
 }
 
 async function renderScreen(overrides: Partial<StructureClient> = {}): Promise<Rendered> {
@@ -183,6 +185,27 @@ describe('ImportPagesScreen', () => {
     expect(links).toHaveProperty('disabled', true)
   })
 
+  it('keeps the open step on the URL and opens it from a link', async () => {
+    window.location.hash = '#/import-pages'
+    await renderScreen()
+    fireEvent.click(screen.getByRole('checkbox', { name: /\/blog\// }))
+    await screen.findByText(/2 pages · 10–20 searches per check/)
+    await toPreview()
+    await waitFor(() => expect(window.location.hash).toBe('#/import-pages?step=preview'))
+    fireEvent.click(screen.getByRole('button', { name: 'Back' }))
+    await waitFor(() => expect(window.location.hash).toBe('#/import-pages'))
+    cleanup()
+    window.location.hash = '#/import-pages?step=preview'
+    render(
+      <ImportPagesScreen
+        client={fakeClient().client}
+        project={PROJECT}
+        onTracked={() => undefined}
+      />
+    )
+    expect(await screen.findByRole('button', { name: 'Choose how to track' })).toBeTruthy()
+  })
+
   it('tracks the pages of a ticked folder with the default market', async () => {
     const { track, onTracked } = await renderScreen()
     fireEvent.click(screen.getByRole('checkbox', { name: /\/blog\// }))
@@ -196,7 +219,7 @@ describe('ImportPagesScreen', () => {
       within(grid).getByRole('checkbox', { name: 'Text alerts is already tracked' })
     ).toHaveProperty('disabled', true)
     fireEvent.click(within(grid).getByRole('checkbox', { name: 'Track Email to sms' }))
-    toTrack()
+    await toTrack()
     await screen.findByText(/1 page × 5 questions × 1 market × 1–2 searches = 5–10/)
     const button = await screen.findByRole('button', { name: 'Track 1 page' })
     fireEvent.click(button)
@@ -222,7 +245,7 @@ describe('ImportPagesScreen', () => {
     const { track } = await renderScreen({ 'import:estimate': estimate })
     fireEvent.click(screen.getByRole('checkbox', { name: /\/blog\// }))
     await toPreview()
-    toTrack()
+    await toTrack()
     const us = screen.getByRole('checkbox', { name: '🇺🇸 US · EN' })
     const uk = screen.getByRole('checkbox', { name: '🇬🇧 UK · EN' })
     expect(us).toHaveProperty('checked', true)
@@ -247,9 +270,11 @@ describe('ImportPagesScreen', () => {
     await waitFor(() => expect(parse).toHaveBeenCalledTimes(1))
     expect(parse.mock.calls[0]?.[0].format).toBe('lines')
     await screen.findByText(/Not a textbolt.com page/)
+    // A line that was not imported can be copied back out to fix it.
+    expect(screen.getByRole('button', { name: 'Copy https://other.com/x' })).toBeTruthy()
     expect(screen.getByText(/1 repeated line skipped/)).toBeTruthy()
     await toPreview()
-    toTrack()
+    await toTrack()
     fireEvent.click(await screen.findByRole('button', { name: 'Track 1 page' }))
     await waitFor(() => expect(track).toHaveBeenCalledTimes(1))
     expect(track.mock.calls[0]?.[0].urls).toEqual(['https://textbolt.com/new-page/'])

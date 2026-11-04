@@ -3,6 +3,7 @@ import { intervalDaysText, type TopicSummary } from '@shared/domain'
 import { errorText } from '../../components/errorText'
 import { closeDrawersThen } from '../../shell/drawers'
 import { topicHash } from '../../shell/routes'
+import { formatMoment } from '../../utils/dates'
 import {
   Chip,
   IconButton,
@@ -45,13 +46,10 @@ function formFrom(topic: TopicSummary): TopicSettingsForm {
   }
 }
 
+/** "Oct 19, 3:12 PM" on the computer's own clock, or "Not yet". */
 function day(iso: string | null): string {
   if (iso === null) return 'Not yet'
-  return new Date(iso).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric'
-  })
+  return formatMoment(iso)
 }
 
 /**

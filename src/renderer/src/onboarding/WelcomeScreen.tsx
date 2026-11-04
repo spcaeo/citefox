@@ -9,15 +9,15 @@ const NEEDS: readonly { title: string; detail: string; optional?: boolean }[] = 
     detail: 'Its address, and the country and language of your buyers.'
   },
   {
-    title: 'Claude on this computer',
+    title: 'An AI plan you already have',
     detail:
-      'Claude reads your site and drafts the rest on your own Claude plan. No Claude? Use your own ChatGPT instead.',
+      'CiteFox AI reads your site and drafts the rest on an AI plan you already pay for, on this computer. You pick it in setup, and you can use ChatGPT instead.',
     optional: true
   },
   {
-    title: 'A cloro or SerpApi key',
+    title: 'CiteFox credits for searches',
     detail:
-      'cloro checks Google AI Overviews, ChatGPT, Perplexity, AI Mode, Gemini and Copilot. SerpApi checks Google AI Overviews only. You can sign up during setup.'
+      'Credits pay for the searches that check Google AI Overviews, ChatGPT, Perplexity, AI Mode, Gemini and Copilot. You can sign up during setup.'
   }
 ]
 

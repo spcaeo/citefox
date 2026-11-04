@@ -4,7 +4,7 @@ import { pluralize } from '@shared/pluralize'
 import type { ScopeOptions } from '../../scope'
 import { useGridQueryState } from '../../utils/queryState'
 import { Button, Chip, Confirm, EmptyState, ListGrid, type ListColumn } from '../../ui'
-import { deliveryText, marketsText, scopeText, sendToText, shortDay, whenText } from './ruleModel'
+import { deliveryText, marketsText, scopeText, sendToText, shortWhen, whenText } from './ruleModel'
 import './rules.css'
 
 export interface RuleActions {
@@ -100,7 +100,7 @@ export function RulesTab({
         <span className="ar-cell-stack ar-cell-end">
           <span className="num">{rule.firedCount.toLocaleString('en-US')}</span>
           <span className="faint">
-            {rule.lastFiredAt ? `last ${shortDay(rule.lastFiredAt)}` : 'not yet'}
+            {rule.lastFiredAt ? `last ${shortWhen(rule.lastFiredAt)}` : 'not yet'}
           </span>
         </span>
       )

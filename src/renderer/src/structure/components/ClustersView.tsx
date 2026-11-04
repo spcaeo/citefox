@@ -310,6 +310,7 @@ export function ClustersView({
         />
       ) : null}
       <ListGrid
+        urlKey="cls"
         label="Clusters"
         noun={['cluster', 'clusters']}
         rows={rows}

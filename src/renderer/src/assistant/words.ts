@@ -1,7 +1,7 @@
 import type { AssistantAnswer, AssistantSource } from '@shared/ipc'
 import { errorText } from '../components/errorText'
 import { pageHash, promptHash, readHash, topicHash } from '../shell/routes'
-import { formatDay } from '../utils/dates'
+import { formatMoment } from '../utils/dates'
 import type { AiContext } from './context/types'
 
 /** Ask CiteFox copy, in one place. */
@@ -55,12 +55,12 @@ export function sourceHref(source: AssistantSource): string | null {
   return null
 }
 
-/** "Oct 23" from an ISO time, in the computer's own zone and day order (audit #8). */
+/** "Oct 23, 3:12 PM" from an ISO time, in the computer's own zone and clock (a check always shows its time). */
 export function dayLabel(iso: string | null): string | null {
   if (iso === null) return null
   const date = new Date(iso)
   if (Number.isNaN(date.getTime())) return null
-  return formatDay(iso, { year: false })
+  return formatMoment(iso)
 }
 
 /** The "Looking at" chips: what the assistant will read for this screen. */

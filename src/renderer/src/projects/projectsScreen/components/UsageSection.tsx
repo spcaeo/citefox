@@ -251,6 +251,7 @@ export function UsageSection({
       ) : (
         <>
           <ListGrid
+            urlKey="pu"
             label="Usage by project this month"
             noun={['project', 'projects']}
             rows={rows}

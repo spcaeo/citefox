@@ -169,6 +169,7 @@ export function Opportunities({
   return (
     <div data-testid="cm-opportunities" className="cm-grid">
       <ListGrid
+        urlKey="opp"
         label="Opportunities, ranked by what there is to gain"
         noun={['opportunity', 'opportunities']}
         rows={rows}

@@ -1,6 +1,7 @@
 import { useEffect, useSyncExternalStore, type JSX } from 'react'
 import { closeDrawersThen, openDrawer, useDrawerEntry } from '../shell/drawers'
 import { sectionHash } from '../shell/routes'
+import { formatClock } from '../utils/dates'
 import { Drawer, DrawerGrid, DrawerSection } from '../ui'
 import { UiIcon } from '../ui/UiIcon'
 import {
@@ -13,7 +14,7 @@ import type { StartClient } from './client'
 import './extras.css'
 
 function timeOf(at: number): string {
-  return new Date(at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  return formatClock(new Date(at).toISOString())
 }
 
 function useActivityEntries(): readonly ActivityEntry[] {

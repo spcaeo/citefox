@@ -2,6 +2,7 @@ import { useEffect, useState, type JSX } from 'react'
 import { TOPIC_STAGE_LABEL, type TopicDraftPrompt } from '@shared/domain'
 import type { TopicPageBrief, TopicPageCandidate, TopicTarget } from '@shared/ipc'
 import { errorText } from '../../../components/errorText'
+import { formatMoment } from '../../../utils/dates'
 import {
   AiMenu,
   Button,
@@ -59,9 +60,8 @@ function pathOf(url: string | null): string {
 
 function sitemapLabel(iso: string | null): string | null {
   if (!iso) return null
-  const date = new Date(iso)
-  if (Number.isNaN(date.getTime())) return null
-  return `Sitemap read ${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+  if (Number.isNaN(new Date(iso).getTime())) return null
+  return `Sitemap read ${formatMoment(iso)}`
 }
 
 /** Pages (Seed-Pages.png): which own page answers each prompt, with confidence and reason. */

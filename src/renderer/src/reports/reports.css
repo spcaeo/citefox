@@ -525,6 +525,11 @@
     font-size: var(--fs-ui);
   }
 
+  .xpt-reason .ui-url-value {
+    font-size: inherit;
+    line-height: inherit;
+  }
+
   td.xpt-warn {
     padding: var(--s-2);
     border-radius: 0;

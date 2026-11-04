@@ -205,7 +205,7 @@ export function estimateTopic(
     }
   }
   const plans: TopicPlanOption[] = [
-    option('likeliest', "Claude's plan: likeliest wins first", (n, a, b, rest) =>
+    option('likeliest', "CiteFox AI's plan: likeliest wins first", (n, a, b, rest) =>
       rest === 0
         ? `All ${n} today (about ${a}–${b} searches)`
         : `${n} today (about ${a}–${b} searches), the rest over 7 days`

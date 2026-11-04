@@ -5,6 +5,7 @@ import { DrillButton, DrillFigure, DrillLink } from '../../drill'
 import { Drawer, SectionHead, UrlText, type DrawerAction } from '../../ui'
 import { useIdeaAction } from '../hooks/useIdeaAction'
 import type { VideosSource } from '../source'
+import { formatMoment } from '../../utils/dates'
 import { IDLE, type ActionState } from '../types'
 import { evidenceDrill, type VideoDrills } from '../utils/drill'
 import {
@@ -121,7 +122,7 @@ export function IdeaFlow({
   const summary = [
     `Status: ${stepLabel(idea.step)}`,
     idea.deadline ? `due ${formatDate(idea.deadline)}` : null,
-    idea.sentToFoxcueAt ? `sent to FoxCue ${formatDate(idea.sentToFoxcueAt)}` : null
+    idea.sentToFoxcueAt ? `sent to FoxCue ${formatMoment(idea.sentToFoxcueAt)}` : null
   ]
     .filter(Boolean)
     .join(' · ')

@@ -183,6 +183,7 @@ export function AnswerTable({
   return (
     <>
       <ListGrid
+        urlKey="answers"
         label="Answers table"
         noun={['answer', 'answers']}
         rows={shown}

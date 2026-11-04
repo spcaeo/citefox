@@ -15,7 +15,7 @@ import { ENGINE_PARAM } from '../../engines/model'
 import { marketLabel } from '../../shell/model'
 import { useHashQuery } from '../../utils/hashQuery'
 import { FilterBar, ToolButton, ToolGroup } from '../../ui'
-import { formatDay, formatMoment } from '../../utils/dates'
+import { formatMoment } from '../../utils/dates'
 import type { ReviewClient } from './client'
 import { DownloadMenu } from './DownloadMenu'
 import { ReportSearch } from './ReportSearch'
@@ -54,6 +54,7 @@ import {
   scopeValue,
   sectionOf,
   windowOf,
+  SECTION_VALUES,
   type ReviewQuery
 } from './urlState'
 
@@ -244,7 +245,7 @@ export function ReviewView({
                 <option value="">From the first check</option>
                 {options.map((option) => (
                   <option key={option.id} value={option.id}>
-                    From {formatDay(option.at)}
+                    From {formatMoment(option.at)}
                   </option>
                 ))}
               </select>
@@ -265,8 +266,8 @@ export function ReviewView({
               {options.map((option) => (
                 <option key={option.id} value={option.id}>
                   {ONE_CHECK_KINDS.has(kind)
-                    ? `${formatDay(option.at)} check`
-                    : `To ${formatDay(option.at)}`}
+                    ? `${formatMoment(option.at)} check`
+                    : `To ${formatMoment(option.at)}`}
                 </option>
               ))}
             </select>
@@ -313,7 +314,7 @@ export function ReviewView({
             kind={kind}
             sections={report.sections}
             section={section}
-            onSection={(id) => setQuery({ section: id })}
+            onSection={(id) => setQuery({ ...SECTION_VALUES, section: id })}
           >
             {data.loading ? (
               <p role="status" className="rv-muted rv-loading">
@@ -340,7 +341,7 @@ export function ReviewView({
 const ENGINE_KEYS = [ENGINE_PARAM] as const
 
 function dayLabel(iso: string): string {
-  return formatDay(iso)
+  return formatMoment(iso)
 }
 
 function SectionBody({

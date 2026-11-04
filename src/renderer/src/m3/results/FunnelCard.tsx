@@ -1,9 +1,10 @@
-import { useMemo, useState, type JSX } from 'react'
+import { useMemo, type JSX } from 'react'
 import type { FunnelStep, FunnelStepId, PageResults } from '@shared/domain'
 import { REPORT_KPI_LABELS } from '@shared/report-copy'
 import { DrillButton, DrillNumber } from '../../drill'
 import { ListGrid, SectionHead, type ListColumn } from '../../ui'
 import { Dotted, ViewToggle } from '../bits'
+import { useCardView } from '../useCardView'
 import { dropText } from '../deltas'
 import { countNoun, funnelPrompts, funnelStep, percent } from '../model'
 import type { ResultsDrills } from './drills'
@@ -39,7 +40,7 @@ export function FunnelCard({
   results: PageResults
   drills: ResultsDrills
 }): JSX.Element {
-  const [view, setView] = useState<'chart' | 'table'>('chart')
+  const [view, setView] = useCardView('funnel')
   const domain = drills.scope.domain
   const total = funnelStep(results, 'checked')?.count ?? results.scope.promptCount
   return (

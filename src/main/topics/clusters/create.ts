@@ -62,7 +62,7 @@ export function createTopics(
                 targetPageId: target.id,
                 targetUrl: target.url,
                 matchStatus: 'suggested',
-                matchReason: 'Claude suggested this page for the topic.'
+                matchReason: 'CiteFox AI suggested this page for the topic.'
               }
         )
       }

@@ -314,13 +314,13 @@ export async function runAutopilot(
     const topics = createTopicsService(host, deps.checks, (event: TopicProgress) => {
       if (event.step === 'journey_questions' && event.total > 0) {
         tracker.update('questions', {
-          detail: `${Math.min(event.done, event.total)} of ${event.total} · Claude`,
+          detail: `${Math.min(event.done, event.total)} of ${event.total} · CiteFox AI`,
           progress: { done: event.done, total: event.total }
         })
       }
     })
     try {
-      tracker.start('profile', 'Claude')
+      tracker.start('profile', 'CiteFox AI')
       draft = await createTopicDraft(topics, projectId, seed, best?.productId ?? null)
       hooks.onDraft(draft.id)
       draft = await feedDraftBeforeProfile(topics, draft, rivals, await hooks.edits())
@@ -335,7 +335,7 @@ export async function runAutopilot(
       checkpoint()
 
       draft = await feedProfileEdits(topics, draft, await hooks.edits())
-      tracker.start('questions', `0 of ${START_QUESTION_COUNT} · Claude`)
+      tracker.start('questions', `0 of ${START_QUESTION_COUNT} · CiteFox AI`)
       tracker.update('questions', { label: `Draft ${START_QUESTION_COUNT} buyer questions` })
       draft = await topics['topics:generateQuestions']({ projectId, draftId: draft.id })
       const questionTexts = includedQuestions(draft).map((prompt) => prompt.text)
@@ -364,7 +364,7 @@ export async function runAutopilot(
       tracker.finish(
         'questions',
         'ok',
-        `${questionTexts.length} written · Claude${rewrote > 0 ? ` · ${rewrote} rewritten with your change` : ''}`
+        `${questionTexts.length} written · CiteFox AI${rewrote > 0 ? ` · ${rewrote} rewritten with your change` : ''}`
       )
       checkpoint()
 

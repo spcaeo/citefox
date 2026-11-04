@@ -1,8 +1,9 @@
-import { Fragment, useMemo, useState, type JSX } from 'react'
+import { Fragment, useMemo, type JSX } from 'react'
 import type { OpportunityBucket, OpportunityBucketId, PageResults } from '@shared/domain'
 import { DrillButton, DrillFigure, DrillLink, DrillNumber, type PromptDrill } from '../../drill'
 import { ListGrid, SectionHead, type ListColumn } from '../../ui'
 import { Dotted, ViewToggle } from '../bits'
+import { useCardView } from '../useCardView'
 import { bucketLabel, bucketSentence, promptNumberLabel, rowsFor } from '../model'
 import type { ResultsDrills } from './drills'
 import { pluralize } from '@shared/pluralize'
@@ -52,7 +53,7 @@ export function OpportunitiesCard({
   drills: ResultsDrills
   aio: number
 }): JSX.Element {
-  const [view, setView] = useState<'chart' | 'table'>('chart')
+  const [view, setView] = useCardView('buckets')
   const { domain, brand } = drills.scope
   const ugc = drills.get('ugc')
   const overlayRows = rowsFor(results, results.ugcOverlay.promptIds).sort(

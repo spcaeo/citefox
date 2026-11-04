@@ -5,6 +5,7 @@ import {
   type ReviewReport,
   type ReviewSectionId
 } from '@shared/report/review'
+import { copyText } from '../../../components/clipboard'
 import { ToolButton } from '../../../ui'
 import { ReportLink, ReportPage, ReportSite, ReportText } from '../copyCells'
 import { Fig } from '../Figures'
@@ -131,11 +132,10 @@ export function BacklinksSection({
   const { rows, first } = report.backlinks
   const [copied, setCopied] = useState<string | null>(null)
   async function copy(text: string, note: string): Promise<void> {
-    try {
-      await navigator.clipboard.writeText(text)
+    if (await copyText(text)) {
       setCopied(note)
       window.setTimeout(() => setCopied(null), 1800)
-    } catch {
+    } else {
       setCopied(null)
     }
   }

@@ -47,7 +47,7 @@ describe('Pages step', () => {
     const grid = screen.getByRole('grid', { name: 'Target pages for questions' })
     expect(within(grid).getByRole('button', { name: 'High match' })).toBeTruthy()
     expect(within(grid).getByRole('button', { name: 'No page yet' })).toBeTruthy()
-    expect(await screen.findByText('Sitemap read Oct 19')).toBeTruthy()
+    expect(await screen.findByText('Sitemap read Oct 19, 9:00 AM')).toBeTruthy()
     expect(screen.getByText(/have a target page · \d+ no page yet/)).toBeTruthy()
     expect(await axeViolations(view.container)).toEqual([])
   })

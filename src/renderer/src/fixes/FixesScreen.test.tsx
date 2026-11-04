@@ -159,7 +159,7 @@ describe('Fixes screen: Fix log (?view=log)', () => {
     expect(text.indexOf('Open')).toBeLessThan(text.indexOf('Checking'))
     expect(text.indexOf('Checking')).toBeLessThan(text.indexOf('Done'))
     expect(within(grid).getByText('per-message').tagName).toBe('STRONG')
-    expect(within(grid).getByText('Follow-up check planned for Oct 24')).toBeTruthy()
+    expect(within(grid).getByText('Follow-up check planned for Oct 24, 12:00 PM')).toBeTruthy()
     expect(within(grid).getByText('Follow-up check running')).toBeTruthy()
     expect(grid.textContent).toContain('Partly worked · 1 of 3 questions')
     expect(within(grid).getAllByText('/pricing/').length).toBe(2)

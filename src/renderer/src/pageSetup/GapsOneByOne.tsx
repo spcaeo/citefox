@@ -22,7 +22,7 @@ import { gapTarget } from './gapsDrills'
 import { findingSourceLabel, gapItemId } from './gapsFilter'
 import { actionsLabel, coverageLabel } from './labels'
 import type { GapListRow } from './model'
-import { copyText } from './text'
+import { copyText } from '../components/clipboard'
 
 /**
  * One by one: each prompt's current content, what to update and the draft

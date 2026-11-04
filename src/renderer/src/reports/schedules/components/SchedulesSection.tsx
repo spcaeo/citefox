@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type JSX } from 'react'
+import { useEffect, useMemo, useRef, type JSX } from 'react'
 import { AiSelection } from '../../../assistant/context/AiSelection'
 import { askColumn } from '../../../assistant/sparkle/askColumn'
 import { useDrill, type ItemDrill } from '../../../drill'
@@ -14,6 +14,7 @@ import {
 } from '../../../ui'
 import { Switch } from '../../bits'
 import { scheduleShowingLine, type ScheduleRow } from '../../scheduleModel'
+import { useQueryChoice } from '../../../utils/queryState'
 import { schedulesCsv } from '../utils/csv'
 import { scheduleText, scheduleValue } from '../utils/gridRows'
 import { CsvButton } from './CsvButton'
@@ -34,6 +35,9 @@ export interface ScheduleOpeners {
 }
 
 type StatusFilter = 'all' | 'on' | 'off' | 'failed'
+
+/** The status filter is `?sf=` in the route; All has none. */
+const STATUS_FILTERS: readonly StatusFilter[] = ['all', 'on', 'off', 'failed']
 
 function passes(row: ScheduleRow, filter: StatusFilter): boolean {
   switch (filter) {
@@ -103,7 +107,7 @@ export function SchedulesSection({
 }): JSX.Element {
   const drill = useDrill()
   const sectionRef = useRef<HTMLDivElement>(null)
-  const [filter, setFilter] = useState<StatusFilter>('all')
+  const [filter, setFilter] = useQueryChoice('sf', STATUS_FILTERS, 'all')
   const handlers = useRef({
     open,
     drill: drill.open,
@@ -418,6 +422,7 @@ export function SchedulesSection({
         </p>
       ) : null}
       <ListGrid<ScheduleRow>
+        urlKey="rsch"
         label="Schedules"
         noun={['schedule', 'schedules']}
         rows={shown}

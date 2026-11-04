@@ -153,6 +153,7 @@ export function GroupsView({
         />
       ) : null}
       <ListGrid
+        urlKey="grp"
         label="Groups"
         noun={['group', 'groups']}
         rows={view.groups}

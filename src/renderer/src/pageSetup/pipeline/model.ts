@@ -1,4 +1,5 @@
 import type { PagePipeline, PagePipelineStepId } from '@shared/ipc'
+import { formatClock } from '../../utils/dates'
 
 /** "42 s", "3 min 05 s", "1 h 02 min". Never negative. */
 export function elapsedLabel(startMs: number, nowMs: number): string {
@@ -37,12 +38,9 @@ export function waitingLine(step: PagePipelineStepId): string {
   return WAITING[step]
 }
 
-/** "Next try at 14:20 · attempt 2 of 4". */
+/** "Next try at 2:20 PM · attempt 2 of 4", on the computer's own clock. */
 export function retryLabel(retryAt: string, attempts: number): string {
-  const at = new Date(retryAt)
-  const time = Number.isNaN(at.getTime())
-    ? ''
-    : at.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+  const time = Number.isNaN(new Date(retryAt).getTime()) ? '' : formatClock(retryAt)
   return `Next try ${time === '' ? 'soon' : `at ${time}`} · attempt ${attempts + 1} of 4`
 }
 

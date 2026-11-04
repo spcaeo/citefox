@@ -75,6 +75,30 @@ describe('SetupChrome', () => {
     }
   })
 
+  it('shows a plain notice above the page only when it is given', () => {
+    const none = renderChrome('site')
+    expect(none.queryByTestId('ob-save-notice')).toBeNull()
+    none.unmount()
+    const { getByTestId } = render(
+      <BuildToolsHost client={BUILD_CLIENT}>
+        <SetupChrome
+          view="site"
+          draft={readDraft()}
+          progress={PROGRESS}
+          announcement=""
+          announcementLog={[]}
+          onWelcome={() => undefined}
+          onStep={() => undefined}
+          client={{ updateSettings }}
+          notice="Your answers could not be saved."
+        >
+          <p>Body</p>
+        </SetupChrome>
+      </BuildToolsHost>
+    )
+    expect(getByTestId('ob-save-notice').textContent).toBe('Your answers could not be saved.')
+  })
+
   it('shows the 9-step stepper with done steps as buttons back to that step', async () => {
     const onStep = vi.fn()
     const view = renderChrome('brand', readDraft(), onStep)

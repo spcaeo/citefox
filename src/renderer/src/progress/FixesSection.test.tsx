@@ -57,7 +57,7 @@ describe('Fixes and what happened (FR-14.5 to FR-14.7)', () => {
     expect(within(grid).getByText('Fix 2')).toBeTruthy()
     const second = view.getByRole('article', { name: /Fix 2 · Add a \*\*Verizon\*\* FAQ/ })
     expect(within(second).getByText('Verizon').tagName).toBe('STRONG')
-    expect(within(second).getByText(/follow-up check planned for Oct 24/)).toBeTruthy()
+    expect(within(second).getByText(/follow-up check planned for Oct 24, 12:00 PM/)).toBeTruthy()
     expect(within(second).getByRole('button', { name: 'Run follow-up now' })).toBeTruthy()
 
     fireEvent.click(within(grid).getByText('Fix 1'))
@@ -65,9 +65,11 @@ describe('Fixes and what happened (FR-14.5 to FR-14.7)', () => {
     expect(first.id).toBe('fix-1')
     expect(first.textContent).toContain('Partly worked · 1 of 3 questions')
     expect(first.textContent).toContain(
-      'Live Oct 8 · targets questions 4, 6 and 9 · checked Oct 19, 11 days later · 🇺🇸 US · EN'
+      'Live Oct 8, 12:00 PM · targets questions 4, 6 and 9 · checked Oct 19, 12:00 PM, 11 days later · 🇺🇸 US · EN'
     )
-    expect(within(first).getByRole('columnheader', { name: 'Before · Oct 5' })).toBeTruthy()
+    expect(
+      within(first).getByRole('columnheader', { name: 'Before · Oct 5, 12:00 PM' })
+    ).toBeTruthy()
     const worked = within(first).getByRole('link', { name: /^Worked: question 6/ })
     expect(worked.getAttribute('href')).toContain('/prompt/p6?market=mkt-us&run=')
     expect(first.textContent).toContain('3 of the 7 questions you didn’t target also moved')
@@ -75,16 +77,30 @@ describe('Fixes and what happened (FR-14.5 to FR-14.7)', () => {
 
     const filters = view.getByRole('group', { name: 'Show fixes by result' })
     fireEvent.click(within(filters).getByRole('button', { name: /^Got worse/ }))
-    expect(view.getByText('Showing 1 of 5 targeted questions · Got worse')).toBeTruthy()
+    // The filter is on the URL, so a copied link opens the same list.
+    await waitFor(() => expect(window.location.hash).toContain('fixes=got_worse'))
+    expect(await view.findByText('Showing 1 of 5 targeted questions · Got worse')).toBeTruthy()
     expect(within(grid).queryByText('Fix 2')).toBeNull()
     const rows = within(view.getByRole('article', { name: /Fix 1/ })).getAllByRole('row')
     expect(rows).toHaveLength(2)
     fireEvent.click(within(filters).getByRole('button', { name: /^Planned/ }))
-    expect(view.queryByRole('article', { name: /Fix 1/ })).toBeNull()
+    await waitFor(() => expect(view.queryByRole('article', { name: /Fix 1/ })).toBeNull())
     expect(view.getByRole('article', { name: /Fix 2/ })).toBeTruthy()
 
     const results = await axe.run(view.container, PAGE_RULES)
     expect(results.violations).toEqual([])
+  })
+
+  it('opens on the result filter named in the link', async () => {
+    window.location.hash = '#/pages/p1/progress?view=fixes&fixes=planned'
+    const planned = fix({ id: 'fix-2', number: 2, status: 'planned', verdict: null })
+    const view = renderSection(fakeSource({ fixes: [fix(), planned] }))
+    const filters = await view.findByRole('group', { name: 'Show fixes by result' })
+    expect(
+      within(filters)
+        .getByRole('button', { name: /^Planned/ })
+        .getAttribute('aria-pressed')
+    ).toBe('true')
   })
 
   it('Log a fix opens the fix drawer on this page, and picks the fix it saves', async () => {
@@ -109,7 +125,7 @@ describe('Fixes and what happened (FR-14.5 to FR-14.7)', () => {
       marketIds: ['mkt-us']
     })
     closeDrawer(0, 'fix-new')
-    expect(await view.findByText('Saved Fix 3 · follow-up check Oct 28')).toBeTruthy()
+    expect(await view.findByText('Saved Fix 3 · follow-up check Oct 28, 12:00 PM')).toBeTruthy()
     expect(view.getByRole('article', { name: /Fix 3/ })).toBeTruthy()
   })
 

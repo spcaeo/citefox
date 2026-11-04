@@ -308,14 +308,14 @@ describe('IPC handlers: onboarding v2 sections', () => {
     expect(shown.prompt).not.toMatch(/Site paths/u)
   })
 
-  test('sectionRun: an empty reply says Claude found nothing new, not the paste advice', async () => {
+  test('sectionRun: an empty reply says CiteFox AI found nothing new, not the paste advice', async () => {
     const claude = sectionClaude(() => 'name,job,url')
     const { handlers } = harness({ claude, readWebsitePage: async () => null })
     const result = await handlers['onboarding:sectionRun'](
       runRequest({ section: 'products', mode: 'more' })
     )
     expect(result.rows).toEqual([])
-    expect(result.warnings).toEqual(['Claude found nothing new to add.'])
+    expect(result.warnings).toEqual(['CiteFox AI found nothing new to add.'])
     const pasted = await handlers['onboarding:sectionRead']({
       section: 'products',
       context: textboltContext(),

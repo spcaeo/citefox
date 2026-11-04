@@ -1,7 +1,7 @@
 import type { JSX } from 'react'
 import type { MarketCheckMetrics } from '@shared/domain'
 import { DrillNumber, type PromptDrill } from '../drill'
-import { formatMonthDay } from './model'
+import { formatMoment } from './model'
 
 /**
  * The Overview.dc.html summary sentence, built from the run's own counts.
@@ -18,7 +18,7 @@ export function RunHeadline({
   /** Results drills by id. Absent: the numbers are plain text. */
   drill?: (id: string) => PromptDrill | null
 }): JSX.Element {
-  const day = formatMonthDay(run.finishedAt ?? run.startedAt)
+  const day = formatMoment(run.finishedAt ?? run.startedAt)
   function figure(id: string, value: number, label: string): JSX.Element {
     const found = drill?.(id) ?? null
     if (!found || found.rows.length !== value) return <>{value}</>

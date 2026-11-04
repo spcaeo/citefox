@@ -5,7 +5,7 @@ import { useChartFixes } from '../../fixes/hooks/useChartFixes'
 import { openChartEvent } from '../../pageChanges/actions'
 import { usePageChangeEvents } from '../../pageChanges/hooks'
 import { ChartHeadline, countTicks, TrendChart } from '../../ui'
-import { formatDay } from '../../utils/dates'
+import { formatMoment } from '../../utils/dates'
 import type { BoardWidget } from '@shared/summary-board'
 import { metricScope, scopeKey, useWidgetMetrics, type WidgetEnv } from './env'
 import { engineWords, metricRowsDrill, widgetScope } from './metricDrills'
@@ -64,7 +64,7 @@ export function MetricTrend({
           step.cited,
           {
             id: `w:trend:${widget.engine}:${opaqueId(scopeKey(scope))}:${opaqueId(step.key)}`,
-            title: `Cited ${words} at the check of ${formatDay(step.at, { year: false })}`,
+            title: `Cited ${words} at the check of ${formatMoment(step.at)}`,
             description: `Questions whose latest answer ${words} by that check cites you.`
           },
           drillScope
@@ -120,7 +120,7 @@ export function MetricTrend({
             delta === null
               ? null
               : {
-                  text: `${delta > 0 ? '+' : delta < 0 ? '−' : ''}${Math.abs(delta)} since ${formatDay(first?.at ?? null, { year: false })}`,
+                  text: `${delta > 0 ? '+' : delta < 0 ? '−' : ''}${Math.abs(delta)} since ${formatMoment(first?.at ?? null)}`,
                   direction: delta > 0 ? 'up' : delta < 0 ? 'down' : 'flat'
                 }
           }
@@ -144,7 +144,7 @@ export function MetricTrend({
           height={widget.size === 'm' ? 110 : 150}
           events={events}
           onOpenEvent={openChartEvent}
-          readoutTitle={(_key, at) => `Check of ${formatDay(at, { year: false })}`}
+          readoutTitle={(_key, at) => `Check of ${formatMoment(at)}`}
           readout={(key) => {
             const step = steps.find((item) => item.key === key)
             if (!step) return null
@@ -165,7 +165,7 @@ export function MetricTrend({
                 type="button"
                 className="ov-point"
                 style={{ left: x, top: y }}
-                aria-label={`Check of ${formatDay(point.at, { year: false })}: ${drill.items.length} cited. Open them`}
+                aria-label={`Check of ${formatMoment(point.at)}: ${drill.items.length} cited. Open them`}
                 data-nfr-drill={drill.id}
                 data-drill-open=""
                 onFocus={onFocus}

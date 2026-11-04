@@ -243,6 +243,8 @@ const [tab, setTab] = useQueryState('tab', { history: 'push' })
 const [picked, setPicked] = useQueryList('pick')   // a comma list
 const [sort, setSort] = useQuerySort('sort')       // key:dir,key:dir
 const grid = useGridQueryState('drill')            // drill.q, drill.f, drill.sort, drill.pick
+const [show, setShow] = useQueryChoice('show', ['all', 'todo', 'ready'], 'all')  // one choice; the default has no value
+const [sort, setSort] = useQuerySortChoice('csort', ['rank', 'domain'])   // a { key, down } table sort
 <ListGrid {...grid.listProps} … />
 ```
 

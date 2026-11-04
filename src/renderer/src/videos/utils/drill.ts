@@ -1,7 +1,8 @@
 import type { CommunityAio, Market, PromptCheckStatus, VideoIdea } from '@shared/domain'
 import type { DrillItem, DrillScope, DrillTarget, ItemDrill } from '../../drill'
 import type { AioDrill } from '../types'
-import { formatDate, marketName, statusLabel } from './model'
+import { formatMoment } from '../../utils/dates'
+import { marketName, statusLabel } from './model'
 
 /** Drawer requests over the screen's answers. */
 export interface VideoDrills {
@@ -69,7 +70,7 @@ function aioItem(aio: CommunityAio, markets: readonly Market[]): DrillItem {
     cells: {
       market: marketName(markets, aio.marketId),
       status: `${statusLabel(aio.status)}${aio.named === true && aio.status !== 'brand_mentioned' ? ' · named' : ''}`,
-      checked: formatDate(aio.checkedAt)
+      checked: formatMoment(aio.checkedAt)
     },
     detail: aio.text.trim() !== '' && aio.text !== label ? `> ${aio.text}` : null,
     group: groupOf(aio.status)

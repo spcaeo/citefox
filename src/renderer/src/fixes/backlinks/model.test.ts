@@ -56,7 +56,7 @@ describe('Backlink ask list model', () => {
       ALERTS_URL,
       '=HYPERLINK("https://evil.test","x")',
       'Rewrite',
-      'Oct 8, 2026',
+      'Oct 8, 9:00 AM',
       'Indexed',
       'Lost ground'
     ])

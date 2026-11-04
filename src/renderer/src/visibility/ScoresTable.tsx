@@ -3,7 +3,7 @@ import { pluralize } from '@shared/pluralize'
 import { LINK_COUNT_LABELS } from '@shared/report-copy'
 import { Markdown } from '../components/Markdown'
 import { DrillNumber, ownLinksDrill } from '../drill'
-import { formatMonthDay } from '../m3/model'
+import { formatMoment, formatWhen } from '../m3/model'
 import { ListGrid, type ListColumn } from '../ui'
 import { checkedIds, overviewIds, runScope } from './progressDrills'
 import { FixJump, RunDrillButton, RunFigure } from './progressRuns'
@@ -40,9 +40,9 @@ export function ScoresTable({
     {
       id: 'date',
       label: 'Date',
-      width: 80,
+      width: 130,
       sort: (row) => row.at,
-      render: (row) => formatMonthDay(row.at)
+      render: (row) => formatWhen(row.at)
     },
     {
       id: 'event',
@@ -118,7 +118,7 @@ export function ScoresTable({
         noun={['row', 'rows']}
         rows={rows}
         rowKey={(row) => row.id}
-        rowLabel={(row) => `${formatMonthDay(row.at)} · ${row.event}`}
+        rowLabel={(row) => `${formatWhen(row.at)} · ${row.event}`}
         columns={columns}
         pageSize="all"
         // NFR-14: a check row whose parts add up is one chart row of its own.
@@ -144,7 +144,7 @@ interface CheckCells {
 function checkCells(runs: ProgressRuns, bar: TrendBar): CheckCells | null {
   const results = runs.cached(runs.marketId, bar.runId)
   if (!results) return null
-  const day = formatMonthDay(bar.finishedAt)
+  const day = formatMoment(bar.finishedAt)
   const marketId = runs.marketId
   const button = (
     id: string,

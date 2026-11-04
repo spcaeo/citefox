@@ -8,6 +8,7 @@ import {
   type ReviewLens,
   type ReviewReport
 } from '@shared/report/review'
+import { copyText } from '../../../components/clipboard'
 import { SegmentedControl, ToolButton } from '../../../ui'
 import {
   FunnelChart,
@@ -186,13 +187,9 @@ export function NotIndexedSection({
   const rows = report.notIndexed.rows
   const [copied, setCopied] = useState(false)
   async function copyAll(): Promise<void> {
-    try {
-      await navigator.clipboard.writeText(rows.map((row) => row.url).join('\n'))
-      setCopied(true)
-      window.setTimeout(() => setCopied(false), 1800)
-    } catch {
-      setCopied(false)
-    }
+    const ok = await copyText(rows.map((row) => row.url).join('\n'))
+    setCopied(ok)
+    if (ok) window.setTimeout(() => setCopied(false), 1800)
   }
   return (
     <div className="rv-stack">

@@ -61,9 +61,9 @@ import {
 import { hostOf, normalizeUrl } from './checks/url'
 
 const NO_MARKET = 'No default market is set. No search was sent.'
-const NO_KEY = 'No SerpApi key is turned on. No search was sent.'
+const NO_KEY = 'No search key is turned on. No search was sent.'
 const EMPTY_PROMPT = 'Enter a prompt to check. No search was sent.'
-const KEYS_OUT = 'Every SerpApi key is out of searches. No search was sent.'
+const KEYS_OUT = 'Every search key is out of searches. No search was sent.'
 const OVER_CAP = "This search would pass the project's search cap. No search was sent."
 
 /** What the playground check needs from the engine host. */

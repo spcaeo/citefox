@@ -637,7 +637,7 @@ export function createSetupRunner(deps: SetupRunnerDeps): SetupRunner {
         lastError: outcome.halt.message,
         nextStep:
           outcome.halt.rule === 'ask'
-            ? 'Answer the Claude notice, or switch to an API key in Project settings.'
+            ? 'Answer the AI notice, or switch to an API key in Project settings.'
             : 'Nothing to do now. CiteFox tries again by itself.',
         finishedAt: null
       })

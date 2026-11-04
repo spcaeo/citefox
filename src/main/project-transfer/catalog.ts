@@ -86,7 +86,7 @@ export const TABLE_POLICIES: readonly TablePolicy[] = [
   {
     ...SETTINGS_ROW,
     table: 'project_options',
-    noun: 'Claude and sample setting',
+    noun: 'AI and sample setting',
     local: { claude_key_id: null, claude_fallback_key_id: null }
   },
   {
@@ -280,7 +280,7 @@ export const TABLE_POLICIES: readonly TablePolicy[] = [
   },
   { table: 'engine_sources', section: 'results', noun: 'engine source' },
   { table: 'overview_reads', section: 'results', noun: 'overview reading' },
-  { table: 'generations', section: 'results', noun: 'Claude run' },
+  { table: 'generations', section: 'results', noun: 'CiteFox AI run' },
   { table: 'analyses', section: 'results', noun: 'analysis' },
   { table: 'coverage_runs', section: 'results', noun: 'content gap run' },
   { table: 'coverage_rows', section: 'results', noun: 'content gap row' },

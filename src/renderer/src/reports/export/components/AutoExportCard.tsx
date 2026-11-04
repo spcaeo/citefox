@@ -2,6 +2,7 @@ import type { JSX } from 'react'
 import type { AutoExportRun, ExportFormat } from '@shared/domain'
 import { formatMoment } from '../../../utils/dates'
 import { sectionHash } from '../../../shell/routes'
+import { CopyText } from '../../../ui'
 import { Switch } from '../../bits'
 import type { AutoExportState } from '../hooks/useAutoExport'
 import { formatBytes, type ExportForm } from '../model'
@@ -66,12 +67,11 @@ export function AutoExportCard({
             <div className="field">
               <span className="field-label">Folder</span>
               <div className="xpt-folder">
-                <span
-                  className={folder ? 'mono xpt-folder-path' : 'muted'}
-                  title={folder ?? undefined}
-                >
-                  {folder ?? 'No folder chosen yet'}
-                </span>
+                {folder ? (
+                  <CopyText text={folder} className="xpt-folder-path" wrap />
+                ) : (
+                  <span className="muted">No folder chosen yet</span>
+                )}
                 <button
                   type="button"
                   className="ui-btn ui-btn-secondary ui-btn-sm"
@@ -137,7 +137,7 @@ function LastRun({ run }: { run: AutoExportRun }): JSX.Element {
   const when = formatMoment(run.finishedAt)
   return run.outcome === 'ok' ? (
     <p className="xpt-ok" data-testid="auto-last">
-      Last export {when}: <span className="mono">{run.filename}</span>
+      Last export {when}: {run.filename ? <CopyText text={run.filename} /> : null}
     </p>
   ) : (
     <p className="xpt-warn" data-testid="auto-last">
@@ -163,11 +163,15 @@ function RunHistory({ runs }: { runs: readonly AutoExportRun[] }): JSX.Element {
           {runs.map((run) => (
             <tr key={run.id}>
               <td>{formatMoment(run.finishedAt)}</td>
-              <td className="mono">{run.filename ?? '—'}</td>
+              <td>{run.filename ? <CopyText text={run.filename} /> : '—'}</td>
               <td className={run.outcome === 'ok' ? 'xpt-ok' : 'xpt-warn'}>
-                {run.outcome === 'ok'
-                  ? `Saved${run.bytes !== null ? ` · ${formatBytes(run.bytes)}` : ''}`
-                  : (run.reason ?? 'Failed')}
+                {run.outcome === 'ok' ? (
+                  `Saved${run.bytes !== null ? ` · ${formatBytes(run.bytes)}` : ''}`
+                ) : run.reason ? (
+                  <CopyText text={run.reason} className="xpt-reason" wrap />
+                ) : (
+                  'Failed'
+                )}
               </td>
             </tr>
           ))}

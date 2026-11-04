@@ -268,6 +268,11 @@
     font-size: var(--fs-small);
   }
 
+  .drill-copy-mono .ui-url-value {
+    font-family: var(--font-code);
+    font-size: var(--fs-small);
+  }
+
   .drill-secondary {
     color: var(--ink-3);
     font-size: var(--fs-small);

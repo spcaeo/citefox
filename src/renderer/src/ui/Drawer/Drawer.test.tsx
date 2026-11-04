@@ -221,6 +221,8 @@ describe('Drawer', () => {
       </Drawer>
     )
     expect(screen.getByRole('alert').textContent).toContain('Could not compare.')
+    // An error message is a value someone may paste into a report: it has Copy.
+    expect(screen.getByRole('button', { name: 'Copy Could not compare.' })).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
     expect(retry).toHaveBeenCalled()
   })

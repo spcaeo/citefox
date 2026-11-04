@@ -1,4 +1,5 @@
 import type { HistorySubject, ProjectCheck, ProjectHistory } from '@shared/ipc'
+import { formatMoment } from '@shared/moment'
 import { allowedNumbers, sentences, unknownNumbers } from '../../assistant/numbers'
 import { buildProjectHistory } from '../../engine/progress/project-history'
 import {
@@ -78,13 +79,9 @@ function directionOf(
   return delta > 0 ? 'better' : delta < 0 ? 'worse' : 'same'
 }
 
+/** "Oct 19, 2026, 3:12 PM" in the computer's zone and clock: a check always shows its time. */
 function day(iso: string): string {
-  return new Date(iso).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'UTC'
-  })
+  return formatMoment(iso, { year: true })
 }
 
 function signed(value: number): string {

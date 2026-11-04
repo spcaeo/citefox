@@ -1,5 +1,6 @@
 import type { JSX, ReactNode } from 'react'
 import { Button } from '../ui/Button'
+import { CopyText } from '../ui/CopyText'
 import { EmptyState } from '../ui/EmptyState'
 import { cleanErrorMessage } from './errorText'
 
@@ -36,7 +37,7 @@ export function LoadError({
         icon="warning"
         title={title}
         level={level}
-        body={detail && detail !== title ? detail : undefined}
+        body={detail && detail !== title ? <CopyText text={detail} wrap /> : undefined}
         action={
           onRetry || children ? (
             <>

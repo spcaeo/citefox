@@ -2,10 +2,11 @@ import { useState, type JSX } from 'react'
 import type { LoggedFix, Market } from '@shared/domain'
 import { pluralize } from '@shared/pluralize'
 import { Markdown } from '../components/Markdown'
-import { formatMonthDay } from '../m3/model'
+import { formatWhen } from '../m3/model'
 import { newFixValues } from '../fixes/drawer/model'
 import { openDrawer } from '../shell/drawers'
 import { navigateHash, runningHash } from '../shell/routes'
+import { useQueryChoice } from '../utils/queryState'
 import { Button, EmptyState, ListGrid, SectionHead, type ListColumn } from '../ui'
 import type { ProgressAssists } from './assists'
 import type { FixesSource } from './client'
@@ -24,6 +25,8 @@ import {
 } from './model'
 import type { FixesState } from './useFixes'
 import './progress.css'
+
+const FIX_FILTER_IDS: readonly FixFilter[] = FIX_FILTERS.map((item) => item.id)
 
 /**
  * "Fixes and what happened" (FR-14.5 to FR-14.7, Mockups/Progress.dc.html) in
@@ -57,7 +60,8 @@ export function FixesSection({
   selected?: number | null
   onSelect?: (number: number) => void
 }): JSX.Element {
-  const [filter, setFilter] = useState<FixFilter>('all')
+  // The result filter is `?fixes=<result>`; All has none.
+  const [filter, setFilter] = useQueryChoice('fixes', FIX_FILTER_IDS, 'all')
   const [picked, setPicked] = useState<number | null>(null)
   const [busy, setBusy] = useState(false)
   const [notice, setNotice] = useState<string | null>(null)
@@ -155,7 +159,7 @@ export function FixesSection({
       label: 'Goes live',
       width: 104,
       sort: (fix) => fix.goLiveAt,
-      render: (fix) => formatMonthDay(fix.goLiveAt)
+      render: (fix) => formatWhen(fix.goLiveAt)
     },
     {
       id: 'targets',

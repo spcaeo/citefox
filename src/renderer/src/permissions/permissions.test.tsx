@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-import { cleanup, fireEvent, render } from '@testing-library/react'
+import { cleanup, fireEvent, render, waitFor } from '@testing-library/react'
 import type { JSX, ReactNode } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createMockOnboardingClient, type MockScenario } from '../onboarding/mockClient'
@@ -10,7 +10,10 @@ import { PermissionsPanel } from './PermissionsPanel'
 import { PermissionsProvider } from './PermissionsProvider'
 import { PermissionsScreen } from './PermissionsScreen'
 
-afterEach(cleanup)
+afterEach(() => {
+  cleanup()
+  window.history.replaceState(null, '', '#/')
+})
 
 /** The onboarding mock and the permissions mock on top of it: no OS, no IPC. */
 function setup(scenario: MockScenario = 'success'): {
@@ -106,5 +109,35 @@ describe('Settings › What CiteFox needs', () => {
     await view.findByText(/Before you continue/)
     fireEvent.click(view.getByRole('button', { name: 'Continue' }))
     await view.findAllByText('CiteFox now opens at login.')
+  })
+
+  it('keeps the Show filter in the URL and opens it from a link', async () => {
+    window.history.replaceState(null, '', '#/permissions/loginItem')
+    const { wrap } = setup()
+    const navigate = vi.fn()
+    const first = render(wrap(<PermissionsScreen focusId="loginItem" navigate={navigate} />))
+    await first.findByRole('heading', { name: 'Open at login', level: 2 })
+    fireEvent.click(first.getByRole('button', { name: 'Ready' }))
+    await waitFor(() => expect(window.location.hash).toBe('#/permissions/loginItem?show=ready'))
+    fireEvent.click(first.getByRole('button', { name: 'All' }))
+    await waitFor(() => expect(window.location.hash).toBe('#/permissions/loginItem'))
+    cleanup()
+    window.history.replaceState(null, '', '#/permissions/loginItem?show=todo')
+    const again = render(wrap(<PermissionsScreen focusId="loginItem" navigate={navigate} />))
+    await again.findByRole('heading', { name: 'Open at login', level: 2 })
+    expect(again.getByRole('button', { name: 'Needs a step' }).getAttribute('aria-pressed')).toBe(
+      'true'
+    )
+  })
+
+  it('keeps the grid search and sort on the URL too', async () => {
+    window.history.replaceState(null, '', '#/permissions/loginItem')
+    const { wrap } = setup()
+    const view = render(wrap(<PermissionsScreen focusId="loginItem" navigate={vi.fn()} />))
+    await view.findByRole('heading', { name: 'Open at login', level: 2 })
+    fireEvent.change(view.getByRole('searchbox'), { target: { value: 'login' } })
+    expect(window.location.hash).toBe('#/permissions/loginItem?perm.q=login')
+    fireEvent.change(view.getByRole('searchbox'), { target: { value: '' } })
+    expect(window.location.hash).toBe('#/permissions/loginItem')
   })
 })

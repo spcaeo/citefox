@@ -173,6 +173,7 @@ export function ThemesTable({
   return (
     <>
       <ListGrid
+        urlKey="themes"
         label="Themes table"
         noun={['theme', 'themes']}
         rows={rows}

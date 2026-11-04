@@ -2,6 +2,7 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterAll, beforeAll, describe, expect, test } from 'vitest'
+import { formatMoment, formatWhen } from '@shared/moment'
 import type { AssistRunRequest } from '@shared/ipc'
 import {
   buildFixLoopStory,
@@ -187,10 +188,14 @@ describe('fixes.recoveryPlan', () => {
     const result = await runAssist(seed.host, request('fixes.recoveryPlan'))
     const prompt = claude.requests[before]?.prompt ?? ''
     expect(prompt.startsWith('Assist: fixes.recoveryPlan\n')).toBe(true)
-    expect(prompt).toContain(`Older check: ${seed.daysAgo(18).slice(0, 10)}, cited for 5 of 6`)
-    expect(prompt).toContain(`Latest check: ${seed.daysAgo(4).slice(0, 10)}, cited for 1 of 6`)
     expect(prompt).toContain(
-      `Change logged between the two checks: Rewrite, live ${seed.daysAgo(15).slice(0, 10)}: Rewrote the guide as a short platform list.`
+      `Older check: ${formatMoment(seed.daysAgo(18), { year: true })}, cited for 5 of 6`
+    )
+    expect(prompt).toContain(
+      `Latest check: ${formatMoment(seed.daysAgo(4), { year: true })}, cited for 1 of 6`
+    )
+    expect(prompt).toContain(
+      `Change logged between the two checks: Rewrite, live ${formatWhen(seed.daysAgo(15), { year: true })}: Rewrote the guide as a short platform list.`
     )
     expect(prompt).toContain('Stage comparison:')
     expect(prompt).toContain('now cites another tracked page: https://textbolt.com/pricing/')

@@ -198,9 +198,9 @@ function stepDetail(
 
 const RUNNING_COPY: Readonly<Record<SetupRunStep, string>> = {
   read: 'Reading the page. No searches.',
-  profile: 'Claude is writing the buyer profile from the page.',
-  prompts: 'Claude is writing the buyer prompts from the buyer profile.',
-  coverage: 'Claude is comparing each prompt with the page for content gaps.'
+  profile: 'CiteFox AI is writing the buyer profile from the page.',
+  prompts: 'CiteFox AI is writing the buyer prompts from the buyer profile.',
+  coverage: 'CiteFox AI is comparing each prompt with the page for content gaps.'
 }
 
 function messageFor(
@@ -220,7 +220,7 @@ function messageFor(
     case 'held':
       if (runtime.hold !== null) return runtime.hold.reason
       if (runtime.paused) return 'Page setup is paused for every page.'
-      return job?.lastError ?? 'Waiting on Claude.'
+      return job?.lastError ?? 'Waiting on CiteFox AI.'
     case 'retrying':
       return `${job?.lastError ?? 'A step failed.'} CiteFox tries again by itself.`
     case 'failed':

@@ -182,7 +182,7 @@ describe('OverviewScreen', () => {
     const compare = view.getByRole('combobox', { name: 'Compare with' })
     expect([...(compare as HTMLSelectElement).options].map((option) => option.text)).toEqual([
       'Previous check',
-      'Oct 8, 2026 check'
+      'Oct 8, 9:00 AM check'
     ])
     fireEvent.change(compare, { target: { value: 'run-5' } })
     await waitFor(() => expect(calls.at(-1)).toEqual({ ...FIRST_CALL, period: '7d', vs: 'run-5' }))

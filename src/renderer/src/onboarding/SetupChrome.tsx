@@ -35,6 +35,7 @@ export function SetupChrome({
   onWelcome,
   onStep,
   client,
+  notice = null,
   children
 }: {
   view: SetupView
@@ -46,6 +47,8 @@ export function SetupChrome({
   onStep: (step: SetupStep) => void
   /** Saves the theme choice. */
   client: Pick<OnboardingClient, 'updateSettings'>
+  /** A plain-words warning shown above the page (for example, answers that could not be saved). */
+  notice?: string | null
   children: ReactNode
 }): JSX.Element {
   const incomplete = SETUP_STEPS.filter((step) => !stepComplete(step, draft, progress))
@@ -90,6 +93,11 @@ export function SetupChrome({
           />
         </nav>
       )}
+      {notice ? (
+        <p className="ob-save-notice" role="status" data-testid="ob-save-notice">
+          {notice}
+        </p>
+      ) : null}
       <main className="ob-screen" id="main" tabIndex={-1}>
         {children}
       </main>

@@ -38,7 +38,7 @@ describe('overview compare model', () => {
         compare: { ...PREVIOUS, vs: 'run-1', mode: 'run', at: '2026-10-05T09:00:00.000Z' },
         diff
       })
-    ).toBe('the Oct 5 check')
+    ).toBe('the Oct 5, 9:00 AM check')
     expect(
       compareLabel({
         compare: { ...PREVIOUS, vs: '2026-10-07', mode: 'day', at: '2026-10-07T23:59:59.999Z' },
@@ -52,8 +52,8 @@ describe('overview compare model', () => {
   it('offers previous, each earlier check, and a day picked in the URL', () => {
     expect(compareOptions(PREVIOUS).map((option) => option.label)).toEqual([
       'Previous check',
-      'Oct 12, 2026 check',
-      'Oct 5, 2026 check'
+      'Oct 12, 9:00 AM check',
+      'Oct 5, 9:00 AM check'
     ])
     const day = {
       ...PREVIOUS,
@@ -101,7 +101,7 @@ describe('overview compare model', () => {
     expect(wasText(9, PREVIOUS, '%')).toBe('was 9%')
     expect(
       wasText(1200, { ...PREVIOUS, mode: 'run', vs: 'run-1', at: '2026-10-05T09:00:00.000Z' })
-    ).toBe('was 1,200 on Oct 5')
+    ).toBe('was 1,200 on Oct 5, 9:00 AM')
     expect(wasText(null, PREVIOUS)).toBeNull()
   })
 })

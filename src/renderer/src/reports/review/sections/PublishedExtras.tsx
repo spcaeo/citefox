@@ -1,4 +1,4 @@
-import { useState, type JSX } from 'react'
+import { useMemo, type JSX } from 'react'
 import {
   PAGE_STATUS_LABELS,
   type DaysRow,
@@ -7,7 +7,8 @@ import {
   type ReviewReport
 } from '@shared/report/review'
 import { SearchBox } from '../../../ui'
-import { formatDay } from '../../../utils/dates'
+import { formatWhen } from '../../../utils/dates'
+import { useQueryState, useQuerySortChoice } from '../../../utils/queryState'
 import { openReportDetail, pageDetail } from '../drill'
 import { ReportPage } from '../copyCells'
 import { Fig } from '../Figures'
@@ -124,6 +125,19 @@ export function DaysTable({ report }: { report: ReviewReport }): JSX.Element | n
 type SortKey =
   'page' | 'kind' | 'live' | 'days' | 'index' | 'before' | 'now' | 'first' | 'avg' | 'status'
 
+const SORT_KEYS: readonly SortKey[] = [
+  'page',
+  'kind',
+  'live',
+  'days',
+  'index',
+  'before',
+  'now',
+  'first',
+  'avg',
+  'status'
+]
+
 const STATUS_TONE: Readonly<Record<PageItem['status'], string>> = {
   cited: 'up',
   notyet: 'down',
@@ -171,8 +185,14 @@ export function PublishedTable({
   rows: readonly PageItem[]
   label: string
 }): JSX.Element {
-  const [search, setSearch] = useState('')
-  const [sort, setSort] = useState<{ key: SortKey; up: boolean } | null>(null)
+  // The search is `?pq=` and the sort `?psort=<column>:<asc|desc>`.
+  const [searchValue, setSearchValue] = useQueryState('pq')
+  const search = searchValue ?? ''
+  const setSearch = (value: string): void => setSearchValue(value || null)
+  const [urlSort, setUrlSort] = useQuerySortChoice('psort', SORT_KEYS)
+  const sort = useMemo(() => (urlSort ? { key: urlSort.key, up: !urlSort.down } : null), [urlSort])
+  const setSort = (next: { key: SortKey; up: boolean }): void =>
+    setUrlSort({ key: next.key, down: !next.up })
   const stats = report.impact.pageStats
   const words = search.trim().toLowerCase()
   const found = rows.filter(
@@ -267,7 +287,7 @@ export function PublishedTable({
                         </span>
                       )}
                     </td>
-                    <td>{row.liveSince === null ? '—' : formatDay(row.liveSince)}</td>
+                    <td>{row.liveSince === null ? '—' : formatWhen(row.liveSince)}</td>
                     <td className="rv-r num">{row.daysLive ?? '—'}</td>
                     <td>
                       {row.indexed === null ? (

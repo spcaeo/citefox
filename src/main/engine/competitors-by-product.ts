@@ -131,5 +131,5 @@ export async function competitorsByProduct(
 function failedNote(message: string): string {
   return /timed out/iu.test(message)
     ? 'It took too long and was stopped.'
-    : 'Claude did not finish this search.'
+    : 'CiteFox AI did not finish this search.'
 }

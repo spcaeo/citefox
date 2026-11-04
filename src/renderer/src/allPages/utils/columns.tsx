@@ -17,7 +17,7 @@ import {
 import type { PageDrillKind } from './drills'
 import { rowName, statusText } from './text'
 import { dueBucket, type DueBucket } from './views'
-import { changeClass, changeLabel, citedLabel, dayLabel, folderLabel } from './format'
+import { changeClass, changeLabel, checkedLabel, citedLabel, dayLabel, folderLabel } from './format'
 import { pluralize } from '@shared/pluralize'
 import { LINK_COUNT_LABELS } from '@shared/report-copy'
 import { UPDATED_LABEL, updatedBucket, type UpdatedBucket } from '../../pageChanges/model'
@@ -243,13 +243,13 @@ export function allPagesColumns(options: {
       width: 128,
       sort: (row) => row.lastCheckedAt,
       defaultDir: 'desc',
-      render: (row) => dayLabel(row.lastCheckedAt, options.now),
+      render: (row) => checkedLabel(row.lastCheckedAt, options.now),
       csv: (row) => row.lastCheckedAt,
       drill: (row) =>
         row.lastCheckedAt === null
           ? null
           : {
-              label: `Last check ${dayLabel(row.lastCheckedAt, options.now)} for ${rowName(row)}: open History`,
+              label: `Last check ${checkedLabel(row.lastCheckedAt, options.now)} for ${rowName(row)}: open History`,
               href: pageHash(row.id, 'history')
             }
     },

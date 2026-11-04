@@ -9,6 +9,7 @@ import { leaderLine, leaderLines, siteTypeName } from '../../sites/siteRows'
 import type { SourceLine } from '../../sites/sources'
 import { Button, ListGrid, SectionHead, UrlText, type ListColumn } from '../../ui'
 import { Sep, ViewToggle } from '../bits'
+import { useCardView } from '../useCardView'
 import { TOP_ROWS } from '../constants'
 import { percent, showingDomains } from '../model'
 import type { ResultsDrills } from './drills'
@@ -32,7 +33,7 @@ export function CitedInsteadCard({
   drills: ResultsDrills
   aio: number
 }): JSX.Element {
-  const [view, setView] = useState<'chart' | 'table'>('chart')
+  const [view, setView] = useCardView('instead')
   const [all, setAll] = useState(false)
   const others = results.leaderboard.filter((row) => row.badge !== 'you')
   const shown = all ? others : others.slice(0, TOP_ROWS)

@@ -329,6 +329,18 @@
     outline-offset: 1px;
   }
 
+  /* CopyText wrap: a sentence wraps; Copy sits after its last line. */
+  .ui-url-wrap {
+    align-items: flex-start;
+  }
+
+  .ui-url-wrap .ui-url-value {
+    display: inline;
+    overflow: visible;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
   .ui-url-plain .ui-url-value,
   .ui-url-domain .ui-url-value {
     font-family: var(--font-ui);

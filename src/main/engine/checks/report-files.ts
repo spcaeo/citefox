@@ -135,7 +135,7 @@ export function renderAioGapMarkdown(document: AioGapDocument): string {
   else {
     for (const prompt of skipped) {
       lines.push(
-        `- Prompt ${prompt.id} (${statusLabel(prompt.status)}): ${prompt.skipReason ?? 'Claude did not compare this prompt.'}`
+        `- Prompt ${prompt.id} (${statusLabel(prompt.status)}): ${prompt.skipReason ?? 'CiteFox AI did not compare this prompt.'}`
       )
     }
   }

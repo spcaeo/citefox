@@ -12,7 +12,7 @@ import { pageScopeRefs } from '../visibility/aiContext'
 import { exportHash, navigateHash, promptHash, runningHash } from '../shell/routes'
 import { EmptyState, LinkButton, TabPanel, Tabs, type TabItem } from '../ui'
 import { Leaderboard } from './Leaderboard'
-import { formatMonthDay } from './model'
+import { formatDay, formatMoment } from './model'
 import { PromptGrid } from './PromptGrid'
 import type { ResultsAssistScope } from './ResultsAssists'
 import { BaselineSection } from './results/BaselineSection'
@@ -89,7 +89,9 @@ function ResultsBody(props: PageResultsProps): JSX.Element {
   const run = results.run
   const aio = drills.get('kpi:aio')?.rows.length ?? run?.promptsWithAio ?? 0
   const previous = results.comparison.find((column) => column.which === 'previous')
-  const since = formatMonthDay(previous?.finishedAt ?? null)
+  const since = formatMoment(previous?.finishedAt ?? null)
+  // The grid's narrow "Since …" column header keeps the short day; the tiles show the time.
+  const sinceDay = formatDay(previous?.finishedAt ?? null, { year: false })
   const checks = results.comparison.filter((column) => column.runId).length
   useAiContext({
     entities: pageScopeRefs({
@@ -173,8 +175,8 @@ function ResultsBody(props: PageResultsProps): JSX.Element {
               <PromptGrid
                 prompts={results.prompts}
                 domain={drills.scope.domain}
-                sinceLabel={since}
-                checkLabel={formatMonthDay(results.scope.checkedAt)}
+                sinceLabel={sinceDay}
+                checkLabel={formatMoment(results.scope.checkedAt)}
                 drills={drills}
                 {...(props.assists
                   ? { questions: { projectId: props.assists.projectId, samples: page.samples } }

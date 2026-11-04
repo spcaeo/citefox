@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-import { cleanup, fireEvent, render, within } from '@testing-library/react'
+import { cleanup, fireEvent, render, waitFor, within } from '@testing-library/react'
 import axe from 'axe-core'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import type { BuyerPrompt, PromptCheckRow } from '@shared/domain'
@@ -34,6 +34,7 @@ beforeEach(() => {
 
 afterEach(() => {
   cleanup()
+  window.history.replaceState(null, '', '#/')
 })
 
 /** Opens one of the Results tabs (Prompts, Breakdown, Who gets cited, Top actions, Checks). */
@@ -418,7 +419,9 @@ describe('Page results screen', () => {
     expect(view.queryByRole('dialog')).toBeNull()
 
     fireEvent.click(view.getAllByRole('button', { name: 'Table' })[1] as HTMLButtonElement)
-    const table = view.getByRole('grid', { name: /Opportunity buckets/ })
+    // The view is on the URL, so a copied link opens the same view.
+    await waitFor(() => expect(window.location.hash).toContain('buckets=table'))
+    const table = await view.findByRole('grid', { name: /Opportunity buckets/ })
     const counts = within(table)
       .getAllByRole('row')
       .slice(1)

@@ -1,4 +1,5 @@
 import type { PromptCheckDetail } from '@shared/domain'
+import { formatMoment } from '@shared/moment'
 import { ensureShippedAssists } from '../../assist/definitions'
 import { runAssist } from '../../assist/run'
 import { loadPromptDetail } from '../../engine/checks/results'
@@ -94,7 +95,8 @@ function promptDetail(
 function overviewLines(detail: PromptCheckDetail | null): string[] {
   const row = detail?.row ?? null
   if (detail === null || row === null) return []
-  const when = row.checkedAt === null ? '' : ` (check of ${row.checkedAt.slice(0, 10)})`
+  const when =
+    row.checkedAt === null ? '' : ` (check of ${formatMoment(row.checkedAt, { year: true })})`
   const text = detail.samples.find((sample) => (sample.aioText ?? '').trim().length > 0)?.aioText
   if ((text ?? '').trim().length === 0 && row.references.length === 0) {
     return [`Google showed no AI Overview for it in the latest check${when}.`]

@@ -10,7 +10,7 @@ import { pluralize } from '@shared/pluralize'
 import type { Market } from '@shared/domain'
 import { marketLabel } from '../../shell/model'
 import type { Scope, ScopeOptions } from '../../scope'
-import { formatDay, formatMoment } from '../../utils/dates'
+import { formatMoment } from '../../utils/dates'
 
 /**
  * The When list, in the drawer's order, with the words the list and the drawer use:
@@ -270,12 +270,6 @@ export function dryRunText(fired: number, days: number): string {
 export function shortWhen(iso: string, timeZone?: string): string {
   if (Number.isNaN(new Date(iso).getTime())) return iso
   return formatMoment(iso, timeZone ? { timeZone } : {})
-}
-
-/** "Oct 19": the day only, for narrow columns. */
-export function shortDay(iso: string, timeZone?: string): string {
-  if (Number.isNaN(new Date(iso).getTime())) return iso
-  return formatDay(iso, { year: false, ...(timeZone ? { timeZone } : {}) })
 }
 
 /** A page's path for narrow places; Copy and Open keep the full URL. */

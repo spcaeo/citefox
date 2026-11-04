@@ -1,7 +1,8 @@
-import { useMemo, useState, type JSX } from 'react'
+import { useMemo, type JSX } from 'react'
 import type { PageReadResult } from '@shared/ipc'
 import { useDrill } from '../drill'
 import { navigateHash, pageHash } from '../shell/routes'
+import { useQueryChoice } from '../utils/queryState'
 import { Chip, EmptyState, ListGrid, SectionHead, type ListColumn, type MenuItem } from '../ui'
 import { promptItemsDrill } from './drills'
 import { outlineLabel } from './labels'
@@ -10,6 +11,9 @@ import { PromptCount } from './readDrills'
 import { faqPromptIds, sectionPromptIds } from './readMatch'
 
 type OutlineFilter = 'all' | 'h2' | 'h3' | 'table'
+
+/** The outline filter is `?outline=<level>` in the route; All has none. */
+const OUTLINE_FILTERS: readonly OutlineFilter[] = ['all', 'h2', 'h3', 'table']
 
 const SECTION_NOTE =
   'Questions whose coverage row or mapped page element points at this part of the page. Select one to see its AI Overview.'
@@ -74,7 +78,7 @@ export function ReadOutline({
   result: PageReadResult
   context: PromptContext
 }): JSX.Element {
-  const [filter, setFilter] = useState<OutlineFilter>('all')
+  const [filter, setFilter] = useQueryChoice('outline', OUTLINE_FILTERS, 'all')
   const { open } = useDrill()
   const prompts = context.prompts
   const all = useMemo<OutlineRow[]>(

@@ -139,6 +139,42 @@ describe('Impact review in the app: verdict, published pages and the page story'
     )
   })
 
+  it('keeps table sorts and the page search on the URL, and reads them from a link', async () => {
+    window.location.hash = '#/?report=impact&section=published'
+    const view = screen(client(() => sampleMetrics()))
+    const table = await view.findByRole('table', { name: 'Every published page' })
+    fireEvent.change(view.getByRole('searchbox', { name: 'Find a page' }), {
+      target: { value: 'schools' }
+    })
+    expect(window.location.hash).toContain('pq=schools')
+    fireEvent.change(view.getByRole('searchbox', { name: 'Find a page' }), {
+      target: { value: '' }
+    })
+    expect(window.location.hash).not.toContain('pq=')
+    fireEvent.click(within(table).getByRole('button', { name: /^Page/ }))
+    await waitFor(() => expect(window.location.hash).toContain('psort=page%3Aasc'))
+    // Another tab drops the sort; Questions and Competitors have their own.
+    fireEvent.click(view.getByRole('tab', { name: 'Questions' }))
+    await waitFor(() => expect(window.location.hash).not.toContain('psort'))
+    const questions = await view.findByRole('table', { name: 'Every question' })
+    fireEvent.click(within(questions).getByRole('button', { name: /^Question/ }))
+    await waitFor(() => expect(window.location.hash).toContain('qsort=text%3Aasc'))
+    fireEvent.click(view.getByRole('tab', { name: 'Competitors' }))
+    await waitFor(() => expect(window.location.hash).not.toContain('qsort'))
+    const sites = await view.findByRole('table', { name: /cited site/i })
+    fireEvent.click(within(sites).getByRole('button', { name: /^Site/ }))
+    await waitFor(() => expect(window.location.hash).toContain('csort=domain%3Aasc'))
+    // The same sort in a pasted link.
+    cleanup()
+    window.location.hash = '#/?report=impact&section=questions&qsort=text%3Adesc'
+    const again = screen(client(() => sampleMetrics()))
+    const sorted = await again.findByRole('table', { name: 'Every question' })
+    const head = within(sorted)
+      .getByRole('button', { name: /^Question/ })
+      .closest('th')
+    expect(head?.getAttribute('aria-sort')).toBe('descending')
+  })
+
   it('Download menu has every table, Backlinks included', async () => {
     window.location.hash = '#/?report=impact'
     const view = screen(client(() => sampleMetrics()))

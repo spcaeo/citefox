@@ -155,7 +155,7 @@ describe('Jina Reader keys in rotation order (FR-11.5)', () => {
     const calls: string[] = []
     await expect(
       readPage(options(projectDb(), () => ({ status: 500, body: 'oops' }), calls))
-    ).rejects.toThrow(/Jina Reader/)
+    ).rejects.toThrow(/page reader/)
     expect(new Set(calls)).toEqual(new Set(['Bearer jina_secret_aaaaaaaaaaaa']))
   })
 

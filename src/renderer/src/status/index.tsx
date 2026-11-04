@@ -7,6 +7,7 @@ import { LoadError } from '../components/LoadError'
 import { IconButton, TabPanel, Tabs, useAssistMenu, type TabItem } from '../ui'
 import type { UsageClient } from '../usage/client'
 import { ClaudeUsage } from '../usage/ClaudeUsage'
+import { useHashTab } from '../shell/useHashTab'
 import { formatClock } from '../utils/dates'
 import { ChecksSection, EmailSection, UsageSection } from './components/ActivitySections'
 import { ConnectionsSummary } from './components/ConnectionSections'
@@ -61,6 +62,9 @@ export function StatusScreen(props: StatusScreenProps): JSX.Element {
  * tab opens and its heading is scrolled to and focused; "issues" opens the
  * open-issues list.
  */
+/** The tab is `?tab=` in the route; Connections, the first, has none. */
+const STATUS_TABS: readonly StatusTab[] = ['connections', 'checks', 'usage', 'email']
+
 function useStatusFocus(data: StatusData | null, onTab: (tab: StatusTab) => void): void {
   const { open } = useDrill()
   const snapshot = usePermissions()?.snapshot ?? null
@@ -106,7 +110,7 @@ function StatusBody({
   const notices = useNotices(liveSource)
   const setup = useSetupStatus(liveSource, true)
   const { data, refreshing, refresh, pause, resume } = useStatusData(client)
-  const [tab, setTab] = useState<StatusTab>('connections')
+  const [tab, setTab] = useHashTab<StatusTab>(STATUS_TABS, 'connections')
   useStatusFocus(data, setTab)
   const names = projectNames(data?.projects ?? null)
   const clock = data ? (now ?? new Date(data.loadedAt)) : (now ?? new Date())

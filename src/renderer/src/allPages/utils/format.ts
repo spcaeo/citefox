@@ -1,11 +1,23 @@
 import type { BulkEstimate } from '@shared/ipc'
-import { formatDay } from '../../utils/dates'
+import { formatClock, formatDay, formatMoment } from '../../utils/dates'
 
 export function estimateRange(min: number, max: number): string {
   return `${min.toLocaleString('en-US')}–${max.toLocaleString('en-US')}`
 }
 
-/** "Today", or "Oct 19" in local time (NFR-15). */
+/**
+ * When a check ran: "Today 3:12 PM" or "Oct 19, 3:12 PM", on the computer's own zone and
+ * clock (owner rule: an event always shows its time).
+ */
+export function checkedLabel(iso: string | null, now: Date = new Date()): string {
+  if (iso === null) return '—'
+  const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) return '—'
+  if (date.toDateString() === now.toDateString()) return `Today ${formatClock(iso)}`
+  return formatMoment(iso, { now })
+}
+
+/** "Today", or "Oct 19" in local time (NFR-15): for a planned day, such as the next check. */
 export function dayLabel(iso: string | null, now: Date = new Date()): string {
   if (iso === null) return '—'
   const date = new Date(iso)

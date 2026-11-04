@@ -21,6 +21,7 @@ import { GlanceStrip } from './components/GlanceStrip'
 import { ProjectTable } from './components/ProjectTable'
 import { UsageSection } from './components/UsageSection'
 import { useProjectRowActions, useToggleWithUndo } from './hooks/useProjectRowActions'
+import { useProjectFilter } from './hooks/useProjectFilter'
 import { useProjectUsage } from './hooks/useProjectUsage'
 import type { ProjectActions } from './types'
 import { goToProject, type PageScoreRow } from './utils/drills'
@@ -81,7 +82,7 @@ export function ProjectsScreen({
   onCreated: () => Promise<void>
   onToggleStatus: (project: ProjectDetail) => Promise<void>
 }): JSX.Element {
-  const [filter, setFilter] = useState<ProjectFilter>(EMPTY_PROJECT_FILTER)
+  const [filter, setFilter] = useProjectFilter()
   const [tab, setTab] = useHashTab<ProjectsTab>(TAB_IDS, 'list')
   // Bumped to start the grid afresh (its search clears), as "Show all N projects" does.
   const [gridKey, setGridKey] = useState(0)

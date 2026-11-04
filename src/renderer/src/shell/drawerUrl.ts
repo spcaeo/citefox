@@ -503,12 +503,12 @@ export const DRAWER_KINDS = {
    */
   'report-drill': {
     title: 'Behind this number',
-    params: ['rd']
+    params: ['rd', 'rdt']
   },
   /** One more level: a question's answers, a site's or a page's questions (`rd2`). */
   'report-detail': {
     title: 'Details',
-    params: ['rd2']
+    params: ['rd2', 'rdt2']
   },
   /** The guide drawer (src/renderer/src/guide): this screen's lesson, over any screen. */
   guide: {

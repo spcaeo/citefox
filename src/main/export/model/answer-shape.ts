@@ -12,7 +12,7 @@ import type { DrillRegistry } from './drills'
 import type { ScopeData } from './rows'
 import type { AnswerShapeSection, ShapeJourney } from './types'
 
-/** Section 9, Answer shape, from stored classifications (no new searches, no Claude call here). */
+/** Section 9, Answer shape, from stored classifications (no new searches, no AI call here). */
 export function buildAnswerShape(
   scope: ScopeData,
   shapes: readonly StoredAnswerShape[],
@@ -107,7 +107,7 @@ export function buildAnswerShape(
               title: 'Not measured yet',
               message: `${notAnalysed.length} ${notAnalysed.length === 1 ? 'overview is' : 'overviews are'} waiting to be classified.`,
               nextStep:
-                'Connect Claude and run a check — answer shape is classified after the check, from the stored overviews.'
+                'Connect an AI and run a check — answer shape is classified after the check, from the stored overviews.'
             }
           : null,
     legend: ANSWER_SHAPE_GROUPS,

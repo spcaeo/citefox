@@ -163,7 +163,7 @@ describe('M2 IPC handlers', () => {
       reader: 'direct',
       suppliedText: null
     })
-    expect(result.nextStep).toMatch(/Jina Reader/)
+    expect(result.nextStep).toMatch(/page reader/)
     expect(result.message).toMatch(/direct fetch/)
     expect(result.httpStatus).toBeNull()
     expect(result.id).toBeNull()

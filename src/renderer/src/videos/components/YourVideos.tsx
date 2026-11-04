@@ -4,7 +4,8 @@ import { pluralize } from '@shared/pluralize'
 import { DrillButton, DrillFigure, DrillNumber, type ItemDrill } from '../../drill'
 import { EmptyState, ListGrid, UrlText, type FilterGroup, type ListColumn } from '../../ui'
 import type { VideoDrills } from '../utils/drill'
-import { formatDate, marketName, ofAnswers } from '../utils/model'
+import { formatMoment } from '../../utils/dates'
+import { marketName, ofAnswers } from '../utils/model'
 import { PromptLinks } from './Links'
 
 /**
@@ -85,9 +86,9 @@ export function YourVideos({
     {
       id: 'checked',
       label: 'Last check',
-      width: 96,
+      width: 130,
       sort: (idea) => idea.tracking?.nowAt ?? null,
-      render: (idea) => formatDate(idea.tracking?.nowAt ?? null)
+      render: (idea) => formatMoment(idea.tracking?.nowAt ?? null)
     },
     {
       id: 'open',
@@ -169,7 +170,7 @@ function BeforeCell({
       drill={drills.of({
         id: `yt:before-${idea.id}`,
         title: 'Overviews citing your video before',
-        description: `Overviews at the check before tracking began${counts.beforeAt ? ` (${formatDate(counts.beforeAt)})` : ''} that cite ${idea.videoUrl ?? 'the video'}.`,
+        description: `Overviews at the check before tracking began${counts.beforeAt ? ` (${formatMoment(counts.beforeAt)})` : ''} that cite ${idea.videoUrl ?? 'the video'}.`,
         keys: counts.beforeKeys
       })}
       whole={counts.beforeAios}

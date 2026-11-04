@@ -14,7 +14,7 @@ const PATTERNS: readonly RegExp[] = [
 ]
 
 export const NOT_AN_ANSWER =
-  'Claude did not answer from your site, so nothing was changed. Try again, or edit the prompt.'
+  'CiteFox AI did not answer from your site, so nothing was changed. Try again, or edit the prompt.'
 
 /** True when `text` reads like Claude talking, not like the answer. */
 export function isNotAnAnswer(text: string): boolean {

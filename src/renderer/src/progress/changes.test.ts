@@ -50,9 +50,11 @@ describe('what changed since the last check (FR-14.1, FR-14.2)', () => {
       { number: 1, goLiveAt: '2026-10-08T12:00:00.000Z' },
       { number: 2, goLiveAt: '2026-10-21T12:00:00.000Z' }
     ])
-    expect(model.heading).toBe('What changed since the last check (Oct 5 → Oct 19)')
+    expect(model.heading).toBe(
+      'What changed since the last check (Oct 5, 12:00 PM → Oct 19, 12:00 PM)'
+    )
     expect(model.intro).toBe(
-      '🇺🇸 US · EN · 7 of 8 questions checked both times · 5 questions changed, 2 didn’t. The page content also changed in this period (Fix 1, Oct 8): 5 FAQs added. CiteFox shows both side by side and doesn’t claim one caused the other.'
+      '🇺🇸 US · EN · 7 of 8 questions checked both times · 5 questions changed, 2 didn’t. The page content also changed in this period (Fix 1, Oct 8, 12:00 PM): 5 FAQs added. CiteFox shows both side by side and doesn’t claim one caused the other.'
     )
     expect(model.groups.map((group) => [group.title, group.items.map((item) => item.n)])).toEqual([
       ['Gained a citation', [1]],

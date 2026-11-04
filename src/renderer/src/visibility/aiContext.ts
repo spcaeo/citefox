@@ -1,6 +1,6 @@
 import type { Market } from '@shared/domain'
 import type { AiEntityRef } from '../assistant/context/types'
-import { formatMonthDay } from '../m3/model'
+import { formatMoment } from '../m3/model'
 import { marketLabel } from '../shell/model'
 
 /**
@@ -21,7 +21,7 @@ export function pageScopeRefs(scope: {
     out.push({ kind: 'market', id: scope.market.id, label: marketLabel(scope.market) })
   }
   if (scope.checkedAt) {
-    out.push({ kind: 'check', id: scope.runId ?? null, label: formatMonthDay(scope.checkedAt) })
+    out.push({ kind: 'check', id: scope.runId ?? null, label: formatMoment(scope.checkedAt) })
   }
   return out
 }

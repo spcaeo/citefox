@@ -8,4 +8,4 @@ Market: US · en · desktop
 
 ## Prompts not compared
 
-- Prompt prompt-cited (page cited): the target page is cited, so Claude did not compare this overview with the snapshot.
+- Prompt prompt-cited (page cited): the target page is cited, so CiteFox AI did not compare this overview with the snapshot.

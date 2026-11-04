@@ -1,5 +1,5 @@
 import type { PageResults, PromptCheckRow, ResultsHistory } from '@shared/domain'
-import { formatMonthDay, statusLabel } from '../m3/model'
+import { formatMoment, statusLabel } from '../m3/model'
 import { marketDelta } from './progress'
 
 export interface PromptColumn {
@@ -23,7 +23,7 @@ export function promptColumns(history: ResultsHistory): PromptColumn[] {
     .map((point) => ({
       runId: point.runId,
       at: point.finishedAt,
-      label: formatMonthDay(point.finishedAt)
+      label: formatMoment(point.finishedAt)
     }))
 }
 
@@ -86,7 +86,7 @@ export function liveMarket(id: string, name: string, history: ResultsHistory): L
   const points = history.points.filter((point) => !point.partial)
   const checks = points.map((point) => ({
     id: point.runId,
-    label: formatMonthDay(point.finishedAt),
+    label: formatMoment(point.finishedAt),
     value: point.visibilityScore === null ? '—' : String(point.visibilityScore)
   }))
   const scores = points.map((point) => point.visibilityScore)

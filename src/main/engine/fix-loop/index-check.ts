@@ -43,14 +43,14 @@ export type IndexHost = Pick<
   'storage' | 'secrets' | 'logger' | 'http' | 'now' | 'createId' | 'knownSecrets'
 >
 
-const NO_KEY = 'Turn on a SerpApi key in Connections first. No search was sent.'
+const NO_KEY = 'Turn on a search key in Connections first. No search was sent.'
 const NO_PAGES = 'Pick at least one page with an address. No search was sent.'
 const KEYS_OUT =
-  'No SerpApi key can search right now (out of searches or refused). The rest were not checked.'
+  'No search key can search right now (out of searches or refused). The rest were not checked.'
 const CAP_REACHED = "The project's search cap is reached. The rest were not checked."
 const CHANGED = 'The number of searches changed. Look at the preview again, then confirm.'
 const NO_MARKET = 'This page has no market, so no search was sent.'
-const UNREADABLE = 'SerpApi returned a result CiteFox could not read.'
+const UNREADABLE = 'The search service returned a result CiteFox could not read.'
 
 /** SerpApi says this when Google has nothing for the query: for `site:` that is "not indexed". */
 const NO_RESULTS = /hasn['’]t returned any results|no results/i

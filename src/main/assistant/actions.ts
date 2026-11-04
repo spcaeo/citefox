@@ -5,6 +5,7 @@ import type {
   AssistantIntent,
   AssistantSource
 } from '@shared/ipc'
+import { formatMoment } from '@shared/moment'
 import { HELP_SCREENS } from './intent'
 import { isMiss, type ContextPacket, type PacketRow } from './packet'
 import type { RawAction } from './reply'
@@ -232,7 +233,7 @@ export function draftFix(row: PacketRow): AssistantAction {
     ...blank(
       'draft-fix',
       `Draft a fix for “${short(row.text, 70)}”`,
-      'Claude drafts it from the stored overview · no searches · you review it first'
+      'CiteFox AI drafts it from the stored overview · no searches · you review it first'
     ),
     pageId: row.pageKind === 'topic' ? null : row.pageId,
     topicId: row.pageKind === 'topic' ? row.pageId : null,
@@ -304,9 +305,9 @@ function short(text: string, max: number): string {
   return flat.length > max ? `${flat.slice(0, max - 1)}…` : flat
 }
 
+/** "Oct 19, 3:12 PM" in the computer's zone and clock: a check always shows its time. */
 function shortDay(iso: string | null): string {
   if (iso === null) return 'Stored'
-  const date = new Date(iso)
-  if (Number.isNaN(date.getTime())) return 'Stored'
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
+  if (Number.isNaN(new Date(iso).getTime())) return 'Stored'
+  return formatMoment(iso)
 }
