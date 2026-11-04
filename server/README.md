@@ -125,8 +125,11 @@ Drive trash (empty the trash to remove it for good). Run from the editor:
 The manifest lists exactly what the script needs and nothing broader:
 
 - `spreadsheets`: read and write the tabs of this Sheet.
-- `drive.file`: create and trash only the folder and the files this script made itself. It cannot
-  see anything else in the Drive. (The full `drive` permission is not asked for.)
+- `drive`: create the `CiteFox reports` folder and the report zips, and trash a zip on request.
+  Google's `DriveApp` service refuses to create files with the narrower `drive.file` permission
+  (the report row is saved but its `File` column says `not saved`), so the full permission is
+  needed. The script only touches its own folder, and the account is for CiteFox only, so keep
+  nothing else in its Drive. (The owner chose this on 2026-11-04.)
 - `script.send_mail`: send the update emails and the report notification.
 - `script.container.ui`: the **CiteFox** menu and its dialogs inside the Sheet.
 - `userinfo.email`: read the CiteFox account's own address, to send the notification to it.
