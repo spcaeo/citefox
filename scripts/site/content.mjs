@@ -30,8 +30,8 @@ export const STEPS = [
     text: 'CiteFox AI reads your site and works out what you sell, who buys it and who you compete with, so you start in minutes, not with a blank sheet.'
   },
   {
-    title: 'Get the questions your buyers really ask',
-    text: 'It writes them for you, grouped into topics, in the wording of each country and language you sell in.'
+    title: 'Get the questions your buyers are likely to ask',
+    text: 'CiteFox AI drafts them from your site, grouped into topics, in the wording of each country and language you sell in. You can edit them, add your own or import a list.'
   },
   {
     title: 'See where you win, fix what you lose',
@@ -244,6 +244,10 @@ export const FAQ = [
   {
     q: 'What is CiteFox?',
     a: 'CiteFox is a free desktop app for Mac, Windows and Linux that tracks whether Google AI Overviews, Google AI Mode, ChatGPT, Perplexity, Gemini and Copilot cite your website for the questions your buyers ask. It shows which page is cited, who is cited instead, what to fix, and whether your fixes worked.'
+  },
+  {
+    q: 'Where do the buyer questions come from?',
+    a: 'CiteFox AI drafts them from your own website and from what you tell it about your buyers, then you edit them. It reads your pages, works out what you sell, who buys it, what makes them look for it and who you compete with, and writes questions a buyer would type before knowing your name, as a short search, a question or a longer situation. Each one is tied to the page that should answer it, and none names your brand. You can edit or delete any of them, ask for more, add your own, import a list from Excel or CSV, or let your own ChatGPT write them. They are not taken from real query data of the AI platforms, because those platforms do not share it. CiteFox instead asks every AI engine your questions and keeps the real answers and sources.'
   },
   {
     q: 'Is CiteFox free?',

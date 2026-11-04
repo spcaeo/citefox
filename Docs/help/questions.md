@@ -24,6 +24,10 @@ To bring in a list, open ⋯ and pick **Import from Excel or CSV**.
 
 ## Common questions
 
+### Where do the questions come from?
+
+CiteFox AI drafts them from your website and from what you told it about your buyers: what you sell, who buys it, what makes them look for it and who you compete with. Each one is a short search, a question or a longer situation, tied to the page that should answer it, and none names your brand. They are not copied from what people type into AI tools, because no AI platform shares that. You can edit or delete any question, add your own, ask **✦ Help me write them** for more, or import a list from Excel or CSV.
+
 ### Why does a question say Not checked?
 
 It was added after the last check. It is asked on the next check, or click **Check now**.

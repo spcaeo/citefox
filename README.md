@@ -33,6 +33,10 @@
 > services directly, a few cents per question, and CiteFox shows the cost first.
 > Everything it collects stays on your computer. A self-hosted server edition, a managed
 > service and an MCP server are coming soon.
+>
+> **Where the questions come from.** CiteFox AI drafts them from your own site and your description
+> of your buyers. You edit them, add your own or import a list. They are not copied from what people
+> type into AI tools, because no AI platform shares that. [Details](#where-do-the-buyer-questions-come-from)
 
 ## Contents
 
@@ -43,6 +47,7 @@
 - [Why teams pick CiteFox](#why-teams-pick-citefox)
 - [AI visibility tracking features](#ai-visibility-tracking-features)
 - [Client-ready AI visibility reports](#client-ready-ai-visibility-reports)
+- [Where do the buyer questions come from?](#where-do-the-buyer-questions-come-from)
 - [How it works](#how-it-works) · [Supported AI engines](#supported-ai-engines) · [Who it's for](#who-its-for)
 - [Real answers, not guessed prompt volume](#real-answers-not-guessed-prompt-volume)
 - [How CiteFox compares](#how-citefox-compares) with Profound, Peec AI, Otterly.AI and others
@@ -219,10 +224,28 @@ fixes work?") or **By report**. See them for yourself in the [sample reports][sa
 
 ![The CiteFox Visibility report with share of voice and the questions that cite you](media/report-visibility.png)
 
+## Where do the buyer questions come from?
+
+**CiteFox AI drafts them, and you decide.** They are not copied from a list of what people type
+into ChatGPT or Gemini, because no AI platform shares that data (more in
+[Real answers, not guessed prompt volume](#real-answers-not-guessed-prompt-volume)).
+
+1. **Drafted from your own site.** CiteFox AI reads your pages and works out what you sell, who
+   buys it, what makes them look for it, and who you compete with. From that it writes the
+   questions a buyer would type before they know your name: a short search, a question, or a
+   longer situation. Each one is tied to the page that should answer it, and none names your brand.
+2. **Yours to change.** Edit or delete any question. Ask for more, or for a redo with your own
+   instruction ("more about pricing"). Add your own, or import a list from Excel or CSV, for
+   example the questions your sales team hears. You can also let your own ChatGPT write them: copy
+   the prompt, paste the reply back.
+3. **Tested on real answers.** CiteFox asks every AI engine each question and keeps the full answer
+   and every source, so you see whether you are cited, who is cited instead, and what changes
+   over time. A question is a test, not a traffic estimate.
+
 ## How it works
 
 1. **Add your website.** CiteFox AI reads your site and works out what you sell, who buys it and who your competitors are.
-2. **Get your buyer questions.** It writes the questions your buyers really ask, grouped into topics, for each country and language you sell in.
+2. **Get your buyer questions.** It drafts the questions your buyers are likely to ask, grouped into topics, for each country and language you sell in. You can edit them, add your own or import a list ([where they come from](#where-do-the-buyer-questions-come-from)).
 3. **Check, fix, re-check.** It asks every AI engine, saves each answer and source, shows who is cited instead, writes fix briefs and re-checks on a schedule.
 
 ![CiteFox Reports home with the six ready reports](media/reports-home.png)
@@ -271,7 +294,7 @@ More terms in the [GEO and AEO glossary][glossary].
 
 **So CiteFox is built on three foundations:**
 
-1. **Your real buyer questions, in the three ways people ask:** a **short search** as typed into Google, a natural **question**, and a longer **situation** ("We're a 20-person clinic and our SMS reminders stopped…"). Never with your brand name in them, so they show whether AI finds you on its own.
+1. **Your buyer questions, drafted from your site and yours to edit, in the three ways people ask:** a **short search** as typed into Google, a natural **question**, and a longer **situation** ("We're a 20-person clinic and our SMS reminders stopped…"). Never with your brand name in them, so they show whether AI finds you on its own.
 2. **Real answers, checked again and again:** every check stores the full AI answer and every source, so you see trends, not one lucky or unlucky answer.
 3. **The right page for each question:** a Primary page (plus Also OK pages), so "cited" means the page you want, and fixes can be measured before and after.
 
@@ -379,6 +402,10 @@ Every release has a `SHA256SUMS.txt` to check your download. CiteFox tells you w
 ### What is CiteFox?
 
 CiteFox is a free desktop app for Mac, Windows and Linux that tracks whether Google AI Overviews, Google AI Mode, ChatGPT, Perplexity, Gemini and Copilot cite your website for the questions your buyers ask. It shows which page is cited, who is cited instead, what to fix, and whether your fixes worked.
+
+### Where do the buyer questions come from?
+
+CiteFox AI drafts them from your own website and from what you tell it about your buyers, then you edit them. It reads your pages, works out what you sell, who buys it, what makes them look for it and who you compete with, and writes questions a buyer would type before knowing your name, as a short search, a question or a longer situation. Each one is tied to the page that should answer it, and none names your brand. You can edit or delete any of them, ask for more, add your own, import a list from Excel or CSV, or let your own ChatGPT write them. They are not taken from real query data of the AI platforms, because those platforms do not share it. CiteFox instead asks every AI engine your questions and keeps the real answers and sources.
 
 ### Is CiteFox free?
 

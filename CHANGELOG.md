@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Improved
+
+- **Clear answer to "where do the questions come from?":** the README, the website and the Questions help page now say it plainly. CiteFox AI drafts the questions from your site, you edit, add your own or import a list, and they are not taken from AI platform query data (nobody shares it). A new FAQ entry and a short section near the top of the README explain it.
+
 ## 0.13.8 — 2026-11-03
 
 ### Improved

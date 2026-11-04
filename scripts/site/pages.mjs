@@ -241,7 +241,7 @@ ${ENGINES.map((x) => `              <tr><th scope="row">${e(x.name)}</th><td>${e
         <p><strong>Chat assistants answer each person differently.</strong> ChatGPT can use your saved memories and past chats to tailor replies (<a href="https://help.openai.com/en/articles/8590148" target="_blank" rel="noopener">OpenAI help</a>), and other assistants now remember earlier conversations too.</p>
         <p><strong>Google’s AI Overviews are the steadier signal.</strong> No personal chat memory, and Google aims to keep results mostly the same for everyone. The wording stays close from day to day while the cited sources rotate (<a href="https://ahrefs.com/blog/ai-overview-change/" target="_blank" rel="noopener">Ahrefs</a>), so CiteFox anchors on AI Overviews, checks the other engines beside it, and re-checks on a schedule.</p>
         <ol class="how">
-          <li><h3>Your real buyer questions</h3><p>Asked the three ways people ask: a short search, a question and a longer situation. Never with your brand name, so you see whether AI finds you on its own.</p></li>
+          <li><h3>Your buyer questions, drafted from your site</h3><p>CiteFox AI drafts them and you edit, add or import your own. Asked the three ways people ask: a short search, a question and a longer situation. Never with your brand name, so you see whether AI finds you on its own.</p></li>
           <li><h3>Real answers, again and again</h3><p>Every check keeps the full answer and every source, so you follow trends, not one lucky or unlucky answer.</p></li>
           <li><h3>The right page for each question</h3><p>A Primary page plus Also OK pages, so “cited” means the page you want, and every fix is measured before and after.</p></li>
         </ol>
